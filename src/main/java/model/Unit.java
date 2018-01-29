@@ -1,17 +1,21 @@
 package model;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import view.Sprite;
 
 /*
     Toimii yksittäisten alusten (pelaaja, vihut) ylaluokkana.
 
+        yläluokan metodeja:
     Point2D getPosition()
     double getXPosition()
     double getYPosition()
     void setVelocity(double velocity)
     double getVelocity()
     void setImage(Image newImage)
+    void setSize(Point2D newSize)
+    printSize()
 
  */
 public class Unit extends Sprite {
@@ -35,6 +39,7 @@ public class Unit extends Sprite {
         this.setImage(new Image(getClass().getResourceAsStream("/images/spaceship_small_cyan_placeholder.png")));
         this.setPosition(200, 200);
         this.setVelocity(3);
+        this.setSize(new Point2D(64, 64));
 
         /* tää generoi sellasen suorakaiteen
 

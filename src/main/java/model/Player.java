@@ -1,4 +1,4 @@
 package model;
 
-public class Player {
+public class Player extends Unit {
 }

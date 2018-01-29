@@ -4,13 +4,15 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Player;
+
+import static javafx.scene.input.KeyCode.*;
 
 public class GameMain extends Application {
 
@@ -42,10 +44,8 @@ public class GameMain extends Application {
         // ============ Pelaajan ohjaukseen liittyvää koodia TODO: viistoliike, nopeampi reaktio
         Player player = new Player();
         player.luoTesteriAlus();//TODO tan rivin saa poistaa
-        vbox.getChildren().addAll(player);//TODO tan rivin saa poistaa
-        Rectangle playerSprite = new Rectangle(player.getxPosition(), player.getyPosition(), 20, 10);
-        playerSprite.setFill(Color.CYAN);
-        pane.getChildren().addAll(playerSprite);
+        pane.getChildren().addAll(player);//TODO tan rivin saa poistaa
+
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             switch(e.getCode()) {
@@ -62,10 +62,8 @@ public class GameMain extends Application {
                     player.move(2);
                     break;
             }
-
-            playerSprite.setX(player.getxPosition());
-            playerSprite.setY(player.getyPosition());
-
         });
         // ============
     }
+}
+
