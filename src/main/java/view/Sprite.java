@@ -47,9 +47,7 @@ public class Sprite extends Pane {
 
 
     public void setSize(Point2D newSize){//TODO ei kaytos atm
-        System.out.println("x on: " + newSize.getX());
         this.resize(newSize.getX(), newSize.getY());
-        printSize();
     }
 
     //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
