@@ -18,6 +18,7 @@ public class Sprite extends Pane {
     double velocity = 1;
     ImageView imageView = new ImageView();
 
+
     //kutsutut metodit löytyy Pane-ylaluokasta
     public void setPosition(double newX, double newY){
         this.setLayoutX(newX);
@@ -44,7 +45,9 @@ public class Sprite extends Pane {
         return velocity;
     }
 
-    public void setSize(Point2D newSize){
+
+    public void setSize(Point2D newSize){//TODO ei kaytos atm
+        System.out.println("x on: " + newSize.getX());
         this.resize(newSize.getX(), newSize.getY());
         printSize();
     }
@@ -63,7 +66,7 @@ public class Sprite extends Pane {
         this.getChildren().add(imageView);
     }
 
-    public void printSize(){
+    public void printSize(){//TODO poista lopuks
         System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
     }
 

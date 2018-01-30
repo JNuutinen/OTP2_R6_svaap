@@ -35,48 +35,7 @@ public class Unit extends Sprite {
 
     }
 
-    public void luoTesteriAlus(){ //TODO Hege poistaa tan joskus.
-        this.setImage(new Image(getClass().getResourceAsStream("/images/spaceship_small_cyan_placeholder.png")));
-        this.setPosition(200, 200);
-        this.setVelocity(3);
-        this.setSize(new Point2D(64, 64));
 
-        /* tää generoi sellasen suorakaiteen
-
-        Rectangle playerSprite = new Rectangle(this.getXPosition(), this.getYPosition(), 20, 10);
-        playerSprite.setFill(Color.CYAN);
-        this.getChildren().addAll(playerSprite);
-        */
-
-    }
-
-
-
-    public void move(int direction) {
-        switch(direction) {
-            case 0: //ylös
-                this.setPosition(this.getXPosition(), this.getYPosition() - this.getVelocity());
-                //yPosition -= speed;
-                break ;
-            case 1: //oikealle, ylä-viistoon
-                break ;
-            case 2: //oikealle
-                this.setPosition(this.getXPosition() + this.getVelocity(), this.getYPosition());
-                break;
-            case 3: //oikealle, ala-viisto
-                break;
-            case 4: //alas
-                this.setPosition(this.getXPosition(), this.getYPosition() + this.getVelocity());
-                break;
-            case 5: //vasen, ala-viisto
-                break;
-            case 6: //vasen
-                this.setPosition(this.getXPosition() - this.getVelocity(), this.getYPosition());
-                break;
-            case 7: //vasen, ylä-viisto
-                break;
-        }
-    }
 
 
     public void takeDamage(int damage) {

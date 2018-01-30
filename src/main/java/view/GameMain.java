@@ -41,29 +41,11 @@ public class GameMain extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // ============ Pelaajan ohjaukseen liittyvää koodia TODO: viistoliike, nopeampi reaktio
-        Player player = new Player();
-        player.luoTesteriAlus();//TODO tan rivin saa poistaa
+
+        Player player = new Player(scene);
+
+
         pane.getChildren().addAll(player);//TODO tan rivin saa poistaa
-
-
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-            switch(e.getCode()) {
-                case W://ylös
-                    player.move(0);
-                    break ;
-                case A://vasen
-                    player.move(6);
-                    break;
-                case S://alas
-                    player.move(4);
-                    break;
-                case D://oikea
-                    player.move(2);
-                    break;
-            }
-        });
-        // ============
     }
 }
 
