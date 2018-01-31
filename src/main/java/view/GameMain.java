@@ -19,7 +19,9 @@ import java.util.ArrayList;
     Testausta, sovellettu ylläolevast linkist. Ei käytä controlleria eikä GameGraphicsia.
  */
 public class GameMain extends Application {
-    private Player playerShip;
+    //backup sprite
+    private SpriteBackup playerShip;
+
     private ArrayList<String> input;
     private GraphicsContext graphicsContext;
 
@@ -53,16 +55,19 @@ public class GameMain extends Application {
         // canvasin graphicscontext
         graphicsContext = canvas.getGraphicsContext2D();
 
-        // Pelaajan sprite
+        /* BACKUP SPRITEN ALUSTUS
         Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
-        playerShip = new Player();
+        playerShip = new SpriteBackup();
         playerShip.setImage(shipImage);
         playerShip.setPosition(100, 100);
+        */
+
 
         // Ensimmäinen ajanotto gamelooppia varten
         long startNanoTime = System.nanoTime();
         annaSenLooppaa(startNanoTime);
 
+        // TODO: spriten luonti ja lisäys rootiin
         primaryStage.show();
     }
 
@@ -74,6 +79,7 @@ public class GameMain extends Application {
                 double elapsedTime = (currentNanoTime - lastNanoTime) / 1000000000.0;
                 lastNanoTime = currentNanoTime;
 
+                /* BACKUP SPRITEN LIIKUTTELU JA RENDERÖINTI
                 // Aluksen liikuttelu
                 playerShip.setVelocity(0,0);
                 if (input.contains("A")) playerShip.addVelocity(-50, 0);
@@ -82,13 +88,11 @@ public class GameMain extends Application {
                 if (input.contains("S")) playerShip.addVelocity(0, 50);
                 playerShip.update(elapsedTime);
 
-                // "Ampuminen"
-                if (input.contains("O")) playerShip.shootPrimary();
-                if (input.contains("P")) playerShip.shootSecondary();
-
                 // Renderöinti
                 graphicsContext.clearRect(0, 0, 1280, 720);
                 playerShip.render(graphicsContext);
+                */
+                // TODO: spriten liikuttelu
             }
         }.start();
     }
