@@ -1,86 +1,47 @@
 package model;
 
-import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import view.Sprite;
 
-/*
-    Toimii yksittäisten alusten (pelaaja, vihut) ylaluokkana.
-
-        yläluokan metodeja:
-    Point2D getPosition()
-    double getXPosition()
-    double getYPosition()
-    void setVelocity(double velocity)
-    double getVelocity()
-    void setImage(Image newImage)
-    void setSize(Point2D newSize)
-    printSize()
-
+/**
+ * Lisää spriteen avaruusalukselle ominaisia piirteitä
  */
 public class Unit extends Sprite {
+    /**
+     * Yksikön hitpointsit
+     */
     private int hp;
+
     //private Component components[];
+
+    /**
+     * Yksikön taso
+     */
     private int level;
 
     public Unit () {
-
+        hp = 9000;
+        level = 9000;
     }
 
+    /**
+     * Ampuu yksikön pääaseella
+     */
     public void shootPrimary() {
-
+        System.out.println("pew pew");
     }
 
+    /**
+     * Ampuu yksikön toisella aseella
+     */
     public void shootSecondary() {
-
+        System.out.println("pew");
     }
 
-    public void luoTesteriAlus(){ //TODO Hege poistaa tan joskus.
-        this.setImage(new Image(getClass().getResourceAsStream("/images/spaceship_small_cyan_placeholder.png")));
-        this.setPosition(200, 200);
-        this.setVelocity(3);
-        this.setSize(new Point2D(64, 64));
-
-        /* tää generoi sellasen suorakaiteen
-
-        Rectangle playerSprite = new Rectangle(this.getXPosition(), this.getYPosition(), 20, 10);
-        playerSprite.setFill(Color.CYAN);
-        this.getChildren().addAll(playerSprite);
-        */
-
-    }
-
-
-
-    public void move(int direction) {
-        switch(direction) {
-            case 0: //ylös
-                this.setPosition(this.getXPosition(), this.getYPosition() - this.getVelocity());
-                //yPosition -= speed;
-                break ;
-            case 1: //oikealle, ylä-viistoon
-                break ;
-            case 2: //oikealle
-                this.setPosition(this.getXPosition() + this.getVelocity(), this.getYPosition());
-                break;
-            case 3: //oikealle, ala-viisto
-                break;
-            case 4: //alas
-                this.setPosition(this.getXPosition(), this.getYPosition() + this.getVelocity());
-                break;
-            case 5: //vasen, ala-viisto
-                break;
-            case 6: //vasen
-                this.setPosition(this.getXPosition() - this.getVelocity(), this.getYPosition());
-                break;
-            case 7: //vasen, ylä-viisto
-                break;
-        }
-    }
-
-
+    /**
+     * Yksikkö ottaa vahinkoa
+     * @param damage Vahinkomäärä, jonka yksikkö ottaa
+     */
     public void takeDamage(int damage) {
         hp =- damage;
     }
-
 }

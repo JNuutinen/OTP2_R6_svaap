@@ -1,69 +1,96 @@
 package view;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Player;
 
-import static javafx.scene.input.KeyCode.*;
+import java.util.ArrayList;
 
+/*
+    Inspoo:
+    https://gamedevelopment.tutsplus.com/tutorials/introduction-to-javafx-for-game-development--cms-23835
+
+    Testausta, sovellettu ylläolevast linkist. Ei käytä controlleria eikä GameGraphicsia.
+ */
 public class GameMain extends Application {
+    private Player playerShip;
+    private ArrayList<String> input;
+    private GraphicsContext graphicsContext;
 
     public static void main(String[] args) {
         launch(args);
     }
 
-
-    public void start(Stage primaryStage) throws Exception{
-        Pane root = new Pane();
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
-
-
-        //pelin testaus | kumita primaryStage.setScene(scene); alhaalta jos et haluu testaa peliä.
-
-        Pane pane = new Pane();
-
-        VBox.setVgrow(pane, Priority.NEVER);
-        VBox vbox;
-        vbox = new VBox(pane);
-        vbox.setStyle("-fx-background-color: black");
-        Scene scene = new Scene(vbox, 1270, 720);
-
+    public void start(Stage primaryStage) {
+        Group root = new Group();
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.setTitle("branch: gameloop-testi");
+        Canvas canvas = new Canvas(1280, 720);
+        root.getChildren().add(canvas);
 
-        // ============ Pelaajan ohjaukseen liittyvää koodia TODO: viistoliike, nopeampi reaktio
-        Player player = new Player();
-        player.luoTesteriAlus();//TODO tan rivin saa poistaa
-        pane.getChildren().addAll(player);//TODO tan rivin saa poistaa
+        // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
+        input = new ArrayList<>();
 
-
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-            switch(e.getCode()) {
-                case W://ylös
-                    player.move(0);
-                    break ;
-                case A://vasen
-                    player.move(6);
-                    break;
-                case S://alas
-                    player.move(4);
-                    break;
-                case D://oikea
-                    player.move(2);
-                    break;
-            }
+        // Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
+        scene.setOnKeyPressed(keyEvent -> {
+            String code = keyEvent.getCode().toString();
+            if (!input.contains(code)) input.add(code);
         });
-        // ============
+
+        // Kun näppäintä ei enää paineta, poista se arraylististä
+        scene.setOnKeyReleased(keyEvent -> {
+            String code = keyEvent.getCode().toString();
+            input.remove(code);
+        });
+
+        // canvasin graphicscontext
+        graphicsContext = canvas.getGraphicsContext2D();
+
+        // Pelaajan sprite
+        Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
+        playerShip = new Player();
+        playerShip.setImage(shipImage);
+        playerShip.setPosition(100, 100);
+
+        // Ensimmäinen ajanotto gamelooppia varten
+        long startNanoTime = System.nanoTime();
+        annaSenLooppaa(startNanoTime);
+
+        primaryStage.show();
+    }
+
+    private void annaSenLooppaa(long startNanoTime) {
+        new AnimationTimer() {
+            long lastNanoTime = startNanoTime;
+            public void handle(long currentNanoTime) {
+                // Lasketaan aika viime updatesta
+                double elapsedTime = (currentNanoTime - lastNanoTime) / 1000000000.0;
+                lastNanoTime = currentNanoTime;
+
+                // Aluksen liikuttelu
+                playerShip.setVelocity(0,0);
+                if (input.contains("A")) playerShip.addVelocity(-50, 0);
+                if (input.contains("D")) playerShip.addVelocity(50, 0);
+                if (input.contains("W")) playerShip.addVelocity(0, -50);
+                if (input.contains("S")) playerShip.addVelocity(0, 50);
+                playerShip.update(elapsedTime);
+
+                // "Ampuminen"
+                if (input.contains("O")) playerShip.shootPrimary();
+                if (input.contains("P")) playerShip.shootSecondary();
+
+                // Renderöinti
+                graphicsContext.clearRect(0, 0, 1280, 720);
+                playerShip.render(graphicsContext);
+            }
+        }.start();
     }
 }
 
