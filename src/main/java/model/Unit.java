@@ -21,6 +21,7 @@ import view.Sprite;
 public class Unit extends Sprite {
     private int hp;
     //private Component components[];
+    public int direction;
     private int level;
 
     public Unit () {

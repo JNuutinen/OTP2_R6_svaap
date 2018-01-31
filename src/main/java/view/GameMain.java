@@ -11,11 +11,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Player;
+import model.Unit;
+
+import java.util.ArrayList;
 
 import static javafx.scene.input.KeyCode.*;
 
 public class GameMain extends Application {
-
+    public static ArrayList<Unit> units;
     public static void main(String[] args) {
         launch(args);
     }
@@ -27,7 +30,8 @@ public class GameMain extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
 
-
+        units = new ArrayList<Unit>(); //Väliaikainen paikka listalle, joka sisältää unitteja.
+        //Käytetään projektilessä
         //pelin testaus | kumita primaryStage.setScene(scene); alhaalta jos et haluu testaa peliä.
 
         Pane pane = new Pane();
