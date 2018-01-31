@@ -19,7 +19,7 @@ public class Enemy_small extends Unit {
         this.setDirection(this.direction);
     }
 
-    //konstruktori, ilman alkuarvoja paitsi kuva ja sen suuruus
+    //konstruktori, parametreissa alkuarvor paitsi kuva ja sen suuruus
     public Enemy_small(Point2D startingPosition, double speed, double direction){
         this.setImage(new Image(getClass().getResourceAsStream("/images/spaceship_small_cyan_placeholder.png"), width, height, true, true));
         this.setPosition(startingPosition.getX(), startingPosition.getY());
@@ -27,7 +27,7 @@ public class Enemy_small extends Unit {
         this.setDirection(direction);
     }
 
-    //konstruktori, ilman alkuarvoja
+    //konstruktori, parametreissa alkuarvot
     public Enemy_small(Image image, Point2D startingPosition, double speed, double direction){
         this.setImage(image);
         this.setPosition(startingPosition.getX(), startingPosition.getY());
