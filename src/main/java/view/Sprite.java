@@ -25,6 +25,11 @@ public class Sprite extends Pane {
         this.setLayoutY(newY);
     }
 
+    // 0=oikealle, 90 on ylös...
+    public void setDirection(double degrees){
+        this.direction = degreesToDirection(degrees);
+    }
+
     public Point2D getPosition(){
         return new Point2D(this.getLayoutX(), this.getLayoutY());
     }
@@ -52,9 +57,15 @@ public class Sprite extends Pane {
 
     //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
     //kaytetään peliloopin yhteydessa
-    public void moveStep(){//TODO taa on tulos sit ku pelilooppi valmis
+    public void moveStep(){//TODO taa on tulossa sit ku pelilooppi valmis
         Point2D currentPosition = getPosition();
         this.setPosition(currentPosition.getX() + direction.getX() * velocity, currentPosition.getY() + direction.getY() * velocity);
+    }
+
+    public Point2D degreesToDirection(double degrees){
+        double sin = Math.sin(Math.toRadians(degrees));
+        double cos = Math.cos(Math.toRadians(degrees));
+        return new Point2D(cos, sin);
     }
 
 
