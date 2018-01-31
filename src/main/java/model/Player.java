@@ -9,11 +9,11 @@ import javafx.scene.input.KeyEvent;
 public class Player extends Unit {
     Scene scene;//liikkumis event handlereita varten
 
-    //
+    //alkuarvot
     private final double width = 64;
-    final private double height = 64;
-    final Point2D startingPosition = new Point2D(20, 60);
-    final double speed = 3;
+    private final double height = 64;
+    private final Point2D startingPosition = new Point2D(20, 60);
+    private final double speed = 3;
 
     // ============ Pelaajan ohjaukseen liittyvää koodia TODO: viistoliike, nopeampi reaktio
     public Player(Scene scene) {//konstruktori

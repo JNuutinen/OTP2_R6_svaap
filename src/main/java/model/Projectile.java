@@ -1,9 +1,10 @@
 package model;
 
 import view.GameMain;
-import view.Sprite;
+//import view.Sprite;
+import view.SpriteBackup;
 
-public class Projectile extends Sprite {
+public class Projectile extends SpriteBackup {
     private int damage;
     private int speed = 2;
     private int size;
@@ -26,9 +27,9 @@ public class Projectile extends Sprite {
 
     public void hitCheck() {
         for (int i = 0; i < GameMain.units.size(); i++) {
-            //Nää voi kertoa vielä Sizellä niin ei ole pikseli tarkkaa...
-            if (GameMain.units.get(i).getxPosition() == xPosition &&
-                    GameMain.units.get(i).getyPosition() ==  yPosition) {
+
+            if (this.collides(GameMain.units.get(i))) {
+
                 GameMain.units.get(i).takeDamage(damage);
                 hit = true;
                 System.out.println("Osu!");

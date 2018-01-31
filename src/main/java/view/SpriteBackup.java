@@ -14,7 +14,7 @@ import javafx.scene.image.Image;
  * Pitää sisällään spriten kuvan, sijainnin, nopeuden ja koon.
  * Metodeilla katsotaan törmäykset, päivitetään sijainti ja renderöidään sprite.
  */
-public class Sprite {
+public class SpriteBackup {
     /**
      * Spriten kuva
      */
@@ -50,7 +50,7 @@ public class Sprite {
      */
     private double height;
 
-    protected Sprite() {
+    protected SpriteBackup() {
         positionX = 0;
         positionY = 0;
         velocityX = 0;
@@ -74,12 +74,12 @@ public class Sprite {
     }
 
     /**
-     * Tarkistaa, törmääkö sprite jonkin muun spriten kanssa.
-     * @param sprite Sprite, jonka kanssa törmäys tarkistetaan
+     * Tarkistaa, törmääkö spriteBackup jonkin muun spriten kanssa.
+     * @param spriteBackup SpriteBackup, jonka kanssa törmäys tarkistetaan
      * @return True jos törmäys, muuten false
      */
-    public boolean collides(Sprite sprite) {
-        return sprite.getBoundary().intersects(this.getBoundary());
+    public boolean collides(SpriteBackup spriteBackup) {
+        return spriteBackup.getBoundary().intersects(this.getBoundary());
     }
 
     /**
