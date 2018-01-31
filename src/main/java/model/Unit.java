@@ -1,11 +1,11 @@
 package model;
 
-import view.Sprite;
+import view.SpriteBackup;
 
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä
  */
-public class Unit extends Sprite {
+public class Unit extends SpriteBackup {
     /**
      * Yksikön hitpointsit
      */
