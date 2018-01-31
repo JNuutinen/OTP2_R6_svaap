@@ -5,6 +5,9 @@ import model.Player;
 import model.Unit;
 import view.GameMain;
 
+/*
+    TODO: tätä ei vielä käytössä
+ */
 public class GameController {
 
     private GameMain gameMain;

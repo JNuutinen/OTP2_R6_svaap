@@ -1,82 +1,139 @@
 package view;
 
-
-
-import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-
 
 /*
-    Ylaluokka kaytetaan mm. aluksille ja ammuksille.
-    unitin ylaluokka.
-
+    Inspoo näist:
+    https://gamedevelopment.tutsplus.com/tutorials/introduction-to-javafx-for-game-development--cms-23835
+    https://github.com/tutsplus/Introduction-to-JavaFX-for-Game-Development
  */
-public class Sprite extends Pane {
-    protected Point2D direction;
-    double velocity = 1;
-    ImageView imageView = new ImageView();
 
+/**
+ * Pitää sisällään spriten kuvan, sijainnin, nopeuden ja koon.
+ * Metodeilla katsotaan törmäykset, päivitetään sijainti ja renderöidään sprite.
+ */
+public class Sprite {
+    /**
+     * Spriten kuva
+     */
+    private Image image;
 
-    //kutsutut metodit löytyy Pane-ylaluokasta
-    public void setPosition(double newX, double newY){
-        this.setLayoutX(newX);
-        this.setLayoutY(newY);
+    /**
+     * Spriten sijainnin x-koordinaatti
+     */
+    private double positionX;
+
+    /**
+     * Spriten y-koordinaatti
+     */
+    private double positionY;
+
+    /**
+     * Spriten vauhti suuntaan x
+     */
+    private double velocityX;
+
+    /**
+     * Spriten vauhti suuntaan y
+     */
+    private double velocityY;
+
+    /**
+     * Spriten leveys (otetaan kuvasta)
+     */
+    private double width;
+
+    /**
+     * Spriten korkeus (otetaan kuvasta)
+     */
+    private double height;
+
+    protected Sprite() {
+        positionX = 0;
+        positionY = 0;
+        velocityX = 0;
+        velocityY = 0;
     }
 
-    // 0=oikealle, 90 on ylös...
-    public void setDirection(double degrees){
-        this.direction = degreesToDirection(degrees);
+    @Override
+    public String toString() {
+        return "Position: [" + positionX + "," + positionY + "]"
+                + " Velocity: [" + velocityX + "," + velocityY + "]";
     }
 
-    public Point2D getPosition(){
-        return new Point2D(this.getLayoutX(), this.getLayoutY());
+    /**
+     * Lisää nopeutta.
+     * @param x Lisää nopeutta suuntaan x
+     * @param y Lisää nopeutta suuntaan y
+     */
+    public void addVelocity(double x, double y) {
+        velocityX += x;
+        velocityY += y;
     }
 
-    public double getXPosition(){
-        return this.getLayoutX();
+    /**
+     * Tarkistaa, törmääkö sprite jonkin muun spriten kanssa.
+     * @param sprite Sprite, jonka kanssa törmäys tarkistetaan
+     * @return True jos törmäys, muuten false
+     */
+    public boolean collides(Sprite sprite) {
+        return sprite.getBoundary().intersects(this.getBoundary());
     }
 
-    public double getYPosition(){
-        return this.getLayoutY();
+    /**
+     * Piirtää spriten
+     * @param graphicsContext GraphicsContext, johon piirretään
+     */
+    public void render(GraphicsContext graphicsContext) {
+        graphicsContext.drawImage(image, positionX, positionY);
     }
 
-    public void setVelocity(double velocity){
-        this.velocity = velocity;
+    /**
+     * Asettaa spriten kuvan ja koon kuvan mukaan
+     * @param image Kuva, joka asetetaan spritelle
+     */
+    public void setImage(Image image) {
+        this.image = image;
+        width = image.getWidth();
+        height = image.getHeight();
     }
 
-    public double getVelocity(){
-        return velocity;
+    /**
+     * Asettaa spriten sijainnin
+     * @param x x-koordinaatti
+     * @param y y-koordinaatti
+     */
+    public void setPosition(double x, double y) {
+        positionX = x;
+        positionY = y;
     }
 
-
-    public void setSize(Point2D newSize){//TODO ei kaytos atm
-        this.resize(newSize.getX(), newSize.getY());
+    /**
+     * Asettaa spriten nopeuden
+     * @param x Asettaa nopeuden suuntaan x
+     * @param y Asettaa nopeuden suuntaan y
+     */
+    public void setVelocity(double x, double y) {
+        velocityX = x;
+        velocityY = y;
     }
 
-    //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
-    //kaytetään peliloopin yhteydessa
-    public void moveStep(){//TODO taa on tulossa sit ku pelilooppi valmis
-        Point2D currentPosition = getPosition();
-        this.setPosition(currentPosition.getX() + direction.getX() * velocity, currentPosition.getY() + direction.getY() * velocity);
+    /**
+     * Päivittää spriten sijainnin ajan ja nopeuden mukaan
+     * @param time kulunut aika (TODO: sekunteina?)
+     */
+    public void update(double time) {
+        positionX += velocityX * time;
+        positionY += velocityY * time;
     }
 
-    public Point2D degreesToDirection(double degrees){
-        double sin = Math.sin(Math.toRadians(degrees));
-        double cos = Math.cos(Math.toRadians(degrees));
-        return new Point2D(cos, sin);
+    /**
+     * Palauttaa spriten rajat ja sijainnin.
+     * @return Rectangle2D mallinnuksen spritestä
+     */
+    private Rectangle2D getBoundary() {
+        return new Rectangle2D(positionX, positionY, width, height);
     }
-
-
-    public void setImage(Image newImage){
-        Image image = newImage;
-        imageView.setImage(image);
-        this.getChildren().add(imageView);
-    }
-
-    public void printSize(){//TODO poista lopuks
-        System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
-    }
-
 }
