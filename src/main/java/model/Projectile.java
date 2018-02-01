@@ -1,39 +1,49 @@
 package model;
 
+import javafx.scene.image.Image;
 import view.GameMain;
-//import view.Sprite;
-import view.SpriteBackup;
+import model.Sprite;
 
-public class Projectile extends SpriteBackup {
+
+public class Projectile extends Sprite{
     private int damage;
     private int speed = 2;
     private int size;
     private int direction;
     private boolean hit = false;
-    private int xPosition = 200;
+    private int xPosition = 100;
     private int yPosition = 100;
 
     public Projectile(int damage, int direction){
+        Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
+        this.setImage(projectileImage);
         this.damage = damage;
+        setVelocity(speed);
+        setPosition(xPosition, yPosition);
+        setDirection(0);
         size = 2;
+        setIsMoving(true);
+        GameMain.projectiles.add(this);
+
     }
 
     public void move() {
         if (!hit) {
-            xPosition += speed * direction;
+            update();
             hitCheck();
         }
     }
 
     public void hitCheck() {
-        for (int i = 0; i < GameMain.units.size(); i++) {
-
-            if (this.collides(GameMain.units.get(i))) {
-
-                GameMain.units.get(i).takeDamage(damage);
+        for (Unit unit : GameMain.units) {
+            /*
+            if (this.collides(unit)) {
+                unit.takeDamage(damage);
                 hit = true;
+                GameMain.projectiles.remove(this);
                 System.out.println("Osu!");
             }
+            */
         }
     }
 

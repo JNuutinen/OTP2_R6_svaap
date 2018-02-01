@@ -12,6 +12,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Player;
+import model.Projectile;
+import model.Unit;
 import model.Updateable;
 
 import java.util.ArrayList;
@@ -28,7 +30,8 @@ public class GameMain extends Application {
     private ArrayList<String> input;
     private GameGraphics gameGraphics;
     private ArrayList<Updateable> updateables = new ArrayList<Updateable>();
-
+    public static ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+    public static ArrayList<Unit> units = new ArrayList<Unit>();
     public static void main(String[] args) {
         launch(args);
     }
@@ -174,6 +177,9 @@ public class GameMain extends Application {
                 double elapsedTime = (currentNanoTime - lastNanoTime) / 1000000000.0;
                 lastNanoTime = currentNanoTime;
 
+                for (Projectile projectile : projectiles) {
+                    projectile.move();
+                }
                 //ajaa update metodin jokaisessa looppiluokassa
                 for(Updateable updateable : updateables){
                     updateable.update();

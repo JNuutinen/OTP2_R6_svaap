@@ -2,7 +2,7 @@ package model;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import view.Sprite;
+import model.Sprite;
 
 public class Component extends Sprite{
     double width;
