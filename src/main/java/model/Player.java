@@ -18,9 +18,5 @@ public class Player extends Unit implements Updateable {
 
     }
 
-    public void testeri(){
-        //
-    }
-
 
 }

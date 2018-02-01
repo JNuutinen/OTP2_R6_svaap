@@ -52,8 +52,6 @@ public class GameMain extends Application {
         player.setPosition(100, 100);
         updateables.add(player);
 
-        units.add(player); //TODO tän voi poistaa. Havainnollistaa projektilen toimimista.
-
         Pane pane = new Pane();
         VBox.setVgrow(pane, Priority.NEVER);
         VBox vbox;
@@ -98,7 +96,6 @@ public class GameMain extends Application {
             }
             if (input.contains("O")){
                 Projectile projectile = new Projectile(10, 0);
-                updateables.add(projectile);
                 pane.getChildren().addAll(projectile);
             }
 
@@ -130,8 +127,9 @@ public class GameMain extends Application {
                 lastNanoTime = currentNanoTime;
 
                 //ajaa update metodin jokaisessa looppiluokassa
-                for(Updateable updateable : updateables){
-                    updateable.update();
+                //Updateables pitää käydä läpi väärässä järjestyksessä koska sieltä poistetaan olioita välissä
+                for (int i = updateables.size(); i > 0; i-- ) {
+                    updateables.get(i-1).update();
                 }
 
                 /*

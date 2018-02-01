@@ -25,6 +25,7 @@ public class Unit extends Sprite {
      * Ampuu yksikön pääaseella
      */
     public void shootPrimary() {
+
         System.out.println("pew pew");
     }
 
