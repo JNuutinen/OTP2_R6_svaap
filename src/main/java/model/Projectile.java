@@ -5,7 +5,7 @@ import view.GameMain;
 import model.Sprite;
 
 
-public class Projectile extends Sprite{
+public class Projectile extends Sprite implements Updateable{
     private int damage;
     private int speed = 2;
     private int size;
@@ -24,6 +24,10 @@ public class Projectile extends Sprite{
         size = 2;
         setIsMoving(true);
         GameMain.projectiles.add(this);
+
+    }
+
+    public void update(){
 
     }
 

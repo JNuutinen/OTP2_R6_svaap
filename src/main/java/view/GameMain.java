@@ -50,6 +50,9 @@ public class GameMain extends Application {
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();
+        Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
+        player.setImage(shipImage);
+        player.setPosition(100, 100);
         updateables.add(player);
 
         Pane pane = new Pane();
@@ -60,10 +63,10 @@ public class GameMain extends Application {
         primaryStage.setTitle("svaap:development");
         vbox.setStyle("-fx-background-color: black");
         pane.getChildren().addAll(player);
-
         if(scene != null && primaryStage != null){
             primaryStage.setScene(mainMenuScene);
         }
+        primaryStage.show();
 
         // Start game painiketta painaessa mainMenuScene vaihdetaan pelin sceneen
         mainMenu.start.setOnAction((event) -> {
@@ -107,26 +110,9 @@ public class GameMain extends Application {
             }
         });
 
-        // canvasin graphicscontext
-        //TODO graphicsContext = canvas.getGraphicsContext2D();
-
-
-        // BACKUP SPRITEN ALUSTUS
-        Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
-        //playerShip = new SpriteBackup();
-        player.setImage(shipImage);
-        player.setPosition(100, 100);
-
-
-
-
-
         // Ensimmäinen ajanotto gamelooppia varten
         long startNanoTime = System.nanoTime();
         gameLoop(startNanoTime);
-
-        // TODO: spriten luonti ja lisäys rootiin
-        primaryStage.show();
     }
 
     private void gameLoop(long startNanoTime) {
@@ -134,7 +120,7 @@ public class GameMain extends Application {
             long lastNanoTime = startNanoTime;
             public void handle(long currentNanoTime) {
                 // Lasketaan aika viime updatesta
-                double elapsedTime = (currentNanoTime - lastNanoTime) / 1000000000.0;
+                double elapsedTime = (currentNanoTime - lastNanoTime);// / 1000000000.0;
                 lastNanoTime = currentNanoTime;
 
                 for (Projectile projectile : projectiles) {
