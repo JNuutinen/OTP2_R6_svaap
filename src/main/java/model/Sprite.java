@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
     unitin ylaluokka.
 
  */
-public class Sprite extends Pane implements Updateable {
+public class Sprite extends Pane {
     protected Point2D direction;
     private double velocity = 1;
     private ImageView imageView = new ImageView();
@@ -23,11 +23,7 @@ public class Sprite extends Pane implements Updateable {
         direction = degreesToDirection(0);
     }
 
-    public void update(){
-        if(isMoving){
-            moveStep();
-        }
-    }
+
 
     //kutsutut metodit löytyy Pane-ylaluokasta
     public void setPosition(double newX, double newY){
@@ -72,13 +68,15 @@ public class Sprite extends Pane implements Updateable {
 
     //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
     //kaytetään peliloopin yhteydessa
-    public void moveStep(){
-        Point2D currentPosition = getPosition();
-        this.setPosition(currentPosition.getX() + direction.getX() * velocity, currentPosition.getY() + direction.getY() * velocity);
+    public void moveStep() {
+        if (isMoving) {
+            Point2D currentPosition = getPosition();
+            this.setPosition(currentPosition.getX() + direction.getX() * velocity, currentPosition.getY() + direction.getY() * velocity);
+        }
     }
 
     public Point2D degreesToDirection(double degrees){
-        double sin = Math.sin(Math.toRadians(degrees)) * -1;
+        double sin = Math.sin(Math.toRadians(degrees) * -1);
         double cos = Math.cos(Math.toRadians(degrees));
         return new Point2D(cos, sin);
     }
