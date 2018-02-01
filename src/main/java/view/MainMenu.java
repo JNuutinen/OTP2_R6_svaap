@@ -43,6 +43,8 @@ public class MainMenu {
         //Painikkeiden kuvat
         Image startImg = new Image("/images/Start.png");
         start.setGraphic(new ImageView(startImg));
+
+        start.setStyle("-fx-background-color: transparent");
     }
 
     public VBox vbox(){
