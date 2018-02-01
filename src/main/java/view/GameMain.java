@@ -27,8 +27,6 @@ import java.util.ArrayList;
     Testausta, sovellettu ylläolevast linkist. Ei käytä controlleria eikä GameGraphicsia.
  */
 public class GameMain extends Application {
-    //TODO backup sprite
-    //TODO private GraphicsContext graphicsContext;
     private ArrayList<String> input;
     private GameGraphics gameGraphics;
     private ArrayList<Updateable> updateables = new ArrayList<Updateable>();
@@ -99,6 +97,7 @@ public class GameMain extends Application {
             }
             if (input.contains("O")){
                 Projectile projectile = new Projectile(10, 0);
+                updateables.add(projectile);
                 pane.getChildren().addAll(projectile);
             }
 
@@ -129,9 +128,6 @@ public class GameMain extends Application {
                 double elapsedTime = (currentNanoTime - lastNanoTime);// / 1000000000.0;
                 lastNanoTime = currentNanoTime;
 
-                for (Projectile projectile : projectiles) {
-                    projectile.update();
-                }
                 //ajaa update metodin jokaisessa looppiluokassa
                 for(Updateable updateable : updateables){
                     updateable.update();
