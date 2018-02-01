@@ -16,6 +16,8 @@ import model.Projectile;
 import model.Unit;
 import model.Updateable;
 
+import java.awt.event.ActionEvent;
+import java.beans.EventHandler;
 import java.util.ArrayList;
 
 /*
@@ -37,6 +39,12 @@ public class GameMain extends Application {
     }
 
     public void start(Stage primaryStage) {
+
+        // Päävalikon luonti
+        MainMenu mainMenu = new MainMenu();
+        Scene mainMenuScene = mainMenu.scene();
+
+        // Peligrafiikoiden luonti(?)
         gameGraphics = new GameGraphics(primaryStage);
         gameGraphics.start();
 
@@ -54,11 +62,13 @@ public class GameMain extends Application {
         pane.getChildren().addAll(player);
 
         if(scene != null && primaryStage != null){
-            primaryStage.setScene(scene);
+            primaryStage.setScene(mainMenuScene);
         }
 
-
-
+        // Start game painiketta painaessa mainMenuScene vaihdetaan pelin sceneen
+        mainMenu.start.setOnAction((event) -> {
+            primaryStage.setScene(scene);
+        });
 
 
 
