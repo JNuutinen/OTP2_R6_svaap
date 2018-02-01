@@ -50,7 +50,6 @@ public class GameGraphics {
                 case W://ylös
                     deltaY = -10;
                     break;
-
                 default:
                     deltaX = 0;
             }

@@ -24,7 +24,9 @@ public class Sprite extends Pane implements Updateable {
     }
 
     public void update(){
-        moveStep();
+        if(isMoving){
+            moveStep();
+        }
     }
 
     //kutsutut metodit löytyy Pane-ylaluokasta
@@ -70,13 +72,13 @@ public class Sprite extends Pane implements Updateable {
 
     //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
     //kaytetään peliloopin yhteydessa
-    public void moveStep(){//TODO taa on tulossa sit ku pelilooppi valmis
+    public void moveStep(){
         Point2D currentPosition = getPosition();
         this.setPosition(currentPosition.getX() + direction.getX() * velocity, currentPosition.getY() + direction.getY() * velocity);
     }
 
     public Point2D degreesToDirection(double degrees){
-        double sin = Math.sin(Math.toRadians(degrees));
+        double sin = Math.sin(Math.toRadians(degrees)) * -1;
         double cos = Math.cos(Math.toRadians(degrees));
         return new Point2D(cos, sin);
     }

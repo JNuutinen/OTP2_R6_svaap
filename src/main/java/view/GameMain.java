@@ -39,13 +39,6 @@ public class GameMain extends Application {
     public void start(Stage primaryStage) {
         gameGraphics = new GameGraphics(primaryStage);
         gameGraphics.start();
-        /*
-        Group root = new Group();
-        Scene scene = new Scene(root);
-        //primaryStage.setScene(scene);
-        primaryStage.setTitle("svaap:development");
-        Canvas canvas = new Canvas(1280, 720);
-        root.getChildren().add(canvas);*/
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();
@@ -77,62 +70,19 @@ public class GameMain extends Application {
             String code = keyEvent.getCode().toString();
             if (!input.contains(code)) input.add(code);
 
-            int toRight = 0; //-1 = vasemmalle
-            int toUp = 0; //-1 = alas
-
-            //jaoteltu kahteen eri 'osaan' luettavuuden vuoksi:
+            //TODO sivusuuntaliike
+            player.setIsMoving(true);
             if (input.contains("D")){
-                if (!input.contains("A")){
-                    toRight = 1;
-                }
-            }
-            if (input.contains("A")){
-                if (!input.contains("D")){
-                    toRight = -1;
-                }
+                player.setDirection(0);
             }
             if (input.contains("W")){
-                if (!input.contains("S")){
-                    toUp = 1;
-                }
+                player.setDirection(90);
+            }
+            if (input.contains("A")){
+                player.setDirection(180);
             }
             if (input.contains("S")){
-                if (!input.contains("W")){
-                    toUp = -1;
-                }
-            }
-
-            player.setIsMoving(true);
-            if(toRight == 1){
-                if(toUp == 1){
-                    player.setDirection(45); //oikea ylos
-                }
-                else if(toUp == -1){
-                    player.setDirection(315); //oikea alas
-                }
-                else{
-                    player.setDirection(270); //oikea
-                }
-            }
-            else if(toRight == -1){
-                if(toUp == 1){
-                    player.setDirection(135); //vasen ylos
-                }
-                else if(toUp == -1){
-                    player.setDirection(225); //vasen alas
-                }
-                else{
-                    player.setDirection(180); //vasen
-                }
-            }
-            else if(toUp == 1){
-                player.setDirection(90); //ylos
-            }
-            else if(toUp == -1){
-                player.setDirection(270); // alas
-            }
-            else{
-                player.setIsMoving(false);
+                player.setDirection(270);
             }
         });
 
