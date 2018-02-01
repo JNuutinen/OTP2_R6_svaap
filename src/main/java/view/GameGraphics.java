@@ -34,29 +34,6 @@ public class GameGraphics {
         //taustan värjääminen
         vbox.setStyle("-fx-background-color: black");
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-            double deltaX = 0;
-            double deltaY = 0;
-            switch (e.getCode()) {
-                case A://vasemmalle
-                    deltaX = -10;
-                    break;
-                case D://oikealle
-                    deltaX = 10;
-                    break;
-                case S://alas
-                    deltaY = 10;
-                    break;
-                case W://ylös
-                    deltaY = -10;
-                    break;
-                default:
-                    deltaX = 0;
-            }
-            player1Sprite.setX(player1Sprite.getX() + deltaX);
-            player1Sprite.setY(player1Sprite.getY() + deltaY);
-        });
-
     }
 
     public GameGraphics(){
