@@ -63,8 +63,6 @@ public class MainMenu {
         }
 
         return vbox;
-
     }
-
 }
 

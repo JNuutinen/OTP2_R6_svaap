@@ -11,10 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Player;
-import model.Projectile;
-import model.Unit;
-import model.Updateable;
+import model.*;
 
 import java.awt.event.ActionEvent;
 import java.beans.EventHandler;
@@ -29,8 +26,11 @@ import java.util.ArrayList;
 public class GameMain extends Application {
     private ArrayList<String> input;
     private GameGraphics gameGraphics;
-    public static  ArrayList<Updateable> updateables = new ArrayList<Updateable>();
+    private GameLoop gameLoop = new GameLoop(this);
+    public static Pane pane;
     public static ArrayList<Unit> units = new ArrayList<Unit>();
+
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -49,10 +49,11 @@ public class GameMain extends Application {
         Player player = new Player();
         Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
         player.setImage(shipImage);
-        player.setPosition(100, 100);
-        updateables.add(player);
+        player.setPosition(100, 300);
+        GameLoop.updateables.add(player);
 
-        Pane pane = new Pane();
+
+        pane = new Pane();
         VBox.setVgrow(pane, Priority.NEVER);
         VBox vbox;
         vbox = new VBox(pane);
@@ -70,75 +71,59 @@ public class GameMain extends Application {
             primaryStage.setScene(scene);
         });
 
-
-
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
         // Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            if (!input.contains(code)) input.add(code);
+            if (!input.contains(code)){
+                if(code.equals("W")){
+                    player.setIsMoving(true);
+                    input.add(code);
+                    player.setDirection(90);
+                }
+                else if(code.equals("A")){
+                    player.setIsMoving(true);
+                    input.add(code);
+                    player.setDirection(180);
+                }
+                else if(code.equals("S")){
+                    player.setIsMoving(true);
+                    input.add(code);
+                    player.setDirection(270);
+                }
+                else if(code.equals("D")){
+                    player.setIsMoving(true);
+                    input.add(code);
+                    player.setDirection(0);
+                }
 
-            //TODO sivusuuntaliike
-            player.setIsMoving(true);
-            if (input.contains("D")){
-                player.setDirection(0);
-            }
-            if (input.contains("W")){
-                player.setDirection(90);
-            }
-            if (input.contains("A")){
-                player.setDirection(180);
-            }
-            if (input.contains("S")){
-                player.setDirection(270);
-            }
-            if (input.contains("O")){
-                Projectile projectile = new Projectile(10, 0);
-                pane.getChildren().addAll(projectile);
-            }
+                else if(code.equals("V")){
+                    System.exit(0);
+                }
+                else if (code.equals("O")){
+                    input.add(code);
+                    Projectile projectile = new Projectile(10, 0);
+                    pane.getChildren().addAll(projectile);
+                }
 
-
+            }
         });
 
 
         // Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            input.remove(code);
+            if (input.contains(code)) {
+                input.remove(code);
+            }
 
             if(input.size() == 0){
                 player.setIsMoving(false);
             }
         });
-
-        // Ensimmäinen ajanotto gamelooppia varten
-        long startNanoTime = System.nanoTime();
-        gameLoop(startNanoTime);
-    }
-
-    private void gameLoop(long startNanoTime) {
-        new AnimationTimer() {
-            long lastNanoTime = startNanoTime;
-            public void handle(long currentNanoTime) {
-                // Lasketaan aika viime updatesta
-                double elapsedTime = (currentNanoTime - lastNanoTime);// / 1000000000.0;
-                lastNanoTime = currentNanoTime;
-
-                //ajaa update metodin jokaisessa looppiluokassa
-                //Updateables pitää käydä läpi väärässä järjestyksessä koska sieltä poistetaan olioita välissä
-                for (int i = updateables.size(); i > 0; i-- ) {
-                    updateables.get(i-1).update();
-                }
-
-                /*
-                // Renderöinti
-                graphicsContext.clearRect(0, 0, 1280, 720);
-                player.render(graphicsContext);
-                */
-            }
-        }.start();
+        gameLoop.start();
     }
 }
 

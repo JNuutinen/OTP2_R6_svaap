@@ -8,8 +8,7 @@ public class Enemy extends Unit implements Updateable {
         GameMain.units.add(this);
     }
 
-
-    public void update(){
+    public void update(double deltaTime){
 
     }
 }

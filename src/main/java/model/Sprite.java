@@ -12,19 +12,16 @@ import javafx.scene.layout.Pane;
 /*
     Ylaluokka kaytetaan mm. aluksille ja ammuksille.
     unitin ylaluokka.
-
  */
 public class Sprite extends Pane {
     protected Point2D direction;
-    private double velocity = 1;
+    private double velocity = 200;
     private ImageView imageView = new ImageView();
     private boolean isMoving = false;
 
     public Sprite(){
         direction = degreesToDirection(0);
     }
-
-
 
     //kutsutut metodit löytyy Pane-ylaluokasta
     public void setPosition(double newX, double newY){
@@ -69,10 +66,11 @@ public class Sprite extends Pane {
 
     //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
     //kaytetään peliloopin yhteydessa
-    public void moveStep() {
+    public void moveStep(double deltaTime) {
         if (isMoving) {
             Point2D currentPosition = getPosition();
-            this.setPosition(currentPosition.getX() + direction.getX() * velocity, currentPosition.getY() + direction.getY() * velocity);
+            this.setPosition(currentPosition.getX() + (direction.getX() * velocity * deltaTime),
+                    currentPosition.getY() + (direction.getY() * velocity * deltaTime));
         }
     }
 

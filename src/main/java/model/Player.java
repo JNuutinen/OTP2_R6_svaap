@@ -13,8 +13,8 @@ public class Player extends Unit implements Updateable {
         GameMain.units.add(this);
     }
 
-    public void update(){
-        moveStep();
+    public void update(double deltaTime){
+        moveStep(deltaTime);
 
     }
 

@@ -7,7 +7,7 @@ import model.Sprite;
 
 public class Projectile extends Sprite implements Updateable{
     private int damage;
-    private int speed = 2;
+    private int speed = 200;
     private int size;
     private int direction;
     private boolean hit = false;
@@ -23,17 +23,16 @@ public class Projectile extends Sprite implements Updateable{
         setDirection(0);
         size = 2;
         setIsMoving(true);
-        GameMain.updateables.add(this);
-
+        GameLoop.updateables.add(this);
     }
 
-    public void update(){
-        move();
+    public void update(double deltaTime){
+        move(deltaTime);
     }
 
-    public void move() {
+    public void move(double deltaTime) {
         if (!hit) {
-            moveStep();
+            moveStep(deltaTime);
             hitCheck();
         }
     }
@@ -43,7 +42,7 @@ public class Projectile extends Sprite implements Updateable{
             if (this.collides(unit)) {
                 unit.takeDamage(damage);
                 hit = true;
-                GameMain.updateables.remove(this);
+                GameLoop.updateables.remove(this);
                 System.out.println("Osu!");
             }
         }
