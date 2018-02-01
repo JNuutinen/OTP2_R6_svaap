@@ -11,7 +11,7 @@ public class Projectile extends Sprite implements Updateable{
     private int size;
     private int direction;
     private boolean hit = false;
-    private int xPosition = 100;
+    private int xPosition = 100; //TODO nää voi ei-kovakoodata esim unit.getX, niin ammus lähtee ampujasta
     private int yPosition = 100;
 
     public Projectile(int damage, int direction){
@@ -23,7 +23,7 @@ public class Projectile extends Sprite implements Updateable{
         setDirection(0);
         size = 2;
         setIsMoving(true);
-        GameMain.projectiles.add(this);
+        GameMain.updateables.add(this);
 
     }
 
@@ -43,7 +43,7 @@ public class Projectile extends Sprite implements Updateable{
             if (this.collides(unit)) {
                 unit.takeDamage(damage);
                 hit = true;
-                GameMain.projectiles.remove(this);
+                GameMain.updateables.remove(this);
                 System.out.println("Osu!");
             }
         }

@@ -29,8 +29,7 @@ import java.util.ArrayList;
 public class GameMain extends Application {
     private ArrayList<String> input;
     private GameGraphics gameGraphics;
-    private ArrayList<Updateable> updateables = new ArrayList<Updateable>();
-    public static ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+    public static  ArrayList<Updateable> updateables = new ArrayList<Updateable>();
     public static ArrayList<Unit> units = new ArrayList<Unit>();
     public static void main(String[] args) {
         launch(args);
@@ -52,6 +51,8 @@ public class GameMain extends Application {
         player.setImage(shipImage);
         player.setPosition(100, 100);
         updateables.add(player);
+
+        units.add(player); //TODO tän voi poistaa. Havainnollistaa projektilen toimimista.
 
         Pane pane = new Pane();
         VBox.setVgrow(pane, Priority.NEVER);
