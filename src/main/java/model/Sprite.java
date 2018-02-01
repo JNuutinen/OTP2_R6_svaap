@@ -1,4 +1,4 @@
-package view;
+package model;
 
 
 
@@ -13,11 +13,19 @@ import javafx.scene.layout.Pane;
     unitin ylaluokka.
 
  */
-public class Sprite extends Pane {
+public class Sprite extends Pane implements Updateable {
     protected Point2D direction;
-    double velocity = 1;
-    ImageView imageView = new ImageView();
+    private double velocity = 1;
+    private ImageView imageView = new ImageView();
+    private boolean isMoving = false;
 
+    public Sprite(){
+        direction = degreesToDirection(0);
+    }
+
+    public void update(){
+        moveStep();
+    }
 
     //kutsutut metodit löytyy Pane-ylaluokasta
     public void setPosition(double newX, double newY){
@@ -28,6 +36,11 @@ public class Sprite extends Pane {
     // 0=oikealle, 90 on ylös...
     public void setDirection(double degrees){
         this.direction = degreesToDirection(degrees);
+    }
+
+
+    public void setIsMoving(boolean isMoving){
+        this.isMoving = isMoving;
     }
 
     public Point2D getPosition(){
