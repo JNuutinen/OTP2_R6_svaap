@@ -7,6 +7,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -33,9 +35,16 @@ public class MainMenu {
     }
 
     private void build(){
-        start = new Button("Start Game");
+        // Painikkeiden luonti
+        start = new Button();
         exit = new Button("Exit");
         settings = new Button("Settings");
+
+        //Painikkeiden kuvat
+        Image startImg = new Image("/images/Start.png");
+        start.setGraphic(new ImageView(startImg));
+
+        start.setStyle("-fx-background-color: transparent");
     }
 
     public VBox vbox(){
