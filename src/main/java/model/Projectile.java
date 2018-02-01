@@ -28,34 +28,24 @@ public class Projectile extends Sprite implements Updateable{
     }
 
     public void update(){
-
+        move();
     }
 
     public void move() {
         if (!hit) {
-            update();
+            moveStep();
             hitCheck();
         }
     }
 
     public void hitCheck() {
         for (Unit unit : GameMain.units) {
-            /*
             if (this.collides(unit)) {
                 unit.takeDamage(damage);
                 hit = true;
                 GameMain.projectiles.remove(this);
                 System.out.println("Osu!");
             }
-            */
         }
-    }
-
-    public int getxPosition() {
-        return xPosition;
-    }
-
-    public int getyPosition() {
-        return yPosition;
     }
 }

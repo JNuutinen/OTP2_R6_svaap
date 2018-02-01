@@ -3,6 +3,7 @@ package model;
 
 
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -92,4 +93,21 @@ public class Sprite extends Pane {
         System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
     }
 
+    /**
+     * Tarkistaa, törmääkö spriteBackup jonkin muun spriten kanssa.
+     * @param sprite Sprite, jonka kanssa törmäys tarkistetaan
+     * @return True jos törmäys, muuten false
+     */
+
+    public boolean collides(Sprite sprite) {
+        return sprite.getBoundary().intersects(this.getBoundary());
+    }
+
+    /**
+     * Palauttaa spriten rajat ja sijainnin.
+     * @return Rectangle2D mallinnuksen spritestä
+     */
+    private Rectangle2D getBoundary() {
+        return new Rectangle2D(getXPosition(), getYPosition(), getWidth(), getHeight());
+    }
 }

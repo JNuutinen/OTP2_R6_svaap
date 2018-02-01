@@ -97,6 +97,12 @@ public class GameMain extends Application {
             if (input.contains("S")){
                 player.setDirection(270);
             }
+            if (input.contains("O")){
+                Projectile projectile = new Projectile(10, 0);
+                pane.getChildren().addAll(projectile);
+            }
+
+
         });
 
 
@@ -124,7 +130,7 @@ public class GameMain extends Application {
                 lastNanoTime = currentNanoTime;
 
                 for (Projectile projectile : projectiles) {
-                    projectile.move();
+                    projectile.update();
                 }
                 //ajaa update metodin jokaisessa looppiluokassa
                 for(Updateable updateable : updateables){
