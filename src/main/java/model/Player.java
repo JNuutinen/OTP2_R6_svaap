@@ -1,7 +1,15 @@
 package model;
 
+
 /*
     TODO: tänne jotain pelaajaan liittyvää
  */
-public class Player extends Unit {
+public class Player extends Unit implements Updateable {
+    public void testeri(){
+        //
+    }
+
+    public Player (){
+
+    }
 }

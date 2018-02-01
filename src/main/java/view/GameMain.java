@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Player;
+import model.Updateable;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,11 @@ import java.util.ArrayList;
     Testausta, sovellettu ylläolevast linkist. Ei käytä controlleria eikä GameGraphicsia.
  */
 public class GameMain extends Application {
-    //backup sprite
-    private SpriteBackup playerShip;
+    //TODO backup sprite
 
     private ArrayList<String> input;
-    private GraphicsContext graphicsContext;
+    //TODO private GraphicsContext graphicsContext;
+    private ArrayList<Updateable> updateables = new ArrayList<Updateable>();
 
     public static void main(String[] args) {
         launch(args);
@@ -33,9 +34,15 @@ public class GameMain extends Application {
         Group root = new Group();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("branch: gameloop-testi");
+        primaryStage.setTitle("svaap:development");
         Canvas canvas = new Canvas(1280, 720);
         root.getChildren().add(canvas);
+
+        //pelaajan luonti ja lisays looppilistaan
+        Player player = new Player();
+        updateables.add(player);
+
+
 
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
@@ -44,7 +51,66 @@ public class GameMain extends Application {
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
             if (!input.contains(code)) input.add(code);
+
+            int toRight = 0; //-1 = vasemmalle
+            int toUp = 0; //-1 = alas
+
+            //jaoteltu kahteen eri 'osaan' luettavuuden vuoksi:
+            if (input.contains("D")){
+                if (!input.contains("A")){
+                    toRight = 1;
+                }
+            }
+            if (input.contains("A")){
+                if (!input.contains("D")){
+                    toRight = -1;
+                }
+            }
+            if (input.contains("W")){
+                if (!input.contains("S")){
+                    toUp = 1;
+                }
+            }
+            if (input.contains("S")){
+                if (!input.contains("W")){
+                    toUp = -1;
+                }
+            }
+
+            player.setIsMoving(true);
+            if(toRight == 1){
+                if(toUp == 1){
+                    player.setDirection(45); //oikea ylos
+                }
+                else if(toUp == -1){
+                    player.setDirection(315); //oikea alas
+                }
+                else{
+                    player.setDirection(270); //oikea
+                }
+            }
+            else if(toRight == -1){
+                if(toUp == 1){
+                    player.setDirection(135); //vasen ylos
+                }
+                else if(toUp == -1){
+                    player.setDirection(225); //vasen alas
+                }
+                else{
+                    player.setDirection(180); //vasen
+                }
+            }
+            else if(toUp == 1){
+                player.setDirection(90); //ylos
+            }
+            else if(toUp == -1){
+                player.setDirection(270); // alas
+            }
+            else{
+                player.setIsMoving(false);
+            }
         });
+
 
         // Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
@@ -53,25 +119,28 @@ public class GameMain extends Application {
         });
 
         // canvasin graphicscontext
-        graphicsContext = canvas.getGraphicsContext2D();
+        //TODO graphicsContext = canvas.getGraphicsContext2D();
 
-        /* BACKUP SPRITEN ALUSTUS
+
+        // BACKUP SPRITEN ALUSTUS
         Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
-        playerShip = new SpriteBackup();
-        playerShip.setImage(shipImage);
-        playerShip.setPosition(100, 100);
-        */
+        //playerShip = new SpriteBackup();
+        player.setImage(shipImage);
+        player.setPosition(100, 100);
+
+
+
 
 
         // Ensimmäinen ajanotto gamelooppia varten
         long startNanoTime = System.nanoTime();
-        annaSenLooppaa(startNanoTime);
+        gameLoop(startNanoTime);
 
         // TODO: spriten luonti ja lisäys rootiin
         primaryStage.show();
     }
 
-    private void annaSenLooppaa(long startNanoTime) {
+    private void gameLoop(long startNanoTime) {
         new AnimationTimer() {
             long lastNanoTime = startNanoTime;
             public void handle(long currentNanoTime) {
@@ -79,20 +148,16 @@ public class GameMain extends Application {
                 double elapsedTime = (currentNanoTime - lastNanoTime) / 1000000000.0;
                 lastNanoTime = currentNanoTime;
 
-                /* BACKUP SPRITEN LIIKUTTELU JA RENDERÖINTI
-                // Aluksen liikuttelu
-                playerShip.setVelocity(0,0);
-                if (input.contains("A")) playerShip.addVelocity(-50, 0);
-                if (input.contains("D")) playerShip.addVelocity(50, 0);
-                if (input.contains("W")) playerShip.addVelocity(0, -50);
-                if (input.contains("S")) playerShip.addVelocity(0, 50);
-                playerShip.update(elapsedTime);
+                //ajaa update metodin jokaisessa looppiluokassa
+                for(Updateable updateable : updateables){
+                    updateable.update();
+                }
 
+                /*
                 // Renderöinti
                 graphicsContext.clearRect(0, 0, 1280, 720);
-                playerShip.render(graphicsContext);
+                player.render(graphicsContext);
                 */
-                // TODO: spriten liikuttelu
             }
         }.start();
     }

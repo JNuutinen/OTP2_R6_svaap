@@ -1,7 +1,5 @@
 package model;
 
-import view.Sprite;
-
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä
  */
