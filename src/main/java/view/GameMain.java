@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Player;
 import model.Updateable;
@@ -21,9 +24,9 @@ import java.util.ArrayList;
  */
 public class GameMain extends Application {
     //TODO backup sprite
-
-    private ArrayList<String> input;
     //TODO private GraphicsContext graphicsContext;
+    private ArrayList<String> input;
+    private GameGraphics gameGraphics;
     private ArrayList<Updateable> updateables = new ArrayList<Updateable>();
 
     public static void main(String[] args) {
@@ -31,16 +34,35 @@ public class GameMain extends Application {
     }
 
     public void start(Stage primaryStage) {
+        gameGraphics = new GameGraphics(primaryStage);
+        gameGraphics.start();
+        /*
         Group root = new Group();
         Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
+        //primaryStage.setScene(scene);
         primaryStage.setTitle("svaap:development");
         Canvas canvas = new Canvas(1280, 720);
-        root.getChildren().add(canvas);
+        root.getChildren().add(canvas);*/
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();
         updateables.add(player);
+
+        Pane pane = new Pane();
+        VBox.setVgrow(pane, Priority.NEVER);
+        VBox vbox;
+        vbox = new VBox(pane);
+        Scene scene = new Scene(vbox, 1270, 720);
+        primaryStage.setTitle("svaap:development");
+        vbox.setStyle("-fx-background-color: black");
+        pane.getChildren().addAll(player);
+
+        if(scene != null && primaryStage != null){
+            primaryStage.setScene(scene);
+        }
+
+
+
 
 
 
@@ -116,6 +138,10 @@ public class GameMain extends Application {
         scene.setOnKeyReleased(keyEvent -> {
             String code = keyEvent.getCode().toString();
             input.remove(code);
+
+            if(input.size() == 0){
+                player.setIsMoving(false);
+            }
         });
 
         // canvasin graphicscontext
