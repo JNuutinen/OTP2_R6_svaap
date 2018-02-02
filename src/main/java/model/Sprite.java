@@ -82,8 +82,7 @@ public class Sprite extends Pane {
 
 
     public void setImage(Image newImage){
-        Image image = newImage;
-        imageView.setImage(image);
+        imageView.setImage(newImage);
         this.getChildren().add(imageView);
     }
 

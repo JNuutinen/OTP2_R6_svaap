@@ -25,7 +25,6 @@ public class GameGraphics {
 
         this.primaryStage = primaryStage;
 
-
         // pelaajan aluksen luonti, TODO tämä toiseeen luokkaan
         Rectangle player1Sprite = new Rectangle(100, 300, 20, 10);
         player1Sprite.setFill(Color.CYAN);
@@ -56,11 +55,6 @@ public class GameGraphics {
             player1Sprite.setX(player1Sprite.getX() + deltaX);
             player1Sprite.setY(player1Sprite.getY() + deltaY);
         });
-
-    }
-
-    public GameGraphics(){
-        //parametriton konstruktori. ei käytössä
     }
 
     public void start(){

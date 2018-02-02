@@ -10,7 +10,6 @@ public class GameLoop extends Thread {
     private GameMain gameMain;
     private boolean isLooping = false;
 
-
     public GameLoop(GameMain gameMain){
         this.gameMain = gameMain;
     }
@@ -19,27 +18,7 @@ public class GameLoop extends Thread {
     @Override
     public void run() {
         isLooping = true;
-
-        //Juhan looppi
-        /*
-        new AnimationTimer() {
-            long lastNanoTime = startNanoTime;
-            public void handle(long currentNanoTime) {
-                // Lasketaan aika viime updatesta
-                double elapsedTime = (currentNanoTime - lastNanoTime);// / 1000000000.0;
-                System.out.println(elapsedTime);
-                lastNanoTime = currentNanoTime;
-
-                //ajaa update metodin jokaisessa looppiluokassa
-                //Updateables pitää käydä läpi väärässä järjestyksessä koska sieltä poistetaan olioita välissä
-                for (int i = updateables.size(); i > 0; i-- ) {
-                    updateables.get(i-1).update();
-                }
-            }
-        }.start();*/
-
-        //Hegen looppi
-        final double targetDelta = 0.0083; // 16.6ms ~ 60fps | 8.3 ~ 129fps
+        final double targetDelta = 0.0166; // 16.6ms ~ 60fps | 8.3 ~ 129fps
         long previousTime = System.nanoTime();
 
         while (isLooping) {

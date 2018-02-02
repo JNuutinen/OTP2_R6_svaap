@@ -1,11 +1,7 @@
 package view;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -13,23 +9,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
 
-import java.awt.event.ActionEvent;
-import java.beans.EventHandler;
 import java.util.ArrayList;
+import java.util.Stack;
 
-/*
-    Inspoo:
-    https://gamedevelopment.tutsplus.com/tutorials/introduction-to-javafx-for-game-development--cms-23835
-
-    Testausta, sovellettu ylläolevast linkist. Ei käytä controlleria eikä GameGraphicsia.
- */
 public class GameMain extends Application {
-    private ArrayList<String> input;
-    private GameGraphics gameGraphics;
-    private GameLoop gameLoop = new GameLoop(this);
+    public static ArrayList<Unit> units = new ArrayList<>();
     public static Pane pane;
-    public static ArrayList<Unit> units = new ArrayList<Unit>();
+    public static Stack<Enemy> enemySpawnStack = new Stack<>();
 
+    private ArrayList<String> input;
+    private GameLoop gameLoop = new GameLoop(this);
 
     public static void main(String[] args) {
         launch(args);
@@ -40,18 +29,25 @@ public class GameMain extends Application {
         // Päävalikon luonti
         MainMenu mainMenu = new MainMenu();
         Scene mainMenuScene = mainMenu.scene();
+        primaryStage.setScene(mainMenuScene);
 
+        // Start game painiketta painaessa mainMenuScene vaihdetaan pelin sceneen ja peli käynnistyy
+        mainMenu.start.setOnAction((event) -> startGame(primaryStage));
+
+        primaryStage.show();
+    }
+
+    public static void addEnemy(Enemy enemy) {
+        GameLoop.updateables.add(enemy);
+        pane.getChildren().add(enemy);
+    }
+
+    private void startGame(Stage primaryStage) {
         // Peligrafiikoiden luonti(?)
-        gameGraphics = new GameGraphics(primaryStage);
+        /*
+        GameGraphics gameGraphics = new GameGraphics(primaryStage);
         gameGraphics.start();
-
-        //pelaajan luonti ja lisays looppilistaan
-        Player player = new Player();
-        Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
-        player.setImage(shipImage);
-        player.setPosition(100, 300);
-        GameLoop.updateables.add(player);
-
+        */
 
         pane = new Pane();
         VBox.setVgrow(pane, Priority.NEVER);
@@ -60,16 +56,29 @@ public class GameMain extends Application {
         Scene scene = new Scene(vbox, 1270, 720);
         primaryStage.setTitle("svaap:development");
         vbox.setStyle("-fx-background-color: black");
-        pane.getChildren().addAll(player);
-        if(scene != null && primaryStage != null){
-            primaryStage.setScene(mainMenuScene);
-        }
-        primaryStage.show();
 
-        // Start game painiketta painaessa mainMenuScene vaihdetaan pelin sceneen
-        mainMenu.start.setOnAction((event) -> {
-            primaryStage.setScene(scene);
-        });
+        //pelaajan luonti ja lisays looppilistaan
+        Player player = new Player();
+        //Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
+        Image shipImage = new Image("/images/player_ship_9000.png");
+        player.setImage(shipImage);
+        player.setPosition(100, 300);
+        GameLoop.updateables.add(player);
+
+        /*
+        // Testienemy
+        Image enemyImage = new Image("/images/enemy_ship_9000.png");
+        Enemy testEnemy = new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, 1100, 300);
+        Enemy testEnemy2 =  new Enemy();
+        testEnemy2.setImage(enemyImage);
+        testEnemy2.setInitPosition(1100, 400);
+        testEnemy2.setMovementPattern(Enemy.MOVE_SINE);
+        GameLoop.updateables.add(testEnemy);
+        GameLoop.updateables.add(testEnemy2);
+        */
+
+        // Unitit panee
+        pane.getChildren().addAll(player);
 
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
@@ -78,39 +87,38 @@ public class GameMain extends Application {
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
             if (!input.contains(code)){
-                if(code.equals("W")){
-                    player.setIsMoving(true);
-                    input.add(code);
-                    player.setDirection(90);
-                }
-                else if(code.equals("A")){
-                    player.setIsMoving(true);
-                    input.add(code);
-                    player.setDirection(180);
-                }
-                else if(code.equals("S")){
-                    player.setIsMoving(true);
-                    input.add(code);
-                    player.setDirection(270);
-                }
-                else if(code.equals("D")){
-                    player.setIsMoving(true);
-                    input.add(code);
-                    player.setDirection(0);
-                }
-
-                else if(code.equals("V")){
-                    System.exit(0);
-                }
-                else if (code.equals("O")){
-                    input.add(code);
-                    Projectile projectile = new Projectile(10, 0);
-                    pane.getChildren().addAll(projectile);
+                switch (code) {
+                    case "W":
+                        player.setIsMoving(true);
+                        input.add(code);
+                        player.setDirection(90);
+                        break;
+                    case "A":
+                        player.setIsMoving(true);
+                        input.add(code);
+                        player.setDirection(180);
+                        break;
+                    case "S":
+                        player.setIsMoving(true);
+                        input.add(code);
+                        player.setDirection(270);
+                        break;
+                    case "D":
+                        player.setIsMoving(true);
+                        input.add(code);
+                        player.setDirection(0);
+                        break;
+                    case "V":
+                        System.exit(0);
+                    case "O":
+                        input.add(code);
+                        Projectile projectile = new Projectile(10, 0);
+                        pane.getChildren().addAll(projectile);
+                        break;
                 }
 
             }
         });
-
 
         // Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
@@ -123,7 +131,9 @@ public class GameMain extends Application {
                 player.setIsMoving(false);
             }
         });
+        primaryStage.setScene(scene);
         gameLoop.start();
+        new Level1().start();
     }
 }
 
