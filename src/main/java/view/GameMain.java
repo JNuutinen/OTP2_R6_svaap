@@ -101,7 +101,7 @@ public class GameMain extends Application {
                         System.exit(0);
                     case "O":
                         input.add(code);
-                        Projectile projectile = new Projectile(10, 0);
+                        Projectile projectile = new Projectile(10, 0, player);
                         pane.getChildren().addAll(projectile);
                         break;
                 }

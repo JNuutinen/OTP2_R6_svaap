@@ -17,12 +17,14 @@ public class Projectile extends Sprite implements Updateable{
     private int xPosition = 100; //TODO nää voi ei-kovakoodata esim unit.getX, niin ammus lähtee ampujasta
     private int yPosition = 100;
 
-    public Projectile(int damage, int direction){
+    public Projectile(int damage, int direction, Unit shooter){
         Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
         this.setImage(projectileImage);
         this.damage = damage;
+        double xPos = shooter.getXPosition()+ 50;
+        double yPos = shooter.getYPosition();
         setVelocity(speed);
-        setPosition(xPosition, yPosition);
+        setPosition(xPos, yPos);
         setDirection(0);
         size = 2;
         setIsMoving(true);
