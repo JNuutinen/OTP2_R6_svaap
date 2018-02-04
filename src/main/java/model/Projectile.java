@@ -4,6 +4,9 @@ import javafx.scene.image.Image;
 import view.GameMain;
 import model.Sprite;
 
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
+
 
 public class Projectile extends Sprite implements Updateable{
     private int damage;
@@ -23,11 +26,20 @@ public class Projectile extends Sprite implements Updateable{
         setDirection(0);
         size = 2;
         setIsMoving(true);
-        GameLoop.updateables.add(this);
+        GameLoop.queueUpdateable(this);
     }
 
+    @Override
     public void update(double deltaTime){
-        move(deltaTime);
+        // chekkaa menikö ulos ruudulta
+        if (getXPosition() < -100
+                || getXPosition() > WINDOW_WIDTH+200
+                || getYPosition() < 100
+                || getYPosition() > WINDOW_HEIGHT+100) {
+            GameLoop.removeUpdateable(this);
+        } else {
+            move(deltaTime);
+        }
     }
 
     public void move(double deltaTime) {
@@ -42,7 +54,7 @@ public class Projectile extends Sprite implements Updateable{
             if (this.collides(unit)) {
                 unit.takeDamage(damage);
                 hit = true;
-                GameLoop.updateables.remove(this);
+                GameLoop.removeUpdateable(this);
                 System.out.println("Osu!");
             }
         }

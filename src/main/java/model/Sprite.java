@@ -1,13 +1,13 @@
 package model;
 
-
-
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /*
     Ylaluokka kaytetaan mm. aluksille ja ammuksille.
@@ -34,7 +34,6 @@ public class Sprite extends Pane {
         this.direction = degreesToDirection(degrees);
     }
 
-
     public void setIsMoving(boolean isMoving){
         this.isMoving = isMoving;
     }
@@ -59,7 +58,6 @@ public class Sprite extends Pane {
         return velocity;
     }
 
-
     public void setSize(Point2D newSize){//TODO ei kaytos atm
         this.resize(newSize.getX(), newSize.getY());
     }
@@ -79,7 +77,6 @@ public class Sprite extends Pane {
         double cos = Math.cos(Math.toRadians(degrees));
         return new Point2D(cos, sin);
     }
-
 
     public void setImage(Image newImage){
         imageView.setImage(newImage);

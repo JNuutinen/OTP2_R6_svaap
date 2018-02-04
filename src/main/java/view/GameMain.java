@@ -10,12 +10,13 @@ import javafx.stage.Stage;
 import model.*;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class GameMain extends Application {
+    public static final int WINDOW_WIDTH = 1280;
+    public static final int WINDOW_HEIGHT = 720;
     public static ArrayList<Unit> units = new ArrayList<>();
-    public static Pane pane;
-    public static Stack<Enemy> enemySpawnStack = new Stack<>();
+
+    private static Pane pane;
 
     private ArrayList<String> input;
     private GameLoop gameLoop = new GameLoop(this);
@@ -38,7 +39,7 @@ public class GameMain extends Application {
     }
 
     public static void addEnemy(Enemy enemy) {
-        GameLoop.updateables.add(enemy);
+        GameLoop.queueUpdateable(enemy);
         pane.getChildren().add(enemy);
     }
 
@@ -53,7 +54,7 @@ public class GameMain extends Application {
         VBox.setVgrow(pane, Priority.NEVER);
         VBox vbox;
         vbox = new VBox(pane);
-        Scene scene = new Scene(vbox, 1270, 720);
+        Scene scene = new Scene(vbox, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setTitle("svaap:development");
         vbox.setStyle("-fx-background-color: black");
 
@@ -63,19 +64,7 @@ public class GameMain extends Application {
         Image shipImage = new Image("/images/player_ship_9000.png");
         player.setImage(shipImage);
         player.setPosition(100, 300);
-        GameLoop.updateables.add(player);
-
-        /*
-        // Testienemy
-        Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy testEnemy = new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, 1100, 300);
-        Enemy testEnemy2 =  new Enemy();
-        testEnemy2.setImage(enemyImage);
-        testEnemy2.setInitPosition(1100, 400);
-        testEnemy2.setMovementPattern(Enemy.MOVE_SINE);
-        GameLoop.updateables.add(testEnemy);
-        GameLoop.updateables.add(testEnemy2);
-        */
+        GameLoop.queueUpdateable(player);
 
         // Unitit panee
         pane.getChildren().addAll(player);

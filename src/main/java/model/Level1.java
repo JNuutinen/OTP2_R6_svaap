@@ -6,6 +6,8 @@ import view.GameMain;
 
 import java.util.Stack;
 
+import static view.GameMain.WINDOW_WIDTH;
+
 public class Level1 extends Thread {
     /**
      * Stackissa joko vihollisia (Enemy) tai aikoja sekunteina (int).
@@ -44,14 +46,14 @@ public class Level1 extends Thread {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
         timesAndEnemies = new Stack<>();
         timesAndEnemies.push(4L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, 1100, 300));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 300));
         timesAndEnemies.push(5L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, 1100, 200));
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, 1100, 400));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 200));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 400));
         timesAndEnemies.push(5L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, 1100, 300));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 300));
         timesAndEnemies.push(5L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, 1100, 150));
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, 1100, 450));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 150));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 450));
     }
 }

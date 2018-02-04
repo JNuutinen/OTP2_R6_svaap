@@ -3,6 +3,9 @@ package model;
 import javafx.scene.image.Image;
 import view.GameMain;
 
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
+
 public class Enemy extends Unit implements Updateable {
     public static final int MOVE_NONE = -1;
     public static final int MOVE_STRAIGHT = 0;
@@ -45,7 +48,15 @@ public class Enemy extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
-        setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
-        moveStep(deltaTime);
+        // chekkaa menikö ulos ruudulta
+        if (getXPosition() < -100
+                || getXPosition() > WINDOW_WIDTH+200
+                || getYPosition() < 100
+                || getYPosition() > WINDOW_HEIGHT+100) {
+            GameLoop.removeUpdateable(this);
+        } else {
+            setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
+            moveStep(deltaTime);
+        }
     }
 }
