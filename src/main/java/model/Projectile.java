@@ -36,7 +36,7 @@ public class Projectile extends Sprite implements Updateable{
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200
-                || getYPosition() < 100
+                || getYPosition() < -100
                 || getYPosition() > WINDOW_HEIGHT+100) {
             GameLoop.removeUpdateable(this);
         } else {
