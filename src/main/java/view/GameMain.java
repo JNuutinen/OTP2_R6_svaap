@@ -15,10 +15,10 @@ public class GameMain extends Application {
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
     public static ArrayList<Unit> units = new ArrayList<>();
+    public static ArrayList<String> input;
 
-    private static Pane pane;
+    public static Pane pane;
 
-    private ArrayList<String> input;
     private GameLoop gameLoop = new GameLoop(this);
 
     public static void main(String[] args) {
@@ -41,6 +41,11 @@ public class GameMain extends Application {
     public static void addEnemy(Enemy enemy) {
         GameLoop.queueUpdateable(enemy);
         pane.getChildren().add(enemy);
+    }
+
+    public static void addProjectile(Projectile projectile) {
+        GameLoop.queueUpdateable(projectile);
+        pane.getChildren().add(projectile);
     }
 
     private void startGame(Stage primaryStage) {
@@ -75,50 +80,13 @@ public class GameMain extends Application {
         // Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            if (!input.contains(code)){
-                switch (code) {
-                    case "W":
-                        player.move(90);
-                        input.add(code);
-
-                        break;
-                    case "A":
-                        player.move(180);
-                        input.add(code);
-
-                        break;
-                    case "S":
-                        player.move(270);
-                        input.add(code);
-
-                        break;
-                    case "D":
-                        player.move(0);
-                        input.add(code);
-
-                        break;
-                    case "V":
-                        System.exit(0);
-                    case "O":
-                        input.add(code);
-                        Projectile projectile = new Projectile(10, 0, player);
-                        pane.getChildren().addAll(projectile);
-                        break;
-                }
-
-            }
+            if (!input.contains(code)) input.add(code);
         });
 
         // Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            if (input.contains(code)) {
-                input.remove(code);
-            }
-
-            if(input.size() == 0){
-                player.stopMoving();
-            }
+            input.remove(code);
         });
         primaryStage.setScene(scene);
         gameLoop.start();

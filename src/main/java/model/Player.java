@@ -1,11 +1,16 @@
 package model;
 
+import javafx.application.Platform;
 import view.GameMain;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.input;
 
 public class Player extends Unit implements Updateable {
+    private double xVelocity;
+    private double yVelocity;
+
+    private int fireRate = 30;
+    private int fireRateCounter = 30;
 
     public Player (){
         GameMain.units.add(this);
@@ -13,8 +18,30 @@ public class Player extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
-        moveStep(deltaTime);
+        if (fireRateCounter <= 30) fireRateCounter++;
+        resetVelocity();
+        if (input.contains("A")) addVelocity(getVelocity()*-1, 0);
+        if (input.contains("D")) addVelocity(getVelocity(), 0);
+        if (input.contains("W")) addVelocity(0, getVelocity()*-1);
+        if (input.contains("S")) addVelocity(0, getVelocity());
+        if (input.contains("O")) {
+            if (fireRateCounter >= fireRate) {
+                fireRateCounter = 0;
+                Projectile projectile = new Projectile(10, 0, this);
+                Platform.runLater(() -> GameMain.addProjectile(projectile));
+            }
+        }
+        if (input.contains("V")) System.exit(0);
+        setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
     }
 
+    private void addVelocity(double x, double y) {
+        xVelocity += x;
+        yVelocity += y;
+    }
 
+    private void resetVelocity() {
+        xVelocity = 0;
+        yVelocity = 0;
+    }
 }
