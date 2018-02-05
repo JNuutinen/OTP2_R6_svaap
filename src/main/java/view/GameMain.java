@@ -46,7 +46,13 @@ public class GameMain extends Application {
         pane.getChildren().add(enemy);
     }
     public static void removeSprite(Sprite sprite){
+        // poistaa spriten panen
         pane.getChildren().remove(sprite);
+
+        // poistaa olion updateable listasta
+        GameLoop.removeUpdateable((Updateable)sprite);
+
+        // TODO: onkohan kaikki viittaukset poistettu oliosta, korjaako roskienkeräys?
     }
 
     public static void addProjectile(Projectile projectile) {

@@ -27,8 +27,7 @@ public class Player extends Unit implements Updateable {
         if (input.contains("O")) {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
-                Projectile projectile = new Projectile(10, this);
-                Platform.runLater(() -> GameMain.addProjectile(projectile));
+                Platform.runLater(() -> GameMain.addProjectile(new Projectile(10, this)));
             }
         }
         if (input.contains("V")) System.exit(0);

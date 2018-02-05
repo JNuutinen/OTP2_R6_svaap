@@ -40,7 +40,6 @@ public class Projectile extends Sprite implements Updateable{
                 || getXPosition() > WINDOW_WIDTH+200
                 || getYPosition() < -100
                 || getYPosition() > WINDOW_HEIGHT+100) {
-            GameLoop.removeUpdateable(this);
             delete(this);
         } else {
             move(deltaTime);
