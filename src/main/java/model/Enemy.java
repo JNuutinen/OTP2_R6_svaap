@@ -1,5 +1,6 @@
 package model;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import view.GameMain;
 
@@ -17,6 +18,10 @@ public class Enemy extends Unit implements Updateable {
     private double direction = 180;
     private Weapon weapon1;
     private Weapon weapon2;
+
+    // Ampumisen kovakoodit
+    private int fireRate = 100;
+    private int fireRateCounter = 100;
 
     public Enemy() {
         GameMain.units.add(this);
@@ -48,6 +53,12 @@ public class Enemy extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
+        if (fireRateCounter <= fireRate) fireRateCounter++;
+        if (fireRateCounter >= fireRate) {
+            fireRateCounter = 0;
+            Projectile projectile = new Projectile(10, this);
+            Platform.runLater(() -> GameMain.addProjectile(projectile));
+        }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200

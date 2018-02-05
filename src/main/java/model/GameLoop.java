@@ -31,7 +31,7 @@ public class GameLoop extends Thread {
     public void run() {
         isLooping = true;
         // TODO: alkaa pätkimään ja glitchailee rajusti jos nostaa fps. Pitäs selvittää mist johtuu
-        final double targetDelta = 0.0166; // 33.3ms ~ 30fps | 16.6ms ~ 60fps | 8.3ms ~ 129fps
+        final double targetDelta = 0.0333; // 33.3ms ~ 30fps | 16.6ms ~ 60fps | 8.3ms ~ 129fps
         long previousTime = System.nanoTime();
         long debugger_secondCounter = 0;//TODO debuggeri
         while (isLooping) {

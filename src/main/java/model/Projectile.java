@@ -7,26 +7,26 @@ import model.Sprite;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
-
 public class Projectile extends Sprite implements Updateable{
     private int damage;
-    private int speed = 200;
-    private int size;
-    private int direction;
     private boolean hit = false;
-    private int xPosition = 100; //TODO nää voi ei-kovakoodata esim unit.getX, niin ammus lähtee ampujasta
-    private int yPosition = 100;
+    private int speed = 300;
 
-    public Projectile(int damage, int direction, Unit shooter){
+    public Projectile(int damage, Unit shooter){
         Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
         this.setImage(projectileImage);
         this.damage = damage;
-        double xPos = shooter.getXPosition()+ 50;
-        double yPos = shooter.getYPosition();
+        double xPos, yPos;
+        if (shooter instanceof Player) {
+            xPos = shooter.getXPosition() + 50;
+            setPosition(xPos, shooter.getYPosition());
+            setDirection(0);
+        } else if (shooter instanceof Enemy) {
+            xPos = shooter.getXPosition() - 50;
+            setPosition(xPos, shooter.getYPosition());
+            setDirection(180);
+        }
         setVelocity(speed);
-        setPosition(xPos, yPos);
-        setDirection(0);
-        size = 2;
         setIsMoving(true);
         GameLoop.queueUpdateable(this);
     }

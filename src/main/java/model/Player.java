@@ -18,7 +18,7 @@ public class Player extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
-        if (fireRateCounter <= 30) fireRateCounter++;
+        if (fireRateCounter <= fireRate) fireRateCounter++;
         resetVelocity();
         if (input.contains("A")) addVelocity(getVelocity()*-1, 0);
         if (input.contains("D")) addVelocity(getVelocity(), 0);
@@ -27,7 +27,7 @@ public class Player extends Unit implements Updateable {
         if (input.contains("O")) {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
-                Projectile projectile = new Projectile(10, 0, this);
+                Projectile projectile = new Projectile(10, this);
                 Platform.runLater(() -> GameMain.addProjectile(projectile));
             }
         }
