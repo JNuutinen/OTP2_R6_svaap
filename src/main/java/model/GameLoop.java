@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
 import view.GameMain;
 
 import java.util.ArrayList;
@@ -56,8 +58,22 @@ public class GameLoop extends Thread {
 
             //------------------paivita kaikki updateable-rajapintaluokat------------------
             for(Updateable updateable : updateables){
+
+
+                if(updateable != null) {
+                    for (Updateable updateable2 : updateables) {
+                        if (((Path) Shape.intersect(updateable.getSpriteShape(), updateable2.getSpriteShape())).getElements().size() > 0
+                                && updateable != updateable2 && updateable2 != null) {
+                            updateable.collides(updateable2.getUpdateable());
+                        }
+                    }
+                }
+
                 updateable.update(deltaTime);
             }
+
+            //-----------------osumatarkastaja---------------------------------------------
+
 
             previousTime = currentTime;
             double frameTime = (System.nanoTime() - currentTime) / 1_000_000_000.0;

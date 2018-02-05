@@ -1,6 +1,7 @@
 package model;
 
 import javafx.application.Platform;
+import javafx.scene.shape.Shape;
 import view.GameMain;
 
 import static view.GameMain.input;
@@ -14,6 +15,7 @@ public class Player extends Unit implements Updateable {
 
     public Player (){
         GameMain.units.add(this);
+        this.setTag("player");
     }
 
     @Override
@@ -27,13 +29,21 @@ public class Player extends Unit implements Updateable {
         if (input.contains("O")) {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
-                Platform.runLater(() -> GameMain.addProjectile(new Projectile(10, this)));
+                Platform.runLater(() -> GameMain.addProjectile(new Projectile(10, this, "projectile_player")));
             }
         }
         if (input.contains("V")) System.exit(0);
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
     }
 
+    public void collides(Updateable collidingUpdateable){
+        // tagin saa: collidingUpdateable.getTag()
+    }
+
+
+    public Updateable getUpdateable(){
+        return this;
+    }
     private void addVelocity(double x, double y) {
         xVelocity += x;
         yVelocity += y;

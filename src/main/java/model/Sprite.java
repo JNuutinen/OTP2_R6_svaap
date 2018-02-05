@@ -5,6 +5,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+
+import java.awt.geom.Ellipse2D;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -19,7 +24,28 @@ public class Sprite extends Pane {
     private ImageView imageView = new ImageView();
     private boolean isMoving = false;
 
+    private Shape shape;
+    private int hitboxShapeType;
+    private final int rectangle = 1;
+    private final int circle = 2;
+    private double hitboxShapeMultiplier = 1;
+
+    private String tag = "undefined";
+
+
+    /*  konstruktori.
+        @param int hitboxShapeType: kertoo hitboxin muodon.
+        @param float hitboxShapeMultiplier: kertoo hitboxin suuruuden kertomalla hitboxin leveyden ja pituuden parametrin arvolla. (0.0-1.0)
+
+     */
+    public Sprite(int hitboxShapeType, float hitboxShapeMultiplier){
+        this.hitboxShapeType = hitboxShapeType;
+        this.hitboxShapeMultiplier = hitboxShapeMultiplier;
+    }
+
+
     public Sprite(){
+        this(1, 1);
         direction = degreesToDirection(0);
     }
 
@@ -62,6 +88,14 @@ public class Sprite extends Pane {
         this.resize(newSize.getX(), newSize.getY());
     }
 
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getTag(){
+        return this.tag;
+    }
+
     //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
     //kaytetään peliloopin yhteydessa
     public void moveStep(double deltaTime) {
@@ -87,21 +121,17 @@ public class Sprite extends Pane {
         System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
     }
 
-    /**
-     * Tarkistaa, törmääkö spriteBackup jonkin muun spriten kanssa.
-     * @param sprite Sprite, jonka kanssa törmäys tarkistetaan
-     * @return True jos törmäys, muuten false
-     */
 
-    public boolean collides(Sprite sprite) {
-        return sprite.getBoundary().intersects(this.getBoundary());
-    }
-
-    /**
-     * Palauttaa spriten rajat ja sijainnin.
-     * @return Rectangle2D mallinnuksen spritestä
-     */
-    private Rectangle2D getBoundary() {
-        return new Rectangle2D(getXPosition(), getYPosition(), getWidth(), getHeight());
+    public Shape getSpriteShape(){
+        switch(hitboxShapeType){
+            case rectangle:
+                return new Rectangle(getXPosition(), getYPosition(),
+                        getWidth() * hitboxShapeMultiplier, getHeight() * hitboxShapeMultiplier);
+            case circle:
+                return (Shape) new Circle(getXPosition() - getWidth()/2, getYPosition() - getHeight()/2,
+                        getWidth() * hitboxShapeMultiplier);
+            default:
+                return null;
+        }
     }
 }

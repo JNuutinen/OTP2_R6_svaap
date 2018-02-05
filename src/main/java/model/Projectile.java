@@ -2,6 +2,7 @@ package model;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Shape;
 import javafx.scene.layout.Pane;
 import view.GameMain;
 import model.Sprite;
@@ -14,7 +15,10 @@ public class Projectile extends Sprite implements Updateable{
     private boolean hit = false;
     private int speed = 300;
 
-    public Projectile(int damage, Unit shooter){
+
+
+    public Projectile(int damage, Unit shooter, String tag){
+        this.setTag(tag);
         Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
         this.setImage(projectileImage);
         this.damage = damage;
@@ -46,12 +50,22 @@ public class Projectile extends Sprite implements Updateable{
         }
     }
 
+    public void collides(Updateable collidingUpdateable){
+        System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
+    }
+
+    public Updateable getUpdateable(){
+        return this;
+    }
+
+
     public void move(double deltaTime) {
         if (!hit) {
             moveStep(deltaTime);
-            hitCheck();
         }
     }
+
+    /* TODO integroi taman sisalto collides() kanssa.
 
     public void hitCheck() {
         for (Unit unit : GameMain.units) {
@@ -63,7 +77,7 @@ public class Projectile extends Sprite implements Updateable{
                 System.out.println("Osu!");
             }
         }
-    }
+    }*/
 
     public void delete(Projectile projectile){
         Platform.runLater(() ->GameMain.removeSprite(projectile));
