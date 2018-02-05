@@ -2,6 +2,7 @@ package model;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Shape;
 import view.GameMain;
 
 import static view.GameMain.WINDOW_HEIGHT;
@@ -26,9 +27,11 @@ public class Enemy extends Unit implements Updateable {
     public Enemy() {
         GameMain.units.add(this);
         setDirection(180);
+        this.setTag("enemy");
     }
 
-    public Enemy(Image image, int movementPattern, double initialX, double initialY) {
+    public Enemy(Image image, int movementPattern, double initialX, double initialY, String tag) {
+        this.setTag(tag);
         GameMain.units.add(this);
         setPosition(initialX, initialY);
         setDirection(180);
@@ -38,6 +41,11 @@ public class Enemy extends Unit implements Updateable {
         else setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
+    }
+
+
+    public Updateable getUpdateable(){
+        return this;
     }
 
     public void setMovementPattern(int movementPattern) {
@@ -56,7 +64,7 @@ public class Enemy extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            Platform.runLater(() -> GameMain.addProjectile(new Projectile(10, this)));
+            Platform.runLater(() -> GameMain.addProjectile(new Projectile(10, this, "projectile_enemy")));
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
@@ -68,5 +76,9 @@ public class Enemy extends Unit implements Updateable {
             setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
         }
+    }
+
+    public void collides(Updateable collidingUpdateable){
+        // tagin saa: collidingUpdateable.getTag()
     }
 }

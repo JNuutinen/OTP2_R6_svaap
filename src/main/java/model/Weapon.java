@@ -13,7 +13,7 @@ public class Weapon {
         this.fireRate = fireRate;
     }
     public void shoot() {
-        Projectile projectile = new Projectile(damage, direction, shooter);
+        Projectile projectile = new Projectile(damage, direction, shooter, "projectile_player");
     }
     */
 }

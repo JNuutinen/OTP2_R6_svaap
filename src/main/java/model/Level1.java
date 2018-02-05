@@ -46,14 +46,14 @@ public class Level1 extends Thread {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
         timesAndEnemies = new Stack<>();
         timesAndEnemies.push(4L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 300));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 300, "enemy"));
         timesAndEnemies.push(5L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 200));
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 400));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 200, "enemy"));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_STRAIGHT, WINDOW_WIDTH+100, 400, "enemy"));
         timesAndEnemies.push(5L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 300));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 300, "enemy"));
         timesAndEnemies.push(5L);
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 150));
-        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 450));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 150, "enemy"));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 450, "enemy"));
     }
 }
