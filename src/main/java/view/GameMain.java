@@ -78,24 +78,24 @@ public class GameMain extends Application {
             if (!input.contains(code)){
                 switch (code) {
                     case "W":
-                        player.setIsMoving(true);
+                        player.move(90);
                         input.add(code);
-                        player.setDirection(90);
+
                         break;
                     case "A":
-                        player.setIsMoving(true);
+                        player.move(180);
                         input.add(code);
-                        player.setDirection(180);
+
                         break;
                     case "S":
-                        player.setIsMoving(true);
+                        player.move(270);
                         input.add(code);
-                        player.setDirection(270);
+
                         break;
                     case "D":
-                        player.setIsMoving(true);
+                        player.move(0);
                         input.add(code);
-                        player.setDirection(0);
+
                         break;
                     case "V":
                         System.exit(0);
@@ -117,7 +117,7 @@ public class GameMain extends Application {
             }
 
             if(input.size() == 0){
-                player.setIsMoving(false);
+                player.stopMoving();
             }
         });
         primaryStage.setScene(scene);
