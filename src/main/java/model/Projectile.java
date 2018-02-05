@@ -1,6 +1,8 @@
 package model;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import view.GameMain;
 import model.Sprite;
 
@@ -16,7 +18,7 @@ public class Projectile extends Sprite implements Updateable{
         Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
         this.setImage(projectileImage);
         this.damage = damage;
-        double xPos, yPos;
+        double xPos;
         if (shooter instanceof Player) {
             xPos = shooter.getXPosition() + 50;
             setPosition(xPos, shooter.getYPosition());
@@ -39,6 +41,7 @@ public class Projectile extends Sprite implements Updateable{
                 || getYPosition() < -100
                 || getYPosition() > WINDOW_HEIGHT+100) {
             GameLoop.removeUpdateable(this);
+            delete(this);
         } else {
             move(deltaTime);
         }
@@ -57,8 +60,13 @@ public class Projectile extends Sprite implements Updateable{
                 unit.takeDamage(damage);
                 hit = true;
                 GameLoop.removeUpdateable(this);
+                delete(this);
                 System.out.println("Osu!");
             }
         }
+    }
+
+    public void delete(Projectile projectile){
+        Platform.runLater(() ->GameMain.removeSprite(projectile));
     }
 }

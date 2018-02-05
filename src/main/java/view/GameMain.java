@@ -37,10 +37,16 @@ public class GameMain extends Application {
 
         primaryStage.show();
     }
+    public static Pane getPane(){
+        return pane;
+    }
 
     public static void addEnemy(Enemy enemy) {
         GameLoop.queueUpdateable(enemy);
         pane.getChildren().add(enemy);
+    }
+    public static void removeSprite(Sprite sprite){
+        pane.getChildren().remove(sprite);
     }
 
     public static void addProjectile(Projectile projectile) {
