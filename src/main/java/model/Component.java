@@ -9,12 +9,15 @@ public class Component extends Sprite{
     double height;
     Point2D startingPosition;
 
-    public Component(int unitX, int unitY, double width, double height, String imagePath) {
-        spawn(unitX, unitY, width, height, imagePath);
+    //UnitX & UnitY: Spawnataan komponentti samaan paikkaan isännänsä kanssa
+    public Component(double unitX, double unitY) {
+        spawn(unitX, unitY, 50, 50);
     }
 
-    public void spawn(int unitX, int unitY, double width, double height, String imagePath) {
-        startingPosition = new Point2D(unitX, unitY);
+    public void spawn(double unitX, double unitY, double width, double height) {
+
+        String imagePath = "/images/player_ship_9000.png";
+        startingPosition = new Point2D(unitX + 10, unitY + 10);
         this.setImage(new Image(getClass().getResourceAsStream(imagePath), width, height, true, true));
         this.setPosition(startingPosition.getX(), startingPosition.getY());
     }
