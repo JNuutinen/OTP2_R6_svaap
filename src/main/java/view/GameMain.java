@@ -76,14 +76,15 @@ public class GameMain extends Application {
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();
-        //Image shipImage = new Image("/images/spaceship_small_cyan_placeholder.png");
-        Image shipImage = new Image("/images/player_ship_9000.png");
-        player.setImage(shipImage);
+
         player.setPosition(100, 300);
         GameLoop.queueUpdateable(player);
 
+
         // Unitit panee
         pane.getChildren().addAll(player);
+        //pane.getChildren().addAll(player.components.get(0));
+
 
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();

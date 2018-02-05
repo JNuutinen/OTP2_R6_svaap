@@ -1,5 +1,4 @@
 package model;
-
 import javafx.application.Platform;
 import view.GameMain;
 
@@ -8,20 +7,16 @@ import java.util.ArrayList;
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä
  */
-public class Unit extends Sprite implements Updateable{
+public class Unit extends Sprite implements Updateable {
     /**
      * Yksikön hitpointsit
      */
     private int hp;
 
-    //private Component components[];
-
     /**
      * Yksikön taso
      */
     private int level;
-
-
     ArrayList<Component> components = new ArrayList<>();
 
     public Unit() {
@@ -76,5 +71,15 @@ public class Unit extends Sprite implements Updateable{
     @Override
     public void update(double deltaTime) {
 
+    }
+
+    @Override
+    public void collides(Updateable collidingUpdateable) {
+
+    }
+
+    @Override
+    public Updateable getUpdateable() {
+        return null;
     }
 }

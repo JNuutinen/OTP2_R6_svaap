@@ -4,21 +4,28 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import model.Sprite;
 
-public class Component extends Sprite{
-    double width;
-    double height;
+public class Component extends Sprite {
+    double width = 60;
+    double height = 60;
     Point2D startingPosition;
+    private double xVelocity;
+    private double yVelocity;
+    public String imagePath;
 
     //UnitX & UnitY: Spawnataan komponentti samaan paikkaan isännänsä kanssa
-    public Component(double unitX, double unitY) {
-        spawn(unitX, unitY, 50, 50);
+    public Component(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public void spawn(double unitX, double unitY, double width, double height) {
-
-        String imagePath = "/images/player_ship_9000.png";
-        startingPosition = new Point2D(unitX + 10, unitY + 10);
-        this.setImage(new Image(getClass().getResourceAsStream(imagePath), width, height, true, true));
-        this.setPosition(startingPosition.getX(), startingPosition.getY());
+    public void addVelocity(double x, double y) {
+        xVelocity += x;
+        yVelocity += y;
     }
+
+    public void resetVelocity() {
+        xVelocity = 0;
+        yVelocity = 0;
+    }
+
+
 }

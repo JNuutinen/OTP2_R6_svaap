@@ -11,6 +11,8 @@ import javafx.scene.shape.Shape;
 
 import java.awt.geom.Ellipse2D;
 
+import java.util.ArrayList;
+
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
@@ -113,6 +115,13 @@ public class Sprite extends Pane {
     }
 
     public void setImage(Image newImage){
+        imageView.setImage(newImage);
+        this.getChildren().add(imageView);
+    }
+
+
+    public void setImages(Image newImage) {
+        ImageView imageView = new ImageView();
         imageView.setImage(newImage);
         this.getChildren().add(imageView);
     }
