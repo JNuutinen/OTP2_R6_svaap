@@ -46,7 +46,8 @@ public class GameMain extends Application {
         pane.getChildren().add(enemy);
     }
     public static void removeSprite(Sprite sprite){
-        // poistaa spriten panen
+        //TODO removeSprite jättää spriten hitboxin paikoilleen, alla olevaa vain väliaikainen fixi
+        sprite.setPosition(-50, -50);
         pane.getChildren().remove(sprite);
 
         // poistaa olion updateable listasta

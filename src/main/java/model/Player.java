@@ -8,11 +8,12 @@ import static view.GameMain.input;
 public class Player extends Unit implements Updateable {
     private double xVelocity;
     private double yVelocity;
+    private int hp;
 
     private int fireRate = 30;
     private int fireRateCounter = 30;
 
-    public Player (){
+    public Player(){
         GameMain.units.add(this);
     }
 
@@ -32,6 +33,8 @@ public class Player extends Unit implements Updateable {
         }
         if (input.contains("V")) System.exit(0);
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+
+
     }
 
     private void addVelocity(double x, double y) {
@@ -43,4 +46,5 @@ public class Player extends Unit implements Updateable {
         xVelocity = 0;
         yVelocity = 0;
     }
+
 }

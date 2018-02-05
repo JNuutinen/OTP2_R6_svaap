@@ -1,11 +1,14 @@
 package model;
 
+import javafx.application.Platform;
+import view.GameMain;
+
 import java.util.ArrayList;
 
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä
  */
-public class Unit extends Sprite {
+public class Unit extends Sprite implements Updateable{
     /**
      * Yksikön hitpointsit
      */
@@ -22,10 +25,9 @@ public class Unit extends Sprite {
     ArrayList<Component> components = new ArrayList<>();
 
     public Unit() {
-        hp = 9000;
+        hp = 30;
         level = 9000;
     }
-
     /**
      * Ampuu yksikön pääaseella
      */
@@ -48,6 +50,10 @@ public class Unit extends Sprite {
      */
     public void takeDamage(int damage) {
         hp =- damage;
+        if(hp <= 0){
+            GameLoop.removeUpdateable(this);
+            Platform.runLater(() -> GameMain.removeSprite(this));
+        }
     }
 
     public void move(double direction) {
@@ -65,5 +71,10 @@ public class Unit extends Sprite {
         for (Component component : components) {
             component.setIsMoving(false);
         }
+    }
+
+    @Override
+    public void update(double deltaTime) {
+
     }
 }
