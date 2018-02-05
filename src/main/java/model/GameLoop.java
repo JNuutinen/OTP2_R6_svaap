@@ -61,7 +61,7 @@ public class GameLoop extends Thread {
             double frameTime = (System.nanoTime() - currentTime) / 1_000_000_000.0;
             if (frameTime < targetDelta) {
                 try {
-                    System.out.println((long)((targetDelta - frameTime) * 1000)); //talla voi katsoa ajan (ms) framejen valissa
+                    System.out.println("fps: " + (long)(1/(targetDelta - frameTime))); //talla voi katsoa fps framejen valissa
                     Thread.sleep( (long) ((targetDelta - frameTime) * 1000));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
