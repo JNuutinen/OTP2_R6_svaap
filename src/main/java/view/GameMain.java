@@ -51,8 +51,6 @@ public class GameMain extends Application {
 
         // poistaa olion updateable listasta
         GameLoop.removeUpdateable((Updateable)sprite);
-
-        // TODO: onkohan kaikki viittaukset poistettu oliosta, korjaako roskienkeräys?
     }
 
     public static void addProjectile(Projectile projectile) {
