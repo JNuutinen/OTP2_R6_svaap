@@ -49,7 +49,7 @@ public class Player extends Unit implements Updateable {
         if (input.contains("O")) {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
-                Platform.runLater(() -> GameMain.addProjectile(new Projectile(this, this.getPosition(), 0, 10,  "projectile_player")));
+                Platform.runLater(() -> GameMain.addProjectile(new Projectile(this.getPosition(), 0, 10,  "projectile_player")));
 
                 //GameLoop.queueUpdateable(new Projectile(this.getPosition(), 0, 10,  "projectile_player"));
             }

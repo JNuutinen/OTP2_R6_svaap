@@ -1,6 +1,7 @@
 package model;
 
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 import javafx.scene.layout.Pane;
@@ -15,8 +16,20 @@ public class Projectile extends Sprite implements Updateable{
     private boolean hit = false;
     private int speed = 300;
 
+    public Projectile(Point2D startingLocation, double direction, int damage, String tag){
+        this.setPosition(startingLocation.getX(), startingLocation.getY());
+        this.setDirection(direction);
+        this.setTag(tag);
+        this.damage = damage;
+        Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
+        this.setImage(projectileImage);
 
+        setVelocity(speed);
+        setIsMoving(true);
+        GameLoop.queueUpdateable(this);
+    }
 
+    /*
     public Projectile(int damage, Unit shooter, String tag){
         this.setTag(tag);
         Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
@@ -35,7 +48,7 @@ public class Projectile extends Sprite implements Updateable{
         setVelocity(speed);
         setIsMoving(true);
         GameLoop.queueUpdateable(this);
-    }
+    }*/
 
     @Override
     public void update(double deltaTime){
@@ -44,8 +57,8 @@ public class Projectile extends Sprite implements Updateable{
                 || getXPosition() > WINDOW_WIDTH+200
                 || getYPosition() < -100
                 || getYPosition() > WINDOW_HEIGHT+100) {
-            GameLoop.removeUpdateable(this);
-            delete(this);
+            //GameLoop.removeUpdateable(this);
+            //delete(this);
         } else {
             move(deltaTime);
         }

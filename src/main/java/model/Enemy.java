@@ -64,7 +64,7 @@ public class Enemy extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            Platform.runLater(() -> GameMain.addProjectile(new Projectile(10, this, "projectile_enemy")));
+            Platform.runLater(() -> GameMain.addProjectile(new Projectile(this.getPosition(), 180, 10,  "projectile_enemy")));
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
