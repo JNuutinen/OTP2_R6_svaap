@@ -101,7 +101,8 @@ public class GameMain extends Application {
             input.remove(code);
         });
         primaryStage.setScene(scene);
-        gameLoop.start();
+        //gameLoop.start();
+        gameLoop.startLoop();
         new Level1().start();
     }
 }

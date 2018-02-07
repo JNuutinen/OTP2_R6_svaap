@@ -53,7 +53,16 @@ public class Level1 extends Thread {
         timesAndEnemies.push(5L);
         timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 300, "enemy"));
         timesAndEnemies.push(5L);
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 250, "enemy"));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 450, "enemy"));
+
         timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 150, "enemy"));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 550, "enemy"));
+
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 150, "enemy"));
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 650, "enemy"));
+
+        timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 250, "enemy"));
         timesAndEnemies.push(new Enemy(enemyImage, Enemy.MOVE_SINE, WINDOW_WIDTH+100, 450, "enemy"));
     }
 }
