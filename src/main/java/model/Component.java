@@ -26,6 +26,4 @@ public class Component extends Sprite {
         xVelocity = 0;
         yVelocity = 0;
     }
-
-
 }

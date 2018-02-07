@@ -76,7 +76,6 @@ public class GameMain extends Application {
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();
-
         player.setPosition(100, 300);
         GameLoop.queueUpdateable(player);
 
