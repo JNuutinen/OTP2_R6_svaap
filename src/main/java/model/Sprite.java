@@ -131,6 +131,8 @@ public class Sprite extends Pane {
     }
 
 
+
+
     public Shape getSpriteShape(){
         switch(hitboxShapeType){
             case rectangle:

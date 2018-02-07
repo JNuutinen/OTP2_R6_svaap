@@ -1,7 +1,9 @@
 package model;
 
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import view.GameMain;
 
 import static view.GameMain.input;
@@ -16,10 +18,8 @@ public class Player extends Unit implements Updateable {
 
     public Player(){
         GameMain.units.add(this);
-        //Kova koodattu komponentin lisäys
         Image shipImage = new Image("/images/player_ship_9000.png");
         setImage(shipImage);
-
 
         //Kova koodattuja komponentteja
         Component b = new Component("/images/player_ship_9000.png");
@@ -29,23 +29,37 @@ public class Player extends Unit implements Updateable {
         components.add(a);
         components.add(c);
 
+        int componentOffset = 10; //Tätä vaihtamalla voi muokata minne komponentti tulee Y-akselilla
 
         for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
-            //startingPosition = new Point2D(getXPosition() + 10, getYPosition() + 10);
-            setImages(new Image(getClass().getResourceAsStream(component.imagePath), component.width, component.height, true, true));
-            //setPosition(component.startingPosition.getX(), component.startingPosition.getY());
+            /*
+            setImages(new Image(getClass().getResourceAsStream(component.imagePath),
+                    component.width, component.height, true, true));
+            */
+            /*
+            component.getHeight();
+            component.getWidth();
+            */
+            Image componentImage = new Image(component.imagePath);
+            ImageView componentView = new ImageView();
+            componentView.setImage(componentImage);
+            componentView.setX(getXPosition());
+            componentView.setY(getYPosition() + componentOffset);
+            componentOffset += 30;
+
+            this.getChildren().add(componentView);
         }
         this.setTag("player");
     }
 
     @Override
     public void update(double deltaTime){
-        if (fireRateCounter <= 30) fireRateCounter++;
-        resetVelocities();
-        if (input.contains("A")) move(getVelocity()*-1, 0);
-        if (input.contains("D")) move(getVelocity(), 0);
-        if (input.contains("W")) move(0, getVelocity()*-1);
-        if (input.contains("S")) move(0, getVelocity());
+        if (fireRateCounter <= fireRate) fireRateCounter++;
+        resetVelocity();
+        if (input.contains("A")) addVelocity(getVelocity()*-1, 0);
+        if (input.contains("D")) addVelocity(getVelocity(), 0);
+        if (input.contains("W")) addVelocity(0, getVelocity()*-1);
+        if (input.contains("S")) addVelocity(0, getVelocity());
         if (input.contains("O")) {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
@@ -62,6 +76,7 @@ public class Player extends Unit implements Updateable {
         // tagin saa: collidingUpdateable.getTag()
     }
 
+    /* //Todo näitä ei varmaan enää tarvita, koska komponentit on osa alusta
     void move (double x, double y) {
         addVelocity(x, y);
 
@@ -77,7 +92,7 @@ public class Player extends Unit implements Updateable {
             component.resetVelocity();
         }
     }
-
+    */
 
     public Updateable getUpdateable(){
         return this;
