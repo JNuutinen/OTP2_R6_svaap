@@ -49,23 +49,10 @@ public class GameMain extends Application {
         //TODO removeSprite jättää spriten hitboxin paikoilleen, alla olevaa vain väliaikainen fixi
         sprite.setPosition(-50, -50);
         pane.getChildren().remove(sprite);
-
-        // poistaa olion updateable listasta
-        GameLoop.removeUpdateable((Updateable)sprite);
-    }
-
-    public static void addProjectile(Projectile projectile) {
-        GameLoop.queueUpdateable(projectile);
-        pane.getChildren().add(projectile);
     }
 
     private void startGame(Stage primaryStage) {
-        // Peligrafiikoiden luonti(?)
-        /*
-        GameGraphics gameGraphics = new GameGraphics(primaryStage);
-        gameGraphics.start();
-        */
-
+        // Peligrafiikoiden luonti
         pane = new Pane();
         VBox.setVgrow(pane, Priority.NEVER);
         VBox vbox;
@@ -76,14 +63,9 @@ public class GameMain extends Application {
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();
-
         player.setPosition(100, 300);
         GameLoop.queueUpdateable(player);
-
-
-        // Unitit panee
         pane.getChildren().addAll(player);
-        //pane.getChildren().addAll(player.components.get(0));
 
 
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
@@ -101,7 +83,6 @@ public class GameMain extends Application {
             input.remove(code);
         });
         primaryStage.setScene(scene);
-        //gameLoop.start();
         gameLoop.startLoop();
         new Level1().start();
     }

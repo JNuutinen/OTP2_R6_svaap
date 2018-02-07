@@ -64,14 +64,14 @@ public class Enemy extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            Platform.runLater(() -> GameMain.addProjectile(new Projectile(this.getPosition(), 180, 10,  "projectile_enemy")));
+            spawnProjectile();
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200
                 || getYPosition() < -100
                 || getYPosition() > WINDOW_HEIGHT+100) {
-            GameLoop.removeUpdateable(this);
+            destroyThis();
         } else {
             setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
@@ -80,5 +80,16 @@ public class Enemy extends Unit implements Updateable {
 
     public void collides(Updateable collidingUpdateable){
         // tagin saa: collidingUpdateable.getTag()
+    }
+
+    public void spawnProjectile(){
+        Projectile projectile = new Projectile(this.getPosition(), 180, 10,  "projectile_enemy");
+        GameLoop.queueUpdateable(projectile);
+        GameMain.pane.getChildren().add(projectile);
+    }
+
+    public void destroyThis(){
+        GameLoop.removeUpdateable(this);
+        GameMain.removeSprite(this);
     }
 }

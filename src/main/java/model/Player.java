@@ -49,9 +49,7 @@ public class Player extends Unit implements Updateable {
         if (input.contains("O")) {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
-                Platform.runLater(() -> GameMain.addProjectile(new Projectile(this.getPosition(), 0, 10,  "projectile_player")));
-
-                //GameLoop.queueUpdateable(new Projectile(this.getPosition(), 0, 10,  "projectile_player"));
+                spawnProjectile();
             }
         }
         if (input.contains("V")) System.exit(0);
@@ -92,5 +90,16 @@ public class Player extends Unit implements Updateable {
     private void resetVelocity() {
         xVelocity = 0;
         yVelocity = 0;
+    }
+
+    public void spawnProjectile(){
+        Projectile projectile = new Projectile(this.getPosition(), 0, 10,  "projectile_player");
+        GameLoop.queueUpdateable(projectile);
+        GameMain.pane.getChildren().add(projectile);
+    }
+
+    public void destroyThis(){
+        GameLoop.removeUpdateable(this);
+        GameMain.removeSprite(this);
     }
 }

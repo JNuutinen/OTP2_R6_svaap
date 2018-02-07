@@ -58,14 +58,22 @@ public class Projectile extends Sprite implements Updateable{
                 || getYPosition() < -100
                 || getYPosition() > WINDOW_HEIGHT+100) {
             GameLoop.removeUpdateable(this);
-            delete(this);
+            destroyThis();
         } else {
             move(deltaTime);
         }
     }
 
+    //kutsutaan aina kun osuu johonkin. tehty niin etta tietyt luokat esim. vihun ammus ja vihu ei voi osua toisiinsa.
     public void collides(Updateable collidingUpdateable){
         System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
+
+        if(collidingUpdateable.getTag().equals("player")){
+            //TODO
+        }
+        else if(collidingUpdateable.getTag().equals("enemy")){
+            //TODO
+        }
     }
 
     public Updateable getUpdateable(){
@@ -79,21 +87,8 @@ public class Projectile extends Sprite implements Updateable{
         }
     }
 
-    /* TODO integroi taman sisalto collides() kanssa.
-
-    public void hitCheck() {
-        for (Unit unit : GameMain.units) {
-            if (this.collides(unit)) {
-                unit.takeDamage(damage);
-                hit = true;
-                GameLoop.removeUpdateable(this);
-                delete(this);
-                System.out.println("Osu!");
-            }
-        }
-    }*/
-
-    public void delete(Projectile projectile){
-        Platform.runLater(() ->GameMain.removeSprite(projectile));
+    public void destroyThis(){
+        GameLoop.removeUpdateable(this);
+        GameMain.removeSprite(this);
     }
 }
