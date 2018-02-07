@@ -52,7 +52,14 @@ public class Projectile extends Sprite implements Updateable{
     }
 
     public void collides(Updateable collidingUpdateable){
-        System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
+        GameLoop.removeUpdateable(this);
+        delete(this);
+        for(Unit unit : GameMain.units){
+            if (unit == collidingUpdateable) {
+                System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
+                unit.takeDamage(damage);
+            }
+        }
     }
 
     public Updateable getUpdateable(){
@@ -66,8 +73,8 @@ public class Projectile extends Sprite implements Updateable{
         }
     }
 
-    /* TODO integroi taman sisalto collides() kanssa.
 
+/*
     public void hitCheck() {
         for (Unit unit : GameMain.units) {
             if (this.collides(unit)) {
@@ -78,9 +85,9 @@ public class Projectile extends Sprite implements Updateable{
                 System.out.println("Osu!");
             }
         }
-    }*/
-
-    public void delete(Projectile projectile){
-        Platform.runLater(() ->GameMain.removeSprite(projectile));
+    }
+*/
+    public void delete(Sprite sprite){
+        Platform.runLater(() ->GameMain.removeSprite(sprite));
     }
 }
