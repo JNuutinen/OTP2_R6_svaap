@@ -16,6 +16,7 @@ public class Player extends Unit implements Updateable {
     private int fireRateCounter = 5;
 
     public Player(){
+        this.setHp(9999);
         GameMain.units.add(this);
         Image shipImage = new Image("/images/player_ship_9000.png");
         setImage(shipImage);
@@ -63,10 +64,6 @@ public class Player extends Unit implements Updateable {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
                 spawnProjectile();
-                Platform.runLater(() -> {
-                    GameLoop.queueUpdateable(new Projectile(this.getPosition(),0, 10, "projectile_player"));
-                    GameMain.score.setText("Score: " + score);
-                });
             }
         }
         if (input.contains("V")) System.exit(0);
@@ -106,6 +103,7 @@ public class Player extends Unit implements Updateable {
 
     public static void addScore(int points){
         score += points;
+        GameMain.score.setText("Score: " + score);
     }
 
     public Updateable getUpdateable(){

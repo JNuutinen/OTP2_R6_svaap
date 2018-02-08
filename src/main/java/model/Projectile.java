@@ -29,27 +29,6 @@ public class Projectile extends Sprite implements Updateable{
         GameLoop.queueUpdateable(this);
     }
 
-    /*
-    public Projectile(int damage, Unit shooter, String tag){
-        this.setTag(tag);
-        Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
-        this.setImage(projectileImage);
-        this.damage = damage;
-        double xPos;
-        if (shooter instanceof Player) {
-            xPos = shooter.getXPosition() + 50;
-            setPosition(xPos, shooter.getYPosition());
-            setDirection(0);
-        } else if (shooter instanceof Enemy) {
-            xPos = shooter.getXPosition() - 50;
-            setPosition(xPos, shooter.getYPosition());
-            setDirection(180);
-        }
-        setVelocity(speed);
-        setIsMoving(true);
-        GameLoop.queueUpdateable(this);
-    }*/
-
     @Override
     public void update(double deltaTime){
         // chekkaa menikö ulos ruudulta
@@ -57,7 +36,6 @@ public class Projectile extends Sprite implements Updateable{
                 || getXPosition() > WINDOW_WIDTH+200
                 || getYPosition() < -100
                 || getYPosition() > WINDOW_HEIGHT+100) {
-            GameLoop.removeUpdateable(this);
             destroyThis();
         } else {
             move(deltaTime);
@@ -67,14 +45,9 @@ public class Projectile extends Sprite implements Updateable{
     //kutsutaan aina kun osuu johonkin. tehty niin etta tietyt luokat esim. vihun ammus ja vihu ei voi osua toisiinsa.
     public void collides(Updateable collidingUpdateable){
 
-        /*if(collidingUpdateable.getTag().equals("player")){
-            //
-        }*/
-
         destroyThis();
-        for(Unit unit : GameMain.units){
+        for (Unit unit : GameMain.units) {
             if (unit == collidingUpdateable) {
-                System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
                 unit.takeDamage(damage);
             }
         }

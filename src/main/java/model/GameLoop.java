@@ -1,6 +1,7 @@
 package model;
 
 import javafx.application.Platform;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import view.GameMain;
@@ -34,6 +35,10 @@ public class GameLoop{
         TimerTask timerTask = new TimerTask() {
 
             long previousTime = System.nanoTime();
+
+            double debugger_avgFps = 0;
+            double debugger_toSecondCounter = 0;
+            int debugger_frameCounter = 0;
             public void run() {
 
                 Platform.runLater(new Runnable() {
@@ -42,6 +47,8 @@ public class GameLoop{
                         // TODO: alkaa pätkimään ja glitchailee rajusti jos nostaa fps. Pitäs selvittää mist johtuu
                         long currentTime = System.nanoTime();
                         double deltaTime = (currentTime - previousTime) / 1_000_000_000.0;
+
+
 
                         // Tarkista updateable -jono
                         if (!updateableQueue.isEmpty()) {
@@ -86,7 +93,6 @@ public class GameLoop{
                                                 }
                                             }
                                         }
-
                                     }
                                 }
 
@@ -95,39 +101,24 @@ public class GameLoop{
                             }
                         }
 
+                        //TODO debugger
+                        debugger_toSecondCounter += deltaTime;
+                        debugger_frameCounter++;
+                        if(debugger_toSecondCounter > 1){
+                            debugger_avgFps = 1/(debugger_toSecondCounter/debugger_frameCounter);
+                            debugger_frameCounter = 0;
+                            debugger_toSecondCounter--;
+                            if(debugger_avgFps < 61){
+                                GameMain.debugger_fps.setTextFill(Color.web("#f44242"));
+                            }
+                            else if(debugger_avgFps > 61){
+                                GameMain.debugger_fps.setTextFill(Color.web("#3d3d3d"));
+                            }
+                            GameMain.debugger_fps.setText("avg. fps of last second: " + debugger_avgFps);
+                        }
+
                         previousTime = currentTime;
 
-
-                        /* -----------HEGE POISTAA TAN
-                        while (isLooping)
-
-                        {
-                            long currentTime = System.nanoTime();
-                            double deltaTime = (currentTime - previousTime) / 1_000_000_000.0;
-
-
-
-
-                            previousTime = currentTime;
-                            double frameTime = (System.nanoTime() - currentTime) / 1_000_000_000.0;
-
-                            if (frameTime < targetDelta) {
-
-                                //TODO debuggeri. printtaa nykyisen fps 2 sekunnin valein
-                                debugger_secondCounter = debugger_secondCounter + (long) ((targetDelta - frameTime) * 1000);
-                                if (debugger_secondCounter > 2000) {
-                                    System.out.println("fps: " + (long) (1 / (targetDelta - frameTime))); //talla voi katsoa viime framen fps-nopeus
-                                    debugger_secondCounter = debugger_secondCounter - 1000;
-                                }
-
-                                try {
-
-                                    Thread.sleep((long) ((targetDelta - frameTime) * 1000));
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }*/
                     }
                 });
             }

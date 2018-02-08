@@ -20,6 +20,7 @@ public class GameMain extends Application {
     public static ArrayList<Unit> units = new ArrayList<>();
     public static ArrayList<String> input;
     public static Label score;
+    public static Label debugger_fps;
 
     public static Pane pane;
 
@@ -68,6 +69,13 @@ public class GameMain extends Application {
         score = new Label("Score: " + Player.getScore());
         score.setFont(new Font("Cambria", 32));
         pane.getChildren().add(score);
+
+        //debugger_fps
+        debugger_fps = new Label("fps");
+
+        debugger_fps.setFont(new Font("Cambria", 32));
+        debugger_fps.setLayoutX(250);
+        pane.getChildren().add(debugger_fps);
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();

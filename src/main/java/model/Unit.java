@@ -22,6 +22,7 @@ public class Unit extends Sprite implements Updateable {
     public Unit() {
         hp = 30;
     }
+
     /**
      * Ampuu yksikön pääaseella
      */
@@ -47,8 +48,9 @@ public class Unit extends Sprite implements Updateable {
         if(hp <= 0){
             System.out.println("AI SAATANA");
             GameLoop.removeUpdateable(this);
-            Platform.runLater(() -> GameMain.removeSprite(this));
-            if(this instanceof Enemy){
+            GameMain.removeSprite(this);
+            if(this.getTag().equals("enemy")){
+
                 System.out.println("Anna sitä hyvää");
                 Player.addScore(100);
             }
@@ -97,5 +99,14 @@ public class Unit extends Sprite implements Updateable {
     @Override
     public Updateable getUpdateable() {
         return null;
+    }
+
+    public void destroyThis(){
+        GameLoop.removeUpdateable(this);
+        GameMain.removeSprite(this);
+    }
+
+    public void setHP(int hp){
+        this.hp = hp;
     }
 }
