@@ -108,12 +108,16 @@ public class GameLoop{
                             debugger_avgFps = 1/(debugger_toSecondCounter/debugger_frameCounter);
                             debugger_frameCounter = 0;
                             debugger_toSecondCounter--;
-                            if(debugger_avgFps < 61){
+                            if(debugger_avgFps < 60){
+                                GameMain.debugger_fps.setTextFill(Color.web("#4c4323"));
+                            }
+                            else if(debugger_avgFps < 57){
                                 GameMain.debugger_fps.setTextFill(Color.web("#f44242"));
                             }
-                            else if(debugger_avgFps > 61){
+                            else{
                                 GameMain.debugger_fps.setTextFill(Color.web("#3d3d3d"));
                             }
+
                             GameMain.debugger_fps.setText("avg. fps of last second: " + debugger_avgFps);
                         }
 
