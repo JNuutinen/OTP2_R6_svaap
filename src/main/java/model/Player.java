@@ -64,7 +64,7 @@ public class Player extends Unit implements Updateable {
                 fireRateCounter = 0;
                 spawnProjectile();
                 Platform.runLater(() -> {
-                    GameMain.addProjectile(new Projectile(10, this, "projectile_player"));
+                    GameLoop.queueUpdateable(new Projectile(this.getPosition(),0, 10, "projectile_player"));
                     GameMain.score.setText("Score: " + score);
                 });
             }

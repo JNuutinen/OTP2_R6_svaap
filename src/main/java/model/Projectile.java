@@ -70,8 +70,8 @@ public class Projectile extends Sprite implements Updateable{
         /*if(collidingUpdateable.getTag().equals("player")){
             //
         }*/
-        GameLoop.removeUpdateable(this);
-        delete(this);
+
+        destroyThis();
         for(Unit unit : GameMain.units){
             if (unit == collidingUpdateable) {
                 System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
