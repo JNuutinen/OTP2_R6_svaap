@@ -21,7 +21,6 @@ public class Unit extends Sprite implements Updateable {
 
     public Unit() {
         hp = 30;
-        level = 9000;
     }
     /**
      * Ampuu yksikön pääaseella
@@ -44,10 +43,15 @@ public class Unit extends Sprite implements Updateable {
      * @param damage Vahinkomäärä, jonka yksikkö ottaa
      */
     public void takeDamage(int damage) {
-        hp =- damage;
+        hp -= damage;
         if(hp <= 0){
+            System.out.println("AI SAATANA");
             GameLoop.removeUpdateable(this);
             Platform.runLater(() -> GameMain.removeSprite(this));
+            if(this instanceof Enemy){
+                System.out.println("Anna sitä hyvää");
+                Player.addScore(100);
+            }
         }
     }
 
@@ -66,6 +70,18 @@ public class Unit extends Sprite implements Updateable {
         for (Component component : components) {
             component.setIsMoving(false);
         }
+    }
+
+    public int getHp(){
+        return hp;
+    }
+
+    public void setHp(int hp){
+        this.hp = hp;
+    }
+
+    public void addHP(int hp){
+        this.hp += hp;
     }
 
     @Override

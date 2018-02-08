@@ -2,10 +2,13 @@ package view;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.*;
 
@@ -16,6 +19,7 @@ public class GameMain extends Application {
     public static final int WINDOW_HEIGHT = 720;
     public static ArrayList<Unit> units = new ArrayList<>();
     public static ArrayList<String> input;
+    public static Label score;
 
     public static Pane pane;
 
@@ -60,6 +64,10 @@ public class GameMain extends Application {
         Scene scene = new Scene(vbox, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setTitle("svaap:development");
         vbox.setStyle("-fx-background-color: black");
+
+        score = new Label("Score: " + Player.getScore());
+        score.setFont(new Font("Cambria", 32));
+        pane.getChildren().add(score);
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player();

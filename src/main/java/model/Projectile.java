@@ -66,13 +66,17 @@ public class Projectile extends Sprite implements Updateable{
 
     //kutsutaan aina kun osuu johonkin. tehty niin etta tietyt luokat esim. vihun ammus ja vihu ei voi osua toisiinsa.
     public void collides(Updateable collidingUpdateable){
-        System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
 
-        if(collidingUpdateable.getTag().equals("player")){
-            //TODO
-        }
-        else if(collidingUpdateable.getTag().equals("enemy")){
-            //TODO
+        /*if(collidingUpdateable.getTag().equals("player")){
+            //
+        }*/
+        GameLoop.removeUpdateable(this);
+        delete(this);
+        for(Unit unit : GameMain.units){
+            if (unit == collidingUpdateable) {
+                System.out.println("ammus osui tahan: " + collidingUpdateable.getTag());
+                unit.takeDamage(damage);
+            }
         }
     }
 

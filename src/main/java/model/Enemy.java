@@ -13,6 +13,7 @@ public class Enemy extends Unit implements Updateable {
     public static final int MOVE_STRAIGHT = 0;
     public static final int MOVE_SINE = 1;
 
+
     private double initialX;
     private double initialY;
     private int movementPattern;

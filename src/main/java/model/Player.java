@@ -11,10 +11,9 @@ import static view.GameMain.input;
 public class Player extends Unit implements Updateable {
     private double xVelocity;
     private double yVelocity;
-    private int hp;
-
-    private int fireRate = 30;
-    private int fireRateCounter = 30;
+    private static int score = 0;
+    private int fireRate = 5;
+    private int fireRateCounter = 5;
 
     public Player(){
         GameMain.units.add(this);
@@ -25,9 +24,9 @@ public class Player extends Unit implements Updateable {
         Component b = new Component("/images/player_ship_9000.png");
         Component c = new Component("/images/Start.png");
         Component a = new Component("/images/enemy_ship_9000.png");
-        components.add(b);
-        components.add(a);
-        components.add(c);
+        //components.add(b);
+       // components.add(a);
+       // components.add(c);
 
         int componentOffset = 10; //Tätä vaihtamalla voi muokata minne komponentti tulee Y-akselilla
 
@@ -64,11 +63,14 @@ public class Player extends Unit implements Updateable {
             if (fireRateCounter >= fireRate) {
                 fireRateCounter = 0;
                 spawnProjectile();
+                Platform.runLater(() -> {
+                    GameMain.addProjectile(new Projectile(10, this, "projectile_player"));
+                    GameMain.score.setText("Score: " + score);
+                });
             }
         }
         if (input.contains("V")) System.exit(0);
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
-
 
     }
 
@@ -94,6 +96,18 @@ public class Player extends Unit implements Updateable {
     }
     */
 
+    public static int getScore() {
+        return score;
+    }
+
+    public static void setScore(int points) {
+        score = points;
+    }
+
+    public static void addScore(int points){
+        score += points;
+    }
+
     public Updateable getUpdateable(){
         return this;
     }
@@ -116,5 +130,9 @@ public class Player extends Unit implements Updateable {
     public void destroyThis(){
         GameLoop.removeUpdateable(this);
         GameMain.removeSprite(this);
+    }
+
+    public Player getPlayer(){
+        return this;
     }
 }
