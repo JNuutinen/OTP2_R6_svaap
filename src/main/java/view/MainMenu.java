@@ -1,12 +1,10 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -14,18 +12,16 @@ import javafx.scene.layout.VBox;
 
 public class MainMenu {
     private Scene mainMenu;
-    private Group root = new Group();
-    private Canvas menuCanvas;
-    private BorderPane bpane;
     public Button start;
-    public Button exit;
-    public Button settings;
+    private Button exit;
+    private Button settings;
 
     MainMenu(){
+        Group root = new Group();
         mainMenu = new Scene (root);
-        menuCanvas = new Canvas(1280, 720);
+        Canvas menuCanvas = new Canvas(1280, 720);
         build();
-        bpane = new BorderPane();
+        BorderPane bpane = new BorderPane();
         bpane.setCenter(vbox());
         root.getChildren().addAll(bpane);
     }
@@ -47,7 +43,7 @@ public class MainMenu {
         start.setStyle("-fx-background-color: transparent");
     }
 
-    public VBox vbox(){
+    private VBox vbox(){
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(10));
         vbox.setSpacing(8);

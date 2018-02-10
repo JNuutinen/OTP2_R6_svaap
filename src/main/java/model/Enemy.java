@@ -1,9 +1,7 @@
 package model;
 
-import javafx.application.Platform;
+import controller.Controller;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Shape;
-import view.GameMain;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -13,7 +11,7 @@ public class Enemy extends Unit implements Updateable {
     public static final int MOVE_STRAIGHT = 0;
     public static final int MOVE_SINE = 1;
 
-
+    private Controller controller;
     private double initialX;
     private double initialY;
     private int movementPattern;
@@ -25,15 +23,20 @@ public class Enemy extends Unit implements Updateable {
     private int fireRate = 100;
     private int fireRateCounter = 100;
 
-    public Enemy() {
-        GameMain.units.add(this);
+    public Enemy(Controller controller) {
+        super(controller);
+        this.controller = controller;
+        controller.addUnitToCollisionList(this);
         setDirection(180);
         this.setTag("enemy");
     }
 
-    public Enemy(Image image, int movementPattern, double initialX, double initialY, String tag) {
+    public Enemy(Controller controller, Image image, int movementPattern, double initialX, double initialY,
+                 String tag) {
+        super(controller);
+        this.controller = controller;
         this.setTag(tag);
-        GameMain.units.add(this);
+        controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setDirection(180);
         setImage(image);
@@ -53,6 +56,10 @@ public class Enemy extends Unit implements Updateable {
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
+    }
+
+    public int getMovementPattern() {
+        return movementPattern;
     }
 
     public void setInitPosition(double initialX, double initialY) {
@@ -84,13 +91,12 @@ public class Enemy extends Unit implements Updateable {
     }
 
     public void spawnProjectile(){
-        Projectile projectile = new Projectile(this.getPosition(), 180, 10,  "projectile_enemy");
-        GameLoop.queueUpdateable(projectile);
-        GameMain.pane.getChildren().add(projectile);
+        Projectile projectile = new Projectile(controller, this.getPosition(), 180, 10,
+                "projectile_enemy");
+        controller.addUpdateable(projectile);
     }
 
     public void destroyThis(){
-        GameLoop.removeUpdateable(this);
-        GameMain.removeSprite(this);
+        controller.removeUpdateable(this);
     }
 }

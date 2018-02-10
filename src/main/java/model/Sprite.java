@@ -1,7 +1,7 @@
 package model;
 
+import controller.Controller;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -9,23 +9,16 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-import java.awt.geom.Ellipse2D;
-
-import java.util.ArrayList;
-
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
-
 /*
     Ylaluokka kaytetaan mm. aluksille ja ammuksille.
     unitin ylaluokka.
  */
 public class Sprite extends Pane {
-    protected Point2D direction;
+    private Controller controller;
+    private Point2D direction;
     private double velocity = 200;
     private ImageView imageView = new ImageView();
     private boolean isMoving = false;
-
     private Shape shape;
     private int hitboxShapeType;
     private final int rectangle = 1;
@@ -34,11 +27,11 @@ public class Sprite extends Pane {
 
     private String tag = "undefined";
 
-
-    /*  konstruktori.
-        @param int hitboxShapeType: kertoo hitboxin muodon.
-        @param float hitboxShapeMultiplier: kertoo hitboxin suuruuden kertomalla hitboxin leveyden ja pituuden parametrin arvolla. (0.0-1.0)
-
+    /** konstruktori.
+     *
+     * @param hitboxShapeType hitboxShapeType: kertoo hitboxin muodon.
+     * @param hitboxShapeMultiplier hitboxShapeMultiplier: kertoo hitboxin suuruuden kertomalla hitboxin leveyden
+     *                              ja pituuden parametrin arvolla. (0.0-1.0)
      */
     public Sprite(int hitboxShapeType, float hitboxShapeMultiplier){
         this.hitboxShapeType = hitboxShapeType;
@@ -119,6 +112,9 @@ public class Sprite extends Pane {
         this.getChildren().add(imageView);
     }
 
+    public Image getImage() {
+        return imageView.getImage();
+    }
 
     public void setImages(Image newImage) {
         ImageView imageView = new ImageView();
@@ -129,9 +125,6 @@ public class Sprite extends Pane {
     public void printSize(){//TODO poista lopuks
         System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
     }
-
-
-
 
     public Shape getSpriteShape(){
         switch(hitboxShapeType){

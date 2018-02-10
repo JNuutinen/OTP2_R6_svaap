@@ -1,22 +1,20 @@
 package model;
 
-import javafx.application.Platform;
+import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Shape;
-import javafx.scene.layout.Pane;
-import view.GameMain;
-import model.Sprite;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
-public class Projectile extends Sprite implements Updateable{
+public class Projectile extends Sprite implements Updateable {
+    private Controller controller;
     private int damage;
     private boolean hit = false;
-    private int speed = 300;
+    private int speed = 500;
 
-    public Projectile(Point2D startingLocation, double direction, int damage, String tag){
+    public Projectile(Controller controller, Point2D startingLocation, double direction, int damage, String tag){
+        this.controller = controller;
         this.setPosition(startingLocation.getX(), startingLocation.getY());
         this.setDirection(direction);
         this.setTag(tag);
@@ -26,7 +24,6 @@ public class Projectile extends Sprite implements Updateable{
 
         setVelocity(speed);
         setIsMoving(true);
-        GameLoop.queueUpdateable(this);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class Projectile extends Sprite implements Updateable{
     public void collides(Updateable collidingUpdateable){
 
         destroyThis();
-        for (Unit unit : GameMain.units) {
+        for (Unit unit : controller.getCollisionList()) {
             if (unit == collidingUpdateable) {
                 unit.takeDamage(damage);
             }
@@ -65,7 +62,6 @@ public class Projectile extends Sprite implements Updateable{
     }
 
     public void destroyThis(){
-        GameLoop.removeUpdateable(this);
-        GameMain.removeSprite(this);
+        controller.removeUpdateable(this);
     }
 }

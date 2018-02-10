@@ -1,32 +1,102 @@
 package controller;
 
-import model.Enemy;
-import model.Player;
-import model.Unit;
+import javafx.application.Platform;
+import javafx.scene.image.Image;
+import model.*;
 import view.GameMain;
+import view.View;
 
-/*
-    TODO: tätä ei vielä käytössä
- */
-public class GameController {
+import java.util.ArrayList;
 
-    private GameMain gameMain;
-    private Enemy enemy;
-    private Player player1;
-    private Unit unit;
+import static model.Enemy.MOVE_STRAIGHT;
 
-    public GameController(GameMain gameMain){//konstruktori
-        this.gameMain = gameMain;
+public class GameController implements Controller {
+    private View view;
+    private GameLoop gameLoop;
+    private Player player;
+
+    public GameController(GameMain view) {
+        gameLoop = new GameLoop(this);
+        this.view = view;
     }
 
-    public GameController(){//tyhjä konstruktori
+    @Override
+    public void addPlayer(Player player) {
+        this.player = player;
     }
 
-    public void initOthers(Enemy enemy, Player player1, Unit unit){
-        this.enemy = enemy;
-        this.player1 = player1;
-        this.unit = unit;
+    @Override
+    public void addScore(int score) {
+        player.addScore(score);
+        view.setScore(score);
     }
 
+    @Override
+    public void addUnitToCollisionList(Unit unit) {
+        view.addUnitToCollisionList(unit);
+    }
 
+    @Override
+    public void addUpdateable(Updateable updateable) {
+        Platform.runLater(() -> view.addSprite((Sprite)updateable));
+        gameLoop.queueUpdateable(updateable);
+    }
+
+    @Override
+    public int getScore() {
+        if (player != null) return player.getScore();
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Unit> getCollisionList() {
+        return view.getCollisionList();
+    }
+
+    @Override
+    public synchronized void removeUpdateable(Updateable updateable) {
+        // TODO: hitboxi jää viel?
+        ((Sprite) updateable).setPosition(-50, -50);
+        view.removeSprite((Sprite)updateable);
+        gameLoop.removeUpdateable(updateable);
+    }
+
+    @Override
+    public void startLevel(int levelNumber) {
+        Level level;
+        switch (levelNumber) {
+            default:
+                // Luodaan enemy tyypit listaan, mikä annetaan levelille parametrina
+                ArrayList<Enemy> enemies = createEnemyTypes();
+                int numberOfEnemies = 20;
+                int spawnFrequencyModifier = 1;
+                int enemyHealthModifier = 1;
+                int enemyDamageModifier = 1;
+
+                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                        enemyDamageModifier);
+                break;
+        }
+        level.start();
+    }
+
+    @Override
+    public void startLoop() {
+        gameLoop.startLoop();
+    }
+
+    @Override
+    public void setFps(double fps) {
+        view.setFps(fps);
+    }
+
+    private ArrayList<Enemy> createEnemyTypes() {
+        Image enemyImage = new Image("/images/enemy_ship_9000.png");
+        Enemy enemy1 = new Enemy(this);
+        enemy1.setMovementPattern(MOVE_STRAIGHT);
+        enemy1.setImage(enemyImage);
+        ArrayList<Enemy> enemies = new ArrayList<>();
+        enemies.add(enemy1);
+        return enemies;
+    }
 }

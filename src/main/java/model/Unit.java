@@ -1,6 +1,6 @@
 package model;
-import javafx.application.Platform;
-import view.GameMain;
+
+import controller.Controller;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,10 @@ import java.util.ArrayList;
  * Lisää spriteen avaruusalukselle ominaisia piirteitä
  */
 public class Unit extends Sprite implements Updateable {
+    /**
+     * Kontrolleri
+     */
+    private Controller controller;
     /**
      * Yksikön hitpointsit
      */
@@ -19,7 +23,8 @@ public class Unit extends Sprite implements Updateable {
     private int level;
     ArrayList<Component> components = new ArrayList<>();
 
-    public Unit() {
+    public Unit(Controller controller) {
+        this.controller = controller;
         hp = 30;
     }
 
@@ -47,12 +52,11 @@ public class Unit extends Sprite implements Updateable {
         hp -= damage;
         if(hp <= 0){
             System.out.println("AI SAATANA");
-            GameLoop.removeUpdateable(this);
-            GameMain.removeSprite(this);
+            controller.removeUpdateable(this);
             if(this.getTag().equals("enemy")){
 
                 System.out.println("Anna sitä hyvää");
-                Player.addScore(100);
+                controller.addScore(100);
             }
         }
     }
@@ -102,8 +106,7 @@ public class Unit extends Sprite implements Updateable {
     }
 
     public void destroyThis(){
-        GameLoop.removeUpdateable(this);
-        GameMain.removeSprite(this);
+        controller.removeUpdateable(this);
     }
 
     public void setHP(int hp){

@@ -1,33 +1,36 @@
 package model;
 
-import javafx.application.Platform;
-import javafx.geometry.Point2D;
+import controller.Controller;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import view.GameMain;
 
 import static view.GameMain.input;
 
 public class Player extends Unit implements Updateable {
+    private Controller controller;
     private double xVelocity;
     private double yVelocity;
-    private static int score = 0;
+    private int score = 0;
     private int fireRate = 5;
     private int fireRateCounter = 5;
 
-    public Player(){
+    public Player(Controller controller) {
+        super(controller);
+        this.controller = controller;
         this.setHp(9999);
-        GameMain.units.add(this);
+        controller.addUnitToCollisionList(this);
         Image shipImage = new Image("/images/player_ship_9000.png");
         setImage(shipImage);
 
+        /*
         //Kova koodattuja komponentteja
         Component b = new Component("/images/player_ship_9000.png");
         Component c = new Component("/images/Start.png");
         Component a = new Component("/images/enemy_ship_9000.png");
-        //components.add(b);
-       // components.add(a);
-       // components.add(c);
+        components.add(b);
+        components.add(a);
+        components.add(c);
+        */
 
         int componentOffset = 10; //Tätä vaihtamalla voi muokata minne komponentti tulee Y-akselilla
 
@@ -71,6 +74,20 @@ public class Player extends Unit implements Updateable {
 
     }
 
+    public void addScore(int points){
+        score += points;
+    }
+
+    /*
+    public void setScore(int points) {
+        score = points;
+    }
+    */
+
+    public int getScore() {
+        return score;
+    }
+
     public void collides(Updateable collidingUpdateable){
         // tagin saa: collidingUpdateable.getTag()
     }
@@ -93,19 +110,6 @@ public class Player extends Unit implements Updateable {
     }
     */
 
-    public static int getScore() {
-        return score;
-    }
-
-    public static void setScore(int points) {
-        score = points;
-    }
-
-    public static void addScore(int points){
-        score += points;
-        GameMain.score.setText("Score: " + score);
-    }
-
     public Updateable getUpdateable(){
         return this;
     }
@@ -119,18 +123,14 @@ public class Player extends Unit implements Updateable {
         yVelocity = 0;
     }
 
-    public void spawnProjectile(){
-        Projectile projectile = new Projectile(this.getPosition(), 0, 10,  "projectile_player");
-        GameLoop.queueUpdateable(projectile);
-        GameMain.pane.getChildren().add(projectile);
+    // TODO: tää sit joskus aseeseen
+    private void spawnProjectile(){
+        Projectile projectile = new Projectile(controller, this.getPosition(), 0, 10,
+                "projectile_player");
+        controller.addUpdateable(projectile);
     }
 
     public void destroyThis(){
-        GameLoop.removeUpdateable(this);
-        GameMain.removeSprite(this);
-    }
-
-    public Player getPlayer(){
-        return this;
+        controller.removeUpdateable(this);
     }
 }

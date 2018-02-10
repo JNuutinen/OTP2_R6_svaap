@@ -1,34 +1,45 @@
 package view;
 
+import controller.Controller;
+import controller.GameController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import model.*;
+import model.Player;
+import model.Sprite;
+import model.Unit;
 
 import java.util.ArrayList;
 
-public class GameMain extends Application {
+public class GameMain extends Application implements View {
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
-    public static ArrayList<Unit> units = new ArrayList<>();
     public static ArrayList<String> input;
-    public static Label score;
-    public static Label debugger_fps;
 
-    public static Pane pane;
+    private ArrayList<Unit> units;
+    private Pane pane;
+    private Label debugger_fps;
+    private Controller controller;
+    private Label score;
 
-    private GameLoop gameLoop = new GameLoop(this);
+    @Override
+    public void init() {
+        controller = new GameController(this);
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    @Override
     public void start(Stage primaryStage) {
+        units = new ArrayList<>();
         // sulje ohjelma kun ikkunan sulkee
         primaryStage.setOnCloseRequest(event -> System.exit(0));
 
@@ -43,15 +54,41 @@ public class GameMain extends Application {
         primaryStage.show();
     }
 
-    public static void addEnemy(Enemy enemy) {
-        GameLoop.queueUpdateable(enemy);
-        pane.getChildren().add(enemy);
+    @Override
+    public void addSprite(Sprite sprite) {
+        pane.getChildren().add(sprite);
     }
 
-    public static void removeSprite(Sprite sprite){
-        //TODO removeSprite jättää spriten hitboxin paikoilleen, alla olevaa vain väliaikainen fixi
-        sprite.setPosition(-50, -50);
+    @Override
+    public void addUnitToCollisionList(Unit unit) {
+        units.add(unit);
+    }
+
+    @Override
+    public ArrayList<Unit> getCollisionList() {
+        return units;
+    }
+
+    @Override
+    public void removeSprite(Sprite sprite){
         pane.getChildren().remove(sprite);
+    }
+
+    @Override
+    public void setFps(double fps) {
+        if(fps < 60){
+            debugger_fps.setTextFill(Color.web("#4c4323"));
+        } else if(fps < 57){
+            debugger_fps.setTextFill(Color.web("#f44242"));
+        } else{
+            debugger_fps.setTextFill(Color.web("#3d3d3d"));
+        }
+        debugger_fps.setText("avg. fps of last second: " + fps);
+    }
+
+    @Override
+    public void setScore(int score) {
+        this.score.setText("Score: " + score);
     }
 
     private void startGame(Stage primaryStage) {
@@ -64,7 +101,7 @@ public class GameMain extends Application {
         primaryStage.setTitle("svaap:development");
         vbox.setStyle("-fx-background-color: black");
 
-        score = new Label("Score: " + Player.getScore());
+        score = new Label("Score: " + controller.getScore());
         score.setFont(new Font("Cambria", 32));
         pane.getChildren().add(score);
 
@@ -76,10 +113,12 @@ public class GameMain extends Application {
         pane.getChildren().add(debugger_fps);
 
         //pelaajan luonti ja lisays looppilistaan
-        Player player = new Player();
+        Player player = new Player(controller);
         player.setPosition(100, 300);
-        GameLoop.queueUpdateable(player);
-        pane.getChildren().addAll(player);
+        // tieto controllerille pelaajasta
+        controller.addPlayer(player);
+        controller.addUpdateable(player);
+        addUnitToCollisionList(player);
 
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
@@ -96,8 +135,8 @@ public class GameMain extends Application {
             input.remove(code);
         });
         primaryStage.setScene(scene);
-        gameLoop.startLoop();
-        new Level1().start();
+        controller.startLoop();
+        controller.startLevel(0);
     }
 }
 
