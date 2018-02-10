@@ -28,7 +28,7 @@ public class GameController implements Controller {
     @Override
     public void addScore(int score) {
         player.addScore(score);
-        view.setScore(score);
+        view.setScore(player.getScore());
     }
 
     @Override

@@ -3,6 +3,7 @@ package view;
 import controller.Controller;
 import controller.GameController;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Player;
 import model.Sprite;
@@ -135,6 +137,11 @@ public class GameMain extends Application implements View {
             input.remove(code);
         });
         primaryStage.setScene(scene);
+        
+        // keskitetään ikkuna näyttöön
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
+        primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
         controller.startLoop();
         controller.startLevel(0);
     }
