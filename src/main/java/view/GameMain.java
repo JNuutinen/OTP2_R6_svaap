@@ -3,8 +3,6 @@ package view;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -31,6 +29,8 @@ public class GameMain extends Application {
     }
 
     public void start(Stage primaryStage) {
+        // sulje ohjelma kun ikkunan sulkee
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
 
         // Päävalikon luonti
         MainMenu mainMenu = new MainMenu();
@@ -42,14 +42,12 @@ public class GameMain extends Application {
 
         primaryStage.show();
     }
-    public static Pane getPane(){
-        return pane;
-    }
 
     public static void addEnemy(Enemy enemy) {
         GameLoop.queueUpdateable(enemy);
         pane.getChildren().add(enemy);
     }
+
     public static void removeSprite(Sprite sprite){
         //TODO removeSprite jättää spriten hitboxin paikoilleen, alla olevaa vain väliaikainen fixi
         sprite.setPosition(-50, -50);
@@ -82,7 +80,6 @@ public class GameMain extends Application {
         player.setPosition(100, 300);
         GameLoop.queueUpdateable(player);
         pane.getChildren().addAll(player);
-
 
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
