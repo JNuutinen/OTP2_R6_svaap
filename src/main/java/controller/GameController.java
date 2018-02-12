@@ -25,6 +25,7 @@ public class GameController implements Controller {
         this.player = player;
     }
 
+
     @Override
     public void addScore(int score) {
         player.addScore(score);
@@ -34,6 +35,11 @@ public class GameController implements Controller {
     @Override
     public void addUnitToCollisionList(Unit unit) {
         view.addUnitToCollisionList(unit);
+    }
+
+    @Override
+    public void removeFromCollisionList(Unit unit){
+        Platform.runLater(() ->view.removeFromCollisionList(unit));
     }
 
     @Override
@@ -77,6 +83,16 @@ public class GameController implements Controller {
                 level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
+            case 1:
+                enemies = createEnemyTypes();
+                numberOfEnemies = 10;
+                spawnFrequencyModifier = 3;
+                enemyHealthModifier = 2;
+                enemyDamageModifier = 2;
+
+                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                        enemyDamageModifier, levelNumber);
+                break;
         }
         level.start();
     }
@@ -100,4 +116,5 @@ public class GameController implements Controller {
         enemies.add(enemy1);
         return enemies;
     }
+
 }

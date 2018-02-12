@@ -40,7 +40,12 @@ public class GameMain extends Application implements View {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
+        mainMenu(primaryStage);
+    }
+
+
+    public void mainMenu(Stage primaryStage) {
         units = new ArrayList<>();
         // sulje ohjelma kun ikkunan sulkee
         primaryStage.setOnCloseRequest(event -> System.exit(0));
@@ -69,6 +74,10 @@ public class GameMain extends Application implements View {
     @Override
     public ArrayList<Unit> getCollisionList() {
         return units;
+    }
+
+    public void removeFromCollisionList(Unit unit){
+        units.remove(unit);
     }
 
     @Override
@@ -142,6 +151,10 @@ public class GameMain extends Application implements View {
         primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
         controller.startLoop();
         controller.startLevel(0);
+
     }
+
+
+
 }
 

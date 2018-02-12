@@ -52,6 +52,7 @@ public class Unit extends Sprite implements Updateable {
         hp -= damage;
         if(hp <= 0){
             controller.removeUpdateable(this);
+            controller.removeFromCollisionList(this);
             if(this.getTag().equals("enemy")){
                 controller.addScore(100);
             }

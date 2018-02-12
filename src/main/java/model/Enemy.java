@@ -98,5 +98,6 @@ public class Enemy extends Unit implements Updateable {
 
     public void destroyThis(){
         controller.removeUpdateable(this);
+        controller.removeFromCollisionList(this);;
     }
 }
