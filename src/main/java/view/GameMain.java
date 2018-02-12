@@ -26,10 +26,12 @@ public class GameMain extends Application implements View {
 
     private ArrayList<Unit> units;
     private Pane pane;
-    private Label debugger_fps;
     private Controller controller;
     private Label score;
     private Stage primaryStage;
+
+    private boolean debuggerToolsEnabled = true;
+    private Label debugger_fps;
 
     @Override
     public void init() {
@@ -95,13 +97,13 @@ public class GameMain extends Application implements View {
     @Override
     public void setFps(double fps) {
         if(fps < 60){
-            debugger_fps.setTextFill(Color.web("#4c4323"));
+            debugger_fps.setTextFill(Color.web("#ffe500"));//keltane
         } else if(fps < 57){
-            debugger_fps.setTextFill(Color.web("#f44242"));
+            debugger_fps.setTextFill(Color.web("#ff2b2b"));//punane
         } else{
-            debugger_fps.setTextFill(Color.web("#3d3d3d"));
+            debugger_fps.setTextFill(Color.web("#ffffff"));//valkone
         }
-        debugger_fps.setText("avg. fps of last second: " + fps);
+        debugger_fps.setText("mainLoop fps: " + fps);
     }
 
     @Override
@@ -123,12 +125,13 @@ public class GameMain extends Application implements View {
         score.setFont(new Font("Cambria", 32));
         pane.getChildren().add(score);
 
-        //debugger_fps
-        debugger_fps = new Label("fps");
-
-        debugger_fps.setFont(new Font("Cambria", 32));
-        debugger_fps.setLayoutX(250);
-        pane.getChildren().add(debugger_fps);
+        //---------------- debugger
+        if(debuggerToolsEnabled) {
+            debugger_fps = new Label("fps");
+            debugger_fps.setFont(new Font("Cambria", 16));
+            debugger_fps.setLayoutX(250);
+            pane.getChildren().add(debugger_fps);
+        }
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player(controller);

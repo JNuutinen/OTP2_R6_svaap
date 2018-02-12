@@ -5,7 +5,7 @@ import javafx.scene.shape.Shape;
 public interface Updateable {
     public void update(double deltaTime);
 
-    public Shape getSpriteShape();
+    public Shape getHitboxShape();
 
     public void collides(Updateable collidingUpdateable);
 

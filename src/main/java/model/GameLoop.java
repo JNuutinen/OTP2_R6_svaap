@@ -59,7 +59,7 @@ public class GameLoop {
             public void handle(long now) {
                 double deltaTime = (now - lastUpdate) / 1_000_000_000.0;
 
-                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/120.0) {
+                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/200.0) {
 
 
 
@@ -108,9 +108,8 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
-                double deltaTime = (now - lastUpdate) / 1_000_000_000.0;
 
-                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/120.0) {
+                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/200.0) {
                     // Gameloopin taika
                     for (Updateable updateable : updateables) {
                         if (updateable != null) {
@@ -121,7 +120,7 @@ public class GameLoop {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag().equals("player")) {
-                                            if (((Path) Shape.intersect(updateable.getSpriteShape(), updateable2.getSpriteShape())).getElements().size() > 0) {
+                                            if (((Path) Shape.intersect(updateable.getHitboxShape(), updateable2.getHitboxShape())).getElements().size() > 0) {
                                                 updateable.collides(updateable2.getUpdateable());
                                             }
                                         }
@@ -133,7 +132,7 @@ public class GameLoop {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag().equals("enemy")) {
-                                            if (((Path) Shape.intersect(updateable.getSpriteShape(), updateable2.getSpriteShape())).getElements().size() > 0) {
+                                            if (((Path) Shape.intersect(updateable.getHitboxShape(), updateable2.getHitboxShape())).getElements().size() > 0) {
                                                 updateable.collides(updateable2.getUpdateable());
                                             }
                                         }
