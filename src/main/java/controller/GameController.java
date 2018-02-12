@@ -121,6 +121,6 @@ public class GameController implements Controller {
     @Override
     public void returnToMain(){
         view.returnToMain();
-        gameLoop.timer.cancel();
+        gameLoop.stopLoops();
     }
 }
