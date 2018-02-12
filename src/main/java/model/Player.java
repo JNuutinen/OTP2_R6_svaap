@@ -126,7 +126,7 @@ public class Player extends Unit implements Updateable {
     // TODO: tää sit joskus aseeseen
     private void spawnProjectile(){
         Projectile projectile = new Projectile(controller, this.getPosition(), 0, 10,
-                "projectile_player");
+                "projectile_player", this);
         controller.addUpdateable(projectile);
     }
 

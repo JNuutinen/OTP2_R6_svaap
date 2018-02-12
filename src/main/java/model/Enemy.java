@@ -92,7 +92,7 @@ public class Enemy extends Unit implements Updateable {
 
     public void spawnProjectile(){
         Projectile projectile = new Projectile(controller, this.getPosition(), 180, 10,
-                "projectile_enemy");
+                "projectile_enemy", this);
         controller.addUpdateable(projectile);
     }
 
