@@ -17,7 +17,7 @@ public class Player extends Unit implements Updateable {
     public Player(Controller controller) {
         super(controller);
         this.controller = controller;
-        this.setHp(9999);
+        this.setHp(60);
         controller.addUnitToCollisionList(this);
         Image shipImage = new Image("/images/player_ship_9000.png");
         setImage(shipImage);

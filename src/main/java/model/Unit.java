@@ -56,6 +56,9 @@ public class Unit extends Sprite implements Updateable {
             if(this.getTag().equals("enemy")){
                 controller.addScore(100);
             }
+            if(this.getTag().equals("player")){
+                controller.returnToMain();
+            }
         }
         if(this.getTag().equals("player")){
             controller.addScore(-50);
