@@ -2,6 +2,8 @@ package model;
 
 import controller.Controller;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import view.GameMain;
 
 import java.util.ArrayList;
@@ -39,6 +41,14 @@ public class Level extends Thread {
 
     @Override
     public void run() {
+
+        //enem_tracker testausta varten
+        Point2D[] path = {new Point2D(0,0), new Point2D(100, 100)};
+        Enemy_tracker enemy_tracker = new Enemy_tracker(controller, new Image("/images/Start.png"), path,
+                WINDOW_WIDTH - 10, 50, "enemy");
+        controller.addUpdateable(enemy_tracker);
+
+
         // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
