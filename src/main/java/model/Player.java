@@ -11,8 +11,8 @@ public class Player extends Unit implements Updateable {
     private double xVelocity;
     private double yVelocity;
     private int score = 0;
-    private int fireRate = 5;
-    private int fireRateCounter = 5;
+    private double fireRate = 0.1;//sekunneissa
+    private double fireRateCounter = 0;
 
     public Player(Controller controller) {
         super(controller);
@@ -57,18 +57,18 @@ public class Player extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
-        if (fireRateCounter <= fireRate) fireRateCounter++;
         resetVelocity();
         if (input.contains("A")) addVelocity(getVelocity()*-1, 0);
         if (input.contains("D")) addVelocity(getVelocity(), 0);
         if (input.contains("W")) addVelocity(0, getVelocity()*-1);
         if (input.contains("S")) addVelocity(0, getVelocity());
         if (input.contains("O")) {
-            if (fireRateCounter >= fireRate) {
+            if(fireRateCounter > fireRate){
                 fireRateCounter = 0;
                 spawnProjectile();
             }
         }
+        fireRateCounter += deltaTime;
         if (input.contains("V")) System.exit(0);
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
 

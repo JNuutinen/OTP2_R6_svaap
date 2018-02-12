@@ -56,7 +56,7 @@ public class GameController implements Controller {
     @Override
     public synchronized void removeUpdateable(Updateable updateable) {
         // TODO: hitboxi jää viel?
-        ((Sprite) updateable).setPosition(-50, -50);
+        //((Sprite) updateable).setPosition(-50, -50);
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
     }
