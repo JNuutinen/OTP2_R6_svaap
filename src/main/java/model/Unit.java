@@ -51,13 +51,13 @@ public class Unit extends Sprite implements Updateable {
     public void takeDamage(int damage) {
         hp -= damage;
         if(hp <= 0){
-            System.out.println("AI SAATANA");
             controller.removeUpdateable(this);
             if(this.getTag().equals("enemy")){
-
-                System.out.println("Anna sitä hyvää");
                 controller.addScore(100);
             }
+        }
+        if(this.getTag().equals("player")){
+            controller.addScore(-50);
         }
     }
 

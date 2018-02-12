@@ -13,6 +13,7 @@ public interface Controller {
     void addUnitToCollisionList(Unit unit);
     int getScore();
     ArrayList<Unit> getCollisionList();
+    ArrayList<Updateable> getUpdateables();
     void startLevel(int levelNumber);
     void startLoop();
     void setFps(double fps);

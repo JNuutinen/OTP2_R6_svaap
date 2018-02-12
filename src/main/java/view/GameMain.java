@@ -120,8 +120,6 @@ public class GameMain extends Application implements View {
         // tieto controllerille pelaajasta
         controller.addPlayer(player);
         controller.addUpdateable(player);
-        addUnitToCollisionList(player);
-
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 

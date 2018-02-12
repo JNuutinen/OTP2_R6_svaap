@@ -117,4 +117,8 @@ public class GameLoop {
         Timer timer = new Timer();
         timer.schedule(timerTask, 0, frameTimeInMilliseconds);
     }
+
+    public ArrayList<Updateable> getUpdateables(){
+        return updateables;
+    }
 }

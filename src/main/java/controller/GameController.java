@@ -56,10 +56,11 @@ public class GameController implements Controller {
     @Override
     public synchronized void removeUpdateable(Updateable updateable) {
         // TODO: hitboxi jää viel?
-        ((Sprite) updateable).setPosition(-50, -50);
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
     }
+
+    public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
     @Override
     public void startLevel(int levelNumber) {
@@ -68,13 +69,13 @@ public class GameController implements Controller {
             default:
                 // Luodaan enemy tyypit listaan, mikä annetaan levelille parametrina
                 ArrayList<Enemy> enemies = createEnemyTypes();
-                int numberOfEnemies = 20;
+                int numberOfEnemies = 4;
                 int spawnFrequencyModifier = 1;
                 int enemyHealthModifier = 1;
                 int enemyDamageModifier = 1;
 
                 level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier);
+                        enemyDamageModifier, levelNumber);
                 break;
         }
         level.start();

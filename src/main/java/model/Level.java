@@ -20,15 +20,19 @@ public class Level extends Thread {
     private int spawnFrequencyModifier;
     private int enemyHealthModifier;
     private int enemyDamageModifier;
+    private int levelNumber;
+    private Enemy lastEnemy;
+
 
     public Level(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, int spawnFrequencyModifier,
-                 int enemyHealthModifier, int enemyDamageModifier) {
+                 int enemyHealthModifier, int enemyDamageModifier, int levelNumber) {
         this.controller = controller;
         this.enemyTypes = enemyTypes;
         this.numberOfEnemies = numberOfEnemies;
         this.spawnFrequencyModifier = spawnFrequencyModifier;
         this.enemyHealthModifier = enemyHealthModifier;
         this.enemyDamageModifier = enemyDamageModifier;
+        this.levelNumber = levelNumber;
     }
 
     @Override
@@ -49,15 +53,22 @@ public class Level extends Thread {
                 Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
                 Enemy enemy = new Enemy(controller, enemyType.getImage(), enemyType.getMovementPattern(),
                         WINDOW_WIDTH + 50, randomYPos, "enemy");
-
+                if(numberOfEnemies == 1){
+                    lastEnemy = enemy;
+                }
                 controller.addUpdateable(enemy);
+                numberOfEnemies--;
             }
 
             // Levelin viholliset spawnattu, venataan vähän aikaa ennen levelin loppumista
-            Thread.sleep(5000);
+            while(controller.getUpdateables().contains(lastEnemy)){
 
+            }
             // Ilmoita levelin loppumisesta
-
+            System.out.println("Voitit tason 1!");
+            controller.addScore(500);
+            Thread.sleep(5000);
+           // controller.startLevel(levelNumber+1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
