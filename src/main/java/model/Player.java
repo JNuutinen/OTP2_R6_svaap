@@ -17,7 +17,7 @@ public class Player extends Unit implements Updateable {
     public Player(Controller controller) {
         super(controller);
         this.controller = controller;
-        this.setHp(9999);
+        this.setHp(60);
         controller.addUnitToCollisionList(this);
         Image shipImage = new Image("/images/player_ship_9000.png");
         setImage(shipImage);
@@ -126,7 +126,7 @@ public class Player extends Unit implements Updateable {
     // TODO: tää sit joskus aseeseen
     private void spawnProjectile(){
         Projectile projectile = new Projectile(controller, this.getPosition(), 0, 10,
-                "projectile_player");
+                "projectile_player", this);
         controller.addUpdateable(projectile);
     }
 

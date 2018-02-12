@@ -11,10 +11,13 @@ public interface Controller {
     void addScore(int score);
     void addUpdateable(Updateable updateable);
     void addUnitToCollisionList(Unit unit);
+    void removeFromCollisionList(Unit unit);
     int getScore();
     ArrayList<Unit> getCollisionList();
+    ArrayList<Updateable> getUpdateables();
     void startLevel(int levelNumber);
     void startLoop();
     void setFps(double fps);
     void removeUpdateable(Updateable updateable);
+    void returnToMain();
 }

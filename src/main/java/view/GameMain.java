@@ -29,10 +29,11 @@ public class GameMain extends Application implements View {
     private Label debugger_fps;
     private Controller controller;
     private Label score;
+    private Stage primaryStage;
 
     @Override
     public void init() {
-        controller = new GameController(this);
+        //controller = new GameController(this);
     }
 
     public static void main(String[] args) {
@@ -40,7 +41,18 @@ public class GameMain extends Application implements View {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
+        this.primaryStage = primaryStage;
+        mainMenu(this.primaryStage);
+    }
+
+    public void returnToMain(){
+        mainMenu(primaryStage);
+    }
+
+
+    public void mainMenu(Stage primaryStage) {
+        controller = new GameController(this);
         units = new ArrayList<>();
         // sulje ohjelma kun ikkunan sulkee
         primaryStage.setOnCloseRequest(event -> System.exit(0));
@@ -69,6 +81,10 @@ public class GameMain extends Application implements View {
     @Override
     public ArrayList<Unit> getCollisionList() {
         return units;
+    }
+
+    public void removeFromCollisionList(Unit unit){
+        units.remove(unit);
     }
 
     @Override
@@ -120,8 +136,6 @@ public class GameMain extends Application implements View {
         // tieto controllerille pelaajasta
         controller.addPlayer(player);
         controller.addUpdateable(player);
-        addUnitToCollisionList(player);
-
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
@@ -144,6 +158,10 @@ public class GameMain extends Application implements View {
         primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
         controller.startLoop();
         controller.startLevel(0);
+
     }
+
+
+
 }
 

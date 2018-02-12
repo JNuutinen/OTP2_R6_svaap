@@ -25,6 +25,7 @@ public class GameController implements Controller {
         this.player = player;
     }
 
+
     @Override
     public void addScore(int score) {
         player.addScore(score);
@@ -34,6 +35,11 @@ public class GameController implements Controller {
     @Override
     public void addUnitToCollisionList(Unit unit) {
         view.addUnitToCollisionList(unit);
+    }
+
+    @Override
+    public void removeFromCollisionList(Unit unit){
+        Platform.runLater(() ->view.removeFromCollisionList(unit));
     }
 
     @Override
@@ -61,6 +67,8 @@ public class GameController implements Controller {
         gameLoop.removeUpdateable(updateable);
     }
 
+    public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
+
     @Override
     public void startLevel(int levelNumber) {
         Level level;
@@ -68,13 +76,23 @@ public class GameController implements Controller {
             default:
                 // Luodaan enemy tyypit listaan, mikä annetaan levelille parametrina
                 ArrayList<Enemy> enemies = createEnemyTypes();
-                int numberOfEnemies = 20;
+                int numberOfEnemies = 4;
                 int spawnFrequencyModifier = 1;
                 int enemyHealthModifier = 1;
                 int enemyDamageModifier = 1;
 
                 level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier);
+                        enemyDamageModifier, levelNumber);
+                break;
+            case 1:
+                enemies = createEnemyTypes();
+                numberOfEnemies = 10;
+                spawnFrequencyModifier = 3;
+                enemyHealthModifier = 2;
+                enemyDamageModifier = 2;
+
+                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                        enemyDamageModifier, levelNumber);
                 break;
         }
         level.start();
@@ -98,5 +116,11 @@ public class GameController implements Controller {
         ArrayList<Enemy> enemies = new ArrayList<>();
         enemies.add(enemy1);
         return enemies;
+    }
+
+    @Override
+    public void returnToMain(){
+        view.returnToMain();
+        gameLoop.timer.cancel();
     }
 }
