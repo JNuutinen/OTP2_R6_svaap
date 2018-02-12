@@ -13,6 +13,7 @@ public class GameLoop {
     private volatile Queue<Updateable> updateableQueue;
     private volatile Queue<Updateable> removeUpdateableQueue;
     private ArrayList<Updateable> updateables;
+    public Timer timer;
 
     public GameLoop(Controller controller) {
         this.controller = controller;
@@ -114,7 +115,7 @@ public class GameLoop {
         };
 
         long frameTimeInMilliseconds = (long)(1000.0 / 60);
-        Timer timer = new Timer();
+        timer = new Timer();
         timer.schedule(timerTask, 0, frameTimeInMilliseconds);
     }
 

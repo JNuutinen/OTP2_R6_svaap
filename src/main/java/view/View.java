@@ -14,5 +14,6 @@ public interface View {
     void removeSprite(Sprite sprite);
     void setFps(double fps);
     void setScore(int score);
+    void returnToMain();
 
 }

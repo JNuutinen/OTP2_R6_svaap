@@ -19,5 +19,5 @@ public interface Controller {
     void startLoop();
     void setFps(double fps);
     void removeUpdateable(Updateable updateable);
-
+    void returnToMain();
 }

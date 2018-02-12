@@ -29,10 +29,11 @@ public class GameMain extends Application implements View {
     private Label debugger_fps;
     private Controller controller;
     private Label score;
+    private Stage primaryStage;
 
     @Override
     public void init() {
-        controller = new GameController(this);
+        //controller = new GameController(this);
     }
 
     public static void main(String[] args) {
@@ -41,11 +42,17 @@ public class GameMain extends Application implements View {
 
     @Override
     public void start(Stage primaryStage){
+        this.primaryStage = primaryStage;
+        mainMenu(this.primaryStage);
+    }
+
+    public void returnToMain(){
         mainMenu(primaryStage);
     }
 
 
     public void mainMenu(Stage primaryStage) {
+        controller = new GameController(this);
         units = new ArrayList<>();
         // sulje ohjelma kun ikkunan sulkee
         primaryStage.setOnCloseRequest(event -> System.exit(0));

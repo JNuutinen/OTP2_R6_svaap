@@ -71,10 +71,9 @@ public class Level extends Thread {
             System.out.println("Voitit tason " + (levelNumber+1) +"!");
             Platform.runLater(() -> controller.addScore(500));
 
-
             // Ilmoita levelin loppumisesta
-
-           controller.startLevel(levelNumber+1);
+            Platform.runLater(() -> controller.returnToMain());
+           //controller.startLevel(levelNumber+1);
 
         } catch (InterruptedException e) {
             e.printStackTrace();

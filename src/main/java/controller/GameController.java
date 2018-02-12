@@ -117,4 +117,9 @@ public class GameController implements Controller {
         return enemies;
     }
 
+    @Override
+    public void returnToMain(){
+        view.returnToMain();
+        gameLoop.timer.cancel();
+    }
 }
