@@ -51,19 +51,15 @@ public class GameLoop {
 
             private long lastUpdate = 0 ;
 
-            double debugger_avgFps = 0;
             double debugger_toSecondCounter = 0;
             int debugger_frameCounter = 0;
 
             @Override
             public void handle(long now) {
                 double deltaTime = (now - lastUpdate) / 1_000_000_000.0;
-
-                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/200.0) {
-
-
-
-
+                // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (200 fps)
+                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/150.0) {
+                    controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
                     // Tarkista updateable -jono
                     if (!updateableQueue.isEmpty()) {
                         updateables.addAll(updateableQueue);
@@ -95,7 +91,6 @@ public class GameLoop {
                         debugger_toSecondCounter = 0;
                         debugger_frameCounter = 0;
                     }
-
                     lastUpdate = now ;
                 }
             }
@@ -109,7 +104,7 @@ public class GameLoop {
             @Override
             public void handle(long now) {
 
-                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/200.0) {
+                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/150.0) {
                     // Gameloopin taika
                     for (Updateable updateable : updateables) {
                         if (updateable != null) {
@@ -144,7 +139,6 @@ public class GameLoop {
                 }
             }
         };
-
         mainLoop.start();
         collisionLoop.start();
     }

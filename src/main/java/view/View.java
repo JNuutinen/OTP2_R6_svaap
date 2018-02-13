@@ -13,6 +13,7 @@ public interface View {
     ArrayList<Unit> getCollisionList();
     void removeSprite(Sprite sprite);
     void setFps(double fps);
+    void setCurrentFps(double fps);
     void setScore(int score);
     void returnToMain();
 

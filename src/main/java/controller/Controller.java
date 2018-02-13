@@ -18,6 +18,7 @@ public interface Controller {
     void startLevel(int levelNumber);
     void startLoop();
     void setFps(double fps);
+    void setCurrentFps(double fps);
     void removeUpdateable(Updateable updateable);
     void returnToMain();
 }

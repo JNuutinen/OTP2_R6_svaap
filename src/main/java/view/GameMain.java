@@ -32,6 +32,9 @@ public class GameMain extends Application implements View {
 
     private boolean debuggerToolsEnabled = true;
     private Label debugger_fps;
+    private Label debugger_currentFps;
+    private boolean debugger_droppedBelowFpsTarget = false;
+    private double debugger_secondCounter = 0;
 
     @Override
     public void init() {
@@ -103,7 +106,41 @@ public class GameMain extends Application implements View {
         } else{
             debugger_fps.setTextFill(Color.web("#ffffff"));//valkone
         }
-        debugger_fps.setText("mainLoop fps: " + fps);
+        debugger_fps.setText("mainLoop frames in last sec: " + fps);
+    }
+
+    // ------ Debugger
+    public void setCurrentFps(double currentFps){
+        debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
+        if(currentFps < 60){
+            if(debugger_droppedBelowFpsTarget) {
+                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
+                debugger_currentFps.setTextFill(Color.web("#ffe500"));//keltane
+                debugger_droppedBelowFpsTarget = true;
+            }
+        } else if(currentFps < 56){
+            if(debugger_droppedBelowFpsTarget) {
+                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
+                debugger_currentFps.setTextFill(Color.web("#ff2b2b"));//punane
+                debugger_droppedBelowFpsTarget = true;
+            }
+        } else{
+
+            if(debugger_droppedBelowFpsTarget){
+                if(debugger_secondCounter > 0.8){
+                    debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
+                    debugger_droppedBelowFpsTarget = false;
+                    debugger_secondCounter = 0;
+                }
+                else{
+                    debugger_secondCounter += (1/currentFps);
+                }
+            }
+            else{
+                debugger_currentFps.setText("|   mainloop fps :  " + currentFps);
+            }
+            System.out.println("fps: " + currentFps + ("        (GameMain:setCurrentFps())"));
+        }
     }
 
     @Override
@@ -131,6 +168,11 @@ public class GameMain extends Application implements View {
             debugger_fps.setFont(new Font("Cambria", 16));
             debugger_fps.setLayoutX(250);
             pane.getChildren().add(debugger_fps);
+
+            debugger_currentFps = new Label("currentFps");
+            debugger_currentFps.setFont(new Font("Cambria", 16));
+            debugger_currentFps.setLayoutX(540);
+            pane.getChildren().add(debugger_currentFps);
         }
 
         //pelaajan luonti ja lisays looppilistaan

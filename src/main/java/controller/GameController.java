@@ -108,6 +108,10 @@ public class GameController implements Controller {
         view.setFps(fps);
     }
 
+    public void setCurrentFps(double currentFps){
+        view.setCurrentFps(currentFps);
+    }
+
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
         Enemy enemy1 = new Enemy(this);
