@@ -36,16 +36,17 @@ public class Enemy extends Unit implements Updateable {
         super(controller);
         this.controller = controller;
         this.setTag(tag);
+        drawShip(tag);
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setDirection(180);
-        setImage(image);
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
     }
+
 
 
     public Updateable getUpdateable(){

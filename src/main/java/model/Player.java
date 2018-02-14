@@ -30,53 +30,21 @@ public class Player extends Unit implements Updateable {
         this.controller = controller;
         this.setHp(60);
         controller.addUnitToCollisionList(this);
-
-        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää pelaajan alusta
-        triangle.getPoints().addAll(new Double[]{
-                0.0, 0.0,
-                130.0, 40.0,
-                00.0, 80.0 });
-        triangle.setFill(Color.BLACK);
-        triangle.setStroke(Color.CYAN);
-        triangle.setStrokeWidth(2.0);
-        this.getChildren().add(triangle);
-
-        Rectangle rec = new Rectangle(70, 50); //Tämä tekee nelikulmion
-        rec.setX(getXPosition() - 10);
-        rec.setFill(Color.BLACK);
-        rec.setStroke(Color.RED);
-        rec.setStrokeWidth(2.0);
-
-        Rectangle rec1 = new Rectangle(90, 60);
-        rec1.setX(getXPosition() - 10);
-        rec1.setFill(Color.BLACK);
-        rec1.setStroke(Color.BLUE);
-        rec1.setStrokeWidth(2.0);
-
-        Rectangle rec2 = new Rectangle(95, 70);
-        rec2.setX(getXPosition() - 10);
-        rec2.setFill(Color.BLACK);
-        rec2.setStroke(Color.WHITE);
-        rec2.setStrokeWidth(2.0);
-
-        Polygon triangle1 = new Polygon();
-        triangle1.getPoints().addAll(new Double[]{
-                0.0, 0.0,
-                130.0, 150.0,
-                00.0, 300.0 });
-        triangle1.setFill(Color.BLACK);
-        triangle1.setStroke(Color.GREEN);
-        triangle1.setStrokeWidth(2.0);
+        drawShip("player");
 
 
-        Component b = new Component(rec);
+
+        Component b = new Component("circle", 10, 0, Color.RED);
         components.add(b);
-        Component b1 = new Component(rec1);
-        components.add(b1);
-        Component b2 = new Component(rec2);
-        components.add(b2);
+
+        Component c = new Component("rectangle", 10 , 0, Color.WHITE);
+        components.add(c);
+
+        Component d = new Component("triangle", 10, 0, Color.BLUE);
+        components.add(d);
 
         equipComponents(components, "player");
+
     }
 
 
@@ -123,24 +91,6 @@ public class Player extends Unit implements Updateable {
     public void collides(Updateable collidingUpdateable){
         // tagin saa: collidingUpdateable.getTag()
     }
-
-    /* //Todo näitä ei varmaan enää tarvita, koska komponentit on osa alusta
-    void move (double x, double y) {
-        addVelocity(x, y);
-
-        for (Component component : components) {
-            component.addVelocity(x, y);
-        }
-    }
-
-    private void resetVelocities() {
-        resetVelocity();
-
-        for (Component component : components) {
-            component.resetVelocity();
-        }
-    }
-    */
 
     public Updateable getUpdateable(){
         return this;

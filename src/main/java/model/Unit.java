@@ -1,7 +1,10 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 
@@ -106,6 +109,29 @@ public class Unit extends Sprite implements Updateable {
             this.getChildren().add(component.getShape());
         }
         this.setTag(tag);
+    }
+
+    public void drawShip(String tag) {
+        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
+        triangle.getPoints().addAll(new Double[]{
+                0.0, 0.0,
+                120.0, 30.0,
+                0.0, 60.0 });
+
+        if (tag.equals("player")) {
+            Color color = Color.CYAN;
+            triangle.setFill(Color.BLACK);
+            triangle.setStroke(Color.CYAN);
+            triangle.setStrokeWidth(2.0);
+            this.getChildren().add(triangle);
+
+        } else if (tag.equals("enemy")) {
+            triangle.setFill(Color.BLACK);
+            triangle.setStroke(Color.RED);
+            triangle.setStrokeWidth(2.0);
+            triangle.getTransforms().add(new Rotate(180, 50, 30));
+            this.getChildren().add(triangle);
+        }
     }
 
     public int getHp(){
