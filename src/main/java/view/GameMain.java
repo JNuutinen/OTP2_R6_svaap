@@ -22,6 +22,8 @@ import java.util.ArrayList;
 public class GameMain extends Application implements View {
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
+    public static final int MAIN_MENU_WIDTH = 400;
+    public static final int MAIN_MENU_HEIGHT = 400;
     public static ArrayList<String> input;
 
     private MainMenu mainMenu;
@@ -50,6 +52,8 @@ public class GameMain extends Application implements View {
     @Override
     public void start(Stage primaryStage){
         this.primaryStage = primaryStage;
+        primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
+        primaryStage.setResizable(false);
         mainMenu(this.primaryStage);
     }
 
@@ -149,7 +153,6 @@ public class GameMain extends Application implements View {
         VBox vbox;
         vbox = new VBox(pane);
         Scene scene = new Scene(vbox, WINDOW_WIDTH, WINDOW_HEIGHT);
-        primaryStage.setTitle("svaap:development");
         vbox.setStyle("-fx-background-color: black");
 
         score = new Label("Score: " + controller.getScore());
