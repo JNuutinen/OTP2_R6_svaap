@@ -1,14 +1,9 @@
 package model;
 
 import controller.Controller;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
-
-
-import java.awt.geom.GeneralPath;
-import java.util.ArrayList;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 
 import static view.GameMain.input;
 
@@ -28,14 +23,13 @@ public class Player extends Unit implements Updateable {
     public Player(Controller controller) {
         super(controller);
         this.controller = controller;
-        this.setHp(60);
+        this.setHp(500);
         controller.addUnitToCollisionList(this);
 
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää pelaajan alusta
-        triangle.getPoints().addAll(new Double[]{
-                0.0, 0.0,
+        triangle.getPoints().addAll(0.0, 0.0,
                 130.0, 40.0,
-                00.0, 80.0 });
+                00.0, 80.0);
         triangle.setFill(Color.BLACK);
         triangle.setStroke(Color.CYAN);
         triangle.setStrokeWidth(2.0);
@@ -60,10 +54,9 @@ public class Player extends Unit implements Updateable {
         rec2.setStrokeWidth(2.0);
 
         Polygon triangle1 = new Polygon();
-        triangle1.getPoints().addAll(new Double[]{
-                0.0, 0.0,
+        triangle1.getPoints().addAll(0.0, 0.0,
                 130.0, 150.0,
-                00.0, 300.0 });
+                00.0, 300.0);
         triangle1.setFill(Color.BLACK);
         triangle1.setStroke(Color.GREEN);
         triangle1.setStrokeWidth(2.0);

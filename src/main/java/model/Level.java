@@ -4,7 +4,6 @@ import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import view.GameMain;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,15 +20,15 @@ public class Level extends Thread {
     private Controller controller;
     private ArrayList<Enemy> enemyTypes;
     private int numberOfEnemies;
-    private int spawnFrequencyModifier;
-    private int enemyHealthModifier;
-    private int enemyDamageModifier;
+    private double spawnFrequencyModifier;
+    private double enemyHealthModifier;
+    private double enemyDamageModifier;
     private int levelNumber;
     private Updateable lastEnemy;
 
 
-    public Level(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, int spawnFrequencyModifier,
-                 int enemyHealthModifier, int enemyDamageModifier, int levelNumber) {
+    public Level(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, double spawnFrequencyModifier,
+                 double enemyHealthModifier, double enemyDamageModifier, int levelNumber) {
         this.controller = controller;
         this.enemyTypes = enemyTypes;
         this.numberOfEnemies = numberOfEnemies;
@@ -55,8 +54,8 @@ public class Level extends Thread {
                 // paussi vihollisten välillä
                 // TODO: Monen vihollisen yhtäaikainen spawnaus
                 if(numberOfEnemies > 0) {
-                    long sleepTime = ThreadLocalRandom.current().nextLong(BASE_SPAWN_FREQ_LOW / spawnFrequencyModifier,
-                            BASE_SPAWN_FREQ_HIGH / spawnFrequencyModifier + 1);
+                    long sleepTime = ThreadLocalRandom.current().nextLong((long)(BASE_SPAWN_FREQ_LOW * spawnFrequencyModifier),
+                            (long)(BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
                     Thread.sleep(sleepTime);
 
                     // arvotaan spawnauspaikka
@@ -66,7 +65,7 @@ public class Level extends Thread {
                     Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
                     Enemy enemy = new Enemy(controller, enemyType.getImage(), enemyType.getMovementPattern(),
                             WINDOW_WIDTH + 50, randomYPos, "enemy");
-
+                    enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
                     // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                     //
                     if (numberOfEnemies == 1) {

@@ -24,12 +24,13 @@ public class GameMain extends Application implements View {
     public static final int WINDOW_HEIGHT = 720;
     public static ArrayList<String> input;
 
+    private MainMenu mainMenu;
     private ArrayList<Unit> units;
     private Pane pane;
     private Controller controller;
     private Label score;
     private Stage primaryStage;
-
+    private int numberOfLevels = 5;
     private boolean debuggerToolsEnabled = true;
     private Label debugger_fps;
     private Label debugger_currentFps;
@@ -64,7 +65,7 @@ public class GameMain extends Application implements View {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
 
         // Päävalikon luonti
-        MainMenu mainMenu = new MainMenu();
+        mainMenu = new MainMenu(numberOfLevels);
         Scene mainMenuScene = mainMenu.scene();
         primaryStage.setScene(mainMenuScene);
 
@@ -195,7 +196,7 @@ public class GameMain extends Application implements View {
         primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
         primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
         controller.startLoop();
-        controller.startLevel(0);
+        controller.startLevel(mainMenu.getSelectedLevel());
 
     }
 
