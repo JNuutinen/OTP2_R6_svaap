@@ -22,19 +22,23 @@ import java.util.ArrayList;
 public class GameMain extends Application implements View {
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
+    public static final int MAIN_MENU_WIDTH = 400;
+    public static final int MAIN_MENU_HEIGHT = 400;
     public static ArrayList<String> input;
 
+    private MainMenu mainMenu;
     private ArrayList<Unit> units;
     private Pane pane;
     private Controller controller;
     private Label score;
     private Stage primaryStage;
-
+    private int numberOfLevels = 5;
     private boolean debuggerToolsEnabled = true;
     private Label debugger_fps;
     private Label debugger_currentFps;
     private boolean debugger_droppedBelowFpsTarget = false;
     private double debugger_secondCounter = 0;
+
 
     @Override
     public void init() {
@@ -48,6 +52,8 @@ public class GameMain extends Application implements View {
     @Override
     public void start(Stage primaryStage){
         this.primaryStage = primaryStage;
+        primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
+        primaryStage.setResizable(false);
         mainMenu(this.primaryStage);
     }
 
@@ -63,7 +69,7 @@ public class GameMain extends Application implements View {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
 
         // Päävalikon luonti
-        MainMenu mainMenu = new MainMenu();
+        mainMenu = new MainMenu(numberOfLevels);
         Scene mainMenuScene = mainMenu.scene();
         primaryStage.setScene(mainMenuScene);
 
@@ -110,36 +116,28 @@ public class GameMain extends Application implements View {
     }
 
     // ------ Debugger
-    public void setCurrentFps(double currentFps){
-        debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
-        if(currentFps < 60){
-            if(debugger_droppedBelowFpsTarget) {
-                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
-                debugger_currentFps.setTextFill(Color.web("#ffe500"));//keltane
-                debugger_droppedBelowFpsTarget = true;
-            }
-        } else if(currentFps < 56){
-            if(debugger_droppedBelowFpsTarget) {
-                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
-                debugger_currentFps.setTextFill(Color.web("#ff2b2b"));//punane
-                debugger_droppedBelowFpsTarget = true;
-            }
-        } else{
 
-            if(debugger_droppedBelowFpsTarget){
-                if(debugger_secondCounter > 0.8){
-                    debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
-                    debugger_droppedBelowFpsTarget = false;
-                    debugger_secondCounter = 0;
-                }
-                else{
-                    debugger_secondCounter += (1/currentFps);
-                }
+    /* TODO TAA MITTARI ON RIKKI JOKA KORJATAAN MYOHEMMIN
+     */
+    public void setCurrentFps(double currentFps){
+        if(debugger_droppedBelowFpsTarget) {
+            debugger_secondCounter += (1 / currentFps);
+            if (debugger_secondCounter > 0) {
+                debugger_droppedBelowFpsTarget = false;
+                debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
             }
-            else{
-                debugger_currentFps.setText("|   mainloop fps :  " + currentFps);
-            }
-            System.out.println("fps: " + currentFps + ("        (GameMain:setCurrentFps())"));
+        }
+        else if (currentFps < 56) {
+            debugger_currentFps.setText("nää numerot on alternative truth ei saa uskoa-> " + currentFps);
+            debugger_currentFps.setTextFill(Color.web("#ff8884"));//punane
+            debugger_droppedBelowFpsTarget = true;
+            debugger_secondCounter = 0;
+        }
+        else if (currentFps < 60) {
+            debugger_currentFps.setText("nää numerot on alternative truth ei saa uskoa-> " + currentFps);
+            debugger_currentFps.setTextFill(Color.web("#ffef7c"));//keltane
+            debugger_droppedBelowFpsTarget = true;
+            debugger_secondCounter = 0;
         }
     }
 
@@ -155,7 +153,6 @@ public class GameMain extends Application implements View {
         VBox vbox;
         vbox = new VBox(pane);
         Scene scene = new Scene(vbox, WINDOW_WIDTH, WINDOW_HEIGHT);
-        primaryStage.setTitle("svaap:development");
         vbox.setStyle("-fx-background-color: black");
 
         score = new Label("Score: " + controller.getScore());
@@ -202,7 +199,7 @@ public class GameMain extends Application implements View {
         primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
         primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
         controller.startLoop();
-        controller.startLevel(0);
+        controller.startLevel(mainMenu.getSelectedLevel());
 
     }
 

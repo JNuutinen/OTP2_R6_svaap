@@ -1,14 +1,9 @@
 package model;
 
 import controller.Controller;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
-
-
-import java.awt.geom.GeneralPath;
-import java.util.ArrayList;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 
 import static view.GameMain.input;
 
@@ -28,9 +23,9 @@ public class Player extends Unit implements Updateable {
     public Player(Controller controller) {
         super(controller);
         this.controller = controller;
-        this.setHp(60);
+        this.setHp(500);
         controller.addUnitToCollisionList(this);
-        drawShip("player");
+        drawShip();
 
 
 
@@ -121,27 +116,12 @@ public class Player extends Unit implements Updateable {
         else{ // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             yVelocity += directionY * deltaTime * accelerationForce;
         }
-        /* TAA OTTI HUOMIOON KIIHTYVYYSKERTOIMEN MUTTA SE OLI PERSEESTA TODO HEGE POISTAA
-        if(directionY==0);
-        else if(directionY * yVelocity >= 0){ // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
-            if(yVelocity < maxVelocity && yVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
-                yVelocity *=accelerationMultiplier;
-                yVelocity += directionY * deltaTime * accelerationForce;
-            }
-            else{ // jos ylittaa maksiminopeuden
-                yVelocity = maxVelocity * directionY;
-            }
-        }
-        else{
-            yVelocity *= (1/accelerationMultiplier);
-            yVelocity += directionY * deltaTime * accelerationForce;
-        }*/
     }
 
     // hidasta x suunnassa
     private void decelerateX() {
         if (xVelocity > 0) {
-            if (xVelocity < decelerateForce * deltaTime) {
+            if (xVelocity < decelerateForce * deltaTime) { // pysayta jos nopeus < seuraavan framen nopeus
                 xVelocity = 0;
             } else {
                 xVelocity -= decelerateForce * deltaTime;
@@ -158,7 +138,7 @@ public class Player extends Unit implements Updateable {
     // hidasta y suunnassa
     private void decelerateY(){
         if(yVelocity > 0){
-            if(yVelocity < decelerateForce * deltaTime){
+            if(yVelocity < decelerateForce * deltaTime){ // pysayta jos nopeus < seuraavan framen nopeus
                 yVelocity = 0;
             }
             else {
