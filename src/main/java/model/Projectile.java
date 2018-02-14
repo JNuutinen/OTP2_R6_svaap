@@ -11,7 +11,7 @@ public class Projectile extends Sprite implements Updateable {
     private Controller controller;
     private int damage;
     private boolean hit = false;
-    private int speed = 500;
+    private int speed = 35;
 
     public Projectile(Controller controller, Point2D startingLocation, double direction, int damage, String tag){
         this.controller = controller;
@@ -54,7 +54,7 @@ public class Projectile extends Sprite implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
-            move(deltaTime);
+            move(deltaTime * getVelocity());
         }
     }
 

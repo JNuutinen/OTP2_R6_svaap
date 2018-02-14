@@ -5,9 +5,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import view.GameMain;
 
 /*
     Ylaluokka kaytetaan mm. aluksille ja ammuksille.
@@ -21,8 +23,6 @@ public class Sprite extends Pane {
     private boolean isMoving = false;
     private Shape shape;
     private int hitboxShapeType;
-    private final int rectangle = 1;
-    private final int circle = 2;
     private double hitboxShapeMultiplier = 1;
 
     private String tag = "undefined";
@@ -50,7 +50,7 @@ public class Sprite extends Pane {
         this.setLayoutY(newY);
     }
 
-    // 0=oikealle, 90 on ylös...
+    // 0=oikealle, 90 on ylos...
     public void setDirection(double degrees){
         this.direction = degreesToDirection(degrees);
     }
@@ -126,13 +126,16 @@ public class Sprite extends Pane {
         System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
     }
 
-    public Shape getSpriteShape(){
+    public Shape getHitboxShape(){
+        final int rectangle = 1;
+        final int circle = 2;
+
         switch(hitboxShapeType){
             case rectangle:
                 return new Rectangle(getXPosition(), getYPosition(),
                         getWidth() * hitboxShapeMultiplier, getHeight() * hitboxShapeMultiplier);
             case circle:
-                return (Shape) new Circle(getXPosition() - getWidth()/2, getYPosition() - getHeight()/2,
+                return new Circle(getXPosition() - getWidth()/2, getYPosition() - getHeight()/2,
                         getWidth() * hitboxShapeMultiplier);
             default:
                 return null;

@@ -26,13 +26,19 @@ public class GameMain extends Application implements View {
 
     private ArrayList<Unit> units;
     private Pane pane;
-    private Label debugger_fps;
     private Controller controller;
     private Label score;
+    private Stage primaryStage;
+
+    private boolean debuggerToolsEnabled = true;
+    private Label debugger_fps;
+    private Label debugger_currentFps;
+    private boolean debugger_droppedBelowFpsTarget = false;
+    private double debugger_secondCounter = 0;
 
     @Override
     public void init() {
-        controller = new GameController(this);
+        //controller = new GameController(this);
     }
 
     public static void main(String[] args) {
@@ -40,7 +46,18 @@ public class GameMain extends Application implements View {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage){
+        this.primaryStage = primaryStage;
+        mainMenu(this.primaryStage);
+    }
+
+    public void returnToMain(){
+        mainMenu(primaryStage);
+    }
+
+
+    public void mainMenu(Stage primaryStage) {
+        controller = new GameController(this);
         units = new ArrayList<>();
         // sulje ohjelma kun ikkunan sulkee
         primaryStage.setOnCloseRequest(event -> System.exit(0));
@@ -71,6 +88,10 @@ public class GameMain extends Application implements View {
         return units;
     }
 
+    public void removeFromCollisionList(Unit unit){
+        units.remove(unit);
+    }
+
     @Override
     public void removeSprite(Sprite sprite){
         pane.getChildren().remove(sprite);
@@ -79,13 +100,47 @@ public class GameMain extends Application implements View {
     @Override
     public void setFps(double fps) {
         if(fps < 60){
-            debugger_fps.setTextFill(Color.web("#4c4323"));
+            debugger_fps.setTextFill(Color.web("#ffe500"));//keltane
         } else if(fps < 57){
-            debugger_fps.setTextFill(Color.web("#f44242"));
+            debugger_fps.setTextFill(Color.web("#ff2b2b"));//punane
         } else{
-            debugger_fps.setTextFill(Color.web("#3d3d3d"));
+            debugger_fps.setTextFill(Color.web("#ffffff"));//valkone
         }
-        debugger_fps.setText("avg. fps of last second: " + fps);
+        debugger_fps.setText("mainLoop frames in last sec: " + fps);
+    }
+
+    // ------ Debugger
+    public void setCurrentFps(double currentFps){
+        debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
+        if(currentFps < 60){
+            if(debugger_droppedBelowFpsTarget) {
+                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
+                debugger_currentFps.setTextFill(Color.web("#ffe500"));//keltane
+                debugger_droppedBelowFpsTarget = true;
+            }
+        } else if(currentFps < 56){
+            if(debugger_droppedBelowFpsTarget) {
+                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
+                debugger_currentFps.setTextFill(Color.web("#ff2b2b"));//punane
+                debugger_droppedBelowFpsTarget = true;
+            }
+        } else{
+
+            if(debugger_droppedBelowFpsTarget){
+                if(debugger_secondCounter > 0.8){
+                    debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
+                    debugger_droppedBelowFpsTarget = false;
+                    debugger_secondCounter = 0;
+                }
+                else{
+                    debugger_secondCounter += (1/currentFps);
+                }
+            }
+            else{
+                debugger_currentFps.setText("|   mainloop fps :  " + currentFps);
+            }
+            System.out.println("fps: " + currentFps + ("        (GameMain:setCurrentFps())"));
+        }
     }
 
     @Override
@@ -107,12 +162,18 @@ public class GameMain extends Application implements View {
         score.setFont(new Font("Cambria", 32));
         pane.getChildren().add(score);
 
-        //debugger_fps
-        debugger_fps = new Label("fps");
+        //---------------- debugger
+        if(debuggerToolsEnabled) {
+            debugger_fps = new Label("fps");
+            debugger_fps.setFont(new Font("Cambria", 16));
+            debugger_fps.setLayoutX(250);
+            pane.getChildren().add(debugger_fps);
 
-        debugger_fps.setFont(new Font("Cambria", 32));
-        debugger_fps.setLayoutX(250);
-        pane.getChildren().add(debugger_fps);
+            debugger_currentFps = new Label("currentFps");
+            debugger_currentFps.setFont(new Font("Cambria", 16));
+            debugger_currentFps.setLayoutX(540);
+            pane.getChildren().add(debugger_currentFps);
+        }
 
         //pelaajan luonti ja lisays looppilistaan
         Player player = new Player(controller);
@@ -120,8 +181,6 @@ public class GameMain extends Application implements View {
         // tieto controllerille pelaajasta
         controller.addPlayer(player);
         controller.addUpdateable(player);
-        addUnitToCollisionList(player);
-
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
@@ -144,6 +203,10 @@ public class GameMain extends Application implements View {
         primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
         controller.startLoop();
         controller.startLevel(0);
+
     }
+
+
+
 }
 

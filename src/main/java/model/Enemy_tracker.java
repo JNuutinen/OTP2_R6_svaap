@@ -1,12 +1,13 @@
 package model;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
-public class Enemy extends Unit implements Updateable {
+public class Enemy_tracker extends Unit implements Updateable {
     public static final int MOVE_NONE = -1;
     public static final int MOVE_STRAIGHT = 0;
     public static final int MOVE_SINE = 1;
@@ -23,7 +24,7 @@ public class Enemy extends Unit implements Updateable {
     private int fireRate = 100;
     private int fireRateCounter = 100;
 
-    public Enemy(Controller controller) {
+    public Enemy_tracker(Controller controller) {
         super(controller);
         this.controller = controller;
         controller.addUnitToCollisionList(this);
@@ -31,8 +32,8 @@ public class Enemy extends Unit implements Updateable {
         this.setTag("enemy");
     }
 
-    public Enemy(Controller controller, Image image, int movementPattern, double initialX, double initialY,
-                 String tag) {
+    public Enemy_tracker(Controller controller, Image image, Point2D[] path, double initialX, double initialY,
+                         String tag) {
         super(controller);
         this.controller = controller;
         this.setTag(tag);
@@ -40,9 +41,7 @@ public class Enemy extends Unit implements Updateable {
         setPosition(initialX, initialY);
         setDirection(180);
         setImage(image);
-        this.movementPattern = movementPattern;
-        if (movementPattern == MOVE_NONE) setIsMoving(false);
-        else setIsMoving(true);
+        setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
     }
@@ -52,11 +51,6 @@ public class Enemy extends Unit implements Updateable {
         return this;
     }
 
-    public void setMovementPattern(int movementPattern) {
-        this.movementPattern = movementPattern;
-        if (movementPattern == MOVE_NONE) setIsMoving(false);
-        else setIsMoving(true);
-    }
 
     public int getMovementPattern() {
         return movementPattern;
@@ -72,7 +66,7 @@ public class Enemy extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            spawnProjectile();
+            //spawnProjectile();
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
@@ -81,7 +75,6 @@ public class Enemy extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
-            setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
         }
     }
