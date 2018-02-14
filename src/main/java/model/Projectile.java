@@ -32,7 +32,7 @@ public class Projectile extends Sprite implements Updateable {
 
         //Projektile lähtee aluksen kärjestä. Viholliset ja pelaaja erikseen
         if (direction <= 90 || direction >= 270) { //Jos ampuja on pelaaja (kulkee vasemmalta oikealle)
-            this.setPosition(startingLocation.getX() + shooter.getWidth(), startingLocation.getY());
+            this.setPosition(startingLocation.getX() + shooter.getWidth(), startingLocation.getY() + 40);
         } else { //Jos ampuja on joku muu (kulkee oikealta vasemmalle)
             this.setPosition(startingLocation.getX() - shooter.getWidth(), startingLocation.getY());
         }

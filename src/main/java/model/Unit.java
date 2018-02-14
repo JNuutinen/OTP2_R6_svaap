@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,31 @@ public class Unit extends Sprite implements Updateable {
         for (Component component : components) {
             component.setIsMoving(false);
         }
+    }
+
+    public ArrayList sortComponents(ArrayList<Component> components) {
+        for (int i = 0; i < components.size(); i++) { //Lajitellaan komponentit suurimmasta pienimpään
+            for (int n = 0; n < components.size(); n++) {
+                if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i).getShape().getLayoutBounds().getWidth()
+                        > components.get(n).getShape().getLayoutBounds().getHeight() * components.get(n).getShape().getLayoutBounds().getWidth()) {
+                    Component x = components.get(n);
+                    components.set(n, components.get(i));
+                    components.set(i, x);
+
+                }
+            }
+        }
+        return components;
+    }
+    public void equipComponents(ArrayList<Component> components, String tag) {
+        sortComponents(components); //Lajittelee komponentit isoimmasta pienimpään
+        for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
+            Shape shape = component.getShape();
+            shape.setLayoutY(0); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
+            shape.setLayoutX(0);
+            this.getChildren().add(component.getShape());
+        }
+        this.setTag(tag);
     }
 
     public int getHp(){

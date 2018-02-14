@@ -3,6 +3,12 @@ package model;
 import controller.Controller;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
+
+
+import java.awt.geom.GeneralPath;
+import java.util.ArrayList;
 
 import static view.GameMain.input;
 
@@ -19,41 +25,55 @@ public class Player extends Unit implements Updateable {
         this.controller = controller;
         this.setHp(9999);
         controller.addUnitToCollisionList(this);
-        Image shipImage = new Image("/images/player_ship_9000.png");
-        setImage(shipImage);
 
-        /*
-        //Kova koodattuja komponentteja
-        Component b = new Component("/images/player_ship_9000.png");
-        Component c = new Component("/images/Start.png");
-        Component a = new Component("/images/enemy_ship_9000.png");
+        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää pelaajan alusta
+        triangle.getPoints().addAll(new Double[]{
+                0.0, 0.0,
+                130.0, 40.0,
+                00.0, 80.0 });
+        triangle.setFill(Color.BLACK);
+        triangle.setStroke(Color.CYAN);
+        triangle.setStrokeWidth(2.0);
+        this.getChildren().add(triangle);
+
+        Rectangle rec = new Rectangle(70, 50); //Tämä tekee nelikulmion
+        rec.setX(getXPosition() - 10);
+        rec.setFill(Color.BLACK);
+        rec.setStroke(Color.RED);
+        rec.setStrokeWidth(2.0);
+
+        Rectangle rec1 = new Rectangle(90, 60);
+        rec1.setX(getXPosition() - 10);
+        rec1.setFill(Color.BLACK);
+        rec1.setStroke(Color.BLUE);
+        rec1.setStrokeWidth(2.0);
+
+        Rectangle rec2 = new Rectangle(95, 70);
+        rec2.setX(getXPosition() - 10);
+        rec2.setFill(Color.BLACK);
+        rec2.setStroke(Color.WHITE);
+        rec2.setStrokeWidth(2.0);
+
+        Polygon triangle1 = new Polygon();
+        triangle1.getPoints().addAll(new Double[]{
+                0.0, 0.0,
+                130.0, 150.0,
+                00.0, 300.0 });
+        triangle1.setFill(Color.BLACK);
+        triangle1.setStroke(Color.GREEN);
+        triangle1.setStrokeWidth(2.0);
+
+
+        Component b = new Component(rec);
         components.add(b);
-        components.add(a);
-        components.add(c);
-        */
+        Component b1 = new Component(rec1);
+        components.add(b1);
+        Component b2 = new Component(rec2);
+        components.add(b2);
 
-        int componentOffset = 10; //Tätä vaihtamalla voi muokata minne komponentti tulee Y-akselilla
-
-        for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
-            /*
-            setImages(new Image(getClass().getResourceAsStream(component.imagePath),
-                    component.width, component.height, true, true));
-            */
-            /*
-            component.getHeight();
-            component.getWidth();
-            */
-            Image componentImage = new Image(component.imagePath);
-            ImageView componentView = new ImageView();
-            componentView.setImage(componentImage);
-            componentView.setX(getXPosition());
-            componentView.setY(getYPosition() + componentOffset);
-            componentOffset += 30;
-
-            this.getChildren().add(componentView);
-        }
-        this.setTag("player");
+        equipComponents(components, "player");
     }
+
 
     @Override
     public void update(double deltaTime){

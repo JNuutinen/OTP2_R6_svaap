@@ -2,7 +2,12 @@ package model;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import model.Sprite;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.*;
+
+import java.util.ArrayList;
 
 public class Component extends Sprite {
     double width = 60;
@@ -12,9 +17,10 @@ public class Component extends Sprite {
     private double yVelocity;
     public String imagePath;
 
+
     //UnitX & UnitY: Spawnataan komponentti samaan paikkaan isännänsä kanssa
-    public Component(String imagePath) {
-        this.imagePath = imagePath;
+    public Component(Shape shape) {
+        setShape(shape);
     }
 
     public void addVelocity(double x, double y) {
@@ -26,4 +32,9 @@ public class Component extends Sprite {
         xVelocity = 0;
         yVelocity = 0;
     }
+
+
+
+
+
 }
