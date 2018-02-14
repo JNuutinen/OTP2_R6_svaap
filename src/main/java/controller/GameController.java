@@ -165,7 +165,7 @@ public class GameController implements Controller {
 
     @Override
     public void returnToMain(){
-        view.returnToMain();
+        Platform.runLater(()->view.returnToMain());
         gameLoop.stopLoops();
     }
 }

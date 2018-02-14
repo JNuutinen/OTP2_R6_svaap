@@ -101,6 +101,14 @@ public class Sprite extends Pane {
         }
     }
 
+    public void moveBoss(double deltaTime){
+        if (isMoving) {
+            Point2D currentPosition = getPosition();
+            this.setPosition(currentPosition.getX(),
+                    currentPosition.getY() + (direction.getY()));
+        }
+    }
+
     public Point2D degreesToDirection(double degrees){
         double sin = Math.sin(Math.toRadians(degrees) * -1);
         double cos = Math.cos(Math.toRadians(degrees));
