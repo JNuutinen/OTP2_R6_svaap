@@ -36,6 +36,7 @@ public class GameMain extends Application implements View {
     private boolean debugger_droppedBelowFpsTarget = false;
     private double debugger_secondCounter = 0;
 
+
     @Override
     public void init() {
         //controller = new GameController(this);
@@ -110,36 +111,28 @@ public class GameMain extends Application implements View {
     }
 
     // ------ Debugger
-    public void setCurrentFps(double currentFps){
-        debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
-        if(currentFps < 60){
-            if(debugger_droppedBelowFpsTarget) {
-                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
-                debugger_currentFps.setTextFill(Color.web("#ffe500"));//keltane
-                debugger_droppedBelowFpsTarget = true;
-            }
-        } else if(currentFps < 56){
-            if(debugger_droppedBelowFpsTarget) {
-                debugger_currentFps.setText("sekä tää muuttuu 1 sec keltaseks jos fps tippuu alle 60: " + currentFps);
-                debugger_currentFps.setTextFill(Color.web("#ff2b2b"));//punane
-                debugger_droppedBelowFpsTarget = true;
-            }
-        } else{
 
-            if(debugger_droppedBelowFpsTarget){
-                if(debugger_secondCounter > 0.8){
-                    debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
-                    debugger_droppedBelowFpsTarget = false;
-                    debugger_secondCounter = 0;
-                }
-                else{
-                    debugger_secondCounter += (1/currentFps);
-                }
+    /* TODO TAA MITTARI ON RIKKI JOKA KORJATAAN MYOHEMMIN
+     */
+    public void setCurrentFps(double currentFps){
+        if(debugger_droppedBelowFpsTarget) {
+            debugger_secondCounter += (1 / currentFps);
+            if (debugger_secondCounter > 0) {
+                debugger_droppedBelowFpsTarget = false;
+                debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
             }
-            else{
-                debugger_currentFps.setText("|   mainloop fps :  " + currentFps);
-            }
-            System.out.println("fps: " + currentFps + ("        (GameMain:setCurrentFps())"));
+        }
+        else if (currentFps < 56) {
+            debugger_currentFps.setText("nää numerot on alternative truth ei saa uskoa-> " + currentFps);
+            debugger_currentFps.setTextFill(Color.web("#ff8884"));//punane
+            debugger_droppedBelowFpsTarget = true;
+            debugger_secondCounter = 0;
+        }
+        else if (currentFps < 60) {
+            debugger_currentFps.setText("nää numerot on alternative truth ei saa uskoa-> " + currentFps);
+            debugger_currentFps.setTextFill(Color.web("#ffef7c"));//keltane
+            debugger_droppedBelowFpsTarget = true;
+            debugger_secondCounter = 0;
         }
     }
 

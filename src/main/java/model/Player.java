@@ -171,27 +171,12 @@ public class Player extends Unit implements Updateable {
         else{ // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             yVelocity += directionY * deltaTime * accelerationForce;
         }
-        /* TAA OTTI HUOMIOON KIIHTYVYYSKERTOIMEN MUTTA SE OLI PERSEESTA TODO HEGE POISTAA
-        if(directionY==0);
-        else if(directionY * yVelocity >= 0){ // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
-            if(yVelocity < maxVelocity && yVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
-                yVelocity *=accelerationMultiplier;
-                yVelocity += directionY * deltaTime * accelerationForce;
-            }
-            else{ // jos ylittaa maksiminopeuden
-                yVelocity = maxVelocity * directionY;
-            }
-        }
-        else{
-            yVelocity *= (1/accelerationMultiplier);
-            yVelocity += directionY * deltaTime * accelerationForce;
-        }*/
     }
 
     // hidasta x suunnassa
     private void decelerateX() {
         if (xVelocity > 0) {
-            if (xVelocity < decelerateForce * deltaTime) {
+            if (xVelocity < decelerateForce * deltaTime) { // pysayta jos nopeus < seuraavan framen nopeus
                 xVelocity = 0;
             } else {
                 xVelocity -= decelerateForce * deltaTime;
@@ -208,7 +193,7 @@ public class Player extends Unit implements Updateable {
     // hidasta y suunnassa
     private void decelerateY(){
         if(yVelocity > 0){
-            if(yVelocity < decelerateForce * deltaTime){
+            if(yVelocity < decelerateForce * deltaTime){ // pysayta jos nopeus < seuraavan framen nopeus
                 yVelocity = 0;
             }
             else {
