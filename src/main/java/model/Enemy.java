@@ -2,6 +2,7 @@ package model;
 
 import controller.Controller;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -36,7 +37,7 @@ public class Enemy extends Unit implements Updateable {
         super(controller);
         this.controller = controller;
         this.setTag(tag);
-        drawShip(tag);
+        drawShip();
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setDirection(180);
@@ -45,6 +46,10 @@ public class Enemy extends Unit implements Updateable {
         else setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
+
+        Component c = new Component("triangle", 12, 0, Color.PURPLE);
+        components.add(c);
+        equipComponents(components);
     }
 
 

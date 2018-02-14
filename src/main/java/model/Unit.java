@@ -100,18 +100,19 @@ public class Unit extends Sprite implements Updateable {
         }
         return components;
     }
-    public void equipComponents(ArrayList<Component> components, String tag) {
+    public void equipComponents(ArrayList<Component> components) {
         sortComponents(components); //Lajittelee komponentit isoimmasta pienimpään
         for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
             Shape shape = component.getShape();
             shape.setLayoutY(0); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
             shape.setLayoutX(0);
             this.getChildren().add(component.getShape());
+            setTag(getTag());
         }
-        this.setTag(tag);
     }
 
-    public void drawShip(String tag) {
+    public void drawShip() {
+        String tag = getTag();
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         triangle.getPoints().addAll(new Double[]{
                 0.0, 0.0,
@@ -119,7 +120,6 @@ public class Unit extends Sprite implements Updateable {
                 0.0, 60.0 });
 
         if (tag.equals("player")) {
-            Color color = Color.CYAN;
             triangle.setFill(Color.BLACK);
             triangle.setStroke(Color.CYAN);
             triangle.setStrokeWidth(2.0);

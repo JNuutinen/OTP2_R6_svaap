@@ -38,7 +38,7 @@ public class Player extends Unit implements Updateable {
         Component d = new Component("triangle", 10, 0, Color.BLUE);
         components.add(d);
 
-        equipComponents(components, "player");
+        equipComponents(components);
 
     }
 

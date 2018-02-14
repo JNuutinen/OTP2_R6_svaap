@@ -32,8 +32,8 @@ public class Component extends Sprite {
     }
 
     public Shape triangle(int size, int orientation, Color color) {
-        double tip = 6 * size;
-        double point = 3 * size;
+        double tip = 6 * size * 1.3;
+        double point = 3 * size * 1.3;
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(new Double[]{
                 0.0, 0.0,
