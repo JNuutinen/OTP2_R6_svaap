@@ -22,21 +22,32 @@ public class Player extends Unit implements Updateable {
 
     public Player(Controller controller) {
         super(controller);
+        this.setTag("player");
         this.controller = controller;
         this.setHp(500);
         controller.addUnitToCollisionList(this);
-        setTag("player");
 
-        Component b = new Component("circle", 10, 0, Color.RED);
+        Polygon triangle = new Polygon();
+        triangle.getPoints().addAll(-60.0, -30.0,
+                60.0, 00.0,
+                -60.0, 30.0);
+        drawShip(triangle);
+
+
+
+        Component b = new Component("circle", 10, 0, Color.RED, 0, 0);
         components.add(b);
 
-        Component c = new Component("rectangle", 10 , 0, Color.WHITE);
+        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0, 0);
         components.add(c);
 
-        Component d = new Component("triangle", 10, 0, Color.BLUE);
+        Component d = new Component("triangle", 10, 0, Color.BLUE, 0, 0);
         components.add(d);
-        drawShip();
 
+        equipComponents(components);
+
+
+        this.setHitbox(30);
     }
 
 

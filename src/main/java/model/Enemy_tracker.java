@@ -3,6 +3,10 @@ package model;
 import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -20,6 +24,8 @@ public class Enemy_tracker extends Unit implements Updateable {
     private Weapon weapon1;
     private Weapon weapon2;
 
+    private Polygon triangle;
+
     // Ampumisen kovakoodit
     private int fireRate = 100;
     private int fireRateCounter = 100;
@@ -32,7 +38,7 @@ public class Enemy_tracker extends Unit implements Updateable {
         this.setTag("enemy");
     }
 
-    public Enemy_tracker(Controller controller, Image image, Point2D[] path, double initialX, double initialY,
+    public Enemy_tracker(Controller controller, Point2D[] path, double initialX, double initialY,
                          String tag) {
         super(controller);
         this.controller = controller;
@@ -40,25 +46,19 @@ public class Enemy_tracker extends Unit implements Updateable {
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setDirection(180);
-        setImage(image);
         setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
-    }
 
-
-    public Updateable getUpdateable(){
-        return this;
-    }
-
-
-    public int getMovementPattern() {
-        return movementPattern;
-    }
-
-    public void setInitPosition(double initialX, double initialY) {
-        this.initialX = initialX;
-        this.initialY = initialY;
+        triangle = new Polygon();
+        triangle.getPoints().addAll(45.0, -25.0,
+                -45.0, 0.0,
+                45.0, 25.0);
+        triangle.setFill(Color.TRANSPARENT);
+        triangle.setStroke(Color.RED);
+        triangle.setStrokeWidth(2.0);
+        this.getChildren().add(triangle);
+        this.setHitbox(25);
     }
 
     @Override
@@ -75,9 +75,24 @@ public class Enemy_tracker extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
+            //this.getTransforms().add(new Rotate(2, 45, 25, 0, Rotate.Z_AXIS));
             moveStep(deltaTime);
         }
     }
+
+
+    public void getToPoint(Point2D destination){
+
+    }
+
+    public void rotate(double degrees){
+
+    }
+
+    public Updateable getUpdateable(){
+        return this;
+    }
+
 
     public void collides(Updateable collidingUpdateable){
         // tagin saa: collidingUpdateable.getTag()

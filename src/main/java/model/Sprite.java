@@ -22,26 +22,28 @@ public class Sprite extends Pane {
     private ImageView imageView = new ImageView();
     private boolean isMoving = false;
     private Shape shape;
-    private int hitboxShapeType;
-    private double hitboxShapeMultiplier = 1;
 
     private String tag = "undefined";
 
-    /** konstruktori.
-     *
-     * @param hitboxShapeType hitboxShapeType: kertoo hitboxin muodon.
-     * @param hitboxShapeMultiplier hitboxShapeMultiplier: kertoo hitboxin suuruuden kertomalla hitboxin leveyden
-     *                              ja pituuden parametrin arvolla. (0.0-1.0)
-     */
-    public Sprite(int hitboxShapeType, float hitboxShapeMultiplier){
-        this.hitboxShapeType = hitboxShapeType;
-        this.hitboxShapeMultiplier = hitboxShapeMultiplier;
+
+    public Sprite() {
+
     }
 
+    public void setHitbox(double circleHitboxRadius){
+        shape = new Circle(0, 0, circleHitboxRadius);
+        shape.setFill(Color.TRANSPARENT);
+        shape.setStroke(Color.WHITE);
+        shape.setStrokeWidth(0.7);
+        this.getChildren().add(shape);
+    }
 
-    public Sprite(){
-        this(1, 1);
-        direction = degreesToDirection(0);
+    public void setHitbox(double rectangleHitboxHeight, double rectangleHitboxWidth){
+        shape = new Rectangle(0, 0, rectangleHitboxWidth, rectangleHitboxHeight);
+        shape.setFill(Color.TRANSPARENT);
+        shape.setStroke(Color.WHITE);
+        shape.setStrokeWidth(0.7);
+        this.getChildren().add(shape);
     }
 
     //kutsutut metodit löytyy Pane-ylaluokasta
@@ -135,18 +137,6 @@ public class Sprite extends Pane {
     }
 
     public Shape getHitboxShape(){
-        final int rectangle = 1;
-        final int circle = 2;
-
-        switch(hitboxShapeType){
-            case rectangle:
-                return new Rectangle(getXPosition(), getYPosition(),
-                        getWidth() * hitboxShapeMultiplier, getHeight() * hitboxShapeMultiplier);
-            case circle:
-                return new Circle(getXPosition() - getWidth()/2, getYPosition() - getHeight()/2,
-                        getWidth() * hitboxShapeMultiplier);
-            default:
-                return null;
-        }
+        return shape;
     }
 }

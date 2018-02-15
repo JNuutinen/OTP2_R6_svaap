@@ -15,13 +15,19 @@ public class Component extends Sprite {
     private double xVelocity;
     private double yVelocity;
 
+    private double xOffset;
+    private double yOffset;
+
 
     //UnitX & UnitY: Spawnataan komponentti samaan paikkaan isännänsä kanssa
 
     /**
      * @param shape parametreina "triangle", "rectangle" ja "circle"
      */
-    public Component(String shape, int size, int orientation, Color color) {
+    public Component(String shape, int size, int orientation, Color color, double xOffset, double yOffset) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
+
         if (shape.equals("triangle")) {
             setShape(triangle(size, orientation, color));
         } else if (shape.equals("rectangle")) {
@@ -35,10 +41,10 @@ public class Component extends Sprite {
         double tip = 6 * size * 1.3;
         double point = 3 * size * 1.3;
         Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(new Double[]{
-                0.0, 0.0,
-                tip, point / 2,
-                0.0, point});
+        triangle.getPoints().addAll(
+                tip/2 * -1, point / 2,
+                tip/2, 0.0,
+                tip/2 * -1, point / 2 * -1);
         triangle.setFill(Color.BLACK);
         triangle.setStroke(color);
         triangle.setStrokeWidth(2.0);
@@ -54,7 +60,7 @@ public class Component extends Sprite {
         rectangle.setStroke(color);
         rectangle.setStrokeWidth(2.0);
         rectangle.getTransforms().add(new Rotate(90 * orientation, 50, 30));
-        return rectangle;
+        return (Shape)rectangle;
     }
 
     public Shape circle(int size, Color color) {
@@ -62,7 +68,7 @@ public class Component extends Sprite {
         circle.setFill(Color.BLACK);
         circle.setStroke(color);
         circle.setStrokeWidth(2.0);
-        return circle;
+        return (Shape)circle;
     }
 
     public void addVelocity(double x, double y) {
@@ -75,7 +81,13 @@ public class Component extends Sprite {
         yVelocity = 0;
     }
 
+    public double getxOffset(){
+        return xOffset;
+    }
 
+    public double getyOffset(){
+        return yOffset;
+    }
 
 
 

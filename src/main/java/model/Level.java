@@ -41,16 +41,14 @@ public class Level extends Thread {
     @Override
     public void run() {
 
-        //enem_tracker testausta varten
-        Point2D[] path = {new Point2D(0,0), new Point2D(100, 100)};
-        Enemy_tracker enemy_tracker = new Enemy_tracker(controller, new Image("/images/Start.png"), path,
-                WINDOW_WIDTH - 10, 50, "enemy");
-        controller.addUpdateable(enemy_tracker);
-
-
         // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
+
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
+
+                Thread.sleep(100);
+                hegenTestausMetodi();
+
                 // paussi vihollisten välillä
                 // TODO: Monen vihollisen yhtäaikainen spawnaus
                 if(numberOfEnemies > 0) {
@@ -58,12 +56,14 @@ public class Level extends Thread {
                             (long)(BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
                     Thread.sleep(sleepTime);
 
+
+
                     // arvotaan spawnauspaikka
                     double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT - 50);
 
                     // arvotaan vihollinen tyyppilistasta
                     Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
-                    Enemy enemy = new Enemy(controller, enemyType.getImage(), enemyType.getMovementPattern(),
+                    Enemy enemy = new Enemy(controller, enemyType.getMovementPattern(),
                             WINDOW_WIDTH + 50, randomYPos, "enemy");
                     enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
                     // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
@@ -87,5 +87,13 @@ public class Level extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void hegenTestausMetodi(){
+        //enem_tracker testausta varten
+        Point2D[] path = {new Point2D(0,0), new Point2D(100, 100)};
+        Enemy_tracker enemy_tracker = new Enemy_tracker(controller, path,
+                WINDOW_WIDTH - 50, 50, "enemy");
+        controller.addUpdateable(enemy_tracker);
     }
 }
