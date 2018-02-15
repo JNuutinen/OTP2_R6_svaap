@@ -155,7 +155,7 @@ public class GameController implements Controller {
 
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this);
+        Enemy enemy1 = new Enemy(this, 0, 0, 0, "enemy");
         enemy1.setMovementPattern(MOVE_STRAIGHT);
         enemy1.setImage(enemyImage);
         ArrayList<Enemy> enemies = new ArrayList<>();

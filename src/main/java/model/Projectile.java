@@ -32,17 +32,19 @@ public class Projectile extends Sprite implements Updateable {
 
         //Projektile lähtee aluksen kärjestä. Viholliset ja pelaaja erikseen
         if (direction <= 90 || direction >= 270) { //Jos ampuja on pelaaja (kulkee vasemmalta oikealle)
-            this.setPosition(startingLocation.getX() + shooter.getWidth(), startingLocation.getY() + 40);
+            this.setPosition(startingLocation.getX() + shooter.getWidth(), startingLocation.getY());
         } else { //Jos ampuja on joku muu (kulkee oikealta vasemmalle)
             this.setPosition(startingLocation.getX() - shooter.getWidth(), startingLocation.getY());
         }
         this.setTag(tag);
         this.damage = damage;
         Image projectileImage = new Image("/images/projectile_ball_small_cyan.png");
-        this.setImage(projectileImage);
+        //this.setImage(projectileImage);
 
         setVelocity(speed);
         setIsMoving(true);
+
+        this.setHitbox(10);
     }
 
     @Override

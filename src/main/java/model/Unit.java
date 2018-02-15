@@ -104,33 +104,27 @@ public class Unit extends Sprite implements Updateable {
         sortComponents(components); //Lajittelee komponentit isoimmasta pienimpään
         for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
             Shape shape = component.getShape();
-            shape.setLayoutY(0); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
-            shape.setLayoutX(0);
+            shape.setLayoutY(40); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
+            shape.setLayoutX(30);
             this.getChildren().add(component.getShape());
             setTag(getTag());
         }
     }
 
-    public void drawShip() {
+    public void drawShip(Shape shape) {
         String tag = getTag();
-        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
-        triangle.getPoints().addAll(new Double[]{
-                0.0, 0.0,
-                120.0, 30.0,
-                0.0, 60.0 });
-
         if (tag.equals("player")) {
-            triangle.setFill(Color.BLACK);
-            triangle.setStroke(Color.CYAN);
-            triangle.setStrokeWidth(2.0);
-            this.getChildren().add(triangle);
+            shape.setFill(Color.TRANSPARENT);
+            shape.setStroke(Color.CYAN);
+            shape.setStrokeWidth(2.0);
+            this.getChildren().add(shape);
 
         } else if (tag.equals("enemy")) {
-            triangle.setFill(Color.BLACK);
-            triangle.setStroke(Color.RED);
-            triangle.setStrokeWidth(2.0);
-            triangle.getTransforms().add(new Rotate(180, 50, 30));
-            this.getChildren().add(triangle);
+            shape.setFill(Color.TRANSPARENT);
+            shape.setStroke(Color.RED);
+            shape.setStrokeWidth(2.0);
+            shape.getTransforms().add(new Rotate(180, 0, 0));
+            this.getChildren().add(shape);
         }
     }
 
