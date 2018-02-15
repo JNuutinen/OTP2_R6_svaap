@@ -37,7 +37,6 @@ public class Enemy extends Unit implements Updateable {
         super(controller);
         this.controller = controller;
         this.setTag(tag);
-        drawShip();
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setDirection(180);
@@ -49,7 +48,8 @@ public class Enemy extends Unit implements Updateable {
 
         Component c = new Component("triangle", 12, 0, Color.PURPLE);
         components.add(c);
-        equipComponents(components);
+        drawShip();
+
     }
 
 

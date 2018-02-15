@@ -25,9 +25,7 @@ public class Player extends Unit implements Updateable {
         this.controller = controller;
         this.setHp(500);
         controller.addUnitToCollisionList(this);
-        drawShip();
-
-
+        setTag("player");
 
         Component b = new Component("circle", 10, 0, Color.RED);
         components.add(b);
@@ -37,8 +35,7 @@ public class Player extends Unit implements Updateable {
 
         Component d = new Component("triangle", 10, 0, Color.BLUE);
         components.add(d);
-
-        equipComponents(components);
+        drawShip();
 
     }
 
