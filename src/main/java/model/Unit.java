@@ -101,13 +101,16 @@ public class Unit extends Sprite implements Updateable {
         return components;
     }
     public void equipComponents(ArrayList<Component> components) {
+        int offset = -5;
         sortComponents(components); //Lajittelee komponentit isoimmasta pienimpään
         for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
             Shape shape = component.getShape();
-            shape.setLayoutY(0); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
+            shape.setLayoutY(offset); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
             shape.setLayoutX(0);
+            //setPosition(this.getXPosition(), this.getYPosition() + 100);
             this.getChildren().add(component.getShape());
             setTag(getTag());
+            offset += 20;
         }
     }
 
