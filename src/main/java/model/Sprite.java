@@ -10,7 +10,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
-import view.GameMain;
 
 /*
     Ylaluokka kaytetaan mm. aluksille ja ammuksille.
@@ -18,11 +17,12 @@ import view.GameMain;
  */
 public class Sprite extends Pane {
     private Controller controller;
-    private Point2D direction;
+    private double direction;
     private double velocity = 200;
     private ImageView imageView = new ImageView();
     private boolean isMoving = false;
     private Shape shape;
+    private boolean debuggerToolsEnabled = true;
 
     private String tag = "undefined";
 
@@ -38,8 +38,10 @@ public class Sprite extends Pane {
     public void setHitbox(double circleHitboxDiameter){
         shape = new Circle(0, 0, circleHitboxDiameter/2);
         shape.setFill(Color.TRANSPARENT);
-        shape.setStroke(Color.WHITE);
-        shape.setStrokeWidth(1.1);
+        if(debuggerToolsEnabled) {
+            shape.setStroke(Color.LIGHTGREY);
+        }
+        shape.setStrokeWidth(0.4);
         this.getChildren().add(shape);
     }
 
@@ -51,8 +53,10 @@ public class Sprite extends Pane {
     public void setHitbox(double rectangleHitboxHeight, double rectangleHitboxWidth){
         shape = new Rectangle(0 - (rectangleHitboxWidth/2), 0 - (rectangleHitboxHeight/2), rectangleHitboxWidth, rectangleHitboxHeight);
         shape.setFill(Color.TRANSPARENT);
-        //shape.setStroke(Color.WHITE);
-        shape.setStrokeWidth(0.7);
+        if(debuggerToolsEnabled) {
+            shape.setStroke(Color.LIGHTGREY);
+        }
+        shape.setStrokeWidth(0.4);
         this.getChildren().add(shape);
     }
 
@@ -63,9 +67,9 @@ public class Sprite extends Pane {
     }
 
     // 0=oikealle, 90 on ylos...
-    public void setDirection(double degrees){
-        this.getTransforms().add(new Rotate(degrees, Rotate.Z_AXIS));
-        this.direction = degreesToDirection(degrees);
+    public void rotate(double degrees){
+        this.getTransforms().add(new Rotate(degrees * -1, Rotate.Z_AXIS));
+        this.direction += degrees;
     }
 
     public void setIsMoving(boolean isMoving){
@@ -108,21 +112,23 @@ public class Sprite extends Pane {
     //kaytetään peliloopin yhteydessa
     public void moveStep(double deltaTime) {
         if (isMoving) {
+            Point2D directionInVector = degreesToVector(direction);
             Point2D currentPosition = getPosition();
-            this.setPosition(currentPosition.getX() + (direction.getX() * velocity * deltaTime),
-                    currentPosition.getY() + (direction.getY() * velocity * deltaTime));
+            this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
+                    currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
         }
     }
 
     public void moveBoss(double deltaTime){
         if (isMoving) {
+            Point2D directionInVector = degreesToVector(direction);
             Point2D currentPosition = getPosition();
             this.setPosition(currentPosition.getX(),
-                    currentPosition.getY() + (direction.getY()));
+                    currentPosition.getY() + (directionInVector.getY()));
         }
     }
 
-    public Point2D degreesToDirection(double degrees){
+    public Point2D degreesToVector(double degrees){
         double sin = Math.sin(Math.toRadians(degrees) * -1);
         double cos = Math.cos(Math.toRadians(degrees));
         return new Point2D(cos, sin);
@@ -143,9 +149,6 @@ public class Sprite extends Pane {
         this.getChildren().add(imageView);
     }
 
-    public void printSize(){//TODO poista lopuks
-        System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
-    }
 
     public Shape getHitboxShape(){
         return shape;

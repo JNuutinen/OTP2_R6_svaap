@@ -1,7 +1,6 @@
 package model;
 
 import controller.Controller;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -17,12 +16,12 @@ public class Enemy extends Unit implements Updateable {
     private double initialX;
     private double initialY;
     private int movementPattern;
-    private double direction = 180;
+    private double direction = 0;
     private Weapon weapon1;
     private Weapon weapon2;
 
     // Ampumisen kovakoodit
-    private int fireRate = 100;
+    private int fireRate = 300;
     private int fireRateCounter = 100;
 
 
@@ -33,7 +32,7 @@ public class Enemy extends Unit implements Updateable {
         this.setTag(tag);
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
-        setDirection(180);
+        rotate(180);
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
@@ -49,12 +48,12 @@ public class Enemy extends Unit implements Updateable {
         Component c4 = new Component("triangle", 3, 0, Color.PURPLE, 20, -10);
         components.add(c4);
         equipComponents(components);
-        this.setHitbox(40, 120);
+        this.setHitbox(50);
 
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
-        triangle.getPoints().addAll(60.0, -30.0,
-                -60.0, 00.0,
-                60.0, 30.0);
+        triangle.getPoints().addAll(-60.0, -30.0,
+                60.0, 00.0,
+                -60.0, 30.0);
         drawShip(triangle);
 
     }
@@ -104,8 +103,8 @@ public class Enemy extends Unit implements Updateable {
     }
 
     public void spawnProjectile(){
-        Projectile projectile = new Projectile(controller, this.getPosition(), 180, 10,
-                "projectile_enemy", this);
+        Projectile projectile = new Projectile(controller, this.getPosition(), 28,  180, 10,
+                "projectile_enemy", this, Color.ORANGERED);
         controller.addUpdateable(projectile);
     }
 

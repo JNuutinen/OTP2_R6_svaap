@@ -1,10 +1,9 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 
@@ -69,13 +68,11 @@ public class Unit extends Sprite implements Updateable {
         }
     }
 
-    public void move(double direction) {
-        this.setIsMoving(true);
-        this.setDirection(direction);
+    public void setDirection(double direction) {
+        this.rotate(direction);
 
         for (Component component : components) {
-            component.setIsMoving(true);
-            component.setDirection(direction);
+            component.rotate(direction);
         }
     }
 
@@ -116,17 +113,18 @@ public class Unit extends Sprite implements Updateable {
 
     public void drawShip(Shape shape) {
         String tag = getTag();
+        shape.setEffect(new GaussianBlur(2.0));
         if (tag.equals("player")) {
             shape.setFill(Color.TRANSPARENT);
             shape.setStroke(Color.CYAN);
-            shape.setStrokeWidth(2.0);
+            shape.setStrokeWidth(3.0);
             this.getChildren().add(shape);
 
         } else if (tag.equals("enemy")) {
             shape.setFill(Color.TRANSPARENT);
             shape.setStroke(Color.RED);
-            shape.setStrokeWidth(2.0);
-            shape.getTransforms().add(new Rotate(180, 0, 0));
+            shape.setStrokeWidth(3.0);
+            //shape.getTransforms().add(new Rotate(180, 0, 0));
             this.getChildren().add(shape);
         }
     }

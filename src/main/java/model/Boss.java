@@ -2,6 +2,7 @@ package model;
 
 import controller.Controller;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -29,7 +30,7 @@ public class Boss extends Unit implements Updateable {
         super(controller);
         this.controller = controller;
         controller.addUnitToCollisionList(this);
-        setDirection(180);
+        rotate(180);
         this.setTag("enemy");
     }
 
@@ -40,7 +41,7 @@ public class Boss extends Unit implements Updateable {
         this.setTag(tag);
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
-        setDirection(180);
+        rotate(180);
         setImage(image);
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
@@ -95,8 +96,8 @@ public class Boss extends Unit implements Updateable {
     }
 
     public void spawnProjectile(int direction){
-        Projectile projectile = new Projectile(controller, this.getPosition(), direction, 30,
-                "projectile_enemy", this);
+        Projectile projectile = new Projectile(controller, this.getPosition(), 28,  direction, 30,
+                "projectile_enemy", this, Color.ORANGERED);
         controller.addUpdateable(projectile);
     }
 

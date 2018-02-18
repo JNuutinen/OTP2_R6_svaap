@@ -2,11 +2,9 @@ package model;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Rotate;
+
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -20,45 +18,47 @@ public class Enemy_tracker extends Unit implements Updateable {
     private double initialX;
     private double initialY;
     private int movementPattern;
-    private double direction = 180;
+    private double direction = 0;
     private Weapon weapon1;
     private Weapon weapon2;
-
-    private Polygon triangle;
+    private Point2D[] path;
+    private Point2D currentDestination = null;
 
     // Ampumisen kovakoodit
-    private int fireRate = 100;
+    private int fireRate = 300;
     private int fireRateCounter = 100;
 
-    public Enemy_tracker(Controller controller) {
-        super(controller);
-        this.controller = controller;
-        controller.addUnitToCollisionList(this);
-        setDirection(180);
-        this.setTag("enemy");
-    }
 
-    public Enemy_tracker(Controller controller, Point2D[] path, double initialX, double initialY,
-                         String tag) {
+    public Enemy_tracker(Controller controller, int movementPattern, double initialX, double initialY, Point2D[] path,
+                 String tag) {
         super(controller);
+        this.path = path;
+        currentDestination = this.path[0];
         this.controller = controller;
         this.setTag(tag);
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
-        setDirection(180);
-        setIsMoving(true);
+
+
+
+        rotate(180);
+        this.movementPattern = movementPattern;
+        if (movementPattern == MOVE_NONE) setIsMoving(false);
+        else setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
 
-        triangle = new Polygon();
-        triangle.getPoints().addAll(45.0, -25.0,
-                -45.0, 0.0,
-                45.0, 25.0);
-        triangle.setFill(Color.TRANSPARENT);
-        triangle.setStroke(Color.RED);
-        triangle.setStrokeWidth(2.0);
-        this.getChildren().add(triangle);
-        this.setHitbox(25);
+        Component c = new Component("triangle", 3, 0, Color.WHITE, 100, 0);
+        components.add(c);
+        equipComponents(components);
+        this.setHitbox(50);
+
+        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
+        triangle.getPoints().addAll(-60.0, -30.0,
+                60.0, 00.0,
+                -60.0, 30.0);
+        drawShip(triangle);
+
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Enemy_tracker extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            //spawnProjectile();
+            spawnProjectile();
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
@@ -75,32 +75,45 @@ public class Enemy_tracker extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
-            //this.getTransforms().add(new Rotate(2, 45, 25, 0, Rotate.Z_AXIS));
+            //setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
+        }
+
+        if(getDistanceFromTarget(currentDestination) < 10){
+            currentDestination = path[1];
         }
     }
 
-
-    public void getToPoint(Point2D destination){
-
-    }
-
-    public void rotate(double degrees){
-
+    public double getDistanceFromTarget(Point2D target){
+        return Math.sqrt(Math.pow(target.getX() - this.getXPosition(), 2) + Math.pow(target.getY() - this.getYPosition(), 2));
     }
 
     public Updateable getUpdateable(){
         return this;
     }
 
+    public void setMovementPattern(int movementPattern) {
+        this.movementPattern = movementPattern;
+        if (movementPattern == MOVE_NONE) setIsMoving(false);
+        else setIsMoving(true);
+    }
+
+    public int getMovementPattern() {
+        return movementPattern;
+    }
+
+    public void setInitPosition(double initialX, double initialY) {
+        this.initialX = initialX;
+        this.initialY = initialY;
+    }
 
     public void collides(Updateable collidingUpdateable){
         // tagin saa: collidingUpdateable.getTag()
     }
 
     public void spawnProjectile(){
-        Projectile projectile = new Projectile(controller, this.getPosition(), 180, 10,
-                "projectile_enemy", this);
+        Projectile projectile = new Projectile(controller, this.getPosition(), 28,  180, 10,
+                "projectile_enemy", this, Color.ORANGERED);
         controller.addUpdateable(projectile);
     }
 

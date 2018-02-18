@@ -92,8 +92,9 @@ public class Level extends Thread {
     public void hegenTestausMetodi(){
         //enem_tracker testausta varten
         Point2D[] path = {new Point2D(0,0), new Point2D(100, 100)};
-        Enemy_tracker enemy_tracker = new Enemy_tracker(controller, path,
-                WINDOW_WIDTH - 50, 50, "enemy");
+        Enemy_tracker enemy_tracker = new Enemy_tracker(controller, 0,
+                WINDOW_WIDTH + 50, 100, path,  "enemy");
+        enemy_tracker.setHp((int)(enemy_tracker.getHp() * enemyHealthModifier));
         controller.addUpdateable(enemy_tracker);
     }
 }
