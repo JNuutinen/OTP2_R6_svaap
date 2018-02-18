@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 import view.GameMain;
 
 /*
@@ -30,18 +31,27 @@ public class Sprite extends Pane {
 
     }
 
-    public void setHitbox(double circleHitboxRadius){
-        shape = new Circle(0, 0, circleHitboxRadius);
+    /**
+     * konstruktori ympyrahitboxilla
+     * @param circleHitboxDiameter eli halkaisija
+     */
+    public void setHitbox(double circleHitboxDiameter){
+        shape = new Circle(0, 0, circleHitboxDiameter/2);
         shape.setFill(Color.TRANSPARENT);
         shape.setStroke(Color.WHITE);
-        shape.setStrokeWidth(0.7);
+        shape.setStrokeWidth(1.1);
         this.getChildren().add(shape);
     }
 
+    /**
+     *  konstruktori neliohitboxilla
+     * @param rectangleHitboxHeight
+     * @param rectangleHitboxWidth
+     */
     public void setHitbox(double rectangleHitboxHeight, double rectangleHitboxWidth){
-        shape = new Rectangle(0, 0, rectangleHitboxWidth, rectangleHitboxHeight);
+        shape = new Rectangle(0 - (rectangleHitboxWidth/2), 0 - (rectangleHitboxHeight/2), rectangleHitboxWidth, rectangleHitboxHeight);
         shape.setFill(Color.TRANSPARENT);
-        shape.setStroke(Color.WHITE);
+        //shape.setStroke(Color.WHITE);
         shape.setStrokeWidth(0.7);
         this.getChildren().add(shape);
     }
@@ -54,6 +64,7 @@ public class Sprite extends Pane {
 
     // 0=oikealle, 90 on ylos...
     public void setDirection(double degrees){
+        this.getTransforms().add(new Rotate(degrees, Rotate.Z_AXIS));
         this.direction = degreesToDirection(degrees);
     }
 

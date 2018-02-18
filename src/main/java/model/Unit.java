@@ -104,8 +104,8 @@ public class Unit extends Sprite implements Updateable {
         sortComponents(components); //Lajittelee komponentit isoimmasta pienimpään
         for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
             Shape shape = component.getShape();
-            shape.setLayoutY(40); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
-            shape.setLayoutX(30);
+            shape.setLayoutY(0); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
+            shape.setLayoutX(0);
             this.getChildren().add(component.getShape());
             setTag(getTag());
         }

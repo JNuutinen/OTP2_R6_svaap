@@ -1,6 +1,8 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -31,6 +33,7 @@ public class Player extends Unit implements Updateable {
         triangle.getPoints().addAll(-60.0, -30.0,
                 60.0, 00.0,
                 -60.0, 30.0);
+
         drawShip(triangle);
 
 

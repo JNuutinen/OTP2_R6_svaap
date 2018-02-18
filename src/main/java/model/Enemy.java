@@ -49,12 +49,12 @@ public class Enemy extends Unit implements Updateable {
         Component c4 = new Component("triangle", 3, 0, Color.PURPLE, 20, -10);
         components.add(c4);
         equipComponents(components);
-        this.setHitbox(40);
+        this.setHitbox(40, 120);
 
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
-        triangle.getPoints().addAll(-60.0, -30.0,
-                60.0, 00.0,
-                -60.0, 30.0);
+        triangle.getPoints().addAll(60.0, -30.0,
+                -60.0, 00.0,
+                60.0, 30.0);
         drawShip(triangle);
 
     }
