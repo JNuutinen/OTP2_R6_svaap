@@ -23,6 +23,9 @@ public class Sprite extends Pane {
     private boolean isMoving = false;
     private Shape shape;
     private boolean debuggerToolsEnabled = true;
+    //nailla voi laittaa spriten menee tiettyyn suuntaan vaikka sita kaantelisi samalla ks. lockDirection()
+    private boolean movingDirectionLocked = false;
+    private double lockedDirection = 0;
 
     private String tag = "undefined";
 
@@ -70,6 +73,12 @@ public class Sprite extends Pane {
     public void rotate(double degrees){
         this.getTransforms().add(new Rotate(degrees * -1, Rotate.Z_AXIS));
         this.direction += degrees;
+        while(direction >= 180.0){
+            direction -= 360.0;
+        }
+        while(direction < -180){
+            direction += 360.0;
+        }
     }
 
     public void setIsMoving(boolean isMoving){
@@ -104,6 +113,10 @@ public class Sprite extends Pane {
         this.tag = tag;
     }
 
+    public double getDirection(){
+        return direction;
+    }
+
     public String getTag(){
         return this.tag;
     }
@@ -112,10 +125,18 @@ public class Sprite extends Pane {
     //kaytetään peliloopin yhteydessa
     public void moveStep(double deltaTime) {
         if (isMoving) {
-            Point2D directionInVector = degreesToVector(direction);
-            Point2D currentPosition = getPosition();
-            this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
-                    currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
+            if(movingDirectionLocked) {
+                Point2D directionInVector = degreesToVector(lockedDirection);
+                Point2D currentPosition = getPosition();
+                this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
+                        currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
+            }
+            else{
+                Point2D directionInVector = degreesToVector(direction);
+                Point2D currentPosition = getPosition();
+                this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
+                        currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
+            }
         }
     }
 
@@ -126,6 +147,15 @@ public class Sprite extends Pane {
             this.setPosition(currentPosition.getX(),
                     currentPosition.getY() + (directionInVector.getY()));
         }
+    }
+
+    /**
+     * lukitsee suunnan niin etta jatkaa tiettyyn suuntaan menemista vaikka spritea kaantelisi samalla.
+     * @param angle lukittu suunta.
+     */
+    public void lockDirection(double angle){
+        movingDirectionLocked = true;
+        lockedDirection = angle;
     }
 
     public Point2D degreesToVector(double degrees){
@@ -152,5 +182,15 @@ public class Sprite extends Pane {
 
     public Shape getHitboxShape(){
         return shape;
+    }
+
+    // laskee kulman itsensa ja kohteen valilla yksikkoympyran mukaisesti (esim. jos kohde suoraan ylapuolella, kulma on 90)
+    public double getAngleFromTarget(Point2D target){
+        return Math.toDegrees(Math.atan2(getYPosition() - target.getY(), getXPosition() * -1 - target.getX() * -1));
+    }
+
+    // laskee itsensa ja kohteen valisen etaisyyden
+    public double getDistanceFromTarget(Point2D target){
+        return Math.sqrt(Math.pow(target.getX() - this.getXPosition(), 2) + Math.pow(target.getY() - this.getYPosition(), 2));
     }
 }

@@ -128,13 +128,13 @@ public class GameMain extends Application implements View {
             }
         }
         else if (currentFps < 56) {
-            debugger_currentFps.setText("nää numerot on alternative truth ei saa uskoa-> " + currentFps);
+            debugger_currentFps.setText("rikki-> " + currentFps);
             debugger_currentFps.setTextFill(Color.web("#ff8884"));//punane
             debugger_droppedBelowFpsTarget = true;
             debugger_secondCounter = 0;
         }
         else if (currentFps < 60) {
-            debugger_currentFps.setText("nää numerot on alternative truth ei saa uskoa-> " + currentFps);
+            debugger_currentFps.setText("rikki-> " + currentFps);
             debugger_currentFps.setTextFill(Color.web("#ffef7c"));//keltane
             debugger_droppedBelowFpsTarget = true;
             debugger_secondCounter = 0;

@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -78,6 +79,14 @@ public class Player extends Unit implements Updateable {
         if (input.contains("V")) System.exit(0);
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
 
+
+        //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
+
+    }
+
+
+    public double getAngleFromTarget(Point2D target){
+        return Math.toDegrees(Math.atan2(getYPosition() - target.getY(), getXPosition() * -1 - target.getX() * -1));
     }
 
     public void addScore(int points){
@@ -173,7 +182,7 @@ public class Player extends Unit implements Updateable {
     // TODO: tää sit joskus aseeseen
     private void spawnProjectile(){
         Projectile projectile = new Projectile(controller, this.getPosition(), 50, 0, 10,
-                "projectile_player", this, Color.CYAN);
+                "projectile_player", this, Color.AQUAMARINE);
         controller.addUpdateable(projectile);
     }
 

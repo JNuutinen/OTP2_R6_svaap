@@ -30,7 +30,7 @@ public class Projectile extends Sprite implements Updateable {
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(-6.0, 0.0,
                 0.0, -3.0,
-                speed*0.5+1.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
+                speed*0.6+1.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
                 0.0, 3.0);
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);

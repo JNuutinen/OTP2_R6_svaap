@@ -41,13 +41,24 @@ public class Level extends Thread {
     @Override
     public void run() {
 
+        try {
+            Thread.sleep(200);
+            hegenTestausMetodi();
+
+            Thread.sleep(900);
+            hegenTestausMetodi();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
 
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
 
-                Thread.sleep(100);
-                hegenTestausMetodi();
+
 
                 // paussi vihollisten välillä
                 // TODO: Monen vihollisen yhtäaikainen spawnaus
@@ -91,9 +102,20 @@ public class Level extends Thread {
 
     public void hegenTestausMetodi(){
         //enem_tracker testausta varten
-        Point2D[] path = {new Point2D(0,0), new Point2D(100, 100)};
+        Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,100),
+                new Point2D(WINDOW_WIDTH * 0.9, 100),
+                new Point2D(WINDOW_WIDTH * 0.9, 650)};
+        Point2D[] path2 = {new Point2D(WINDOW_WIDTH * 0.7,WINDOW_HEIGHT - 100),
+                new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 100),
+                new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 650)};
+
         Enemy_tracker enemy_tracker = new Enemy_tracker(controller, 0,
-                WINDOW_WIDTH + 50, 100, path,  "enemy");
+                WINDOW_WIDTH / 2, -50, path,  "enemy");
+        enemy_tracker.setHp((int)(enemy_tracker.getHp() * enemyHealthModifier));
+        controller.addUpdateable(enemy_tracker);
+
+        enemy_tracker = new Enemy_tracker(controller, 0,
+                WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  "enemy");
         enemy_tracker.setHp((int)(enemy_tracker.getHp() * enemyHealthModifier));
         controller.addUpdateable(enemy_tracker);
     }

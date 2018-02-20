@@ -114,18 +114,13 @@ public class Unit extends Sprite implements Updateable {
     public void drawShip(Shape shape) {
         String tag = getTag();
         shape.setEffect(new GaussianBlur(2.0));
+        shape.setFill(Color.TRANSPARENT);
+        shape.setStrokeWidth(3.0);
+        this.getChildren().add(shape);
         if (tag.equals("player")) {
-            shape.setFill(Color.TRANSPARENT);
             shape.setStroke(Color.CYAN);
-            shape.setStrokeWidth(3.0);
-            this.getChildren().add(shape);
-
         } else if (tag.equals("enemy")) {
-            shape.setFill(Color.TRANSPARENT);
             shape.setStroke(Color.RED);
-            shape.setStrokeWidth(3.0);
-            //shape.getTransforms().add(new Rotate(180, 0, 0));
-            this.getChildren().add(shape);
         }
     }
 
