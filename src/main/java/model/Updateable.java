@@ -1,5 +1,6 @@
 package model;
 
+import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 
 public interface Updateable {
@@ -14,4 +15,6 @@ public interface Updateable {
     public String getTag();
 
     public void setTag(String tag);
+
+    public Point2D getPosition();
 }

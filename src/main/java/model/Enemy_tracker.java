@@ -25,7 +25,7 @@ public class Enemy_tracker extends Unit implements Updateable {
     private int lastDestinationIndex = 0;
     private double rotatingSpeed = 4;
     private boolean shootingTarget = false;
-    private Player target = null;
+    private Updateable target = null;
     private final double initialVelocity = 300;
 
     // Ampumisen kovakoodit
@@ -43,7 +43,7 @@ public class Enemy_tracker extends Unit implements Updateable {
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
-        findAndSetPlayer();
+        findAndSetTarget();
 
 
 
@@ -137,10 +137,10 @@ public class Enemy_tracker extends Unit implements Updateable {
     }
 
     //etsii pelaajan updateable listasta ja asettaa sen kohteeksi
-    public void findAndSetPlayer(){
+    public void findAndSetTarget(){
         for(Updateable updateable : controller.getUpdateables()){
-            if(updateable.getTag() == "player") {
-                target = (Player) updateable;
+            if(updateable.getTag().equals("player")) {
+                target = updateable;
             }
         }
     }

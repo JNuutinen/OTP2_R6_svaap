@@ -18,6 +18,9 @@ public class Player extends Unit implements Updateable {
     private double fireRate = 0.1;//sekunneissa
     private double fireRateCounter = 0;
     private double deltaTime = 0;
+    private double secondaryFirerate = 0.4;
+    private double secondaryFirerateCounter = 0;
+
 
     private final double accelerationForce = 5000; // voima joka kiihdyttaa alusta
     private final double maxVelocity = 300.0; // maksiminopeus
@@ -73,8 +76,17 @@ public class Player extends Unit implements Updateable {
                 fireRateCounter = 0;
                 spawnProjectile();
             }
+
+            if(secondaryFirerateCounter > secondaryFirerate){
+                secondaryFirerateCounter = 0;
+                spawnMissile();
+            }
+        }
+        if (input.contains("P")) {
+
         }
         fireRateCounter += deltaTime;
+        secondaryFirerateCounter += deltaTime;
         //System.out.println(xVelocity);
         if (input.contains("V")) System.exit(0);
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
@@ -182,8 +194,14 @@ public class Player extends Unit implements Updateable {
     // TODO: tää sit joskus aseeseen
     private void spawnProjectile(){
         Projectile projectile = new Projectile(controller, this.getPosition(), 50, 0, 10,
-                "projectile_player", this, Color.AQUAMARINE);
+                "projectile_player", this, Color.CYAN);
         controller.addUpdateable(projectile);
+    }
+
+    private void spawnMissile(){
+        Missile missile = new Missile(controller, this.getPosition(), 30, 0, 10,
+                "projectile_player", this, Color.YELLOW);
+        controller.addUpdateable(missile);
     }
 
     public void destroyThis(){
