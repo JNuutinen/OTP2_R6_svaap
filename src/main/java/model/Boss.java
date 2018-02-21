@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import model.projectiles.SmallProjectile;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -18,8 +19,6 @@ public class Boss extends Unit implements Updateable {
     private double initialY;
     private int movementPattern;
     private double direction = 180;
-    private Weapon weapon1;
-    private Weapon weapon2;
     private int movementCounter = 0;
 
     // Ampumisen kovakoodit
@@ -48,11 +47,6 @@ public class Boss extends Unit implements Updateable {
         else setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
-    }
-
-
-    public Updateable getUpdateable(){
-        return this;
     }
 
     public void setMovementPattern(int movementPattern) {
@@ -91,19 +85,10 @@ public class Boss extends Unit implements Updateable {
         }
     }
 
-    public void collides(Updateable collidingUpdateable){
-        // tagin saa: collidingUpdateable.getTag()
-    }
-
+    // TODO: ei käytä asetta
     public void spawnProjectile(int direction){
-        Projectile projectile = new Projectile(controller, this.getPosition(), 28,  direction, 30,
-                "projectile_enemy", this, Color.ORANGERED);
+        SmallProjectile projectile = new SmallProjectile(controller, this, 28,30, Color.ORANGERED);
         controller.addUpdateable(projectile);
-    }
-
-    public void destroyThis(){
-        controller.removeUpdateable(this);
-        controller.removeFromCollisionList(this);;
     }
 
 

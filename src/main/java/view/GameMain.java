@@ -13,11 +13,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.Component;
 import model.Player;
 import model.Sprite;
 import model.Unit;
+import model.weapons.Blaster;
+import model.weapons.RocketLauncher;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GameMain extends Application implements View {
     public static final int WINDOW_WIDTH = 1280;
@@ -119,6 +125,7 @@ public class GameMain extends Application implements View {
 
     /* TODO TAA MITTARI ON RIKKI JOKA KORJATAAN MYOHEMMIN
      */
+    @Override
     public void setCurrentFps(double currentFps){
         if(debugger_droppedBelowFpsTarget) {
             debugger_secondCounter += (1 / currentFps);
@@ -172,12 +179,37 @@ public class GameMain extends Application implements View {
             pane.getChildren().add(debugger_currentFps);
         }
 
-        //pelaajan luonti ja lisays looppilistaan
+        //pelaajan luonti
         Player player = new Player(controller);
+
+        // Pelaajan aseet
+        Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5);
+        player.setPrimaryWeapon((Weapon) primary);
+        Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
+        player.setSecondaryWeapon((Weapon) secondary);
+
+        // Aseiden lisäys komponentteihin, jotta aseet näkyvissä
+        ArrayList<Component> components = new ArrayList<>();
+        components.add(primary);
+        components.add(secondary);
+
+        Component b = new Component("circle", 10, 0, Color.RED, 0, 0);
+        components.add(b);
+
+        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0, 0);
+        components.add(c);
+
+        Component d = new Component("triangle", 10, 0, Color.BLUE, 0, 0);
+        components.add(d);
+
+        player.equipComponents(components);
+
         player.setPosition(100, 300);
+
         // tieto controllerille pelaajasta
         controller.addPlayer(player);
         controller.addUpdateable(player);
+
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 

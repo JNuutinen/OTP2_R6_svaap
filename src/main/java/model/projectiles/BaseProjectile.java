@@ -1,52 +1,62 @@
-package model;
+package model.projectiles;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.transform.Rotate;
+import model.Player;
+import model.Sprite;
+import model.Unit;
+import model.Updateable;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
-public class Projectile extends Sprite implements Updateable {
+/**
+ * Apuluokka eri projectileille. Pitää sisällään projectilen perus
+ * toiminnan, toiminnallisuutta voi lisätä/muuttaa perivässä luokassa.
+ * Esimerkiksi Missile muuttaa update metodia.
+ * Jos update metodia haluaa muuttaa, tai tarvitsee muuten kutsua kontrolleria
+ * perivässä luokassa, sen voi ottaa talteen instanssimuuttujaksi perivässä luokassa.
+ * Projectilen kuvan, damagen, nopeuden yms. asetus perivässä luokassa.
+ */
+class BaseProjectile extends Sprite implements Updateable {
+    private static final String TAG_ENEMY = "projectile_enemy";
+    private static final String TAG_PLAYER = "projectile_player";
+
     private Controller controller;
     private int damage;
-    private boolean hit = false;
-    private int speed = 40;
+    private boolean hit = false; // TODO: hit muuttujan käyttö?
 
 
-    public Projectile(Controller controller, Point2D startingLocation, double speed, double direction, int damage, String tag, Unit shooter, Color color){
+    BaseProjectile(Controller controller, Unit shooter, double speed, int damage) {
         this.controller = controller;
-        this.rotate(direction);
-        this.setTag(tag);
         this.damage = damage;
+
+        // Ammuksen tagi ampujan mukaan
+        if (shooter instanceof Player) setTag(TAG_PLAYER);
+        else setTag(TAG_ENEMY);
+
+        System.out.println("Projectile tag: " + getTag());
+
+        // Suunta ja aloituspiste otetaan ampujasta
+        double direction = shooter.getDirection();
+        Point2D startingLocation = shooter.getPosition();
+
+        rotate(direction);
         setVelocity(speed);
         setIsMoving(true);
-        this.setHitbox(10);
-
-        Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(-6.0, 0.0,
-                0.0, -3.0,
-                speed*0.6+1.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
-                0.0, 3.0);
-        Bloom bloom = new Bloom(0.0);
-        GaussianBlur blur = new GaussianBlur(3.0);
-        blur.setInput(bloom);
-        triangle.setEffect(blur);
-        triangle.setFill(Color.TRANSPARENT);
-        triangle.setStroke(color);
-        triangle.setStrokeWidth(5.0);
-        triangle.getTransforms().add(new Rotate(180, 0, 0));
-        this.getChildren().add(triangle);
 
         //Projektile lähtee aluksen kärjestä. Viholliset ja pelaaja erikseen
+        /*
         if (direction <= 90 || direction >= 270) { //Jos ampuja on pelaaja (kulkee vasemmalta oikealle)
             this.setPosition(startingLocation.getX() + shooter.getWidth(), startingLocation.getY());
         } else { //Jos ampuja on joku muu (kulkee oikealta vasemmalle)
             this.setPosition(startingLocation.getX() - shooter.getWidth(), startingLocation.getY());
+        }
+        */
+        if (shooter instanceof Player) {
+            setPosition(startingLocation.getX() + shooter.getWidth(), startingLocation.getY());
+        } else {
+            setPosition(startingLocation.getX() - shooter.getWidth(), startingLocation.getY());
         }
     }
 
@@ -64,6 +74,7 @@ public class Projectile extends Sprite implements Updateable {
     }
 
     //kutsutaan aina kun osuu johonkin. tehty niin etta tietyt luokat esim. vihun ammus ja vihu ei voi osua toisiinsa.
+    @Override
     public void collides(Updateable collidingUpdateable){
 
         destroyThis();
@@ -74,18 +85,13 @@ public class Projectile extends Sprite implements Updateable {
         }
     }
 
-    public Updateable getUpdateable(){
-        return this;
-    }
-
-
-    public void move(double deltaTime) {
+    void move(double deltaTime) {
         if (!hit) {
             moveStep(deltaTime);
         }
     }
 
-    public void destroyThis(){
+    void destroyThis(){
         controller.removeUpdateable(this);
     }
 }

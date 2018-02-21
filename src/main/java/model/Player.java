@@ -2,24 +2,23 @@ package model;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
+import model.projectiles.Missile;
+import model.projectiles.SmallProjectile;
 
 import static view.GameMain.input;
 
-public class Player extends Unit implements Updateable {
+public class Player extends Unit {
     private Controller controller;
     private double xVelocity;
     private double yVelocity;
     private int score = 0;
-    private double fireRate = 0.1;//sekunneissa
-    private double fireRateCounter = 0;
+    private double fireRate;//sekunneissa
+    private double fireRateCounter;
     private double deltaTime = 0;
-    private double secondaryFirerate = 0.4;
-    private double secondaryFirerateCounter = 0;
+    private double secondaryFirerate;
+    private double secondaryFirerateCounter;
 
 
     private final double accelerationForce = 5000; // voima joka kiihdyttaa alusta
@@ -40,20 +39,6 @@ public class Player extends Unit implements Updateable {
 
         drawShip(triangle);
 
-
-
-        Component b = new Component("circle", 10, 0, Color.RED, 0, 0);
-        components.add(b);
-
-        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0, 0);
-        components.add(c);
-
-        Component d = new Component("triangle", 10, 0, Color.BLUE, 0, 0);
-        components.add(d);
-
-        equipComponents(components);
-
-
         this.setHitbox(30);
     }
 
@@ -61,66 +46,50 @@ public class Player extends Unit implements Updateable {
     @Override
     public void update(double deltaTime){
         this.deltaTime = deltaTime;
-        resetVelocity();
+        resetVelocity(); // TODO: tää kutsu?
         if (input.contains("A")) addVelocity(-1, 0);
         else if (input.contains("D")) addVelocity(1, 0);
-        else if(xVelocity != 0){ decelerateX();
-        }
+        else if(xVelocity != 0) decelerateX();
+
         if (input.contains("W")) addVelocity(0, -1);
         else if (input.contains("S")) addVelocity(0, 1);
-        else if(yVelocity != 0){ decelerateY();
-        }
+        else if(yVelocity != 0) decelerateY();
 
+        // Primary fire
         if (input.contains("O")) {
-            if(fireRateCounter > fireRate){
-                fireRateCounter = 0;
-                spawnProjectile();
-            }
-
-            if(secondaryFirerateCounter > secondaryFirerate){
-                secondaryFirerateCounter = 0;
-                spawnMissile();
+            if (getPrimaryWeapon() != null) {
+                if (fireRateCounter > getPrimaryWeapon().getFireRate()) {
+                    fireRateCounter = 0;
+                    shootPrimary();
+                }
             }
         }
+
+        // Secondary fire
         if (input.contains("P")) {
-
+            if (getSecondaryWeapon() != null) {
+                if (secondaryFirerateCounter > getSecondaryWeapon().getFireRate()) {
+                    secondaryFirerateCounter = 0;
+                    shootSecondary();
+                }
+            }
         }
+
         fireRateCounter += deltaTime;
         secondaryFirerateCounter += deltaTime;
-        //System.out.println(xVelocity);
         if (input.contains("V")) System.exit(0);
+
+        // Päivitä sijainti
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
-
-
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
-
-    }
-
-
-    public double getAngleFromTarget(Point2D target){
-        return Math.toDegrees(Math.atan2(getYPosition() - target.getY(), getXPosition() * -1 - target.getX() * -1));
     }
 
     public void addScore(int points){
         score += points;
     }
 
-    /*
-    public void setScore(int points) {
-        score = points;
-    }
-    */
-
     public int getScore() {
         return score;
-    }
-
-    public void collides(Updateable collidingUpdateable){
-        // tagin saa: collidingUpdateable.getTag()
-    }
-
-    public Updateable getUpdateable(){
-        return this;
     }
 
     // laske ja lisaa vauhtia alukseen riippuen sen nykyisestä nopeudesta ja sen suunnasta: x/yVelocity
@@ -186,25 +155,9 @@ public class Player extends Unit implements Updateable {
         }
     }
 
+    // TODO: ei käytössä?
     private void resetVelocity() {
         //xVelocity = 0;
         //yVelocity = 0;
-    }
-
-    // TODO: tää sit joskus aseeseen
-    private void spawnProjectile(){
-        Projectile projectile = new Projectile(controller, this.getPosition(), 50, 0, 10,
-                "projectile_player", this, Color.CYAN);
-        controller.addUpdateable(projectile);
-    }
-
-    private void spawnMissile(){
-        Missile missile = new Missile(controller, this.getPosition(), 30, 0, 10,
-                "projectile_player", this, Color.YELLOW);
-        controller.addUpdateable(missile);
-    }
-
-    public void destroyThis(){
-        controller.removeUpdateable(this);
     }
 }

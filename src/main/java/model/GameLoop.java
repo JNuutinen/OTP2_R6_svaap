@@ -2,11 +2,12 @@ package model;
 
 import controller.Controller;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class GameLoop {
 
@@ -115,8 +116,9 @@ public class GameLoop {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag().equals("player")) {
-                                            if (((Path) Shape.intersect(updateable.getHitboxShape(), updateable2.getHitboxShape())).getElements().size() > 0) {
-                                                updateable.collides(updateable2.getUpdateable());
+                                            if (((Path) Shape.intersect(updateable.getHitboxShape(),
+                                                    updateable2.getHitboxShape())).getElements().size() > 0) {
+                                                updateable.collides(updateable2);
                                             }
                                         }
                                     }
@@ -127,8 +129,9 @@ public class GameLoop {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag().equals("enemy")) {
-                                            if (((Path) Shape.intersect(updateable.getHitboxShape(), updateable2.getHitboxShape())).getElements().size() > 0) {
-                                                updateable.collides(updateable2.getUpdateable());
+                                            if (((Path) Shape.intersect(updateable.getHitboxShape(),
+                                                    updateable2.getHitboxShape())).getElements().size() > 0) {
+                                                updateable.collides(updateable2);
                                             }
                                         }
                                     }

@@ -4,6 +4,7 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import model.projectiles.SmallProjectile;
 
 
 import static view.GameMain.WINDOW_HEIGHT;
@@ -18,8 +19,6 @@ public class Enemy_tracker extends Unit implements Updateable {
     private double initialX;
     private double initialY;
     private int movementPattern;
-    private Weapon weapon1;
-    private Weapon weapon2;
     private Point2D[] path;
     private int currentDestinationIndex = 0;
     private int lastDestinationIndex = 0;
@@ -144,9 +143,6 @@ public class Enemy_tracker extends Unit implements Updateable {
             }
         }
     }
-    public Updateable getUpdateable(){
-        return this;
-    }
 
     public void setMovementPattern(int movementPattern) {
         this.movementPattern = movementPattern;
@@ -163,18 +159,9 @@ public class Enemy_tracker extends Unit implements Updateable {
         this.initialY = initialY;
     }
 
-    public void collides(Updateable collidingUpdateable){
-        // tagin saa: collidingUpdateable.getTag()
-    }
-
+    // TODO: ei käytä asetta
     public void spawnProjectile(){
-        Projectile projectile = new Projectile(controller, this.getPosition(), 22,  getDirection(), 10,
-                "projectile_enemy", this, Color.LIMEGREEN);
+        SmallProjectile projectile = new SmallProjectile(controller, this, 22,10, Color.LIMEGREEN);
         controller.addUpdateable(projectile);
-    }
-
-    public void destroyThis(){
-        controller.removeUpdateable(this);
-        controller.removeFromCollisionList(this);;
     }
 }

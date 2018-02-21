@@ -4,17 +4,15 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 
 public interface Updateable {
-    public void update(double deltaTime);
+    void update(double deltaTime);
 
-    public Shape getHitboxShape();
+    Shape getHitboxShape();
 
-    public void collides(Updateable collidingUpdateable);
+    void collides(Updateable collidingUpdateable);
 
-    public Updateable getUpdateable();
+    String getTag();
 
-    public String getTag();
+    void setTag(String tag);
 
-    public void setTag(String tag);
-
-    public Point2D getPosition();
+    Point2D getPosition();
 }

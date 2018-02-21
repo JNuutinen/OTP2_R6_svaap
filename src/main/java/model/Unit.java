@@ -4,6 +4,7 @@ import controller.Controller;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class Unit extends Sprite implements Updateable {
      * Kontrolleri
      */
     private Controller controller;
+
     /**
      * Yksikön hitpointsit
      */
@@ -24,26 +26,64 @@ public class Unit extends Sprite implements Updateable {
      * Yksikön taso
      */
     private int level;
+
+    /**
+     * Komponenttilista
+     */
     ArrayList<Component> components = new ArrayList<>();
+
+    /**
+     * Pääase
+     */
+    private Weapon primaryWeapon;
+
+    /**
+     * Toissijainen ase
+     */
+    private Weapon secondaryWeapon;
 
     public Unit(Controller controller) {
         this.controller = controller;
+        // TODO: kovakoodattu hp
         hp = 30;
+    }
+
+    public void setPrimaryWeapon(Weapon primaryWeapon) {
+        this.primaryWeapon = primaryWeapon;
+    }
+
+    public Weapon getPrimaryWeapon() {
+        return primaryWeapon;
+    }
+
+    public void setSecondaryWeapon(Weapon secondaryWeapon) {
+        this.secondaryWeapon = secondaryWeapon;
+    }
+
+    public Weapon getSecondaryWeapon() {
+        return secondaryWeapon;
     }
 
     /**
      * Ampuu yksikön pääaseella
      */
     public void shootPrimary() {
-
-        System.out.println("pew pew");
+        if (primaryWeapon != null) {
+            primaryWeapon.shoot();
+        } else {
+            System.out.println(getTag() + ": No primary weapon set.");
+        }
     }
 
     /**
      * Ampuu yksikön toisella aseella
      */
     public void shootSecondary() {
-        System.out.println("pew");
+        if (secondaryWeapon != null) {
+            secondaryWeapon.shoot();
+        } else {
+            System.out.println(getTag() + ": No secondary weapon set.");
+        }
     }
 
     /**
@@ -83,7 +123,7 @@ public class Unit extends Sprite implements Updateable {
         }
     }
 
-    public ArrayList sortComponents(ArrayList<Component> components) {
+    private void sortComponents(ArrayList<Component> components) {
         for (int i = 0; i < components.size(); i++) { //Lajitellaan komponentit suurimmasta pienimpään
             for (int n = 0; n < components.size(); n++) {
                 if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i).getShape().getLayoutBounds().getWidth()
@@ -95,8 +135,8 @@ public class Unit extends Sprite implements Updateable {
                 }
             }
         }
-        return components;
     }
+
     public void equipComponents(ArrayList<Component> components) {
         int offset = -5;
         sortComponents(components); //Lajittelee komponentit isoimmasta pienimpään
@@ -143,12 +183,7 @@ public class Unit extends Sprite implements Updateable {
 
     @Override
     public void collides(Updateable collidingUpdateable) {
-
-    }
-
-    @Override
-    public Updateable getUpdateable() {
-        return null;
+        // Alusten törmäily ei tee mitään
     }
 
     public void destroyThis(){
