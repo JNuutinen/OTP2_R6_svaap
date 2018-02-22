@@ -6,10 +6,16 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.Player;
 import model.Unit;
 
+/**
+ * Pieni perusammus
+ */
 public class SmallProjectile extends BaseProjectile {
+
+    /**
+     * Ammuksen vakioväri
+     */
     private static final Color COLOR = Color.CYAN;
 
     /**

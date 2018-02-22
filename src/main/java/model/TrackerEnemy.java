@@ -10,7 +10,7 @@ import model.projectiles.SmallProjectile;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
-public class Enemy_tracker extends Unit implements Updateable {
+public class TrackerEnemy extends Unit implements Updateable {
     public static final int MOVE_NONE = -1;
     public static final int MOVE_STRAIGHT = 0;
     public static final int MOVE_SINE = 1;
@@ -32,8 +32,8 @@ public class Enemy_tracker extends Unit implements Updateable {
     private int fireRateCounter = 100;
 
 
-    public Enemy_tracker(Controller controller, int movementPattern, double initialX, double initialY, Point2D[] path,
-                 String tag) {
+    public TrackerEnemy(Controller controller, int movementPattern, double initialX, double initialY, Point2D[] path,
+                        String tag) {
         super(controller);
         this.path = path;
         this.controller = controller;

@@ -6,32 +6,42 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.Player;
 import model.Unit;
 import model.Updateable;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
-
 /**
- * Ohjusammuksen luokka. Luokassa vain ohjukselle ominaisten
- * piirteiden hallinta, kaikille ammuksille yhteiset piirteet
- * yliluokassa (BaseProjectile).
+ * Hakeutuva ohjusammus.
  */
+@SuppressWarnings("unused")
 public class Missile extends BaseProjectile {
+
+    /**
+     * Ammuksen vakioväri.
+     */
     private static final Color COLOR = Color.YELLOW;
+
+    /**
+     * Ammuksen kääntymisnopeus.
+     */
     private static final double ROTATING_SPEED = 9;
 
+    /**
+     * Viittaus kontrolleriin kohteen löytämiseksi updateables-listasta.
+     */
     private Controller controller;
+
+    /**
+     * Ammuksen kohde.
+     */
     private Updateable target;
 
 
     /**
-     * Konstruktori projectilen vakiovärillä
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan
-     * @param speed Projectilen nopeus
-     * @param damage Projectilen vahinko
+     * Konstruktori projectilen vakiovärillä.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Unit, jonka aseesta projectile ammutaan.
+     * @param speed Projectilen nopeus.
+     * @param damage Projectilen vahinko.
      */
     public Missile(Controller controller, Unit shooter, double speed, int damage) {
         // Kutsutaan BaseProjectilen konstruktoria
@@ -46,12 +56,12 @@ public class Missile extends BaseProjectile {
     }
 
     /**
-     * Konstruktori värin valinnalla
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan
-     * @param speed Projectilen nopeus
-     * @param damage Projectilen vahinko
-     * @param color Projectilen väri
+     * Konstruktori värin valinnalla.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Unit, jonka aseesta projectile ammutaan.
+     * @param speed Projectilen nopeus.
+     * @param damage Projectilen vahinko.
+     * @param color Projectilen väri.
      */
     public Missile(Controller controller, Unit shooter, double speed, int damage, Color color) {
         // Kutsutaan BaseProjectilen konstruktoria
@@ -67,16 +77,10 @@ public class Missile extends BaseProjectile {
 
     @Override
     public void update(double deltaTime) {
-        // chekkaa menikö ulos ruudulta
-        if (getXPosition() < -100
-                || getXPosition() > WINDOW_WIDTH + 200
-                || getYPosition() < -100
-                || getYPosition() > WINDOW_HEIGHT + 100) {
-            destroyThis();
-        } else {
-            move(deltaTime * getVelocity());
-        }
+        // Kutsutaan ensiksi BaseProjectilen perus updatea
+        super.update(deltaTime);
 
+        // Sen jälkeen missilelle ominaiset updatet
         double angleToTarget;
         if (target != null) {
             angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
@@ -94,10 +98,10 @@ public class Missile extends BaseProjectile {
     }
 
     /**
-     * Rakentaa projectilen Polygonin
-     * @param speed Projectilen nopeus, vaikuttaa hännän pituuteen
-     * @param color Projectilen väri
-     * @return Rakennettu Polygon
+     * Rakentaa projectilen Polygonin.
+     * @param speed Projectilen nopeus, vaikuttaa hännän pituuteen.
+     * @param color Projectilen väri.
+     * @return Rakennettu Polygon.
      */
     private Polygon buildProjectile(double speed, Color color) {
         // Ammuksen muoto
@@ -117,6 +121,9 @@ public class Missile extends BaseProjectile {
         return shape;
     }
 
+    /**
+     * Asettaa hakeutuvan ammuksen kohteen.
+     */
     private void findAndSetTarget() {
         for (Updateable updateable : controller.getUpdateables()) {
             if (updateable.getTag().equals("enemy")) {
@@ -125,5 +132,3 @@ public class Missile extends BaseProjectile {
         }
     }
 }
-
-

@@ -3,7 +3,6 @@ package model;
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -109,14 +108,14 @@ public class Level extends Thread {
                 new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 100),
                 new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 650)};
 
-        Enemy_tracker enemy_tracker = new Enemy_tracker(controller, 0,
+        TrackerEnemy trackerEnemy_ = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH / 2, -50, path,  "enemy");
-        enemy_tracker.setHp((int)(enemy_tracker.getHp() * enemyHealthModifier));
-        controller.addUpdateable(enemy_tracker);
+        trackerEnemy_.setHp((int)(trackerEnemy_.getHp() * enemyHealthModifier));
+        controller.addUpdateable(trackerEnemy_);
 
-        enemy_tracker = new Enemy_tracker(controller, 0,
+        trackerEnemy_ = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  "enemy");
-        enemy_tracker.setHp((int)(enemy_tracker.getHp() * enemyHealthModifier));
-        controller.addUpdateable(enemy_tracker);
+        trackerEnemy_.setHp((int)(trackerEnemy_.getHp() * enemyHealthModifier));
+        controller.addUpdateable(trackerEnemy_);
     }
 }
