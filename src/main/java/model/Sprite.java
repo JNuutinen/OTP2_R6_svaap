@@ -112,6 +112,10 @@ public class Sprite extends Pane {
         this.getChildren().add(imageView);
     }
 
+    /**
+     * Asettaa isMoving parametring osoittamaan, että Sprite on/ei ole liikkeessä.
+     * @param isMoving Liikkuuko Sprite.
+     */
     protected void setIsMoving(boolean isMoving){
         this.isMoving = isMoving;
     }
