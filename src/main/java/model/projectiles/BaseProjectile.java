@@ -48,7 +48,6 @@ class BaseProjectile extends Sprite implements Updateable {
      */
     private boolean hit = false;
 
-
     /**
      * Konstruktori, asettaa kontrollerin, ammuksen vahingon ja nopeuden. Shooter
      * -parametrin avulla asettaa tagin, ammuksen suunnan, sekä ammuksen lähtösijainnin.

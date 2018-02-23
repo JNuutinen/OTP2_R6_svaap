@@ -83,15 +83,19 @@ public class Missile extends BaseProjectile {
         // Sen jälkeen missilelle ominaiset updatet
         double angleToTarget;
         if (target != null) {
-            angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
-            // taa vaa pitaa asteet -180 & 180 valissa
-            while (angleToTarget >= 180.0) {
-                angleToTarget -= 360.0;
+            if (controller.getUpdateables().contains(target)) {
+                angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
+                // taa vaa pitaa asteet -180 & 180 valissa
+                while (angleToTarget >= 180.0) {
+                    angleToTarget -= 360.0;
+                }
+                while (angleToTarget < -180) {
+                    angleToTarget += 360.0;
+                }
+                rotate(angleToTarget * ROTATING_SPEED * deltaTime);
+            } else {
+                findAndSetTarget();
             }
-            while (angleToTarget < -180) {
-                angleToTarget += 360.0;
-            }
-            rotate(angleToTarget * ROTATING_SPEED * deltaTime);
         } else {
             findAndSetTarget();
         }
