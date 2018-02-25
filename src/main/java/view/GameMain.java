@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -44,6 +46,7 @@ public class GameMain extends Application implements View {
     private Label debugger_currentFps;
     private boolean debugger_droppedBelowFpsTarget = false;
     private double debugger_secondCounter = 0;
+    private ImageView healthIv = new ImageView();
 
 
     @Override
@@ -153,6 +156,12 @@ public class GameMain extends Application implements View {
         this.score.setText("Score: " + score);
     }
 
+    public void setHealthbar(int hp){
+        Image healthbar = new Image("/images/healthbar/"+hp+".png");
+        healthIv.setX(WINDOW_WIDTH / 2);
+        healthIv.setImage(healthbar);
+    }
+
     private void startGame(Stage primaryStage) {
         // Peligrafiikoiden luonti
         pane = new Pane();
@@ -165,6 +174,7 @@ public class GameMain extends Application implements View {
         score = new Label("Score: " + controller.getScore());
         score.setFont(new Font("Cambria", 32));
         pane.getChildren().add(score);
+        pane.getChildren().add(healthIv);
 
         //---------------- debugger
         if(debuggerToolsEnabled) {

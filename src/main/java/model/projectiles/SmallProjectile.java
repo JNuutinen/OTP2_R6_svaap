@@ -54,6 +54,24 @@ public class SmallProjectile extends BaseProjectile {
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
     }
+    /**
+     * Konstruktori ammuksen suunnan valinnalla
+     * @param controller Pelin kontrolleri
+     * @param shooter Unit, jonka aseesta projectile ammutaan
+     * @param speed Projectilen nopeus
+     * @param damage Projectilen vahinko
+     * @param direction Projectilen suunta
+     */
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction) {
+        // Kutsutaan BaseProjectilen konstruktoria
+        super(controller, shooter, speed, damage);
+        rotate(direction);
+        // TODO: hitboxin koko kovakoodattu
+        setHitbox(10);
+
+        Polygon shape = buildProjectile(speed, COLOR);
+        getChildren().add(shape);
+    }
 
     /**
      * Rakentaa projectilen Polygonin

@@ -182,7 +182,7 @@ public class Sprite extends Pane {
      * @param rectangleHitboxHeight Hitboxin korkeus.
      */
     public void setHitbox(double rectangleHitboxWidth, double rectangleHitboxHeight) {
-        shape = new Rectangle(0 - (rectangleHitboxWidth/2), 0 - (rectangleHitboxHeight/2), rectangleHitboxWidth, rectangleHitboxHeight);
+        shape = new Rectangle(rectangleHitboxWidth, rectangleHitboxHeight);
         shape.setFill(Color.TRANSPARENT);
         if(debuggerToolsEnabled) {
             shape.setStroke(Color.LIGHTGREY);

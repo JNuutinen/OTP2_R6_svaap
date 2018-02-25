@@ -16,5 +16,5 @@ public interface View {
     void setCurrentFps(double fps);
     void setScore(int score);
     void returnToMain();
-
+    void setHealthbar(int hp);
 }

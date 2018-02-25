@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -76,12 +77,16 @@ public class Level extends Thread {
                     Enemy enemy = new Enemy(controller, enemyType.getMovementPattern(),
                             WINDOW_WIDTH + 50, randomYPos, "enemy");
                     enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
-                    // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
-                    //
-                    if (numberOfEnemies == 1) {
-                        lastEnemy = enemy;
-                    }
+
+
                     controller.addUpdateable(enemy);
+                    // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
+                    // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
+                    if (numberOfEnemies == 1) {
+                        Boss boss = new Boss(controller, (int)(100*enemyHealthModifier), new Image("/images/bossPlaceholder.png"), 1, WINDOW_WIDTH - 50, 100, "enemy");
+                        lastEnemy = boss;
+                        controller.addUpdateable(boss);
+                    }
                     numberOfEnemies--;
                 }
             }

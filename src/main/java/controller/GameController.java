@@ -32,6 +32,10 @@ public class GameController implements Controller {
         view.setScore(player.getScore());
     }
 
+    public void setHealthbar(int hp){
+       Platform.runLater(() -> view.setHealthbar(hp));
+    }
+
     @Override
     public void addUnitToCollisionList(Unit unit) {
         view.addUnitToCollisionList(unit);
@@ -77,7 +81,7 @@ public class GameController implements Controller {
             default:
                 // Luodaan enemy tyypit listaan, mikä annetaan levelille parametrina
                 enemies = createEnemyTypes();
-                int numberOfEnemies = 10;
+                int numberOfEnemies = 0;
                 double spawnFrequencyModifier = 1;
                 double enemyHealthModifier = 1;
                 double enemyDamageModifier = 1;
@@ -87,7 +91,7 @@ public class GameController implements Controller {
                 break;
             case 1:
                 enemies = createEnemyTypes();
-                numberOfEnemies = 15;
+                numberOfEnemies = 1;
                 spawnFrequencyModifier = 0.9;
                 enemyHealthModifier = 1.5;
                 enemyDamageModifier = 1.5;

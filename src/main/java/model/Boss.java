@@ -20,6 +20,8 @@ public class Boss extends Unit implements Updateable {
     private int movementPattern;
     private double direction = 180;
     private int movementCounter = 0;
+    private boolean up = false;
+    private int originalhp;
 
     // Ampumisen kovakoodit
     private int fireRate = 50;
@@ -33,10 +35,12 @@ public class Boss extends Unit implements Updateable {
         this.setTag("enemy");
     }
 
-    public Boss(Controller controller, Image image, int movementPattern, double initialX, double initialY,
+    public Boss(Controller controller, int hp, Image image, int movementPattern, double initialX, double initialY,
                  String tag) {
         super(controller);
         this.controller = controller;
+        setHp(hp);
+        originalhp = hp;
         this.setTag(tag);
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
@@ -47,6 +51,7 @@ public class Boss extends Unit implements Updateable {
         else setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
+        this.setHitbox(128,256);
     }
 
     public void setMovementPattern(int movementPattern) {
@@ -69,9 +74,9 @@ public class Boss extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            spawnProjectile(180);
-            spawnProjectile(175);
-            spawnProjectile(185);
+            spawnProjectile(0);
+            spawnProjectile(5);
+            spawnProjectile(-5);
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
@@ -80,16 +85,31 @@ public class Boss extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
-            setPosition(getXPosition(), (((Math.sin(movementCounter++) / 20 )) * 100)+initialY);
+            setPosition(getXPosition(), upOrDown());
             moveBoss(deltaTime);
+        }
+        if(hpPercentage() > 0 && hpPercentage() <= 10) {
+            controller.setHealthbar(hpPercentage());
         }
     }
 
     // TODO: ei käytä asetta
     public void spawnProjectile(int direction){
-        SmallProjectile projectile = new SmallProjectile(controller, this, 28,30, Color.ORANGERED);
+        SmallProjectile projectile = new SmallProjectile(controller, this, 28,30, direction);
         controller.addUpdateable(projectile);
     }
 
-
+    public double upOrDown(){
+        if (!up){
+            if(movementCounter >= 500){ up = true;}
+            return initialY + movementCounter++;
+        }else{
+            if(movementCounter <= 200){ up = false;}
+            return initialY + movementCounter--;
+            }
+        }
+    public int hpPercentage(){
+        int tenthHp = originalhp / 10;
+        return getHp() / tenthHp;
+    }
 }

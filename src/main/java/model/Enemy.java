@@ -19,6 +19,7 @@ public class Enemy extends Unit implements Updateable {
     private int movementPattern;
     private double direction = 0;
 
+
     // Ampumisen kovakoodit
     private int fireRate = 300;
     private int fireRateCounter = 100;
