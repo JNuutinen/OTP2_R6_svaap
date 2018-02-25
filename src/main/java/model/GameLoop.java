@@ -128,7 +128,7 @@ public class GameLoop {
                             if (updateable.getTag().equals("projectile_player")) {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
-                                        if (updateable2.getTag().equals("enemy")) {
+                                        if (updateable2.getTag().equals("enemy") || updateable2.getTag().equals("boss")) {
                                             if (((Path) Shape.intersect(updateable.getHitboxShape(),
                                                     updateable2.getHitboxShape())).getElements().size() > 0) {
                                                 updateable.collides(updateable2);

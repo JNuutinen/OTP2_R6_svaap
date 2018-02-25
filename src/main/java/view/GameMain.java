@@ -157,9 +157,13 @@ public class GameMain extends Application implements View {
     }
 
     public void setHealthbar(int hp){
-        Image healthbar = new Image("/images/healthbar/"+hp+".png");
-        healthIv.setX(WINDOW_WIDTH / 2);
-        healthIv.setImage(healthbar);
+        if(hp > 0 && hp <= 10) {
+            Image healthbar = new Image("/images/healthbar/" + hp + ".png");
+            healthIv.setX(WINDOW_WIDTH / 2);
+            healthIv.setImage(healthbar);
+        }else{
+            healthIv.setImage(null);
+        }
     }
 
     private void startGame(Stage primaryStage) {

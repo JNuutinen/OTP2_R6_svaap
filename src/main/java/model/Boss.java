@@ -24,15 +24,15 @@ public class Boss extends Unit implements Updateable {
     private int originalhp;
 
     // Ampumisen kovakoodit
-    private int fireRate = 50;
-    private int fireRateCounter = 50;
+    private int fireRate = 100;
+    private int fireRateCounter = 100;
 
     public Boss(Controller controller) {
         super(controller);
         this.controller = controller;
         controller.addUnitToCollisionList(this);
         rotate(180);
-        this.setTag("enemy");
+        this.setTag("boss");
     }
 
     public Boss(Controller controller, int hp, Image image, int movementPattern, double initialX, double initialY,
@@ -52,6 +52,7 @@ public class Boss extends Unit implements Updateable {
         this.initialX = initialX;
         this.initialY = initialY;
         this.setHitbox(128,256);
+        this.setTag("boss");
     }
 
     public void setMovementPattern(int movementPattern) {
@@ -88,9 +89,7 @@ public class Boss extends Unit implements Updateable {
             setPosition(getXPosition(), upOrDown());
             moveBoss(deltaTime);
         }
-        if(hpPercentage() > 0 && hpPercentage() <= 10) {
             controller.setHealthbar(hpPercentage());
-        }
     }
 
     // TODO: ei käytä asetta
@@ -108,8 +107,15 @@ public class Boss extends Unit implements Updateable {
             return initialY + movementCounter--;
             }
         }
+
+    //Lasketaan kuinka monta kymmenystä pomon hp:stä on jäljellä.
     public int hpPercentage(){
         int tenthHp = originalhp / 10;
-        return getHp() / tenthHp;
+        int percentage = getHp() / tenthHp;
+        if (percentage == 0 && getHp() > 0){
+            return 1;
+        }else {
+            return percentage;
+        }
     }
 }
