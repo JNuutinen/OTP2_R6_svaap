@@ -6,6 +6,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
+import model.Component;
 import model.Unit;
 
 /**
@@ -25,9 +26,9 @@ public class SmallProjectile extends BaseProjectile {
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage) {
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
 
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
@@ -44,9 +45,9 @@ public class SmallProjectile extends BaseProjectile {
      * @param damage Projectilen vahinko
      * @param color Projectilen väri
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Color color) {
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
 
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
@@ -62,9 +63,9 @@ public class SmallProjectile extends BaseProjectile {
      * @param damage Projectilen vahinko
      * @param direction Projectilen suunta
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction) {
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
         rotate(direction);
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);

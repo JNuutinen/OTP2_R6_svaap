@@ -21,7 +21,7 @@ public class Enemy extends Unit implements Updateable {
 
 
     // Ampumisen kovakoodit
-    private int fireRate = 300;
+    private int fireRate = 100;
     private int fireRateCounter = 100;
 
 
@@ -78,7 +78,7 @@ public class Enemy extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            spawnProjectile();
+            shootPrimary();
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
@@ -94,7 +94,7 @@ public class Enemy extends Unit implements Updateable {
 
     // TODO: ei käytä asetta
     public void spawnProjectile(){
-        SmallProjectile projectile = new SmallProjectile(controller, this, 28,10, Color.ORANGERED);
-        controller.addUpdateable(projectile);
+        //SmallProjectile projectile = new SmallProjectile(controller, this, 28,10, Color.ORANGERED);
+        //controller.addUpdateable(projectile);
     }
 }

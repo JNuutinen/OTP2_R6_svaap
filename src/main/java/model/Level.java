@@ -4,6 +4,8 @@ import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import model.weapons.Blaster;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -75,6 +77,7 @@ public class Level extends Thread {
      * Viittaa tason viimeiseen viholliseen (Bossiin). Käytetään tason loppumisen tarkkailuun.
      */
     private Updateable lastEnemy;
+    private Boss boss = new Boss();
 
 
     /**
@@ -96,11 +99,11 @@ public class Level extends Thread {
         this.enemyHealthModifier = enemyHealthModifier;
         this.enemyDamageModifier = enemyDamageModifier;
         this.levelNumber = levelNumber;
+        boss.constructBosses(controller);
     }
 
     @Override
     public void run() {
-
         try {
             Thread.sleep(200);
             hegenTestausMetodi();
@@ -115,7 +118,6 @@ public class Level extends Thread {
 
         // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
-
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
 
 
@@ -137,13 +139,15 @@ public class Level extends Thread {
                     Enemy enemy = new Enemy(controller, enemyType.getMovementPattern(),
                             WINDOW_WIDTH + 50, randomYPos, "enemy");
                     enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
-
+                    Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 0, 0);
+                    enemy.setPrimaryWeapon((Weapon) blaster);
 
                     controller.addUpdateable(enemy);
                     // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                     // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                     if (numberOfEnemies == 1) {
-                        Boss boss = new Boss(controller, (int)(100*enemyHealthModifier), new Image("/images/bossPlaceholder.png"), 1, WINDOW_WIDTH - 50, 100, "enemy");
+                        Thread.sleep(3000);
+                        boss = boss.bossList.get(0);
                         lastEnemy = boss;
                         controller.addUpdateable(boss);
                     }

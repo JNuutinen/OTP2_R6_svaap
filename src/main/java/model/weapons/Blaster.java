@@ -65,6 +65,6 @@ public class Blaster extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE));
+        controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, this));
     }
 }

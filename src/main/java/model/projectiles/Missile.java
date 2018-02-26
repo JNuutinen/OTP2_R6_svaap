@@ -6,6 +6,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
+import model.Component;
 import model.Trail;
 import model.Unit;
 import model.Updateable;
@@ -48,9 +49,9 @@ public class Missile extends BaseProjectile {
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed) {
+    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
         this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
 
@@ -71,9 +72,9 @@ public class Missile extends BaseProjectile {
      * @param damage Projectilen vahinko
      * @param color Projectilen väri
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Color color) {
+    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
         this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
 
@@ -145,7 +146,7 @@ public class Missile extends BaseProjectile {
 
     private void findAndSetTarget() {
         for (Updateable updateable : controller.getUpdateables()) {
-            if (updateable.getTag().equals("enemy")) {
+            if (updateable.getTag().equals("enemy") || updateable.getTag().equals("boss") ) {
                 target = updateable;
             }
         }

@@ -6,6 +6,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
+import model.Component;
 import model.Unit;
 import model.Updateable;
 
@@ -53,9 +54,9 @@ public class LazyMissile extends BaseProjectile {
      * @param damage Projectilen vahinko.
      * @param direction Projectilen väri.
      */
-    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction) {
+    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction, Component component) {
         // Kutsutaaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
 
         this.controller = controller;
 
@@ -77,9 +78,9 @@ public class LazyMissile extends BaseProjectile {
      * @param direction Projectilen väri.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double rotatingSpeed) {
+                       double rotatingSpeed, Component component) {
         // Kutsutaaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
 
         this.controller = controller;
 
@@ -104,9 +105,9 @@ public class LazyMissile extends BaseProjectile {
      * @param color Projectilen väri.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double rotatingSpeed, Color color) {
+                       double rotatingSpeed, Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage);
+        super(controller, shooter, speed, damage, component);
 
         this.controller = controller;
 
@@ -181,7 +182,7 @@ public class LazyMissile extends BaseProjectile {
      */
     private void findAndSetTarget() {
         for (Updateable updateable : controller.getUpdateables()) {
-            if (updateable.getTag().equals("enemy")) {
+            if (updateable.getTag().equals("enemy") || updateable.getTag().equals("boss")) {
                 target = updateable;
             }
         }

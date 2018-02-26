@@ -161,7 +161,7 @@ public class TrackerEnemy extends Unit implements Updateable {
 
     // TODO: ei käytä asetta
     public void spawnProjectile(){
-        SmallProjectile projectile = new SmallProjectile(controller, this, 22,10, Color.LIMEGREEN);
-        controller.addUpdateable(projectile);
+       // SmallProjectile projectile = new SmallProjectile(controller, this, 22,10, Color.LIMEGREEN);
+      //  controller.addUpdateable(projectile);
     }
 }

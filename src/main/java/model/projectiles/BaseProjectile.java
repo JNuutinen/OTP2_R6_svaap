@@ -2,10 +2,7 @@ package model.projectiles;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import model.Player;
-import model.Sprite;
-import model.Unit;
-import model.Updateable;
+import model.*;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -56,7 +53,7 @@ class BaseProjectile extends Sprite implements Updateable {
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen vahinko.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, int damage) {
+    BaseProjectile(Controller controller, Unit shooter, double speed, int damage, Component component) {
         this.controller = controller;
         this.damage = damage;
 
@@ -74,9 +71,9 @@ class BaseProjectile extends Sprite implements Updateable {
 
         //Projektile lähtee aluksen kärjestä. Viholliset ja pelaaja erikseen
         if (shooter instanceof Player) { //Jos ampuja on pelaaja
-            this.setPosition(startingLocation.getX() + shooter.getWidth(), startingLocation.getY());
+            this.setPosition(startingLocation.getX()  + component.getxOffset(), startingLocation.getY() + component.getyOffset());
         } else { //Jos ampuja on joku muu
-            this.setPosition(startingLocation.getX() - shooter.getWidth(), startingLocation.getY());
+            this.setPosition(startingLocation.getX() - shooter.getWidth() + component.getxOffset(), startingLocation.getY() + component.getyOffset());
         }
     }
 

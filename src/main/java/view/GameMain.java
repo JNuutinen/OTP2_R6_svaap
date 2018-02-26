@@ -15,10 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import model.Component;
-import model.Player;
-import model.Sprite;
-import model.Unit;
+import model.*;
 import model.weapons.Blaster;
 import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
@@ -194,6 +191,7 @@ public class GameMain extends Application implements View {
             debugger_currentFps.setLayoutX(540);
             pane.getChildren().add(debugger_currentFps);
         }
+
 
         //pelaajan luonti
         Player player = new Player(controller);

@@ -93,7 +93,7 @@ public class GameController implements Controller {
                 break;
             case 1:
                 enemies = createEnemyTypes();
-                numberOfEnemies = 1;
+                numberOfEnemies = 3;
                 spawnFrequencyModifier = 0.9;
                 enemyHealthModifier = 1.5;
                 enemyDamageModifier = 1.5;
