@@ -173,14 +173,14 @@ public class Level extends Thread {
                 new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 100),
                 new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 650)};
 
-        TrackerEnemy trackerEnemy_ = new TrackerEnemy(controller, 0,
+        TrackerEnemy trackerEnemy = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH / 2, -50, path,  "enemy");
-        trackerEnemy_.setHp((int)(trackerEnemy_.getHp() * enemyHealthModifier));
-        controller.addUpdateable(trackerEnemy_);
+        trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
+        controller.addUpdateable(trackerEnemy);
 
-        trackerEnemy_ = new TrackerEnemy(controller, 0,
+        trackerEnemy = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  "enemy");
-        trackerEnemy_.setHp((int)(trackerEnemy_.getHp() * enemyHealthModifier));
-        controller.addUpdateable(trackerEnemy_);
+        trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
+        controller.addUpdateable(trackerEnemy);
     }
 }
