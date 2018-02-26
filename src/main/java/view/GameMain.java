@@ -8,9 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -166,6 +164,11 @@ public class GameMain extends Application implements View {
     }
 
     private void startGame(Stage primaryStage) {
+
+
+
+
+
         // Peligrafiikoiden luonti
         pane = new Pane();
         VBox.setVgrow(pane, Priority.NEVER);
@@ -178,6 +181,10 @@ public class GameMain extends Application implements View {
         score.setFont(new Font("Cambria", 32));
         pane.getChildren().add(score);
         pane.getChildren().add(healthIv);
+
+
+        GameBackground gmg = new GameBackground(controller);
+
 
         //---------------- debugger
         if(debuggerToolsEnabled) {
@@ -211,22 +218,25 @@ public class GameMain extends Application implements View {
         components.add(primary);
         components.add(secondary);
 
-        Component b = new Component("circle", 10, 0, Color.RED, 0, 0);
+        Component b = new Component("circle", 10, 0, Color.RED, 0,0);
         components.add(b);
 
-        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0, 0);
+        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0,0);
         components.add(c);
 
-        Component d = new Component("triangle", 10, 0, Color.BLUE, 0, 0);
+        Component d = new Component("triangle", 10, 0, Color.BLUE, 0,0);
         components.add(d);
 
         player.equipComponents(components);
+
 
         player.setPosition(100, 300);
 
         // tieto controllerille pelaajasta
         controller.addPlayer(player);
         controller.addUpdateable(player);
+
+
 
         // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
