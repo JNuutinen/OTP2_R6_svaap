@@ -16,6 +16,8 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private static final int SPEED = 40;
 
+    private double rotatingSpeed = 9.0;
+
     /**
      * Raketinheittimen ammuksien vahinko.
      */
@@ -52,10 +54,11 @@ public class RocketLauncher extends Component implements Weapon {
      * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
      */
     public RocketLauncher(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                          double yOffset) {
+                          double yOffset, double rotatingSpeed) {
         super(shape, size, orientation, COLOR, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
+        this.rotatingSpeed = rotatingSpeed;
     }
 
     @Override
@@ -65,6 +68,6 @@ public class RocketLauncher extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE));
+        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed));
     }
 }

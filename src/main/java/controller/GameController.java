@@ -6,6 +6,7 @@ import model.*;
 import view.GameMain;
 import view.View;
 
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 
 import static model.Enemy.MOVE_STRAIGHT;
@@ -52,6 +53,7 @@ public class GameController implements Controller {
         gameLoop.queueUpdateable(updateable);
     }
 
+    
     @Override
     public int getScore() {
         if (player != null) return player.getScore();
