@@ -11,22 +11,82 @@ import java.util.concurrent.ThreadLocalRandom;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
+/**
+ * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
+ */
 public class Level extends Thread {
-    // Millisekunteina base spawnausajan lyhyin aika
+
+    /**
+     * Millisekunteina spawnausajan lyhyin aika, pohjalukema johon vaikuttaa konstruktorin
+     * parametrina annettu spawnFrequencyModifier.
+     */
     private final int BASE_SPAWN_FREQ_LOW = 3000;
-    // Millisekunteina base spawnausajan pisin aika
+
+    /**
+     * Millisekunteina spawnausajan pisin aika, pohjalukema johon vaikuttaa konstruktorin
+     * parametrina annettu spawnFrequencyModifier.
+     */
     private final int BASE_SPAWN_FREQ_HIGH = 6000;
 
+    /**
+     * Viittaus pelin kontrolleriin, mahdollistaa vihollisolioiden lisäämisen peliin.
+     */
     private Controller controller;
+
+    /**
+     * Lista, joka sisältää kyseisessä tasossa esiintyvät eri vihollistyypit.
+     */
     private ArrayList<Enemy> enemyTypes;
+
+    /**
+     * Vihollisten nykyinen jäljellä oleva lukumäärä.
+     */
     private int numberOfEnemies;
+
+    /**
+     * Kerroin, joka vaikuttaa vihollisten spawnauksen aikahaarukkaan.
+     * BASE_SPAWN_FREQ_LOW ja -HIGH kerrotaan tällä lukemalla, joten luvut > 1 lisäävät spawnausaikaa
+     * ja luvut < 1 lyhentävät spawnausaikaa.
+     */
     private double spawnFrequencyModifier;
+
+    /**
+     * Kerroin, joka vaikuttaa vihollisten hitpointsien määrään.
+     * Vihollisen hitpointsit kerrotaan tällä luvulla, joten luvut > 1 lisäävät hitpointseja
+     * ja luvut < 1 vähentävät hitpointseja.
+     */
     private double enemyHealthModifier;
+
+    /**
+     * Kerroin, joka vaikuttaa vihollisten aseiden tekemään vahinkoon.
+     * Vihollisten aseiden tekemä vahinko kerrotaan tällä luvulla, joten luvut > 1 lisäävät vahinkoa
+     * ja luvut < 1 vähentävät vahinkoa.
+     * TODO: ei käytössä
+     */
     private double enemyDamageModifier;
+
+    /**
+     * Nykyisen tason numero.
+     * TODO: voidaan käyttää tasokohtaisen bossin määrittämiseen.
+     */
     private int levelNumber;
+
+    /**
+     * Viittaa tason viimeiseen viholliseen (Bossiin). Käytetään tason loppumisen tarkkailuun.
+     */
     private Updateable lastEnemy;
 
 
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param enemyTypes Lista joka sisältää tasossa ilmentyvät vihollistyypit.
+     * @param numberOfEnemies Vihollisten kokonaislukumäärä tason aikana.
+     * @param spawnFrequencyModifier Kerroin, joka lyhentää/kasvattaa spawnausaikahaarukkaa.
+     * @param enemyHealthModifier Kerroin, joka kasvattaa/pienentää vihollisten hitpointseja.
+     * @param enemyDamageModifier Kerroin, joka kasvattaa/pienentää vihollisten aseiden tekemää vahinkoa. TODO: ei käytös
+     * @param levelNumber Tason numero.
+     */
     public Level(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, double spawnFrequencyModifier,
                  double enemyHealthModifier, double enemyDamageModifier, int levelNumber) {
         this.controller = controller;
