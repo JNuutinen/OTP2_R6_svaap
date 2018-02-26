@@ -6,62 +6,55 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
+import model.Trail;
 import model.Unit;
 import model.Updateable;
 
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
+
 /**
- * Hakeutuva ohjusammus.
+ * Ohjusammuksen luokka. Luokassa vain ohjukselle ominaisten
+ * piirteiden hallinta, kaikille ammuksille yhteiset piirteet
+ * yliluokassa (BaseProjectile).
  */
-@SuppressWarnings("unused")
 public class Missile extends BaseProjectile {
-
-    /**
-     * Ammuksen vakioväri.
-     */
     private static final Color COLOR = Color.YELLOW;
+    private static double rotatingSpeed = 9;
 
-    /**
-     * Ammuksen kääntymisnopeus.
-     */
-    private static final double ROTATING_SPEED = 9;
-
-    /**
-     * Viittaus kontrolleriin kohteen löytämiseksi updateables-listasta.
-     */
     private Controller controller;
-
-    /**
-     * Ammuksen kohde.
-     */
     private Updateable target;
 
 
     /**
-     * Konstruktori projectilen vakiovärillä.
-     * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jonka aseesta projectile ammutaan.
-     * @param speed Projectilen nopeus.
-     * @param damage Projectilen vahinko.
+     * Konstruktori projectilen vakiovärillä
+     * @param controller Pelin kontrolleri
+     * @param shooter Unit, jonka aseesta projectile ammutaan
+     * @param speed Projectilen nopeus
+     * @param damage Projectilen vahinko
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage) {
+    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, damage);
-
+        this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
 
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
+
+        Trail trail = new Trail(controller, this, getPosition());
+        this.getChildren().addAll(trail);
     }
 
     /**
-     * Konstruktori värin valinnalla.
-     * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jonka aseesta projectile ammutaan.
-     * @param speed Projectilen nopeus.
-     * @param damage Projectilen vahinko.
-     * @param color Projectilen väri.
+     * Konstruktori värin valinnalla
+     * @param controller Pelin kontrolleri
+     * @param shooter Unit, jonka aseesta projectile ammutaan
+     * @param speed Projectilen nopeus
+     * @param damage Projectilen vahinko
+     * @param color Projectilen väri
      */
     public Missile(Controller controller, Unit shooter, double speed, int damage, Color color) {
         // Kutsutaan BaseProjectilen konstruktoria
@@ -77,10 +70,16 @@ public class Missile extends BaseProjectile {
 
     @Override
     public void update(double deltaTime) {
-        // Kutsutaan ensiksi BaseProjectilen perus updatea
-        super.update(deltaTime);
+        // chekkaa menikö ulos ruudulta
+        if (getXPosition() < -100
+                || getXPosition() > WINDOW_WIDTH + 200
+                || getYPosition() < -100
+                || getYPosition() > WINDOW_HEIGHT + 100) {
+            destroyThis();
+        } else {
+            moveStep(deltaTime * getVelocity());
+        }
 
-        // Sen jälkeen missilelle ominaiset updatet
         double angleToTarget;
         if (target != null) {
             if (controller.getUpdateables().contains(target)) {
@@ -92,7 +91,7 @@ public class Missile extends BaseProjectile {
                 while (angleToTarget < -180) {
                     angleToTarget += 360.0;
                 }
-                rotate(angleToTarget * ROTATING_SPEED * deltaTime);
+                rotate(angleToTarget * rotatingSpeed * deltaTime);
             } else {
                 findAndSetTarget();
             }
@@ -102,10 +101,10 @@ public class Missile extends BaseProjectile {
     }
 
     /**
-     * Rakentaa projectilen Polygonin.
-     * @param speed Projectilen nopeus, vaikuttaa hännän pituuteen.
-     * @param color Projectilen väri.
-     * @return Rakennettu Polygon.
+     * Rakentaa projectilen Polygonin
+     * @param speed Projectilen nopeus, vaikuttaa hännän pituuteen
+     * @param color Projectilen väri
+     * @return Rakennettu Polygon
      */
     private Polygon buildProjectile(double speed, Color color) {
         // Ammuksen muoto
@@ -119,15 +118,16 @@ public class Missile extends BaseProjectile {
         blur.setInput(bloom);
         shape.setEffect(blur);
         shape.setFill(Color.TRANSPARENT);
-        shape.setStroke(color);
+
+
+        //setVelocity(0);
+
+        shape.setStroke(Color.WHITE);
         shape.setStrokeWidth(5.0);
         shape.getTransforms().add(new Rotate(180, 0, 0));
         return shape;
     }
 
-    /**
-     * Asettaa hakeutuvan ammuksen kohteen.
-     */
     private void findAndSetTarget() {
         for (Updateable updateable : controller.getUpdateables()) {
             if (updateable.getTag().equals("enemy")) {
