@@ -65,10 +65,10 @@ class BaseProjectile extends Sprite implements Updateable {
         else setTag(TAG_ENEMY);
 
         // Suunta ja aloituspiste otetaan ampujasta
-        double direction = shooter.getDirection();
+        //setDirection(shooter.getDirection());
         Point2D startingLocation = shooter.getPosition();
 
-        rotate(direction);
+        rotate(shooter.getDirection());
         setVelocity(speed);
         setIsMoving(true);
 

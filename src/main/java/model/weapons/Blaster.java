@@ -19,12 +19,12 @@ public class Blaster extends Component implements Weapon {
     /**
      * Blasterin ammuksien vahinko.
      */
-    private static final int DAMAGE = 10;
+    private static final int DAMAGE = 5;
 
     /**
      * Blasterin tulinopeus.
      */
-    private static final double FIRE_RATE = 0.4;
+    private static final double FIRE_RATE = 0.2;
 
     /**
      * Blasterin väri.

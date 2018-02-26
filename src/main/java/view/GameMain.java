@@ -21,17 +21,21 @@ import model.Sprite;
 import model.Unit;
 import model.weapons.Blaster;
 import model.weapons.RocketLauncher;
+import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class GameMain extends Application implements View {
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
     public static final int MAIN_MENU_WIDTH = 400;
     public static final int MAIN_MENU_HEIGHT = 400;
+
+    /**
+     * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
+     */
+    private static final int NUMBER_OF_LEVELS = 6;
     public static ArrayList<String> input;
 
     private MainMenu mainMenu;
@@ -78,7 +82,7 @@ public class GameMain extends Application implements View {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
 
         // Päävalikon luonti
-        mainMenu = new MainMenu(numberOfLevels);
+        mainMenu = new MainMenu(NUMBER_OF_LEVELS);
         Scene mainMenuScene = mainMenu.scene();
         primaryStage.setScene(mainMenuScene);
 
@@ -195,11 +199,15 @@ public class GameMain extends Application implements View {
 
         //pelaajan luonti
         Player player = new Player(controller);
+        player.setHp(1000000);
 
         // Pelaajan aseet
+        // PÄÄASE
         Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5);
         player.setPrimaryWeapon((Weapon) primary);
-        Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
+        //SIVUASE
+        //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
+        Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0);
         player.setSecondaryWeapon((Weapon) secondary);
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä

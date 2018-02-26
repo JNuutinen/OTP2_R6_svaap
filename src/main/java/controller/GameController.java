@@ -139,6 +139,16 @@ public class GameController implements Controller {
                 level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
+            case 6:
+                enemies = createEnemyTypes();
+                numberOfEnemies = 1000;
+                spawnFrequencyModifier = 0.1;
+                enemyHealthModifier = 1;
+                enemyDamageModifier = 0;
+
+                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                        enemyDamageModifier, levelNumber);
+                break;
         }
         level.start();
     }
