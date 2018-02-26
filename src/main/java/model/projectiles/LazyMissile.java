@@ -26,14 +26,14 @@ public class LazyMissile extends BaseProjectile {
     private static final Color COLOR = Color.RED;
 
     /**
-     * Ammuksen kääntymisnopeus.
-     */
-    private static final double ROTATING_SPEED = 9;
-
-    /**
      * Viittaus kontrolleriin kohteen löytämiseksi updateables-listasta.
      */
     private Controller controller;
+
+    /**
+     * Ammuksen kääntymisnopeus, vakioarvo 9.
+     */
+    private double rotatingSpeed = 9;
 
     /**
      * Ammuksen kohde.
@@ -69,21 +69,52 @@ public class LazyMissile extends BaseProjectile {
     }
 
     /**
-     * Konstruktori värin valinnalla.
+     * Konstruktori vakiovärillä, aloitussuunnalla ja kääntymisnopeudella.
+     * @param controller Pelin kontrolleri
+     * @param shooter Unit, jonka aseesta projectile ammutaan.
+     * @param speed Projectilen nopeus.
+     * @param damage Projectilen vahinko.
+     * @param direction Projectilen väri.
+     */
+    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
+                       double rotatingSpeed) {
+        // Kutsutaaan BaseProjectilen konstruktoria
+        super(controller, shooter, speed, damage);
+
+        this.controller = controller;
+
+        // Asetetaan projectilen suunta
+        rotate(direction);
+
+        // Kääntymisnopeus
+        this.rotatingSpeed = rotatingSpeed;
+
+        Polygon shape = buildProjectile(speed, COLOR);
+        getChildren().add(shape);
+        // TODO: hitboxin koko kovakoodattu
+        setHitbox(10);
+    }
+
+    /**
+     * Konstruktori värin valinnalla, aloitussuunnalla ja kääntymisnopeuden .
      * @param controller Pelin kontrolleri.
      * @param shooter Unit, jonka aseesta projectile ammutaan.
      * @param speed Projectilen nopeus.
      * @param damage Projectilen vahinko.
      * @param color Projectilen väri.
      */
-    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction, Color color) {
+    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
+                       double rotatingSpeed, Color color) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, damage);
 
         this.controller = controller;
 
         // Asetetaan projectilen suunta
-        //rotate(direction);
+        rotate(direction);
+
+        // Kääntymisnopeus
+        this.rotatingSpeed = rotatingSpeed;
 
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
@@ -109,7 +140,7 @@ public class LazyMissile extends BaseProjectile {
                     while (angleToTarget < -180) {
                         angleToTarget += 360.0;
                     }
-                    rotate(angleToTarget * ROTATING_SPEED * deltaTime);
+                    rotate(angleToTarget * rotatingSpeed * deltaTime);
                 } else {
                     findAndSetTarget();
                 }

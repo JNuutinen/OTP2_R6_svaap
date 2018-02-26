@@ -19,15 +19,30 @@ import static view.GameMain.WINDOW_WIDTH;
  * yliluokassa (BaseProjectile).
  */
 public class Missile extends BaseProjectile {
-    private static final Color COLOR = Color.YELLOW;
-    private static double rotatingSpeed = 9;
 
+    /**
+     * Ammuksen vakioväri.
+     */
+    private static final Color COLOR = Color.YELLOW;
+
+    /**
+     * Ammuksen kääntymisnopeus, vakioarvo 9.
+     */
+    private double rotatingSpeed = 9;
+
+    /**
+     * Viittaus kontrolleriin kohteen löytämiseksi updateables-listasta.
+     */
     private Controller controller;
+
+    /**
+     * Ammuksen kohde.
+     */
     private Updateable target;
 
 
     /**
-     * Konstruktori projectilen vakiovärillä
+     * Konstruktori projectilen vakiovärillä ja kääntymisnopeudella.
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan
      * @param speed Projectilen nopeus
@@ -56,10 +71,10 @@ public class Missile extends BaseProjectile {
      * @param damage Projectilen vahinko
      * @param color Projectilen väri
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, Color color) {
+    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Color color) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, damage);
-
+        this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
 
         Polygon shape = buildProjectile(speed, color);
