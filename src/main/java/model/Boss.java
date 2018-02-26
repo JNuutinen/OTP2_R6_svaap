@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import model.projectiles.SmallProjectile;
 import model.weapons.Blaster;
+import model.weapons.BlasterShotgun;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -171,8 +172,8 @@ public class Boss extends Unit implements Updateable {
 
     public void constructBosses(Controller controller){
         Boss boss1 = new Boss(controller, 100, new Image("/images/bossPlaceholder.png"), WINDOW_WIDTH - 100, 100);
-        Component blaster1 = new Blaster(controller, boss1, "circle", 5, 2, 0, -30);
-        Component blaster2 = new Blaster(controller, boss1, "circle", 5, 2, 0, -210);
+        Component blaster1 = new BlasterShotgun(controller, boss1, "circle", 5, 2, 0, -30);
+        Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2, 0, -210);
         boss1.setPrimaryWeapon((Weapon) blaster1);
         boss1.setSecondaryWeapon((Weapon) blaster2);
         bossList.add(boss1);
