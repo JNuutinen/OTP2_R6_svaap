@@ -117,6 +117,14 @@ public class Missile extends BaseProjectile {
     }
 
     /**
+     * Tämän metodin avulla perivät luokat voivat kutsua BaseProjectilen update() metodia.
+     * @param deltaTime Kulunut aika viime updatesta.
+     */
+    public void callBaseUpdate(double deltaTime) {
+        super.update(deltaTime);
+    }
+
+    /**
      * Rakentaa projectilen Polygonin
      * @param speed Projectilen nopeus, vaikuttaa hännän pituuteen
      * @param color Projectilen väri

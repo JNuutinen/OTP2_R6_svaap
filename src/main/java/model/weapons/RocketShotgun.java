@@ -14,7 +14,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon ammuksien nopeus.
      */
-    private static final int SPEED = 25;
+    private static final int SPEED = 15;
 
     /**
      * Rakettihaulukon ammuksien vahinko.
@@ -29,7 +29,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Ammusten käääntymisnopeus.
      */
-    private static final double MISSILE_ROTATING_SPEED = 9;
+    private static final double MISSILE_ROTATING_SPEED = 11;
 
     /**
      * Rakettihaulikon ampumien ammuksien aloitussuunnat, kulmien lukumäärä on ammuttujen ammusten määrä.

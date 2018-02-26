@@ -19,7 +19,7 @@ public class LazyMissile extends Missile {
     /**
      * Viive millisekunteina, jonka jälkeen ohjus alkaa hakeutua kohteisiin.
      */
-    private static final long HOMING_DELAY = 200;
+    private static final long HOMING_DELAY = 400;
 
     /**
      * Pitää kirjaa ajasta, jonka ammus ollut luotu. Käytetään HOMING_DELAY:n kanssa.
@@ -62,14 +62,17 @@ public class LazyMissile extends Missile {
 
     @Override
     public void update(double deltaTime) {
-        // Kutsutaan ensiksi BaseProjectilen perus updatea
-        super.update(deltaTime);
+        // Kutsutaan ensiksi BaseProjectilen perus updatea Missilen kautta.
+        callBaseUpdate(deltaTime);
 
         // Sen jälkeen missilelle ominaiset updatet, kun on kulunut luonnista HOMING_DELAY verran aikaa.
         if (aliveTime > HOMING_DELAY) {
             super.update(deltaTime);
         } else {
             aliveTime += deltaTime * 1000;
+            if (aliveTime > HOMING_DELAY) {
+                setVelocity(30);
+            }
         }
     }
 }
