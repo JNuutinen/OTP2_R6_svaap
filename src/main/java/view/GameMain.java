@@ -20,7 +20,6 @@ import model.Player;
 import model.Sprite;
 import model.Unit;
 import model.weapons.Blaster;
-import model.weapons.RocketLauncher;
 import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
 
@@ -44,7 +43,6 @@ public class GameMain extends Application implements View {
     private Controller controller;
     private Label score;
     private Stage primaryStage;
-    private int numberOfLevels = 5;
     private boolean debuggerToolsEnabled = true;
     private Label debugger_fps;
     private Label debugger_currentFps;
