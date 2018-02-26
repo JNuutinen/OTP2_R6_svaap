@@ -210,7 +210,8 @@ public class GameMain extends Application implements View {
         player.setPrimaryWeapon((Weapon) primary);
         //SIVUASE
         //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
-        Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0);
+        Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0,
+                3, 11);
         player.setSecondaryWeapon((Weapon) secondary);
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä

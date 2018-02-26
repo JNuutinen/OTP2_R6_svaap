@@ -53,7 +53,7 @@ public class GameController implements Controller {
         gameLoop.queueUpdateable(updateable);
     }
 
-    
+
     @Override
     public int getScore() {
         if (player != null) return player.getScore();
@@ -61,7 +61,7 @@ public class GameController implements Controller {
     }
 
     @Override
-    public ArrayList<Unit> getCollisionList() {
+    public synchronized ArrayList<Unit> getCollisionList() {
         return view.getCollisionList();
     }
 

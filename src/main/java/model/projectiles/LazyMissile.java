@@ -20,6 +20,8 @@ public class LazyMissile extends Missile {
      * Viive millisekunteina, jonka jälkeen ohjus alkaa hakeutua kohteisiin.
      */
     private static final long HOMING_DELAY = 400;
+    private double latterRotatingSpeed = 0;
+    private double timeCounter = 0;
 
     /**
      * Pitää kirjaa ajasta, jonka ammus ollut luotu. Käytetään HOMING_DELAY:n kanssa.
@@ -35,12 +37,15 @@ public class LazyMissile extends Missile {
      * @param direction Projectilen väri.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double rotatingSpeed, Component component) {
+                       double initialRotatingSpeed, double latterRotatingSpeed, Component component) {
         // Kutsutaaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, rotatingSpeed, component);
+        super(controller, shooter, speed, damage, initialRotatingSpeed, component);
+        this.latterRotatingSpeed = latterRotatingSpeed;
 
         // Asetetaan projectilen suunta
         rotate(direction);
+
+
     }
 
     /**
@@ -52,9 +57,11 @@ public class LazyMissile extends Missile {
      * @param color Projectilen väri.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double rotatingSpeed, Color color, Component component) {
+                       double rotatingSpeed, double latterRotatingSpeed, Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, damage, direction, component);
+        this.latterRotatingSpeed = latterRotatingSpeed;
+
 
         // Asetetaan projectilen suunta
         rotate(direction);
@@ -62,8 +69,6 @@ public class LazyMissile extends Missile {
 
     @Override
     public void update(double deltaTime) {
-        // Kutsutaan ensiksi BaseProjectilen perus updatea Missilen kautta.
-        callBaseUpdate(deltaTime);
 
         // Sen jälkeen missilelle ominaiset updatet, kun on kulunut luonnista HOMING_DELAY verran aikaa.
         if (aliveTime > HOMING_DELAY) {
@@ -74,5 +79,11 @@ public class LazyMissile extends Missile {
                 setVelocity(30);
             }
         }
+
+        if(timeCounter > 0.8){
+            this.setRotatingSpeed(latterRotatingSpeed);
+        }
+
+        timeCounter += deltaTime;
     }
 }

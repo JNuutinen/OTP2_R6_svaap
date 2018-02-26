@@ -19,12 +19,10 @@ import static view.GameMain.WINDOW_WIDTH;
  * piirteiden hallinta, kaikille ammuksille yhteiset piirteet
  * yliluokassa (BaseProjectile).
  */
-public class Missile extends BaseProjectile {
+public class Missile extends BaseProjectile implements Updateable {
 
-    /**
-     * Ammuksen vakioväri.
-     */
     private static final Color COLOR = Color.YELLOW;
+    private int damage;
 
     /**
      * Ammuksen kääntymisnopeus, vakioarvo 9.
@@ -40,6 +38,7 @@ public class Missile extends BaseProjectile {
      * Ammuksen kohde.
      */
     private Updateable target;
+    private Trail trail;
 
 
     /**
@@ -51,37 +50,34 @@ public class Missile extends BaseProjectile {
      */
     public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, component);
+        super(controller, shooter, speed, component);
         this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
+        this.damage = damage;
 
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
-        Trail trail = new Trail(controller, this, getPosition());
+        trail = new Trail(controller, this);
         this.getChildren().addAll(trail);
     }
 
-    /**
-     * Konstruktori värin valinnalla
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan
-     * @param speed Projectilen nopeus
-     * @param damage Projectilen vahinko
-     * @param color Projectilen väri
-     */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Color color, Component component) {
-        // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, component);
-        this.rotatingSpeed = rotatingSpeed;
-        this.controller = controller;
+    @Override
+    public void destroyThis(){
+        trail.destroyThis();
+        controller.removeUpdateable(this);
+    }
 
-        Polygon shape = buildProjectile(speed, color);
-        getChildren().add(shape);
-        // TODO: hitboxin koko kovakoodattu
-        setHitbox(10);
+    @Override
+    public void collides(Updateable collidingUpdateable){
+        destroyThis();
+        for (Unit unit : controller.getCollisionList()) {
+            if (unit == collidingUpdateable) {
+                unit.takeDamage(damage);
+            }
+        }
     }
 
     @Override
@@ -114,14 +110,6 @@ public class Missile extends BaseProjectile {
         } else {
             findAndSetTarget();
         }
-    }
-
-    /**
-     * Tämän metodin avulla perivät luokat voivat kutsua BaseProjectilen update() metodia.
-     * @param deltaTime Kulunut aika viime updatesta.
-     */
-    public void callBaseUpdate(double deltaTime) {
-        super.update(deltaTime);
     }
 
     /**
@@ -158,5 +146,9 @@ public class Missile extends BaseProjectile {
                 target = updateable;
             }
         }
+    }
+
+    public void setRotatingSpeed(double rotatingSpeed){
+        this.rotatingSpeed = rotatingSpeed;
     }
 }

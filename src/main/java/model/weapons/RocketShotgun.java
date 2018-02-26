@@ -29,12 +29,13 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Ammusten käääntymisnopeus.
      */
-    private static final double MISSILE_ROTATING_SPEED = 11;
+    private double initialMissileRotatingSpeed = 11;
+    private double latterMissileRotatingSpeed = 11;
 
     /**
      * Rakettihaulikon ampumien ammuksien aloitussuunnat, kulmien lukumäärä on ammuttujen ammusten määrä.
      */
-    private static final int[] PROJECTILE_DIRECTIONS = {-40, -20, 0, 20, 40};
+    private static final int[] PROJECTILE_DIRECTIONS = {-60, -30, 0, 30, 60};
 
     /**
      * Rakettihaulukon väri.
@@ -62,10 +63,12 @@ public class RocketShotgun extends Component implements Weapon {
      * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
      */
     public RocketShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                          double yOffset) {
+                          double yOffset, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
         super(shape, size, orientation, COLOR, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
+        this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;
+        this.latterMissileRotatingSpeed = latterMissileRotatingSpeed;
     }
 
     @Override
@@ -77,7 +80,7 @@ public class RocketShotgun extends Component implements Weapon {
     public void shoot() {
         for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
             controller.addUpdateable(new LazyMissile(controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
-                    MISSILE_ROTATING_SPEED, this));
+                    initialMissileRotatingSpeed, latterMissileRotatingSpeed, this));
         }
     }
 }

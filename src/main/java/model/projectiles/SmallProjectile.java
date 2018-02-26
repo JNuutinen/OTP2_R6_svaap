@@ -8,16 +8,22 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import model.Component;
 import model.Unit;
+import model.Updateable;
+
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Pieni perusammus
  */
-public class SmallProjectile extends BaseProjectile {
+public class SmallProjectile extends BaseProjectile implements Updateable {
 
     /**
      * Ammuksen vakioväri
      */
     private static final Color COLOR = Color.CYAN;
+    private Controller controller;
+    private int damage;
 
     /**
      * Konstruktori projectilen vakiovärillä
@@ -28,7 +34,10 @@ public class SmallProjectile extends BaseProjectile {
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, component);
+        super(controller, shooter, speed, component);
+
+        this.controller = controller;
+        this.damage = damage;
 
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
@@ -47,7 +56,10 @@ public class SmallProjectile extends BaseProjectile {
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, component);
+        super(controller, shooter, speed, component);
+
+        this.controller = controller;
+        this.damage = damage;
 
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
@@ -65,13 +77,45 @@ public class SmallProjectile extends BaseProjectile {
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, component);
+        super(controller, shooter, speed, component);
+
+        this.controller = controller;
+        this.damage = damage;
+
         rotate(direction);
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
+    }
+
+    @Override
+    public void destroyThis(){
+        controller.removeUpdateable(this);
+    }
+
+    @Override
+    public void collides(Updateable collidingUpdateable){
+        destroyThis();
+        for (Unit unit : controller.getCollisionList()) {
+            if (unit == collidingUpdateable) {
+                unit.takeDamage(damage);
+            }
+        }
+    }
+
+    @Override
+    public void update(double deltaTime){
+        // chekkaa menikö ulos ruudulta
+        if (getXPosition() < -100
+                || getXPosition() > WINDOW_WIDTH+200
+                || getYPosition() < -100
+                || getYPosition() > WINDOW_HEIGHT+100) {
+            destroyThis();
+        } else {
+            moveStep(deltaTime * getVelocity());
+        }
     }
 
     /**

@@ -15,7 +15,7 @@ import static view.GameMain.WINDOW_WIDTH;
  * perivässä luokassa, sen voi ottaa talteen instanssimuuttujaksi perivässä luokassa.
  * Projectilen kuvan, damagen, nopeuden yms. asetus perivässä luokassa.
  */
-class BaseProjectile extends Sprite implements Updateable {
+class BaseProjectile extends Sprite {
 
     /**
      * Tagi, joka asetetaan vihollisen ampumille projectileille.
@@ -35,10 +35,7 @@ class BaseProjectile extends Sprite implements Updateable {
      */
     private Controller controller;
 
-    /**
-     * Projectilen tekemä vahinko.
-     */
-    private int damage;
+
 
     /**
      * TODO: osumamuuttuja? miten käytetään?
@@ -46,16 +43,15 @@ class BaseProjectile extends Sprite implements Updateable {
     private boolean hit = false;
 
     /**
-     * Konstruktori, asettaa kontrollerin, ammuksen vahingon ja nopeuden. Shooter
+     * Konstruktori, asettaa kontrollerin ja nopeuden. Shooter
      * -parametrin avulla asettaa tagin, ammuksen suunnan, sekä ammuksen lähtösijainnin.
      * @param controller Pelin kontrolleri.
      * @param shooter Unit, joka ampui ammuksen.
      * @param speed Ammuksen nopeus.
-     * @param damage Ammuksen vahinko.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, int damage, Component component) {
+    BaseProjectile(Controller controller, Unit shooter, double speed, Component component) {
         this.controller = controller;
-        this.damage = damage;
+
 
         // Ammuksen tagi ampujan mukaan
         if (shooter instanceof Player) setTag(TAG_PLAYER);
@@ -74,34 +70,6 @@ class BaseProjectile extends Sprite implements Updateable {
             this.setPosition(startingLocation.getX()  + component.getxOffset(), startingLocation.getY() + component.getyOffset());
         } else { //Jos ampuja on joku muu
             this.setPosition(startingLocation.getX() - shooter.getWidth() + component.getxOffset(), startingLocation.getY() + component.getyOffset());
-        }
-    }
-
-    @Override
-    public void destroyThis(){
-        controller.removeUpdateable(this);
-    }
-
-    @Override
-    public void collides(Updateable collidingUpdateable){
-        destroyThis();
-        for (Unit unit : controller.getCollisionList()) {
-            if (unit == collidingUpdateable) {
-                unit.takeDamage(damage);
-            }
-        }
-    }
-
-    @Override
-    public void update(double deltaTime){
-        // chekkaa menikö ulos ruudulta
-        if (getXPosition() < -100
-                || getXPosition() > WINDOW_WIDTH+200
-                || getYPosition() < -100
-                || getYPosition() > WINDOW_HEIGHT+100) {
-            destroyThis();
-        } else if (!hit) {
-            moveStep(deltaTime * getVelocity());
         }
     }
 }
