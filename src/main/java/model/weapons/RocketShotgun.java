@@ -27,6 +27,11 @@ public class RocketShotgun extends Component implements Weapon {
     private static final double FIRE_RATE = 2.5;
 
     /**
+     * Ammusten käääntymisnopeus.
+     */
+    private static final double MISSILE_ROTATING_SPEED = 9;
+
+    /**
      * Rakettihaulikon ampumien ammuksien aloitussuunnat, kulmien lukumäärä on ammuttujen ammusten määrä.
      */
     private static final int[] PROJECTILE_DIRECTIONS = {-40, -20, 0, 20, 40};
@@ -71,7 +76,8 @@ public class RocketShotgun extends Component implements Weapon {
     @Override
     public void shoot() {
         for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-            controller.addUpdateable(new LazyMissile(controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i], this));
+            controller.addUpdateable(new LazyMissile(controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
+                    MISSILE_ROTATING_SPEED, this));
         }
     }
 }
