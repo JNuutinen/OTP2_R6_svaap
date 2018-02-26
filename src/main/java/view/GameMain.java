@@ -8,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -211,7 +213,7 @@ public class GameMain extends Application implements View {
         //SIVUASE
         //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
         Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0,
-                3, 11);
+                3, 20);
         player.setSecondaryWeapon((Weapon) secondary);
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä

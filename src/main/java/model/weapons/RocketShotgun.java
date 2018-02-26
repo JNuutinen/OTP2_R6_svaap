@@ -33,9 +33,11 @@ public class RocketShotgun extends Component implements Weapon {
     private double latterMissileRotatingSpeed = 11;
 
     /**
-     * Rakettihaulikon ampumien ammuksien aloitussuunnat, kulmien lukumäärä on ammuttujen ammusten määrä.
+     * Ammuttavien ammusten suunnat. Alkioiden lukumäärä on ammuttavien ammusten lukumäärä.
      */
-    private static final int[] PROJECTILE_DIRECTIONS = {-60, -30, 0, 30, 60};
+    private static final int[] PROJECTILE_DIRECTIONS = {-40, -20, 0, 20, 40};
+    //private static final int[] PROJECTILE_DIRECTIONS = {-30, -15, 0, 15, 30};
+    //private static final int[] PROJECTILE_DIRECTIONS = {-20, -10, 0, 10, 20};
 
     /**
      * Rakettihaulukon väri.

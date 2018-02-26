@@ -1,14 +1,9 @@
 package model.projectiles;
 
 import controller.Controller;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.transform.Rotate;
 import model.Component;
 import model.Unit;
-import model.Updateable;
 
 /**
  * Viiveellä hakeutuva ohjusammus.
@@ -69,6 +64,7 @@ public class LazyMissile extends Missile {
 
     @Override
     public void update(double deltaTime) {
+        moveStep(deltaTime * getVelocity());
 
         // Sen jälkeen missilelle ominaiset updatet, kun on kulunut luonnista HOMING_DELAY verran aikaa.
         if (aliveTime > HOMING_DELAY) {
