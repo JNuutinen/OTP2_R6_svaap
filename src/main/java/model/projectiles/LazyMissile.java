@@ -16,7 +16,9 @@ public class LazyMissile extends Missile {
      */
     private static final long HOMING_DELAY = 400;
     private double latterRotatingSpeed = 0;
+    private double initialRotatingSpeed = 0;
     private double timeCounter = 0;
+    boolean doOnce = true;
 
     /**
      * Pitää kirjaa ajasta, jonka ammus ollut luotu. Käytetään HOMING_DELAY:n kanssa.
@@ -36,6 +38,7 @@ public class LazyMissile extends Missile {
         // Kutsutaaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, damage, initialRotatingSpeed, component);
         this.latterRotatingSpeed = latterRotatingSpeed;
+        this.initialRotatingSpeed = initialRotatingSpeed;
 
         // Asetetaan projectilen suunta
         rotate(direction);
@@ -76,8 +79,14 @@ public class LazyMissile extends Missile {
             }
         }
 
+
+
         if(timeCounter > 0.8){
-            this.setRotatingSpeed(latterRotatingSpeed);
+            if(doOnce){
+                this.setRotatingSpeed(latterRotatingSpeed);
+                doOnce = false;
+            }
+            this.setRotatingSpeed(getRotatingSpeed() + 4 *deltaTime);
         }
 
         timeCounter += deltaTime;
