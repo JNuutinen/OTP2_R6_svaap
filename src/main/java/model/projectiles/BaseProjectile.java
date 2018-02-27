@@ -35,7 +35,10 @@ class BaseProjectile extends Sprite {
      */
     private Controller controller;
 
-
+    /**
+     * Viittaus ammuksen ampuneeseen Unitiin.
+     */
+    private Unit shooter;
 
     /**
      * TODO: osumamuuttuja? miten käytetään?
@@ -59,6 +62,7 @@ class BaseProjectile extends Sprite {
 
         // Suunta ja aloituspiste otetaan ampujasta
         //setDirection(shooter.getDirection());
+        this.shooter = shooter;
         Point2D startingLocation = shooter.getPosition();
 
         rotate(shooter.getDirection());
@@ -71,5 +75,13 @@ class BaseProjectile extends Sprite {
         } else { //Jos ampuja on joku muu
             this.setPosition(startingLocation.getX() - shooter.getWidth() + component.getxOffset(), startingLocation.getY() + component.getyOffset());
         }
+    }
+
+    /**
+     * Palauttaa tiedon ammuksen ampujasta.
+     * @return Unit, joka ampui ammuksen.
+     */
+    Unit getShooter() {
+        return shooter;
     }
 }

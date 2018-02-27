@@ -6,10 +6,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.Component;
-import model.Trail;
-import model.Unit;
-import model.Updateable;
+import model.*;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -21,7 +18,20 @@ import static view.GameMain.WINDOW_WIDTH;
  */
 public class Missile extends BaseProjectile implements Updateable {
 
+    /**
+     * Ohjuksen perusväri.
+     */
     private static final Color COLOR = Color.YELLOW;
+
+    /**
+     * Etäisyys pikseleinä, jonka ammus voi mennä x- tai y-akselilla ruudun ulkopuolelle,
+     * ennen kuin se poistetaan pelistä.
+     */
+    private static final double OUT_OF_AREA_TRESHOLD = 500;
+
+    /**
+     * Ohjuksen tekemä vahinko
+     */
     private int damage;
 
     /**
@@ -83,10 +93,11 @@ public class Missile extends BaseProjectile implements Updateable {
     @Override
     public void update(double deltaTime) {
         // chekkaa menikö ulos ruudulta
-        if (getXPosition() < -100
-                || getXPosition() > WINDOW_WIDTH + 200
-                || getYPosition() < -100
-                || getYPosition() > WINDOW_HEIGHT + 100) {
+        // Nää arvot vähän isompia kuin uniteilla, että ammukset voi kaartaa ruudun ulkopuolelta
+        if (getXPosition() < -OUT_OF_AREA_TRESHOLD
+                || getXPosition() > WINDOW_WIDTH + OUT_OF_AREA_TRESHOLD
+                || getYPosition() < -OUT_OF_AREA_TRESHOLD
+                || getYPosition() > WINDOW_HEIGHT + OUT_OF_AREA_TRESHOLD) {
             destroyThis();
         } else {
             moveStep(deltaTime * getVelocity());
@@ -140,14 +151,28 @@ public class Missile extends BaseProjectile implements Updateable {
         return shape;
     }
 
+    /**
+     * Asettaa lähimmän vihollisen missilen kohteeksi.
+     */
     private void findAndSetTarget() {
+        double shortestDistance = Double.MAX_VALUE;
+        Updateable closestEnemy = null;
         for (Updateable updateable : controller.getUpdateables()) {
             if (updateable.getTag().equals("enemy") || updateable.getTag().equals("boss") ) {
-                target = updateable;
+                double distance = getShooter().getDistanceFromTarget(updateable.getPosition());
+                if (distance < shortestDistance) {
+                    shortestDistance = distance;
+                    closestEnemy = updateable;
+                }
             }
         }
+        target = closestEnemy;
     }
 
+    /**
+     * Asettaa missilen kääntymisnopeuden.
+     * @param rotatingSpeed Missilen kääntymisnopeus.
+     */
     public void setRotatingSpeed(double rotatingSpeed){
         this.rotatingSpeed = rotatingSpeed;
     }

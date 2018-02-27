@@ -224,7 +224,7 @@ public class Sprite extends Pane {
      * @param target Kohteen sijainti Point2D oliona.
      * @return Etäisyys Spriten ja kohteen välillä.
      */
-    double getDistanceFromTarget(Point2D target){
+    public double getDistanceFromTarget(Point2D target){
         return Math.sqrt(Math.pow(target.getX() - this.getXPosition(), 2) + Math.pow(target.getY() - this.getYPosition(), 2));
     }
 

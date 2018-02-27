@@ -35,9 +35,10 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Ammuttavien ammusten suunnat. Alkioiden lukumäärä on ammuttavien ammusten lukumäärä.
      */
-    private static final int[] PROJECTILE_DIRECTIONS = {-40, -20, 0, 20, 40};
+    //private static final int[] PROJECTILE_DIRECTIONS = {-40, -20, 0, 20, 40};
     //private static final int[] PROJECTILE_DIRECTIONS = {-30, -15, 0, 15, 30};
     //private static final int[] PROJECTILE_DIRECTIONS = {-20, -10, 0, 10, 20};
+    private static final int[] PROJECTILE_DIRECTIONS = {-10, -5, 0, 5, 10};
 
     /**
      * Rakettihaulukon väri.

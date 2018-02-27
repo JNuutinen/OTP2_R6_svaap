@@ -75,7 +75,7 @@ public class LazyMissile extends Missile {
         } else {
             aliveTime += deltaTime * 1000;
             if (aliveTime > HOMING_DELAY) {
-                setVelocity(30);
+                setVelocity(25);
             }
         }
 
