@@ -1,10 +1,9 @@
 package model;
 
 import controller.Controller;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.GaussianBlur;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -25,7 +24,8 @@ public class Trail extends Sprite implements Updateable{
     private Point2D newestTrailPoint = null;
     private Controller controller;
 
-    public Trail(Controller controller, Updateable target){
+    public Trail(GraphicsContext gc, Controller controller, Updateable target){
+        super(gc);
         this.controller = controller;
         this.target = target;
         this.setPosition(0, 0);
@@ -49,8 +49,9 @@ public class Trail extends Sprite implements Updateable{
 
         lines.add(new Line(target.getPosition().getX(), target.getPosition().getY(), target.getPosition().getX(), target.getPosition().getY()));
 
-        this.getChildren().addAll(lines);
-        controller.addUpdateable(this);
+        // TODO: trail graphicscontextilla
+        //this.getChildren().addAll(lines);
+        //controller.addUpdateable(this);
 
     }
 
@@ -97,7 +98,8 @@ public class Trail extends Sprite implements Updateable{
 
             newestTrailPoint = new Point2D(target.getPosition().getX(), target.getPosition().getY());
 
-            this.getChildren().addAll(lines.get(lines.size()-1));
+            // TODO: graphicscontextilla?
+            //this.getChildren().addAll(lines.get(lines.size()-1));
         }
 
         for(Stop[] stops : colors){

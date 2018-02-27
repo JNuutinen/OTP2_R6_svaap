@@ -1,24 +1,26 @@
 package controller;
 
 import javafx.application.Platform;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import model.*;
 import view.GameMain;
 import view.View;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 
 import static model.Enemy.MOVE_STRAIGHT;
 
 public class GameController implements Controller {
     private View view;
+    private GraphicsContext gc;
     private GameLoop gameLoop;
     private Player player;
 
-    public GameController(GameMain view) {
-        gameLoop = new GameLoop(this);
+    public GameController(GameMain view, GraphicsContext gc) {
+        gameLoop = new GameLoop(gc, this);
         this.view = view;
+        this.gc = gc;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class GameController implements Controller {
     @Override
     public void addScore(int score) {
         player.addScore(score);
-        view.setScore(player.getScore());
+        Platform.runLater(() -> view.setScore(player.getScore()));
     }
 
     public void setHealthbar(int hp){
@@ -49,7 +51,6 @@ public class GameController implements Controller {
 
     @Override
     public void addUpdateable(Updateable updateable) {
-        Platform.runLater(() -> view.addSprite((Sprite)updateable));
         gameLoop.queueUpdateable(updateable);
     }
 
@@ -69,7 +70,6 @@ public class GameController implements Controller {
     public synchronized void removeUpdateable(Updateable updateable) {
         // TODO: hitboxi jää viel?
         //((Sprite) updateable).setPosition(-50, -50);
-        view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
     }
 
@@ -88,7 +88,7 @@ public class GameController implements Controller {
                 double enemyHealthModifier = 1;
                 double enemyDamageModifier = 1;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level(gc,this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 1:
@@ -98,7 +98,7 @@ public class GameController implements Controller {
                 enemyHealthModifier = 1.5;
                 enemyDamageModifier = 1.5;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level(gc,this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 2:
@@ -108,7 +108,7 @@ public class GameController implements Controller {
                 enemyHealthModifier = 2.5;
                 enemyDamageModifier = 2;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level(gc,this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 3:
@@ -118,7 +118,7 @@ public class GameController implements Controller {
                 enemyHealthModifier = 3;
                 enemyDamageModifier = 2;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level(gc,this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 4:
@@ -128,7 +128,7 @@ public class GameController implements Controller {
                 enemyHealthModifier = 0.1;
                 enemyDamageModifier = 2;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level(gc,this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 5:
@@ -138,7 +138,7 @@ public class GameController implements Controller {
                 enemyHealthModifier = 0.1;
                 enemyDamageModifier = 2;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level(gc,this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 6:
@@ -148,7 +148,7 @@ public class GameController implements Controller {
                 enemyHealthModifier = 1;
                 enemyDamageModifier = 0;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level(gc,this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
         }
@@ -171,7 +171,7 @@ public class GameController implements Controller {
 
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this, 0, 0, 0, "enemy");
+        Enemy enemy1 = new Enemy(gc, this, 0, 0, 0, "enemy");
         enemy1.setMovementPattern(MOVE_STRAIGHT);
         enemy1.setImage(enemyImage);
         ArrayList<Enemy> enemies = new ArrayList<>();

@@ -1,11 +1,11 @@
 package model.projectiles;
 
-import controller.Controller;
 import javafx.geometry.Point2D;
-import model.*;
-
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import javafx.scene.canvas.GraphicsContext;
+import model.Component;
+import model.Player;
+import model.Sprite;
+import model.Unit;
 
 /**
  * Apuluokka eri projectileille. Pitää sisällään projectilen perus
@@ -30,12 +30,6 @@ class BaseProjectile extends Sprite {
     private static final String TAG_PLAYER = "projectile_player";
 
     /**
-     * Viittaus kontrolleriin, käytetään osumien rekisteröintiin
-     * ja projectilen poistamiseen pelistä.
-     */
-    private Controller controller;
-
-    /**
      * Viittaus ammuksen ampuneeseen Unitiin.
      */
     private Unit shooter;
@@ -48,13 +42,12 @@ class BaseProjectile extends Sprite {
     /**
      * Konstruktori, asettaa kontrollerin ja nopeuden. Shooter
      * -parametrin avulla asettaa tagin, ammuksen suunnan, sekä ammuksen lähtösijainnin.
-     * @param controller Pelin kontrolleri.
+     * @param gc GraphicsContext, johon ammus piirretään.
      * @param shooter Unit, joka ampui ammuksen.
      * @param speed Ammuksen nopeus.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, Component component) {
-        this.controller = controller;
-
+    BaseProjectile(GraphicsContext gc, Unit shooter, double speed, Component component) {
+        super(gc);
 
         // Ammuksen tagi ampujan mukaan
         if (shooter instanceof Player) setTag(TAG_PLAYER);

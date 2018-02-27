@@ -30,7 +30,7 @@ public interface Updateable {
      * Palauttaa olion hitboxin.
      * @return Olion hitbox Shape-oliona.
      */
-    Shape getHitboxShape();
+    Shape getShape();
 
     /**
      * Palauttaa olion sijainnin.

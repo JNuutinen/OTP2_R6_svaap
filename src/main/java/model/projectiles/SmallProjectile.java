@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -27,14 +28,16 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
 
     /**
      * Konstruktori projectilen vakiovärillä
+     * @param gc GraphicsContext, johon ammus piirretään
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component) {
+    public SmallProjectile(GraphicsContext gc, Controller controller, Unit shooter, double speed, int damage,
+                           Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
+        super(gc, shooter, speed, component);
 
         this.controller = controller;
         this.damage = damage;
@@ -42,21 +45,22 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
-        Polygon shape = buildProjectile(speed, COLOR);
-        getChildren().add(shape);
+        setShape(buildProjectile(speed, COLOR));
     }
 
     /**
      * Konstruktori värin valinnalla
+     * @param gc GraphicsContext, johon ammus piirretään
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      * @param color Projectilen väri
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Color color, Component component) {
+    public SmallProjectile(GraphicsContext gc, Controller controller, Unit shooter, double speed, int damage,
+                           Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
+        super(gc, shooter, speed, component);
 
         this.controller = controller;
         this.damage = damage;
@@ -64,20 +68,21 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
-        Polygon shape = buildProjectile(speed, color);
-        getChildren().add(shape);
+        setShape(buildProjectile(speed, color));
     }
     /**
      * Konstruktori ammuksen suunnan valinnalla
+     * @param gc GraphicsContext, johon ammus piirretään
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      * @param direction Projectilen suunta
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction, Component component) {
+    public SmallProjectile(GraphicsContext gc, Controller controller, Unit shooter, double speed, int damage,
+                           double direction, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
+        super(gc, shooter, speed, component);
 
         this.controller = controller;
         this.damage = damage;
@@ -86,8 +91,8 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
-        Polygon shape = buildProjectile(speed, COLOR);
-        getChildren().add(shape);
+        setShape(buildProjectile(speed, COLOR));
+        controller.addUpdateable(this);
     }
 
     @Override

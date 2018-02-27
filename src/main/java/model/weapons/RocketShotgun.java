@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import model.Component;
 import model.Unit;
@@ -24,7 +25,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon tulinopeus.
      */
-    private static final double FIRE_RATE = 2.5;
+    private static final double FIRE_RATE = 0.1;
 
     /**
      * Ammusten käääntymisnopeus.
@@ -51,12 +52,18 @@ public class RocketShotgun extends Component implements Weapon {
     private Controller controller;
 
     /**
+     * GraphicsContext, johon piirretään.
+     */
+    private GraphicsContext gc;
+
+    /**
      * Unit, jolla ase on käytössä.
      */
     private Unit shooter;
 
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * @param gc GraphicsContext, johon piirretään.
      * @param controller Pelin kontrolleri.
      * @param shooter Unit, jolla ase on käytössä.
      * @param shape Raketinheittimen muoto merkkijonona.
@@ -65,9 +72,11 @@ public class RocketShotgun extends Component implements Weapon {
      * @param xOffset Raketinheittimen sijainnin heitto unitista x-suunnassa.
      * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
      */
-    public RocketShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                          double yOffset, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset);
+    public RocketShotgun(GraphicsContext gc, Controller controller, Unit shooter, String shape, int size,
+                         int orientation, double xOffset, double yOffset, double initialMissileRotatingSpeed,
+                         double latterMissileRotatingSpeed) {
+        super(gc, shape, size, orientation, COLOR, xOffset, yOffset);
+        this.gc = gc;
         this.controller = controller;
         this.shooter = shooter;
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;
@@ -82,7 +91,7 @@ public class RocketShotgun extends Component implements Weapon {
     @Override
     public void shoot() {
         for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-            controller.addUpdateable(new LazyMissile(controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
+            controller.addUpdateable(new LazyMissile(gc, controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
                     initialMissileRotatingSpeed, latterMissileRotatingSpeed, this));
         }
     }

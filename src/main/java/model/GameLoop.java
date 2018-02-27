@@ -2,6 +2,7 @@ package model;
 
 import controller.Controller;
 import javafx.animation.AnimationTimer;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
@@ -9,8 +10,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
+
 public class GameLoop {
 
+    private GraphicsContext gc;
     private Controller controller;
     private volatile Queue<Updateable> updateableQueue;
     private volatile Queue<Updateable> removeUpdateableQueue;
@@ -19,7 +24,8 @@ public class GameLoop {
     private AnimationTimer mainLoop;
     private AnimationTimer collisionLoop;
 
-    public GameLoop(Controller controller) {
+    public GameLoop(GraphicsContext gc, Controller controller) {
+        this.gc = gc;
         this.controller = controller;
         updateableQueue = new LinkedList<>();
         removeUpdateableQueue = new LinkedList<>();
@@ -57,6 +63,7 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
+
                 double deltaTime = (now - lastUpdate) / 1_000_000_000.0;
                 // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
                 if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/250.0) {
@@ -77,6 +84,8 @@ public class GameLoop {
                         removeUpdateableQueue.clear();
                     }
 
+                    // Clearataan canvas
+                    gc.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
                     // Gameloopin taika
                     for (Updateable updateable : updateables) {
                         if (updateable != null){
@@ -116,9 +125,9 @@ public class GameLoop {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag().equals("player")) {
-                                            if (((Path) Shape.intersect(updateable.getHitboxShape(),
-                                                    updateable2.getHitboxShape())).getElements().size() > 0) {
-                                                updateable.collides(updateable2);
+                                            if (((Path) Shape.intersect(updateable.getShape(),
+                                                    updateable2.getShape())).getElements().size() > 0) {
+                                                //updateable.collides(updateable2);
                                             }
                                         }
                                     }
@@ -129,9 +138,9 @@ public class GameLoop {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag().equals("enemy") || updateable2.getTag().equals("boss")) {
-                                            if (((Path) Shape.intersect(updateable.getHitboxShape(),
-                                                    updateable2.getHitboxShape())).getElements().size() > 0) {
-                                                updateable.collides(updateable2);
+                                            if (((Path) Shape.intersect(updateable.getShape(),
+                                                    updateable2.getShape())).getElements().size() > 0) {
+                                                //updateable.collides(updateable2);
                                             }
                                         }
                                     }

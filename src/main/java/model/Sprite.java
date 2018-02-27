@@ -1,23 +1,36 @@
 package model;
 
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 
 /**
  * Perusluokka kaikille spriteille.
  */
-@SuppressWarnings("unused")
-public class Sprite extends Pane {
+public class Sprite {
 
     /**
-     * Spriten suunta (kulma).
+     * GraphicsContext, johon Sprite piirtää itsensä.
+     */
+    private GraphicsContext gc;
+
+    /**
+     * Spriten sijainti x-akselilla.
+     */
+    private double xPosition;
+
+    /**
+     * Spriten sijainti y-akselilla.
+     */
+    private double yPosition;
+
+    /**
+     * Spriten suunta (kulma asteina).
      */
     private double direction;
 
@@ -27,19 +40,19 @@ public class Sprite extends Pane {
     private double velocity = 200;
 
     /**
-     * Spriten kuvan säiliö.
+     * Spriten kuva. Spritellä on joko Image, tai Polygon (ks. spritePolygon instanssimuuttuja).
      */
-    private ImageView imageView = new ImageView();
+    private Image image;
+
+    /**
+     * Spriten Shape.
+     */
+    private Shape shape;
 
     /**
      * Kertoo onko spriten tarkoitus liikkua tällä hetkellä.
      */
     private boolean isMoving = false;
-
-    /**
-     * Spriten muoto.
-     */
-    private Shape shape;
 
     /**
      * Debuggaustyökalujen toggle.
@@ -61,12 +74,9 @@ public class Sprite extends Pane {
      */
     private String tag = "undefined";
 
-    /**
-     * Toteuttaa Updateable-rajapinnan getHitboxShape() metodin Unit-luokan kautta.
-     * @return Spriten hitbox Shape-oliona.
-     */
-    public Shape getHitboxShape(){
-        return shape;
+    public Sprite(GraphicsContext gc) {
+        this.gc = gc;
+        shape = new Polygon();
     }
 
     /**
@@ -74,14 +84,13 @@ public class Sprite extends Pane {
      * @return Spriten nykyinen sijainti Point2D-oliona.
      */
     public Point2D getPosition(){
-        return new Point2D(this.getLayoutX(), this.getLayoutY());
+        return new Point2D(xPosition, yPosition);
     }
 
     /**
      * Toteuttaa Updateable-rajapinnan getTag() metodin Unit-luokan kautta.
      * @return Spriten tunnistetagi.
      */
-    @SuppressWarnings("WeakerAccess")
     public String getTag() {
         return tag;
     }
@@ -90,7 +99,6 @@ public class Sprite extends Pane {
      * Toteuttaa Updateable-rajapinnan setTag() metodin Unit-luokan kautta.
      * @param tag Spriten tunnistetagi.
      */
-    @SuppressWarnings("WeakerAccess")
     public void setTag(String tag) {
         this.tag = tag;
     }
@@ -108,8 +116,7 @@ public class Sprite extends Pane {
      * @param newImage Spritelle asetettava uusi kuva.
      */
     public void setImage(Image newImage){
-        imageView.setImage(newImage);
-        this.getChildren().add(imageView);
+        image = newImage;
     }
 
     /**
@@ -120,14 +127,26 @@ public class Sprite extends Pane {
         this.isMoving = isMoving;
     }
 
+    public Shape getShape() {
+        return shape;
+    }
+
+    /**
+     * Asettaa spriten Shapen.
+     * @param shape Shape, joka asetetaan Spriten Shapeksi.
+     */
+    public void setShape(Shape shape) {
+        this.shape = shape;
+    }
+
     /**
      * Asettaa Spriten sijainnin.
      * @param newX Uusi x-koordinaatti.
      * @param newY Uusi y-koordinaatti.
      */
     public void setPosition(double newX, double newY){
-        this.setLayoutX(newX);
-        this.setLayoutY(newY);
+        xPosition = newX;
+        yPosition = newY;
     }
 
     /**
@@ -135,7 +154,7 @@ public class Sprite extends Pane {
      * @return X-koordinaatti.
      */
     protected double getXPosition(){
-        return this.getLayoutX();
+        return xPosition;
     }
 
     /**
@@ -143,7 +162,7 @@ public class Sprite extends Pane {
      * @return Y-koordinaatti.
      */
     protected double getYPosition(){
-        return this.getLayoutY();
+        return yPosition;
     }
 
     /**
@@ -163,17 +182,34 @@ public class Sprite extends Pane {
     }
 
     /**
+     * Palauttaa spriten Polygonin leveyden.
+     * @return Spriten leveys.
+     */
+    public double getWidth() {
+        return shape.getLayoutBounds().getWidth();
+    }
+
+    /**
+     * Palauttaa spriten Polygonin korkeuden.
+     * @return Spriten korkeus.
+     */
+    public double getHeight() {
+        return shape.getLayoutBounds().getHeight();
+    }
+
+    /**
      * Asettaa Spriten ympyränmuotoisen hitboxin.
      * @param circleHitboxDiameter Hitboxin halkaisija.
      */
     protected void setHitbox(double circleHitboxDiameter){
-        shape = new Circle(0, 0, circleHitboxDiameter/2);
-        shape.setFill(Color.TRANSPARENT);
+        Shape hb = new Circle(0, 0, circleHitboxDiameter/2);
+        hb.setFill(Color.TRANSPARENT);
         if(debuggerToolsEnabled) {
-            shape.setStroke(Color.LIGHTGREY);
+            hb.setStroke(Color.LIGHTGREY);
         }
-        shape.setStrokeWidth(0.4);
-        this.getChildren().add(shape);
+        hb.setStrokeWidth(0.4);
+        // TODO: circle polygoniksi
+        //spritePolygon = (Polygon) Shape.union(spritePolygon, hb);
     }
 
     /**
@@ -182,13 +218,13 @@ public class Sprite extends Pane {
      * @param rectangleHitboxHeight Hitboxin korkeus.
      */
     public void setHitbox(double rectangleHitboxWidth, double rectangleHitboxHeight) {
-        shape = new Rectangle(rectangleHitboxWidth, rectangleHitboxHeight);
-        shape.setFill(Color.TRANSPARENT);
+        Shape hb = new Rectangle(rectangleHitboxWidth, rectangleHitboxHeight);
+        hb.setFill(Color.TRANSPARENT);
         if(debuggerToolsEnabled) {
-            shape.setStroke(Color.LIGHTGREY);
+            hb.setStroke(Color.LIGHTGREY);
         }
-        shape.setStrokeWidth(0.4);
-        this.getChildren().add(shape);
+        hb.setStrokeWidth(0.4);
+        shape = Shape.union(shape, hb);
     }
 
     /**
@@ -196,7 +232,38 @@ public class Sprite extends Pane {
      * @param newSize Spriten uusi koko Point2D-oliona.
      */
     public void setSize(Point2D newSize){//TODO ei kaytos atm
-        this.resize(newSize.getX(), newSize.getY());
+        shape.resize(newSize.getX(), newSize.getY());
+    }
+
+    /**
+     * Lisää Shapen spriten Shapeen.
+     * @param shape Shape joka lisätään.
+     */
+    public void addShape(Shape shape) {
+        shape = Shape.union(shape, shape);
+    }
+
+
+    public void drawSprite() {
+        // Placeholderin piirto
+        //gc.drawImage(new Image("images/projectile_ball_small_cyan.png"), xPosition, yPosition);
+        gc.drawImage(new Image("images/player_ship_9000.png"), xPosition, yPosition);
+    }
+
+    private void drawPolygon(Polygon polygon) {
+        gc.setFill(polygon.getFill());
+        double[] xPoints = new double[polygon.getPoints().size() / 2];
+        double[] yPoints = new double[polygon.getPoints().size() / 2];
+        Double[] polygonPoints = polygon.getPoints().toArray(new Double[polygon.getPoints().size()]);
+        // Hakee x koordinaatit spriten shapesta
+        for (int i = 0; i < polygonPoints.length; i++) {
+            if (i % 2 == 0) {
+                yPoints[i] = polygonPoints[i];
+            } else {
+                xPoints[i] = polygonPoints[i];
+            }
+        }
+        gc.fillPolygon(xPoints, yPoints, polygonPoints.length);
     }
 
     /**
@@ -225,7 +292,7 @@ public class Sprite extends Pane {
      * @return Etäisyys Spriten ja kohteen välillä.
      */
     public double getDistanceFromTarget(Point2D target){
-        return Math.sqrt(Math.pow(target.getX() - this.getXPosition(), 2) + Math.pow(target.getY() - this.getYPosition(), 2));
+        return Math.sqrt(Math.pow(target.getX() - getXPosition(), 2) + Math.pow(target.getY() - getYPosition(), 2));
     }
 
     /**
@@ -245,7 +312,7 @@ public class Sprite extends Pane {
         if (isMoving) {
             Point2D directionInVector = degreesToVector(direction);
             Point2D currentPosition = getPosition();
-            this.setPosition(currentPosition.getX(),
+            setPosition(currentPosition.getX(),
                     currentPosition.getY() + (directionInVector.getY()));
         }
     }
@@ -259,15 +326,18 @@ public class Sprite extends Pane {
             if(movingDirectionLocked) {
                 Point2D directionInVector = degreesToVector(lockedDirection);
                 Point2D currentPosition = getPosition();
-                this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
+                setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
                         currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
             }
             else{
                 Point2D directionInVector = degreesToVector(direction);
                 Point2D currentPosition = getPosition();
-                this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
+                setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
                         currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
             }
+
+            // Piirretään Sprite, jos se on liikkunut
+            drawSprite();
         }
     }
 
@@ -276,8 +346,13 @@ public class Sprite extends Pane {
      * @param degrees Kulma asteina, jonka verran spriteä käännetään.
      */
     protected void rotate(double degrees){
-        this.getTransforms().add(new Rotate(degrees * -1, Rotate.Z_AXIS));
-        this.direction += degrees;
+        // Täs vanha tapa kääntää pane spritea
+        //this.getTransforms().add(new Rotate(degrees * -1, Rotate.Z_AXIS));
+
+        // Shapen kääntely
+        shape.setRotate(degrees * -1);
+
+        direction += degrees;
         while(direction >= 180.0){
             direction -= 360.0;
         }

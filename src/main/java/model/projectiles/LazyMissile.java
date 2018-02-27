@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import model.Component;
 import model.Unit;
@@ -27,16 +28,17 @@ public class LazyMissile extends Missile {
 
     /**
      * Konstruktori vakiovärillä, aloitussuunnalla ja kääntymisnopeudella.
+     * @param gc GraphicsContext, johon ammus piirretään.
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan.
      * @param speed Projectilen nopeus.
      * @param damage Projectilen vahinko.
      * @param direction Projectilen väri.
      */
-    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double initialRotatingSpeed, double latterRotatingSpeed, Component component) {
+    public LazyMissile(GraphicsContext gc, Controller controller, Unit shooter, double speed, int damage,
+                       double direction, double initialRotatingSpeed, double latterRotatingSpeed, Component component) {
         // Kutsutaaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, initialRotatingSpeed, component);
+        super(gc, controller, shooter, speed, damage, initialRotatingSpeed, component);
         this.latterRotatingSpeed = latterRotatingSpeed;
         this.initialRotatingSpeed = initialRotatingSpeed;
 
@@ -47,20 +49,19 @@ public class LazyMissile extends Missile {
     }
 
     /**
-     * Konstruktori värin valinnalla, aloitussuunnalla ja kääntymisnopeuden .
+     * Konstruktori värin valinnalla, aloitussuunnalla ja kääntymisnopeuden.
+     * @param gc GraphicsContext, johon ammus piirretään.
      * @param controller Pelin kontrolleri.
      * @param shooter Unit, jonka aseesta projectile ammutaan.
      * @param speed Projectilen nopeus.
      * @param damage Projectilen vahinko.
      * @param color Projectilen väri.
      */
-    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double rotatingSpeed, double latterRotatingSpeed, Color color, Component component) {
+    public LazyMissile(GraphicsContext gc, Controller controller, Unit shooter, double speed, int damage,
+                       double direction, double rotatingSpeed, double latterRotatingSpeed, Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, direction, component);
+        super(gc, controller, shooter, speed, damage, direction, component);
         this.latterRotatingSpeed = latterRotatingSpeed;
-
-
         // Asetetaan projectilen suunta
         rotate(direction);
     }

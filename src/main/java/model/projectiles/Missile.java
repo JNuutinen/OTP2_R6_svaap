@@ -1,12 +1,16 @@
 package model.projectiles;
 
 import controller.Controller;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.*;
+import model.Component;
+import model.Trail;
+import model.Unit;
+import model.Updateable;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -53,30 +57,36 @@ public class Missile extends BaseProjectile implements Updateable {
 
     /**
      * Konstruktori projectilen vakiovärillä ja kääntymisnopeudella.
+     * @param gc GraphicsContext, johon piirretään
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Component component) {
+    public Missile(GraphicsContext gc, Controller controller, Unit shooter, double speed, int damage,
+                   double rotatingSpeed, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
+        super(gc, shooter, speed, component);
         this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
         this.damage = damage;
 
-        Polygon shape = buildProjectile(speed, COLOR);
-        getChildren().add(shape);
+        // Tekee spriten Shapen
+        setShape(buildProjectile(speed, COLOR));
+
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
+        /* TODO: Trailin teko graphicscontextilla
         trail = new Trail(controller, this);
         this.getChildren().addAll(trail);
+        */
+        controller.addUpdateable(this);
     }
 
     @Override
     public void destroyThis(){
-        trail.destroyThis();
+        //trail.destroyThis();
         controller.removeUpdateable(this);
     }
 

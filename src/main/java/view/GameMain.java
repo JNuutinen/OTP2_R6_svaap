@@ -5,6 +5,8 @@ import controller.GameController;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import model.*;
+import model.Component;
+import model.Player;
+import model.Unit;
 import model.weapons.Blaster;
 import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
@@ -37,6 +41,8 @@ public class GameMain extends Application implements View {
     private MainMenu mainMenu;
     private ArrayList<Unit> units;
     private Pane pane;
+    private Canvas canvas;
+    private GraphicsContext gc;
     private Controller controller;
     private Label score;
     private Stage primaryStage;
@@ -62,6 +68,8 @@ public class GameMain extends Application implements View {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
         primaryStage.setResizable(false);
+        canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+        gc = canvas.getGraphicsContext2D();
         mainMenu(this.primaryStage);
     }
 
@@ -71,7 +79,7 @@ public class GameMain extends Application implements View {
 
 
     public void mainMenu(Stage primaryStage) {
-        controller = new GameController(this);
+        controller = new GameController(this, gc);
         units = new ArrayList<>();
         // sulje ohjelma kun ikkunan sulkee
         primaryStage.setOnCloseRequest(event -> System.exit(0));
@@ -88,11 +96,6 @@ public class GameMain extends Application implements View {
     }
 
     @Override
-    public void addSprite(Sprite sprite) {
-        pane.getChildren().add(sprite);
-    }
-
-    @Override
     public void addUnitToCollisionList(Unit unit) {
         units.add(unit);
     }
@@ -104,11 +107,6 @@ public class GameMain extends Application implements View {
 
     public void removeFromCollisionList(Unit unit){
         units.remove(unit);
-    }
-
-    @Override
-    public void removeSprite(Sprite sprite){
-        pane.getChildren().remove(sprite);
     }
 
     @Override
@@ -184,8 +182,11 @@ public class GameMain extends Application implements View {
         pane.getChildren().add(score);
         pane.getChildren().add(healthIv);
 
+        // piirtocanvas paneen
+        pane.getChildren().add(canvas);
 
-        GameBackground gmg = new GameBackground(controller);
+
+        //GameBackground gmg = new GameBackground(controller);
 
 
         //---------------- debugger
@@ -203,16 +204,16 @@ public class GameMain extends Application implements View {
 
 
         //pelaajan luonti
-        Player player = new Player(controller);
+        Player player = new Player(gc, controller);
         player.setHp(1000000);
 
         // Pelaajan aseet
         // PÄÄASE
-        Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5);
+        Component primary = new Blaster(gc, controller, player, "circle", 5, 0, 0, 5);
         player.setPrimaryWeapon((Weapon) primary);
         //SIVUASE
         //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
-        Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0,
+        Component secondary = new RocketShotgun(gc, controller, player, "circle", 7, 0, -5, 0,
                 3, 20);
         player.setSecondaryWeapon((Weapon) secondary);
 
@@ -221,13 +222,15 @@ public class GameMain extends Application implements View {
         components.add(primary);
         components.add(secondary);
 
-        Component b = new Component("circle", 10, 0, Color.RED, 0,0);
+        /* TODO: vain monikulmiot käy
+        Component b = new Component(gc,"circle", 10, 0, Color.RED, 0,0);
         components.add(b);
 
-        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0,0);
+        Component c = new Component(gc,"rectangle", 10 , 0, Color.WHITE, 0,0);
         components.add(c);
+        */
 
-        Component d = new Component("triangle", 10, 0, Color.BLUE, 0,0);
+        Component d = new Component(gc,"triangle", 10, 0, Color.BLUE, 0,0);
         components.add(d);
 
         player.equipComponents(components);

@@ -1,10 +1,8 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import model.projectiles.SmallProjectile;
-import model.weapons.Blaster;
 import model.weapons.BlasterShotgun;
 import model.weapons.Weapon;
 
@@ -19,6 +17,12 @@ import static view.GameMain.WINDOW_WIDTH;
 public class Boss extends Unit implements Updateable {
 
     public ArrayList<Boss> bossList = new ArrayList();
+
+    /**
+     * GraphicsContext, johon piirretään.
+     */
+    private GraphicsContext gc;
+
     /**
      * Pelin kontrolleri
      */
@@ -58,19 +62,14 @@ public class Boss extends Unit implements Updateable {
      */
     private int fireRateCounter = 100;
 
-    public Boss(){
-
-    }
-
     /**
      * Konstruktori. Kutsuu yläluokan konstruktoria. Asettaa kontrollerin, lisää pomon CollisionListiin (osumatarkastelu)
      * Lisää pomolle tagin, "boss".
      * @param controller pelin kontrolleri
      */
-    public Boss(Controller controller) {
-        super(controller);
+    public Boss(GraphicsContext gc, Controller controller) {
+        super(gc, controller);
         this.controller = controller;
-        controller.addUnitToCollisionList(this);
         rotate(180);
         this.setTag("boss");
     }
@@ -85,13 +84,12 @@ public class Boss extends Unit implements Updateable {
      * @param initialX X-koordinaatti johon pomo ilmestyy.
      * @param initialY Y-koordinaatti johon pomo ilmestyy.
      */
-    public Boss(Controller controller, int hp, Image image, double initialX, double initialY) {
-        super(controller);
+    public Boss(GraphicsContext gc, Controller controller, int hp, Image image, double initialX, double initialY) {
+        super(gc, controller);
         this.controller = controller;
         setHp(hp);
         originalhp = hp;
         this.setTag("boss");
-        controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         rotate(180);
         setImage(image);
@@ -171,9 +169,9 @@ public class Boss extends Unit implements Updateable {
     }
 
     public void constructBosses(Controller controller){
-        Boss boss1 = new Boss(controller, 100, new Image("/images/bossPlaceholder.png"), WINDOW_WIDTH - 100, 100);
-        Component blaster1 = new BlasterShotgun(controller, boss1, "circle", 5, 2, 0, -30);
-        Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2, 0, -210);
+        Boss boss1 = new Boss(gc, controller, 100, new Image("/images/bossPlaceholder.png"), WINDOW_WIDTH - 100, 100);
+        Component blaster1 = new BlasterShotgun(gc, controller, boss1, "circle", 5, 2, 0, -30);
+        Component blaster2 = new BlasterShotgun(gc, controller, boss1, "circle", 5, 2, 0, -210);
         boss1.setPrimaryWeapon((Weapon) blaster1);
         boss1.setSecondaryWeapon((Weapon) blaster2);
         bossList.add(boss1);

@@ -1,11 +1,8 @@
 package model;
 
 import controller.Controller;
-import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Polygon;
-import model.projectiles.Missile;
-import model.projectiles.SmallProjectile;
 
 import static view.GameMain.input;
 
@@ -25,21 +22,20 @@ public class Player extends Unit {
     private final double maxVelocity = 300.0; // maksiminopeus
     private final double decelerateForce = 1000; // kitkavoima joka  hidastaa alusta jos nappia ei paineta
 
-    public Player(Controller controller) {
-        super(controller);
+    public Player(GraphicsContext gc, Controller controller) {
+        super(gc, controller);
         this.setTag("player");
         this.controller = controller;
         this.setHp(500);
-        controller.addUnitToCollisionList(this);
 
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(-60.0, -30.0,
                 60.0, 00.0,
                 -60.0, 30.0);
 
-        drawShip(triangle);
+        setShape(triangle);
 
-        this.setHitbox(30);
+        setHitbox(30);
     }
 
 
@@ -82,6 +78,7 @@ public class Player extends Unit {
         // Päivitä sijainti
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
+        drawSprite();
     }
 
     public void addScore(int points){

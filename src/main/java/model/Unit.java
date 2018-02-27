@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -44,15 +45,13 @@ public class Unit extends Sprite implements Updateable {
      */
     private Weapon secondaryWeapon;
 
-    public Unit(){
-
-    }
-
     /**
      * Konstruktori asettaa kontrollerin.
+     * @param gc GraphicsContext, johon piirretään.
      * @param controller Pelin kontrolleri.
      */
-    public Unit(Controller controller) {
+    public Unit(GraphicsContext gc, Controller controller) {
+        super(gc);
         this.controller = controller;
     }
 
@@ -136,12 +135,12 @@ public class Unit extends Sprite implements Updateable {
         shape.setEffect(new GaussianBlur(2.0));
         shape.setFill(Color.TRANSPARENT);
         shape.setStrokeWidth(3.0);
-        this.getChildren().add(shape);
         if (tag.equals("player")) {
             shape.setStroke(Color.CYAN);
         } else if (tag.equals("enemy")) {
             shape.setStroke(Color.RED);
         }
+        setShape(shape);
     }
 
     /**
@@ -156,7 +155,7 @@ public class Unit extends Sprite implements Updateable {
             shape.setLayoutY(component.getyOffset()); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
             shape.setLayoutX(component.getxOffset());
             //setPosition(this.getXPosition(), this.getYPosition() + 100);
-            this.getChildren().add(component.getShape());
+            addShape(shape);
             setTag(getTag());
            // offset += 20;
         }
@@ -191,8 +190,10 @@ public class Unit extends Sprite implements Updateable {
     private void sortComponents(ArrayList<Component> components) {
         for (int i = 0; i < components.size(); i++) { //Lajitellaan komponentit suurimmasta pienimpään
             for (int n = 0; n < components.size(); n++) {
-                if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i).getShape().getLayoutBounds().getWidth()
-                        > components.get(n).getShape().getLayoutBounds().getHeight() * components.get(n).getShape().getLayoutBounds().getWidth()) {
+                if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i)
+                        .getShape().getLayoutBounds().getWidth() > components.get(n).getShape()
+                        .getLayoutBounds().getHeight() * components.get(n).getShape().getLayoutBounds()
+                        .getWidth()) {
                     Component x = components.get(n);
                     components.set(n, components.get(i));
                     components.set(i, x);
@@ -211,7 +212,6 @@ public class Unit extends Sprite implements Updateable {
         hp -= damage;
         if(hp <= 0){
             controller.removeUpdateable(this);
-            controller.removeFromCollisionList(this);
             if(this.getTag().equals("enemy")){
                 controller.addScore(100);
             }

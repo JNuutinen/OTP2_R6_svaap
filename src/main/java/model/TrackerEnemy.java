@@ -2,10 +2,9 @@ package model;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.projectiles.SmallProjectile;
-
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -15,6 +14,7 @@ public class TrackerEnemy extends Unit implements Updateable {
     public static final int MOVE_STRAIGHT = 0;
     public static final int MOVE_SINE = 1;
 
+    private GraphicsContext gc;
     private Controller controller;
     private double initialX;
     private double initialY;
@@ -32,14 +32,14 @@ public class TrackerEnemy extends Unit implements Updateable {
     private int fireRateCounter = 100;
 
 
-    public TrackerEnemy(Controller controller, int movementPattern, double initialX, double initialY, Point2D[] path,
-                        String tag) {
-        super(controller);
+    public TrackerEnemy(GraphicsContext gc, Controller controller, int movementPattern, double initialX,
+                        double initialY, Point2D[] path, String tag) {
+        super(gc, controller);
         this.path = path;
+        this.gc = gc;
         this.controller = controller;
         this.setTag(tag);
         this.lastDestinationIndex = path.length-1;
-        controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
         findAndSetTarget();
@@ -53,7 +53,7 @@ public class TrackerEnemy extends Unit implements Updateable {
         this.initialX = initialX;
         this.initialY = initialY;
 
-        Component c = new Component("triangle", 3, 0, Color.LIMEGREEN, 100, 0);
+        Component c = new Component(gc, "triangle", 3, 0, Color.LIMEGREEN, 100, 0);
         components.add(c);
         equipComponents(components);
         this.setHitbox(50);

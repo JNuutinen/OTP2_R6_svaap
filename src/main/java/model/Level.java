@@ -1,9 +1,8 @@
 package model;
 
 import controller.Controller;
-import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
+import javafx.scene.canvas.GraphicsContext;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
 
@@ -29,6 +28,11 @@ public class Level extends Thread {
      * parametrina annettu spawnFrequencyModifier.
      */
     private final int BASE_SPAWN_FREQ_HIGH = 6000;
+
+    /**
+     * GraphicsContext, johon piirretään.
+     */
+    private GraphicsContext gc;
 
     /**
      * Viittaus pelin kontrolleriin, mahdollistaa vihollisolioiden lisäämisen peliin.
@@ -77,11 +81,12 @@ public class Level extends Thread {
      * Viittaa tason viimeiseen viholliseen (Bossiin). Käytetään tason loppumisen tarkkailuun.
      */
     private Updateable lastEnemy;
-    private Boss boss = new Boss();
+    private Boss boss;
 
 
     /**
      * Konstruktori.
+     * @param gc GraphicsContext, johon piirretään.
      * @param controller Pelin kontrolleri.
      * @param enemyTypes Lista joka sisältää tasossa ilmentyvät vihollistyypit.
      * @param numberOfEnemies Vihollisten kokonaislukumäärä tason aikana.
@@ -90,8 +95,10 @@ public class Level extends Thread {
      * @param enemyDamageModifier Kerroin, joka kasvattaa/pienentää vihollisten aseiden tekemää vahinkoa. TODO: ei käytös
      * @param levelNumber Tason numero.
      */
-    public Level(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, double spawnFrequencyModifier,
-                 double enemyHealthModifier, double enemyDamageModifier, int levelNumber) {
+    public Level(GraphicsContext gc, Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies,
+                 double spawnFrequencyModifier, double enemyHealthModifier, double enemyDamageModifier,
+                 int levelNumber) {
+        this.gc = gc;
         this.controller = controller;
         this.enemyTypes = enemyTypes;
         this.numberOfEnemies = numberOfEnemies;
@@ -99,7 +106,7 @@ public class Level extends Thread {
         this.enemyHealthModifier = enemyHealthModifier;
         this.enemyDamageModifier = enemyDamageModifier;
         this.levelNumber = levelNumber;
-        boss.constructBosses(controller);
+        //boss.constructBosses(controller);
     }
 
     @Override
@@ -118,7 +125,7 @@ public class Level extends Thread {
 
         // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
-            while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
+            while (numberOfEnemies > 0 || controller.getUpdateables().contains(lastEnemy)) {
 
 
 
@@ -136,20 +143,22 @@ public class Level extends Thread {
 
                     // arvotaan vihollinen tyyppilistasta
                     Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
-                    Enemy enemy = new Enemy(controller, enemyType.getMovementPattern(),
+                    Enemy enemy = new Enemy(gc, controller, enemyType.getMovementPattern(),
                             WINDOW_WIDTH + 50, randomYPos, "enemy");
                     enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
-                    Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 0, 0);
+                    Component blaster = new Blaster(gc, controller, enemy, "triangle", 5, 2, 0, 0);
                     enemy.setPrimaryWeapon((Weapon) blaster);
 
                     controller.addUpdateable(enemy);
                     // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                     // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                     if (numberOfEnemies == 1) {
+                        /*
                         Thread.sleep(3000);
                         boss = boss.bossList.get(0);
                         lastEnemy = boss;
                         controller.addUpdateable(boss);
+                        */
                     }
                     numberOfEnemies--;
                 }
@@ -157,10 +166,10 @@ public class Level extends Thread {
             // Levelin viholliset spawnattu, venataan vähän aikaa ennen levelin loppumista
 
             System.out.println("Voitit tason " + (levelNumber) +"!");
-            Platform.runLater(() -> controller.addScore(500));
+            controller.addScore(500);
 
             // Ilmoita levelin loppumisesta
-            Platform.runLater(() -> controller.returnToMain());
+            controller.returnToMain();
            //controller.startLevel(levelNumber+1);
 
         } catch (InterruptedException e) {
@@ -177,12 +186,12 @@ public class Level extends Thread {
                 new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 100),
                 new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 650)};
 
-        TrackerEnemy trackerEnemy = new TrackerEnemy(controller, 0,
+        TrackerEnemy trackerEnemy = new TrackerEnemy(gc, controller, 0,
                 WINDOW_WIDTH / 2, -50, path,  "enemy");
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
         controller.addUpdateable(trackerEnemy);
 
-        trackerEnemy = new TrackerEnemy(controller, 0,
+        trackerEnemy = new TrackerEnemy(gc, controller, 0,
                 WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  "enemy");
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
         controller.addUpdateable(trackerEnemy);

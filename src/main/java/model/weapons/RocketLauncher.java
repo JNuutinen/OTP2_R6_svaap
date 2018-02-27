@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import model.Component;
 import model.Unit;
@@ -34,6 +35,11 @@ public class RocketLauncher extends Component implements Weapon {
     private static final Color COLOR = Color.PINK;
 
     /**
+     * GraphicsContext, johon piirretään.
+     */
+    private GraphicsContext gc;
+
+    /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
      */
     private Controller controller;
@@ -45,6 +51,7 @@ public class RocketLauncher extends Component implements Weapon {
 
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * @param gc GraphicsContext, johon piirretään.
      * @param controller Pelin kontrolleri.
      * @param shooter Unit, jolla ase on käytössä.
      * @param shape Raketinheittimen muoto merkkijonona.
@@ -53,9 +60,10 @@ public class RocketLauncher extends Component implements Weapon {
      * @param xOffset Raketinheittimen sijainnin heitto unitista x-suunnassa.
      * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
      */
-    public RocketLauncher(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                          double yOffset, double rotatingSpeed) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset);
+    public RocketLauncher(GraphicsContext gc, Controller controller, Unit shooter, String shape, int size,
+                          int orientation, double xOffset, double yOffset, double rotatingSpeed) {
+        super(gc, shape, size, orientation, COLOR, xOffset, yOffset);
+        this.gc = gc;
         this.controller = controller;
         this.shooter = shooter;
         this.rotatingSpeed = rotatingSpeed;
@@ -68,6 +76,6 @@ public class RocketLauncher extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, this));
+        controller.addUpdateable(new Missile(gc, controller, shooter, SPEED, DAMAGE, rotatingSpeed, this));
     }
 }
