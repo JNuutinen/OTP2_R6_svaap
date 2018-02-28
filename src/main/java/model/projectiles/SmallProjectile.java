@@ -75,7 +75,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param damage Projectilen vahinko
      * @param direction Projectilen suunta
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction, Component component) {
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction, Color color, Component component) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, component);
 
@@ -86,7 +86,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
-        Polygon shape = buildProjectile(speed, COLOR);
+        Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
     }
 

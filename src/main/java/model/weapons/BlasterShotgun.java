@@ -38,6 +38,8 @@ public class BlasterShotgun extends Component implements Weapon {
      */
     private Unit shooter;
 
+    private Color projectileColor;
+
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
      * @param controller Pelin kontrolleri.
@@ -48,11 +50,12 @@ public class BlasterShotgun extends Component implements Weapon {
      * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
      * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
      */
-    public BlasterShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
+    public BlasterShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, Color projectileColor, double xOffset,
                    double yOffset) {
         super(shape, size, orientation, COLOR, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
+        this.projectileColor = projectileColor;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class BlasterShotgun extends Component implements Weapon {
     @Override
     public void shoot() {
         for(int i = -1; i < 2; i++) {
-            controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, i * 5, this));
+            controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, i * 5, projectileColor,  this));
         }
     }
 }

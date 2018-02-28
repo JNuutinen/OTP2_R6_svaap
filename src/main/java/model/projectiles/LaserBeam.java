@@ -15,7 +15,7 @@ import static view.GameMain.WINDOW_WIDTH;
 
 public class LaserBeam extends BaseProjectile implements Updateable {
 
-    private static final Color COLOR = Color.CYAN;
+    private static final Color COLOR = Color.WHITE;
     private Controller controller;
     private int damage;
     private Polygon shape;

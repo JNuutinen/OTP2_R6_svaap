@@ -22,7 +22,7 @@ public class LaserGun extends Component implements Weapon {
     /**
      * Blasterin tulinopeus.
      */
-    private static final double FIRE_RATE = 0.2;
+    private static final double FIRE_RATE = 1.0;
 
     /**
      * Blasterin väri.

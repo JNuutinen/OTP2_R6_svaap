@@ -2,6 +2,7 @@ package model;
 
 import controller.Controller;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import model.weapons.BlasterShotgun;
 import model.weapons.Weapon;
 
@@ -129,13 +130,13 @@ public class Boss extends Unit implements Updateable {
             setPosition(getXPosition(), upOrDown());
             moveBoss(deltaTime);
         }
-            controller.setHealthbar(hpPercentage());
+        controller.setHealthbar(hpPercentage());
     }
 
     // TODO: ei käytä asetta
     public void spawnProjectile(int direction){
-     //   SmallProjectile projectile = new SmallProjectile(controller, this, 28,30, direction);
-       // controller.addUpdateable(projectile);
+        //   SmallProjectile projectile = new SmallProjectile(controller, this, 28,30, direction);
+        // controller.addUpdateable(projectile);
     }
 
     /**
@@ -149,8 +150,8 @@ public class Boss extends Unit implements Updateable {
         }else{
             if(movementCounter <= 200){ up = false;}
             return initialY + movementCounter--;
-            }
         }
+    }
 
     /**
      * Laskee pomon jäljellä olevan hp:n kymmenyksissä. Käytetään healthbarin päivittämiseen
@@ -168,8 +169,8 @@ public class Boss extends Unit implements Updateable {
 
     public void constructBosses(Controller controller){
         Boss boss1 = new Boss(controller, 100, new Image("/images/bossPlaceholder.png"), WINDOW_WIDTH - 100, 100);
-        Component blaster1 = new BlasterShotgun(controller, boss1, "circle", 5, 2, 0, -30);
-        Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2, 0, -210);
+        Component blaster1 = new BlasterShotgun(controller, boss1, "circle", 5, 2, Color.GOLDENROD, 200, -98);
+        Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2, Color.GOLDENROD, 200, 98);
         boss1.setPrimaryWeapon((Weapon) blaster1);
         boss1.setSecondaryWeapon((Weapon) blaster2);
         bossList.add(boss1);
