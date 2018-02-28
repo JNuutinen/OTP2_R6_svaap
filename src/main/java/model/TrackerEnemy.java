@@ -68,7 +68,7 @@ public class TrackerEnemy extends Unit implements Updateable {
         if (fireRateCounter <= fireRate) fireRateCounter++;
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            spawnProjectile();
+            shootPrimary();
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
@@ -154,11 +154,5 @@ public class TrackerEnemy extends Unit implements Updateable {
     public void setInitPosition(double initialX, double initialY) {
         this.initialX = initialX;
         this.initialY = initialY;
-    }
-
-    // TODO: ei käytä asetta
-    public void spawnProjectile(){
-       // SmallProjectile projectile = new SmallProjectile(controller, this, 22,10, Color.LIMEGREEN);
-      //  controller.addUpdateable(projectile);
     }
 }

@@ -178,11 +178,15 @@ public class Level extends Thread {
         TrackerEnemy trackerEnemy = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH / 2, -50, path, ENEMY_SHIP_TAG);
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
+        Weapon blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 0, 0);
+        trackerEnemy.setPrimaryWeapon(blaster);
         controller.addUpdateable(trackerEnemy);
 
         trackerEnemy = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  ENEMY_SHIP_TAG);
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
+        blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 0, 0);
+        trackerEnemy.setPrimaryWeapon(blaster);
         controller.addUpdateable(trackerEnemy);
     }
 }
