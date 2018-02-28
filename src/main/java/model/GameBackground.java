@@ -10,7 +10,7 @@ import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 public class GameBackground extends Sprite implements Updateable  {
-private double scrollSpeed = 15;
+private double scrollSpeed = 0.4;
 
     /**
      * Pelin kontrolleri
@@ -26,7 +26,7 @@ private ImageView nextDiagonalImage;
 
         controller.addUpdateable(this);
 
-        String imagePath = "images/Background.jpg";
+        String imagePath = "images/darkSpace.jpg";
 
         centerImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
                 (double) GameMain.WINDOW_WIDTH, (double)GameMain.WINDOW_HEIGHT, false, false));
@@ -65,7 +65,10 @@ private ImageView nextDiagonalImage;
 
 
 
+
+
         if (centerImage.getImage().getWidth() + centerImage.getX() <= 0) {
+            System.out.println("ye");
             ImageView iv = centerImage;
             centerImage = nextHorizontalImage;
             nextHorizontalImage = iv;
