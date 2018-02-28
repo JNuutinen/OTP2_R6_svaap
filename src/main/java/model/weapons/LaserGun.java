@@ -4,12 +4,10 @@ import controller.Controller;
 import javafx.scene.paint.Color;
 import model.Component;
 import model.Unit;
+import model.projectiles.LaserBeam;
 import model.projectiles.SmallProjectile;
 
-/**
- * Blaster pyssy.
- */
-public class Blaster extends Component implements Weapon {
+public class LaserGun extends Component implements Weapon {
 
     /**
      * Blasterin ammuksien nopeus
@@ -31,10 +29,6 @@ public class Blaster extends Component implements Weapon {
      */
     private static final Color COLOR = Color.HOTPINK;
 
-    private Color projectileColor;
-
-    private double projectileSpeed;
-
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
      */
@@ -44,6 +38,8 @@ public class Blaster extends Component implements Weapon {
      * Unit, jolla ase on käytössä.
      */
     private Unit shooter;
+
+    private Color laserColor;
 
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
@@ -55,13 +51,12 @@ public class Blaster extends Component implements Weapon {
      * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
      * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
      */
-    public Blaster(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                   double yOffset, Color projectileColor, double projectileSpeed) {
+    public LaserGun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
+                    double yOffset, Color laserColor) {
         super(shape, size, orientation, COLOR, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
-        this.projectileColor = projectileColor;
-        this.projectileSpeed = projectileSpeed;
+        this.laserColor = laserColor;
     }
 
     @Override
@@ -71,6 +66,7 @@ public class Blaster extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE, projectileColor, this));
+        controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, laserColor, this));
     }
 }
+

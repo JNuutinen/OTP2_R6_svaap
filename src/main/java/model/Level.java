@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
 
@@ -137,7 +138,7 @@ public class Level extends Thread {
                     Enemy enemy = new Enemy(controller, enemyType.getMovementPattern(),
                             WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
                     enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
-                    Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 0, 0);
+                    Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 0, 0, Color.CORAL, 20);
                     enemy.setPrimaryWeapon((Weapon) blaster);
 
                     controller.addUpdateable(enemy);
@@ -178,14 +179,14 @@ public class Level extends Thread {
         TrackerEnemy trackerEnemy = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH / 2, -50, path, ENEMY_SHIP_TAG);
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-        Weapon blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 0, 0);
+        Weapon blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 0, 0, Color.LIGHTGREEN, 20);
         trackerEnemy.setPrimaryWeapon(blaster);
         controller.addUpdateable(trackerEnemy);
 
         trackerEnemy = new TrackerEnemy(controller, 0,
                 WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  ENEMY_SHIP_TAG);
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-        blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 0, 0);
+        blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 0, 0, Color.LIGHTGREEN, 20);
         trackerEnemy.setPrimaryWeapon(blaster);
         controller.addUpdateable(trackerEnemy);
     }

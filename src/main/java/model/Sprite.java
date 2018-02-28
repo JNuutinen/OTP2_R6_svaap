@@ -66,13 +66,9 @@ public class Sprite extends Pane {
     private int tag = UNDEFINED_TAG;
 
     /**
-     * Toteuttaa Updateable-rajapinnan getHitboxShape() metodin Unit-luokan kautta.
-     * @return Spriten hitbox Shape-oliona.
+     * Toteuttaa Updateable-rajapinnan getHitboxRadius() metodin Unit-luokan kautta.
+     * @return Spriten ymnpyrähitboxin säteen desimaalilukuna.
      */
-    public Shape getHitboxShape(){
-        return shape;
-    }
-
     public double getHitboxRadius(){
         return hitboxRadius;
     }
@@ -110,8 +106,10 @@ public class Sprite extends Pane {
     }
 
     /**
-     * Asettaa Spriten kuvan.
+     * Asettaa Spriten kuvan niin että kuvalla ja spritellä on sama keskipiste
      * @param newImage Spritelle asetettava uusi kuva.
+     * @param height kuvan korkeus
+     * @param width kuvan levesys
      */
     public void setImage(Image newImage, double width, double height){
         imageView.setImage(newImage);

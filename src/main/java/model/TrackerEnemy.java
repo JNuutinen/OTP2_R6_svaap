@@ -24,9 +24,9 @@ public class TrackerEnemy extends Unit implements Updateable {
     private Updateable target = null;
     private final double initialVelocity = 300;
 
-    // Ampumisen kovakoodit
-    private int fireRate = 99999999;
-    private int fireRateCounter = 100;
+    // tulinopeus sekunneissa, ja sen apumuuttuja
+    private double fireRate = 99999;
+    private double fireRateCounter = 0;
 
 
     public TrackerEnemy(Controller controller, int movementPattern, double initialX, double initialY, Point2D[] path,
@@ -65,7 +65,9 @@ public class TrackerEnemy extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
-        if (fireRateCounter <= fireRate) fireRateCounter++;
+        if (fireRateCounter <= fireRate){
+            fireRateCounter += deltaTime;
+        }
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
             shootPrimary();
@@ -90,8 +92,8 @@ public class TrackerEnemy extends Unit implements Updateable {
                 if(path[currentDestinationIndex] == path[lastDestinationIndex]){
                     shootingTarget = true;
                     lockDirection(180);
-                    fireRateCounter = 100;
-                    fireRate = 300;
+                    fireRateCounter = 1;
+                    fireRate = 3;
                     setVelocity(100);
                 }
                 else{

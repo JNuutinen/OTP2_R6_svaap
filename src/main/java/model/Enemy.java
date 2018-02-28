@@ -19,9 +19,9 @@ public class Enemy extends Unit implements Updateable {
     private double direction = 0;
 
 
-    // Ampumisen kovakoodit
-    private int fireRate = 100;
-    private int fireRateCounter = 100;
+    // tulinopeus sekunneissa, ja sen apumuuttuja
+    private double fireRate = 3;
+    private double fireRateCounter = 2;
 
 
     public Enemy(Controller controller, int movementPattern, double initialX, double initialY, int tag) {
@@ -73,7 +73,9 @@ public class Enemy extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
-        if (fireRateCounter <= fireRate) fireRateCounter++;
+        if (fireRateCounter <= fireRate) {
+            fireRateCounter += deltaTime;
+        }
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
             shootPrimary();
