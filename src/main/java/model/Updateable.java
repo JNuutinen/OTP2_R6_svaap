@@ -26,11 +26,8 @@ public interface Updateable {
      */
     void destroyThis();
 
-    /**
-     * Palauttaa olion hitboxin.
-     * @return Olion hitbox Shape-oliona.
-     */
-    Shape getHitboxShape();
+    double getHitboxRadius();
+
 
     /**
      * Palauttaa olion sijainnin.

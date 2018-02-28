@@ -2,6 +2,7 @@ package model;
 
 import controller.Controller;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
@@ -106,22 +107,27 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
-
                 if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/150.0) {
                     // Gameloopin taika
                     for (Updateable updateable : updateables) {
                         if (updateable != null) {
-
                             //osumistarkastelu
                             //TODO taa on KOVAKOODATTU >:(
                             if (updateable.getTag() == ENEMY_PROJECTILE_TAG) {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag() == PLAYER_SHIP_TAG) {
+                                            // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
+                                            if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                    (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
+                                                // kutsu objektin collides-metodia
+                                                updateable.collides(updateable2);
+                                            }
+                                            /* TODO Hege poistaa
                                             if (((Path) Shape.intersect(updateable.getHitboxShape(),
                                                     updateable2.getHitboxShape())).getElements().size() > 0) {
                                                 updateable.collides(updateable2);
-                                            }
+                                            }*/
                                         }
                                     }
 
@@ -131,8 +137,8 @@ public class GameLoop {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
                                         if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
-                                            if (((Path) Shape.intersect(updateable.getHitboxShape(),
-                                                    updateable2.getHitboxShape())).getElements().size() > 0) {
+                                            if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                    (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
                                                 updateable.collides(updateable2);
                                             }
                                         }
@@ -146,5 +152,9 @@ public class GameLoop {
         };
         mainLoop.start();
         collisionLoop.start();
+    }
+
+    private double getDistanceFromTarget(Point2D source, Point2D target){
+        return Math.sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
     }
 }

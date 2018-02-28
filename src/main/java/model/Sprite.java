@@ -28,6 +28,8 @@ public class Sprite extends Pane {
      */
     private double velocity = 200;
 
+    private double hitboxRadius = 0;
+
     /**
      * Spriten kuvan säiliö.
      */
@@ -71,6 +73,10 @@ public class Sprite extends Pane {
         return shape;
     }
 
+    public double getHitboxRadius(){
+        return hitboxRadius;
+    }
+
     /**
      * Toteuttaa Updateable-rajapinnan getPosition() metodin Unit-luokan kautta.
      * @return Spriten nykyinen sijainti Point2D-oliona.
@@ -107,8 +113,10 @@ public class Sprite extends Pane {
      * Asettaa Spriten kuvan.
      * @param newImage Spritelle asetettava uusi kuva.
      */
-    public void setImage(Image newImage){
+    public void setImage(Image newImage, double width, double height){
         imageView.setImage(newImage);
+        imageView.setX(-width/2);
+        imageView.setY(-height/2);
         this.getChildren().add(imageView);
     }
 
@@ -167,22 +175,8 @@ public class Sprite extends Pane {
      * @param circleHitboxDiameter Hitboxin halkaisija.
      */
     protected void setHitbox(double circleHitboxDiameter){
+        hitboxRadius = circleHitboxDiameter/2;
         shape = new Circle(0, 0, circleHitboxDiameter/2);
-        shape.setFill(Color.TRANSPARENT);
-        if(debuggerToolsEnabled) {
-            shape.setStroke(Color.LIGHTGREY);
-        }
-        shape.setStrokeWidth(0.4);
-        this.getChildren().add(shape);
-    }
-
-    /**
-     * Asettaa Spriten neliönmuotoisen hitboxin.
-     * @param rectangleHitboxWidth Hitboxin leveys.
-     * @param rectangleHitboxHeight Hitboxin korkeus.
-     */
-    public void setHitbox(double rectangleHitboxWidth, double rectangleHitboxHeight) {
-        shape = new Rectangle(rectangleHitboxWidth, rectangleHitboxHeight);
         shape.setFill(Color.TRANSPARENT);
         if(debuggerToolsEnabled) {
             shape.setStroke(Color.LIGHTGREY);

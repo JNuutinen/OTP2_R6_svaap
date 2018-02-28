@@ -90,11 +90,11 @@ public class Boss extends Unit implements Updateable {
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         rotate(180);
-        setImage(image);
+        setImage(image, 128, 256);
         setIsMoving(true);
         this.initialX = initialX;
         this.initialY = initialY;
-        this.setHitbox(128,256);
+        this.setHitbox(256);
     }
 
     /**

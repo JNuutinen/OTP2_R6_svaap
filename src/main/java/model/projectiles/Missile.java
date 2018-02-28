@@ -182,4 +182,5 @@ public class Missile extends BaseProjectile implements Updateable {
     public double getRotatingSpeed(){
         return rotatingSpeed;
     }
+
 }
