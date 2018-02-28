@@ -40,13 +40,13 @@ public interface Updateable {
 
     /**
      * Palauttaa olion tunnistetagin.
-     * @return Olion tagi merkkijonona.
+     * @return Olion taginumero.
      */
-    String getTag();
+    int getTag();
 
     /**
      * Asettaa olion tunnistetagin.
-     * @param tag Olion tagi merkkijonona.
+     * @param tag Olion tagi kokonaisnumerona.
      */
-    void setTag(String tag);
+    void setTag(int tag);
 }

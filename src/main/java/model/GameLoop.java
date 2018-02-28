@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static view.GameMain.*;
+
 public class GameLoop {
 
     private Controller controller;
@@ -112,10 +114,10 @@ public class GameLoop {
 
                             //osumistarkastelu
                             //TODO taa on KOVAKOODATTU >:(
-                            if (updateable.getTag().equals("projectile_enemy")) {
+                            if (updateable.getTag() == ENEMY_PROJECTILE_TAG) {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
-                                        if (updateable2.getTag().equals("player")) {
+                                        if (updateable2.getTag() == PLAYER_SHIP_TAG) {
                                             if (((Path) Shape.intersect(updateable.getHitboxShape(),
                                                     updateable2.getHitboxShape())).getElements().size() > 0) {
                                                 updateable.collides(updateable2);
@@ -125,10 +127,10 @@ public class GameLoop {
 
                                 }
                             }
-                            if (updateable.getTag().equals("projectile_player")) {
+                            if (updateable.getTag() == PLAYER_PROJECTILE_TAG) {
                                 for (Updateable updateable2 : updateables) {
                                     if (updateable != updateable2 && updateable2 != null) {
-                                        if (updateable2.getTag().equals("enemy") || updateable2.getTag().equals("boss")) {
+                                        if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
                                             if (((Path) Shape.intersect(updateable.getHitboxShape(),
                                                     updateable2.getHitboxShape())).getElements().size() > 0) {
                                                 updateable.collides(updateable2);

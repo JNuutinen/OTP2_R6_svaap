@@ -3,15 +3,13 @@ package model;
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.*;
 
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
@@ -137,7 +135,7 @@ public class Level extends Thread {
                     // arvotaan vihollinen tyyppilistasta
                     Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
                     Enemy enemy = new Enemy(controller, enemyType.getMovementPattern(),
-                            WINDOW_WIDTH + 50, randomYPos, "enemy");
+                            WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
                     enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
                     Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 0, 0);
                     enemy.setPrimaryWeapon((Weapon) blaster);
@@ -178,12 +176,12 @@ public class Level extends Thread {
                 new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 650)};
 
         TrackerEnemy trackerEnemy = new TrackerEnemy(controller, 0,
-                WINDOW_WIDTH / 2, -50, path,  "enemy");
+                WINDOW_WIDTH / 2, -50, path, ENEMY_SHIP_TAG);
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
         controller.addUpdateable(trackerEnemy);
 
         trackerEnemy = new TrackerEnemy(controller, 0,
-                WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  "enemy");
+                WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  ENEMY_SHIP_TAG);
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
         controller.addUpdateable(trackerEnemy);
     }

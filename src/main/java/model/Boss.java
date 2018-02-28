@@ -2,23 +2,19 @@ package model;
 
 import controller.Controller;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import model.projectiles.SmallProjectile;
-import model.weapons.Blaster;
 import model.weapons.BlasterShotgun;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.*;
 
 /**
  * Tason loppupomo
  */
 public class Boss extends Unit implements Updateable {
 
-    public ArrayList<Boss> bossList = new ArrayList();
+    public ArrayList<Boss> bossList = new ArrayList<>();
     /**
      * Pelin kontrolleri
      */
@@ -72,7 +68,7 @@ public class Boss extends Unit implements Updateable {
         this.controller = controller;
         controller.addUnitToCollisionList(this);
         rotate(180);
-        this.setTag("boss");
+        setTag(BOSS_SHIP_TAG);
     }
 
     /**
@@ -90,7 +86,7 @@ public class Boss extends Unit implements Updateable {
         this.controller = controller;
         setHp(hp);
         originalhp = hp;
-        this.setTag("boss");
+        setTag(BOSS_SHIP_TAG);
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         rotate(180);

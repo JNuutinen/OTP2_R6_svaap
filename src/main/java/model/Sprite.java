@@ -10,6 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
+import static view.GameMain.UNDEFINED_TAG;
+
 /**
  * Perusluokka kaikille spriteille.
  */
@@ -59,7 +61,7 @@ public class Sprite extends Pane {
     /**
      * Spriten tunnistetagi.
      */
-    private String tag = "undefined";
+    private int tag = UNDEFINED_TAG;
 
     /**
      * Toteuttaa Updateable-rajapinnan getHitboxShape() metodin Unit-luokan kautta.
@@ -81,8 +83,7 @@ public class Sprite extends Pane {
      * Toteuttaa Updateable-rajapinnan getTag() metodin Unit-luokan kautta.
      * @return Spriten tunnistetagi.
      */
-    @SuppressWarnings("WeakerAccess")
-    public String getTag() {
+    public int getTag() {
         return tag;
     }
 
@@ -90,8 +91,7 @@ public class Sprite extends Pane {
      * Toteuttaa Updateable-rajapinnan setTag() metodin Unit-luokan kautta.
      * @param tag Spriten tunnistetagi.
      */
-    @SuppressWarnings("WeakerAccess")
-    public void setTag(String tag) {
+    public void setTag(int tag) {
         this.tag = tag;
     }
 

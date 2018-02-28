@@ -3,7 +3,6 @@ package model;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.projectiles.SmallProjectile;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -25,11 +24,10 @@ public class Enemy extends Unit implements Updateable {
     private int fireRateCounter = 100;
 
 
-    public Enemy(Controller controller, int movementPattern, double initialX, double initialY,
-                 String tag) {
+    public Enemy(Controller controller, int movementPattern, double initialX, double initialY, int tag) {
         super(controller);
         this.controller = controller;
-        this.setTag(tag);
+        setTag(tag);
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         rotate(180);

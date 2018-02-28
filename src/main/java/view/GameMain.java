@@ -27,6 +27,12 @@ public class GameMain extends Application implements View {
     public static final int WINDOW_HEIGHT = 720;
     public static final int MAIN_MENU_WIDTH = 400;
     public static final int MAIN_MENU_HEIGHT = 400;
+    public static final int UNDEFINED_TAG = 0;
+    public static final int PLAYER_SHIP_TAG = 1;
+    public static final int ENEMY_SHIP_TAG = 2;
+    public static final int BOSS_SHIP_TAG = 5;
+    public static final int PLAYER_PROJECTILE_TAG = 3;
+    public static final int ENEMY_PROJECTILE_TAG = 4;
 
     /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.

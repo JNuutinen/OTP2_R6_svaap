@@ -4,11 +4,8 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.projectiles.SmallProjectile;
 
-
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.*;
 
 public class TrackerEnemy extends Unit implements Updateable {
     public static final int MOVE_NONE = -1;
@@ -33,12 +30,12 @@ public class TrackerEnemy extends Unit implements Updateable {
 
 
     public TrackerEnemy(Controller controller, int movementPattern, double initialX, double initialY, Point2D[] path,
-                        String tag) {
+                        int tag) {
         super(controller);
         this.path = path;
         this.controller = controller;
-        this.setTag(tag);
-        this.lastDestinationIndex = path.length-1;
+        setTag(tag);
+        lastDestinationIndex = path.length-1;
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
@@ -56,7 +53,7 @@ public class TrackerEnemy extends Unit implements Updateable {
         Component c = new Component("triangle", 3, 0, Color.LIMEGREEN, 100, 0);
         components.add(c);
         equipComponents(components);
-        this.setHitbox(50);
+        setHitbox(50);
 
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         triangle.getPoints().addAll(-30.0, -30.0,
@@ -138,7 +135,7 @@ public class TrackerEnemy extends Unit implements Updateable {
     //etsii pelaajan updateable listasta ja asettaa sen kohteeksi
     public void findAndSetTarget(){
         for(Updateable updateable : controller.getUpdateables()){
-            if(updateable.getTag().equals("player")) {
+            if(updateable.getTag() == PLAYER_SHIP_TAG) {
                 target = updateable;
             }
         }

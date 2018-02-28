@@ -8,6 +8,8 @@ import model.weapons.Weapon;
 
 import java.util.ArrayList;
 
+import static view.GameMain.*;
+
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
  */
@@ -132,14 +134,14 @@ public class Unit extends Sprite implements Updateable {
      * @param shape Aluksen Shape-olio.
      */
     void drawShip(Shape shape) {
-        String tag = getTag();
+        int tag = getTag();
         shape.setEffect(new GaussianBlur(2.0));
         shape.setFill(Color.TRANSPARENT);
         shape.setStrokeWidth(3.0);
         this.getChildren().add(shape);
-        if (tag.equals("player")) {
+        if (tag == PLAYER_SHIP_TAG) {
             shape.setStroke(Color.CYAN);
-        } else if (tag.equals("enemy")) {
+        } else if (tag == ENEMY_SHIP_TAG) {
             shape.setStroke(Color.RED);
         }
     }
@@ -212,18 +214,18 @@ public class Unit extends Sprite implements Updateable {
         if(hp <= 0){
             controller.removeUpdateable(this);
             controller.removeFromCollisionList(this);
-            if(this.getTag().equals("enemy")){
+            if(getTag() == ENEMY_SHIP_TAG){
                 controller.addScore(100);
             }
-            if(this.getTag().equals("player")){
+            if(getTag() == PLAYER_SHIP_TAG){
                 controller.returnToMain();
             }
-            if(this.getTag().equals("boss")){
+            if(getTag() == BOSS_SHIP_TAG){
                 controller.addScore(1000);
                 controller.setHealthbar(0);
             }
         }
-        if(this.getTag().equals("player")){
+        if(getTag() == PLAYER_SHIP_TAG){
             controller.addScore(-50);
         }
     }

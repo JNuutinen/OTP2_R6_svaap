@@ -6,10 +6,10 @@ import model.*;
 import view.GameMain;
 import view.View;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 
 import static model.Enemy.MOVE_STRAIGHT;
+import static view.GameMain.ENEMY_SHIP_TAG;
 
 public class GameController implements Controller {
     private View view;
@@ -171,7 +171,7 @@ public class GameController implements Controller {
 
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this, 0, 0, 0, "enemy");
+        Enemy enemy1 = new Enemy(this, 0, 0, 0, ENEMY_SHIP_TAG);
         enemy1.setMovementPattern(MOVE_STRAIGHT);
         enemy1.setImage(enemyImage);
         ArrayList<Enemy> enemies = new ArrayList<>();

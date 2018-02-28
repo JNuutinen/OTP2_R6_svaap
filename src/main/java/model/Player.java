@@ -1,12 +1,9 @@
 package model;
 
 import controller.Controller;
-import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.projectiles.Missile;
-import model.projectiles.SmallProjectile;
 
+import static view.GameMain.PLAYER_SHIP_TAG;
 import static view.GameMain.input;
 
 public class Player extends Unit {
@@ -27,9 +24,9 @@ public class Player extends Unit {
 
     public Player(Controller controller) {
         super(controller);
-        this.setTag("player");
+        setTag(PLAYER_SHIP_TAG);
         this.controller = controller;
-        this.setHp(500);
+        setHp(500);
         controller.addUnitToCollisionList(this);
 
         Polygon triangle = new Polygon();
@@ -39,7 +36,7 @@ public class Player extends Unit {
 
         drawShip(triangle);
 
-        this.setHitbox(30);
+        setHitbox(30);
     }
 
 

@@ -2,10 +2,13 @@ package model.projectiles;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import model.*;
+import model.Component;
+import model.Player;
+import model.Sprite;
+import model.Unit;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.ENEMY_PROJECTILE_TAG;
+import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Apuluokka eri projectileille. Pitää sisällään projectilen perus
@@ -16,18 +19,6 @@ import static view.GameMain.WINDOW_WIDTH;
  * Projectilen kuvan, damagen, nopeuden yms. asetus perivässä luokassa.
  */
 class BaseProjectile extends Sprite {
-
-    /**
-     * Tagi, joka asetetaan vihollisen ampumille projectileille.
-     * Käytetään osumien tarkasteluun GameLoopissa.
-     */
-    private static final String TAG_ENEMY = "projectile_enemy";
-
-    /**
-     * Tagi, joka asetetaan pelaajan ampumille projectileille.
-     * Käytetään osumien tarkasteluun GameLoopissa.
-     */
-    private static final String TAG_PLAYER = "projectile_player";
 
     /**
      * Viittaus kontrolleriin, käytetään osumien rekisteröintiin
@@ -57,8 +48,8 @@ class BaseProjectile extends Sprite {
 
 
         // Ammuksen tagi ampujan mukaan
-        if (shooter instanceof Player) setTag(TAG_PLAYER);
-        else setTag(TAG_ENEMY);
+        if (shooter instanceof Player) setTag(PLAYER_PROJECTILE_TAG);
+        else setTag(ENEMY_PROJECTILE_TAG);
 
         // Suunta ja aloituspiste otetaan ampujasta
         //setDirection(shooter.getDirection());

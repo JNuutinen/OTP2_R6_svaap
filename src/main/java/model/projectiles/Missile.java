@@ -6,10 +6,12 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.*;
+import model.Component;
+import model.Trail;
+import model.Unit;
+import model.Updateable;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.*;
 
 /**
  * Ohjusammuksen luokka. Luokassa vain ohjukselle ominaisten
@@ -158,7 +160,7 @@ public class Missile extends BaseProjectile implements Updateable {
         double shortestDistance = Double.MAX_VALUE;
         Updateable closestEnemy = null;
         for (Updateable updateable : controller.getUpdateables()) {
-            if (updateable.getTag().equals("enemy") || updateable.getTag().equals("boss") ) {
+            if (updateable.getTag() == ENEMY_SHIP_TAG || updateable.getTag() == BOSS_SHIP_TAG ) {
                 double distance = getShooter().getDistanceFromTarget(updateable.getPosition());
                 if (distance < shortestDistance) {
                     shortestDistance = distance;
