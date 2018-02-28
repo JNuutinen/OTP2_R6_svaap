@@ -136,7 +136,7 @@ public class Unit extends Sprite implements Updateable {
     void drawShip(Shape shape) {
         int tag = getTag();
         shape.setEffect(new GaussianBlur(2.0));
-        shape.setFill(Color.TRANSPARENT);
+        shape.setFill(Color.BLACK);
         shape.setStrokeWidth(3.0);
         this.getChildren().add(shape);
         if (tag == PLAYER_SHIP_TAG) {
