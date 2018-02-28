@@ -131,28 +131,30 @@ public class GameMain extends Application implements View {
 
     // ------ Debugger
 
-    /* TODO TAA MITTARI ON RIKKI JOKA KORJATAAN MYOHEMMIN
-     */
     @Override
     public void setCurrentFps(double currentFps){
+
         if(debugger_droppedBelowFpsTarget) {
             debugger_secondCounter += (1 / currentFps);
-            if (debugger_secondCounter > 0) {
+            if (debugger_secondCounter > 0.8) {
                 debugger_droppedBelowFpsTarget = false;
                 debugger_currentFps.setTextFill(Color.web("#ffffff"));//valkone
             }
         }
         else if (currentFps < 56) {
-            debugger_currentFps.setText("rikki-> " + currentFps);
+            debugger_currentFps.setText("| mainLoop fps: " + currentFps);
             debugger_currentFps.setTextFill(Color.web("#ff8884"));//punane
             debugger_droppedBelowFpsTarget = true;
             debugger_secondCounter = 0;
         }
         else if (currentFps < 60) {
-            debugger_currentFps.setText("rikki-> " + currentFps);
+            debugger_currentFps.setText("| mainLoop fps: " + currentFps);
             debugger_currentFps.setTextFill(Color.web("#ffef7c"));//keltane
             debugger_droppedBelowFpsTarget = true;
             debugger_secondCounter = 0;
+        }
+        else{
+            debugger_currentFps.setText("| mainLoop fps: " + currentFps);
         }
     }
 
