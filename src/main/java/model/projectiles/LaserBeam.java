@@ -5,6 +5,7 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Polyline;
 import javafx.scene.transform.Rotate;
 import model.Component;
 import model.Unit;
@@ -18,7 +19,7 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     private static final Color COLOR = Color.WHITE;
     private Controller controller;
     private int damage;
-    private Polygon shape;
+    private Polyline shape;
     private Color color = Color.WHITE;
 
     public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, Component component) {
@@ -51,14 +52,21 @@ public class LaserBeam extends BaseProjectile implements Updateable {
         }
     }
 
+    double i = 1;
+
     @Override
     public void update(double deltaTime) {
+
         double deltaTimeMultiplied = deltaTime * 3;
+
         if(color.getRed() > deltaTimeMultiplied) {
             color = new Color(color.getRed() - deltaTimeMultiplied,
                     1, color.getBlue() - deltaTimeMultiplied, color.getOpacity() - deltaTimeMultiplied);
             shape.setStroke(color);
         }
+        /*if(i > deltaTimeMultiplied){
+            i -= deltaTimeMultiplied;
+        }*/
         else{
             controller.removeUpdateable(this);
         }
@@ -71,11 +79,11 @@ public class LaserBeam extends BaseProjectile implements Updateable {
      * @param color Projectilen väri
      * @return Rakennettu Polygon
      */
-    private Polygon buildLaser(Color color) {
+    private Polyline buildLaser(Color color) {
         // Ammuksen muoto
-        shape = new Polygon();
+        shape = new Polyline();
         shape.getPoints().addAll(-0.0, 0.0,
-                2000.0, 0.0);
+                (double)WINDOW_WIDTH, 0.0);
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);
         blur.setInput(bloom);
