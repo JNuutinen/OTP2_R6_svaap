@@ -3,8 +3,7 @@ package model;
 import controller.Controller;
 import javafx.scene.shape.Polygon;
 
-import static view.GameMain.PLAYER_SHIP_TAG;
-import static view.GameMain.input;
+import static view.GameMain.*;
 
 public class Player extends Unit {
     private Controller controller;
@@ -44,13 +43,39 @@ public class Player extends Unit {
     public void update(double deltaTime){
         this.deltaTime = deltaTime;
         resetVelocity(); // TODO: tää kutsu?
-        if (input.contains("A")) addVelocity(-1, 0);
-        else if (input.contains("D")) addVelocity(1, 0);
-        else if(xVelocity != 0) decelerateX();
+        if (input.contains("A")) {
+            // TODO: 70px kovakoodattu
+            if (getXPosition() > 70) {
+                addVelocity(-1, 0);
+            } else {
+                decelerateX();
+            }
+        } else if (input.contains("D")) {
+            if (getXPosition() < WINDOW_WIDTH - getWidth()) {
+                addVelocity(1, 0);
+            } else {
+                decelerateX();
+            }
+        } else if(xVelocity != 0) {
+            decelerateX();
+        }
 
-        if (input.contains("W")) addVelocity(0, -1);
-        else if (input.contains("S")) addVelocity(0, 1);
-        else if(yVelocity != 0) decelerateY();
+        if (input.contains("W")) {
+            // TODO: 100px kovakoodattu
+            if (getYPosition() > 100) {
+                addVelocity(0, -1);
+            } else {
+                decelerateY();
+            }
+        } else if (input.contains("S")) {
+            if (getYPosition() < WINDOW_HEIGHT - getHeight()) {
+                addVelocity(0, 1);
+            } else {
+                decelerateY();
+            }
+        } else if(yVelocity != 0) {
+            decelerateY();
+        }
 
         // Primary fire
         if (input.contains("O")) {
