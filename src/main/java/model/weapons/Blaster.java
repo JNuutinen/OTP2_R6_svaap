@@ -35,6 +35,8 @@ public class Blaster extends Component implements Weapon {
 
     private double projectileSpeed;
 
+
+
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
      */
@@ -56,8 +58,8 @@ public class Blaster extends Component implements Weapon {
      * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
      */
     public Blaster(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                   double yOffset, Color projectileColor, double projectileSpeed) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset);
+                   double yOffset, Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
+        super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.projectileColor = projectileColor;
@@ -71,6 +73,7 @@ public class Blaster extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE, projectileColor, this));
+        controller.addUpdateable(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE, this,
+                getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor));
     }
 }

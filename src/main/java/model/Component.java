@@ -1,14 +1,11 @@
 package model;
 
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
-
-import java.util.ArrayList;
 
 public class Component extends Sprite {
     Point2D startingPosition;
@@ -18,11 +15,20 @@ public class Component extends Sprite {
     private double xOffset;
     private double yOffset;
 
+    private double projectileFrontOffset = 0;
+    private double projectileLeftOffset = 0;
+
 
     //UnitX & UnitY: Spawnataan komponentti samaan paikkaan isännänsä kanssa
 
     /**
+     *
      * @param shape parametreina "triangle", "rectangle" ja "circle"
+     * @param size
+     * @param orientation
+     * @param color
+     * @param xOffset
+     * @param yOffset
      */
     public Component(String shape, int size, int orientation, Color color, double xOffset, double yOffset) {
         this.xOffset = xOffset;
@@ -35,6 +41,24 @@ public class Component extends Sprite {
         } else if (shape.equals("circle")) {
             setShape(circle(size, color));
         }
+    }
+
+    /**
+     *
+     * @param shape parametreina "triangle", "rectangle" ja "circle"
+     * @param size
+     * @param orientation
+     * @param color komponentin väri
+     * @param xOffset
+     * @param yOffset
+     * @param projectileFrontOffset ammuksen aloituspaikan poikkeama aluksen etusuuntaan
+     * @param projectileLeftOffset ammuksen aloituspaikan poikkeama aluksen vasempaan suuntaan
+     */
+    public Component(String shape, int size, int orientation, Color color, double xOffset, double yOffset,
+                     double projectileFrontOffset, double projectileLeftOffset) {
+        this(shape, size, orientation, color, xOffset, yOffset);
+        this.projectileFrontOffset = projectileFrontOffset;
+        this.projectileLeftOffset = projectileLeftOffset;
     }
 
     public Shape triangle(int size, int orientation, Color color) {
@@ -88,6 +112,10 @@ public class Component extends Sprite {
     public double getyOffset(){
         return yOffset;
     }
+
+    public double getProjectileFrontOffset() { return projectileFrontOffset;}
+
+    public double getProjectileLeftOffset() { return projectileLeftOffset;}
 
 
 

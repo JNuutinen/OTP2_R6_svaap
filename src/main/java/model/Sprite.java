@@ -101,8 +101,7 @@ public class Sprite extends Pane {
      * Palauttaa Spriten suunnan (kulma asteina).
      * @return Spriten suunta.
      */
-    public double getDirection(){
-        return direction;
+    public double getDirection(){ return direction;
     }
 
     /**
@@ -196,7 +195,7 @@ public class Sprite extends Pane {
      * @param degrees Kulma, joka pitää muuntaa.
      * @return Kulma vektorina esitettynä (Point2D).
      */
-    private Point2D degreesToVector(double degrees){
+    public Point2D degreesToVector(double degrees){
         double sin = Math.sin(Math.toRadians(degrees) * -1);
         double cos = Math.cos(Math.toRadians(degrees));
         return new Point2D(cos, sin);

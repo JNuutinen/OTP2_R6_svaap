@@ -60,19 +60,6 @@ public class Boss extends Unit implements Updateable {
     }
 
     /**
-     * Konstruktori. Kutsuu yläluokan konstruktoria. Asettaa kontrollerin, lisää pomon CollisionListiin (osumatarkastelu)
-     * Lisää pomolle tagin, "boss".
-     * @param controller pelin kontrolleri
-     */
-    public Boss(Controller controller) {
-        super(controller);
-        this.controller = controller;
-        controller.addUnitToCollisionList(this);
-        rotate(180);
-        setTag(BOSS_SHIP_TAG);
-    }
-
-    /**
      * Konstruktori. Kutsuu yläluokan konstruktoria ja asettaa kontrollerin. orginalHp on sama kuin
      * alunperin parametrinä annettu hp. Pomo lisätään CollisionListiin (osumatarkastelu) ja sille luodaan
      * suorakulmainen hitboxi, 128x256. Saa tagin "boss".
@@ -133,22 +120,16 @@ public class Boss extends Unit implements Updateable {
         controller.setHealthbar(hpPercentage());
     }
 
-    // TODO: ei käytä asetta
-    public void spawnProjectile(int direction){
-        //   SmallProjectile projectile = new SmallProjectile(controller, this, 28,30, direction);
-        // controller.addUpdateable(projectile);
-    }
-
     /**
      * Liikuttaa pomoa ylös tai alas, riippuen siitä kuinka paljon pomo on liikkunut yhteen suuntaan.
      * @return Palauttaa y-koordinaatin, johon pomon liikkuu.
      */
     public double upOrDown(){
         if (!up){
-            if(movementCounter >= 500){ up = true;}
+            if(movementCounter >= 400){ up = true;}
             return initialY + movementCounter++;
         }else{
-            if(movementCounter <= 200){ up = false;}
+            if(movementCounter <= 100){ up = false;}
             return initialY + movementCounter--;
         }
     }
@@ -169,8 +150,10 @@ public class Boss extends Unit implements Updateable {
 
     public void constructBosses(Controller controller){
         Boss boss1 = new Boss(controller, 100, new Image("/images/bossPlaceholder.png"), WINDOW_WIDTH - 100, 100);
-        Component blaster1 = new BlasterShotgun(controller, boss1, "circle", 5, 2, Color.GOLDENROD, 200, -98);
-        Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2, Color.GOLDENROD, 200, 98);
+        Component blaster1 = new BlasterShotgun(controller, boss1, "circle", 5, 2,
+                Color.CORAL, 400, -98, 80, -98);
+        Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2,
+                Color.CORNSILK, 400, 98, 80, 98);
         boss1.setPrimaryWeapon((Weapon) blaster1);
         boss1.setSecondaryWeapon((Weapon) blaster2);
         bossList.add(boss1);

@@ -49,10 +49,12 @@ public class BlasterShotgun extends Component implements Weapon {
      * @param orientation Blasterin suunta (kulma).
      * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
      * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
+     * @param projectileFrontOffset ammuksen aloituspaikan poikkeama aluksen etusuuntaan
+     * @param projectileLeftOffset ammuksen aloituspaikan poikkeama aluksn vasempaan suuntaan
      */
     public BlasterShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, Color projectileColor, double xOffset,
-                   double yOffset) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset);
+                   double yOffset, double projectileFrontOffset, double projectileLeftOffset) {
+        super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.projectileColor = projectileColor;
@@ -66,7 +68,8 @@ public class BlasterShotgun extends Component implements Weapon {
     @Override
     public void shoot() {
         for(int i = -1; i < 2; i++) {
-            controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, i * 5, projectileColor,  this));
+            controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, this,
+                    getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, i * 5));
         }
     }
 }

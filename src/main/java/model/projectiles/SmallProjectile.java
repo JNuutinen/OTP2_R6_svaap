@@ -21,7 +21,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     /**
      * Ammuksen vakioväri
      */
-    private static final Color COLOR = Color.CYAN;
+    private static final Color COLOR = Color.LIGHTSALMON;
     private Controller controller;
     private int damage;
 
@@ -32,63 +32,45 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component) {
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component, double frontOffset, double leftOffset) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
+        super(controller, shooter, speed, component, frontOffset, leftOffset);
 
         this.controller = controller;
         this.damage = damage;
-
-        // TODO: hitboxin koko kovakoodattu
-        setHitbox(10);
-
+        setHitbox(10);// TODO: hitboxin koko kovakoodattu
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
     }
 
     /**
-     * Konstruktori värin valinnalla
+     * Konstruktori värin valinnalla ja ammuksen aloituspaikan poikkeaman valinnalla
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      * @param color Projectilen väri
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Color color, Component component) {
-        // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
-
-        this.controller = controller;
-        this.damage = damage;
-
-        // TODO: hitboxin koko kovakoodattu
-        setHitbox(10);
-
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
+                           double frontOffset, double leftOffset, Color color) {
+        this(controller, shooter, speed, damage, component, frontOffset, leftOffset);
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
     }
     /**
-     * Konstruktori ammuksen suunnan valinnalla
+     * Konstruktori värin valinnalla ja ammuksen aloituspaikan poikkeaman valinnalla, ja suunnan valinnalla
      * @param controller Pelin kontrolleri
      * @param shooter Unit, jonka aseesta projectile ammutaan
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      * @param direction Projectilen suunta
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, double direction, Color color, Component component) {
-        // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
-
-        this.controller = controller;
-        this.damage = damage;
-
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
+                           double frontOffset, double leftOffset, Color color, double direction) {
+        this(controller, shooter, speed, damage, component, frontOffset, leftOffset, color);
         rotate(direction);
-        // TODO: hitboxin koko kovakoodattu
-        setHitbox(10);
-
-        Polygon shape = buildProjectile(speed, color);
-        getChildren().add(shape);
     }
+
 
     @Override
     public void destroyThis(){
@@ -107,7 +89,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
 
     @Override
     public void update(double deltaTime){
-        // chekkaa menikö ulos ruudulta
+        // tarkastele menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200
                 || getYPosition() < -100
@@ -126,12 +108,12 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      */
     private Polygon buildProjectile(double speed, Color color) {
         // Ammuksen muoto
-        // TODO: Nyt vielä väriä lukuunottamatta sama kuin missilellä
         Polygon shape = new Polygon();
         shape.getPoints().addAll(-6.0, 0.0,
                 0.0, -3.0,
                 speed*0.6+1.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
                 0.0, 3.0);
+
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);
         blur.setInput(bloom);

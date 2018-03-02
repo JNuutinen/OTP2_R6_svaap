@@ -32,11 +32,6 @@ class BaseProjectile extends Sprite {
     private Unit shooter;
 
     /**
-     * TODO: osumamuuttuja? miten käytetään?
-     */
-    private boolean hit = false;
-
-    /**
      * Konstruktori, asettaa kontrollerin ja nopeuden. Shooter
      * -parametrin avulla asettaa tagin, ammuksen suunnan, sekä ammuksen lähtösijainnin.
      * @param controller Pelin kontrolleri.
@@ -45,27 +40,42 @@ class BaseProjectile extends Sprite {
      */
     BaseProjectile(Controller controller, Unit shooter, double speed, Component component) {
         this.controller = controller;
-
-
         // Ammuksen tagi ampujan mukaan
         if (shooter instanceof Player) setTag(PLAYER_PROJECTILE_TAG);
         else setTag(ENEMY_PROJECTILE_TAG);
-
-        // Suunta ja aloituspiste otetaan ampujasta
-        //setDirection(shooter.getDirection());
+        // Suunta ja aloituspiste otetaan ampujasta johon laskettu mukaan aloituspisteen poikkeama.
         this.shooter = shooter;
-        Point2D startingLocation = shooter.getPosition();
+        Point2D startingLocation = new Point2D(shooter.getPosition().getX(), shooter.getPosition().getY());
+        this.setPosition(startingLocation.getX(), startingLocation.getY());
 
         rotate(shooter.getDirection());
         setVelocity(speed);
         setIsMoving(true);
-
         //Projektile lähtee aluksen kärjestä. Viholliset ja pelaaja erikseen
-        if (shooter instanceof Player) { //Jos ampuja on pelaaja
+        /*if (shooter instanceof Player) { //Jos ampuja on pelaaja
             this.setPosition(startingLocation.getX()  + component.getxOffset(), startingLocation.getY() + component.getyOffset());
         } else { //Jos ampuja on joku muu
             this.setPosition(startingLocation.getX() - shooter.getWidth() + component.getxOffset(), startingLocation.getY() + component.getyOffset());
-        }
+        }*/
+    }
+
+    /**
+     *
+     * @param controller
+     * @param shooter
+     * @param speed
+     * @param component
+     * @param frontOffset ammuksen aloituspaikan poikkeus aluksen etusuuntaan
+     * @param leftOffset ammuksne aloituspaikan poikkeus aluksen vasempaan suuntaan
+     */
+    BaseProjectile(Controller controller, Unit shooter, double speed, Component component, double frontOffset, double leftOffset) {
+        this(controller, shooter, speed, component);
+        double xOffset = degreesToVector(shooter.getDirection()).getX() * frontOffset;
+        double yOffset = degreesToVector(shooter.getDirection()).getY() * frontOffset;
+        xOffset = xOffset + degreesToVector(shooter.getDirection() + 90).getX() * leftOffset;
+        yOffset = yOffset + degreesToVector(shooter.getDirection() + 90).getY() * leftOffset;
+        Point2D startingLocation = new Point2D(shooter.getPosition().getX() + xOffset, shooter.getPosition().getY() + yOffset);
+        this.setPosition(startingLocation.getX(), startingLocation.getY());
     }
 
     /**

@@ -217,13 +217,16 @@ public class GameMain extends Application implements View {
 
         // Pelaajan aseet
         // PÄÄASE
-        Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.CADETBLUE, 45);
+        Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.AQUA,
+                45, 100, 20);
 
         player.setPrimaryWeapon((Weapon) primary);
         //SIVUASE
         //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
         //Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
-        Component secondary = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE);
+        //Component secondary = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE);
+        Component secondary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.FUCHSIA,
+                45, 100, -20);
         player.setSecondaryWeapon((Weapon) secondary);
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä
