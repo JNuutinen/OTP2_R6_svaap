@@ -21,6 +21,8 @@ public class Unit extends Sprite implements Updateable {
      */
     private Controller controller;
 
+    private Color color;
+
     /**
      * Yksikön hitpointsit.
      */
@@ -53,8 +55,10 @@ public class Unit extends Sprite implements Updateable {
     /**
      * Konstruktori asettaa kontrollerin.
      * @param controller Pelin kontrolleri.
+     * @param color aluksen väri
      */
-    public Unit(Controller controller) {
+    public Unit(Controller controller, Color color) {
+        this.color = color;
         this.controller = controller;
     }
 
@@ -137,13 +141,9 @@ public class Unit extends Sprite implements Updateable {
         int tag = getTag();
         shape.setEffect(new GaussianBlur(2.0));
         shape.setFill(Color.BLACK);
-        shape.setStrokeWidth(3.0);
+        shape.setStrokeWidth(5.0);
         this.getChildren().add(shape);
-        if (tag == PLAYER_SHIP_TAG) {
-            shape.setStroke(Color.CYAN);
-        } else if (tag == ENEMY_SHIP_TAG) {
-            shape.setStroke(Color.RED);
-        }
+        shape.setStroke(color);
     }
 
     /**

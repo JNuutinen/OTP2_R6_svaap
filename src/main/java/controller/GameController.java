@@ -2,6 +2,7 @@ package controller;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import model.*;
 import view.GameMain;
 import view.View;
@@ -171,7 +172,7 @@ public class GameController implements Controller {
 
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this, 0, 0, 0, ENEMY_SHIP_TAG);
+        Enemy enemy1 = new Enemy(this, Color.GRAY, 0, 0, 0, ENEMY_SHIP_TAG);
         enemy1.setMovementPattern(MOVE_STRAIGHT);
         enemy1.setImage(enemyImage, 1, 1);// width aj height arvoilla ei ole merkitysta koska vihu piirretty vektoreilla
         ArrayList<Enemy> enemies = new ArrayList<>();

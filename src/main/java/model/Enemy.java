@@ -24,8 +24,8 @@ public class Enemy extends Unit implements Updateable {
     private double fireRateCounter = 2;
 
 
-    public Enemy(Controller controller, int movementPattern, double initialX, double initialY, int tag) {
-        super(controller);
+    public Enemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, int tag) {
+        super(controller, shipColor);
         this.controller = controller;
         setTag(tag);
         controller.addUnitToCollisionList(this);
@@ -37,6 +37,7 @@ public class Enemy extends Unit implements Updateable {
         this.initialX = initialX;
         this.initialY = initialY;
 
+        // TODO nää on vissii kovakoodattu?
         Component c = new Component("triangle", 3, 0, Color.PURPLE, 30, 40);
         components.add(c);
         Component c2 = new Component("triangle", 3, 0, Color.PURPLE, 0, -20);
@@ -90,11 +91,5 @@ public class Enemy extends Unit implements Updateable {
             setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
         }
-    }
-
-    // TODO: ei käytä asetta
-    public void spawnProjectile(){
-        //SmallProjectile projectile = new SmallProjectile(controller, this, 28,10, Color.ORANGERED);
-        //controller.addUpdateable(projectile);
     }
 }

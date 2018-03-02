@@ -212,7 +212,7 @@ public class GameMain extends Application implements View {
 
 
         //pelaajan luonti
-        Player player = new Player(controller);
+        Player player = new Player(controller, Color.CYAN);
         player.setHp(1000000);
 
         // Pelaajan aseet

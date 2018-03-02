@@ -4,6 +4,8 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import model.weapons.Blaster;
+import model.weapons.Weapon;
 
 import static view.GameMain.*;
 
@@ -29,9 +31,9 @@ public class TrackerEnemy extends Unit implements Updateable {
     private double fireRateCounter = 0;
 
 
-    public TrackerEnemy(Controller controller, int movementPattern, double initialX, double initialY, Point2D[] path,
+    public TrackerEnemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, Point2D[] path,
                         int tag) {
-        super(controller);
+        super(controller, shipColor);
         this.path = path;
         this.controller = controller;
         setTag(tag);
@@ -50,7 +52,7 @@ public class TrackerEnemy extends Unit implements Updateable {
         this.initialX = initialX;
         this.initialY = initialY;
 
-        Component c = new Component("triangle", 3, 0, Color.LIMEGREEN, 100, 0);
+        Component c = new Component("triangle", 3, 0, Color.YELLOW, 50, 0);
         components.add(c);
         equipComponents(components);
         setHitbox(50);

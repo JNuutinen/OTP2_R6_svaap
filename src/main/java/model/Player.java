@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 import static view.GameMain.*;
@@ -21,8 +22,8 @@ public class Player extends Unit {
     private final double maxVelocity = 300.0; // maksiminopeus
     private final double decelerateForce = 1000; // kitkavoima joka  hidastaa alusta jos nappia ei paineta
 
-    public Player(Controller controller) {
-        super(controller);
+    public Player(Controller controller, Color shipColor) {
+        super(controller, shipColor);
         setTag(PLAYER_SHIP_TAG);
         this.controller = controller;
         setHp(500);

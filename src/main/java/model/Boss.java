@@ -69,8 +69,8 @@ public class Boss extends Unit implements Updateable {
      * @param initialX X-koordinaatti johon pomo ilmestyy.
      * @param initialY Y-koordinaatti johon pomo ilmestyy.
      */
-    public Boss(Controller controller, int hp, Image image, double initialX, double initialY) {
-        super(controller);
+    public Boss(Controller controller, Color shipColor, int hp, Image image, double initialX, double initialY) {
+        super(controller, shipColor);
         this.controller = controller;
         setHp(hp);
         originalhp = hp;
@@ -149,7 +149,7 @@ public class Boss extends Unit implements Updateable {
     }
 
     public void constructBosses(Controller controller){
-        Boss boss1 = new Boss(controller, 100, new Image("/images/bossPlaceholder.png"), WINDOW_WIDTH - 100, 100);
+        Boss boss1 = new Boss(controller, Color.WHITE, 100, new Image("/images/bossPlaceholder.png"), WINDOW_WIDTH - 100, 100);
         Component blaster1 = new BlasterShotgun(controller, boss1, "circle", 5, 2,
                 Color.CORAL, 400, -98, 80, -98);
         Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2,
