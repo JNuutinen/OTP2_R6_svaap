@@ -6,7 +6,6 @@ import model.Component;
 import model.Player;
 import model.Unit;
 import model.projectiles.LaserBeam;
-import model.projectiles.SmallProjectile;
 
 import static view.GameMain.ENEMY_TRACE_TAG;
 import static view.GameMain.PLAYER_TRACE_TAG;
@@ -21,7 +20,7 @@ public class LaserGun extends Component implements Weapon {
     /**
      * Blasterin ammuksien vahinko.
      */
-    private static final int DAMAGE = 5;
+    private static final int DAMAGE = 15;
 
     /**
      * Blasterin tulinopeus.

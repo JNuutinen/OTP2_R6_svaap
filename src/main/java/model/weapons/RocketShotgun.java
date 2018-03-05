@@ -7,7 +7,8 @@ import model.Player;
 import model.Unit;
 import model.projectiles.LazyMissile;
 
-import static view.GameMain.*;
+import static view.GameMain.ENEMY_PROJECTILE_TAG;
+import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Raketinheitin. Paitsi ampuu ohjuksia.
@@ -27,7 +28,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon tulinopeus.
      */
-    private static final double FIRE_RATE = 2.5;
+    private static final double FIRE_RATE = 0.5;
 
     /**
      * Ammusten käääntymisnopeus.

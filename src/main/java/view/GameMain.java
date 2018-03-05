@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import model.*;
 import model.weapons.Blaster;
 import model.weapons.LaserGun;
-import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -31,11 +30,11 @@ public class GameMain extends Application implements View {
     public static final int UNDEFINED_TAG = 0;
     public static final int PLAYER_SHIP_TAG = 1;
     public static final int ENEMY_SHIP_TAG = 2;
-    public static final int BOSS_SHIP_TAG = 5;
-    public static final int PLAYER_PROJECTILE_TAG = 3;
-    public static final int ENEMY_PROJECTILE_TAG = 4;
-    public static final int PLAYER_TRACE_TAG = 5;
-    public static final int ENEMY_TRACE_TAG = 6;
+    public static final int BOSS_SHIP_TAG = 3;
+    public static final int PLAYER_PROJECTILE_TAG = 4;
+    public static final int ENEMY_PROJECTILE_TAG = 5;
+    public static final int PLAYER_TRACE_TAG = 6;
+    public static final int ENEMY_TRACE_TAG = 7;
 
 
     /**
