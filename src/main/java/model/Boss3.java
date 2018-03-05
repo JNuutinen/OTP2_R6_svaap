@@ -10,7 +10,7 @@ import static view.GameMain.*;
 /**
  * Tason loppupomo
  */
-public class BossSprinkler extends Unit implements Updateable {
+public class Boss3 extends Unit implements Updateable {
 
     /**
      * Pelin kontrolleri
@@ -40,7 +40,7 @@ public class BossSprinkler extends Unit implements Updateable {
 
     private boolean lasersTopToDown = true;
 
-    public BossSprinkler(Controller controller, double initialX, double initialY){
+    public Boss3(Controller controller, double initialX, double initialY){
 
         super(controller, Color.ORANGERED);
         this.controller = controller;
@@ -53,6 +53,7 @@ public class BossSprinkler extends Unit implements Updateable {
         setIsMoving(true);
         lockDirection(270);
         armShip();
+        setHp(1000);
 
 
         Component c = new Component("triangle", 3, 0, Color.PURPLE, 30, 40);
@@ -176,10 +177,10 @@ public class BossSprinkler extends Unit implements Updateable {
         this.addToPrimaryWeapons(laserGun);
 
         Weapon blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.CORAL,
-                20, -20, -110, 5);
+                26, -20, -110, 5);
         this.addToPrimaryWeapons(blasterSprinkler);
         blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.CORAL,
-                20, -20, 110, 5);
+                26, -20, 110, 5);
         this.addToPrimaryWeapons(blasterSprinkler);
     }
 }

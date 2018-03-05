@@ -114,7 +114,8 @@ public class Level3 extends Thread {
                 if(numberOfEnemies > 0) {
                     long sleepTime = ThreadLocalRandom.current().nextLong((long)(BASE_SPAWN_FREQ_LOW * spawnFrequencyModifier),
                             (long)(BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
-                    //Thread.sleep(sleepTime);
+                    //read.sleep(sleepTime);
+                    Thread.sleep(200);
 
 
 
@@ -134,7 +135,7 @@ public class Level3 extends Thread {
                     // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                     if (numberOfEnemies == 1) {
                         Thread.sleep(2000);
-                        lastEnemy = new BossSprinkler(controller, 1000, 10);
+                        lastEnemy = new Boss3(controller, 1000, 10);
                         controller.addUpdateable(lastEnemy);
                     }
                     numberOfEnemies--;

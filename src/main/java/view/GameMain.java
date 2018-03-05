@@ -227,9 +227,9 @@ public class GameMain extends Application implements View {
 
         //SIVUASE
         //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
-        //Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
-        Component secondary = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE,
-                80, 0, 0.5);
+        Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
+        /*Component secondary = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE,
+                80, 0, 0.5);*/
         /*Component secondary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.FUCHSIA,
                 45, 100, -20);*/
         player.setSecondaryWeapon((Weapon) secondary);

@@ -29,7 +29,7 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     /**
      * Blasterin tulinopeus.
      */
-    private double firerate = 0.1;
+    private double firerate = 0.13;
 
     /**
      * Blasterin väri.
@@ -106,7 +106,7 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
             shootingTimeCounter += deltaTime;
             if(firerateCounter >= firerate){
                 controller.addUpdateable(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE, this,
-                        getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, Math.random()*160-80, tag));
+                        getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, Math.random()*140-70, tag));
                 firerateCounter = 0;
                 if(shootingTimeCounter > shootingTime){
                     isShooting = false;
