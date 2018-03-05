@@ -35,7 +35,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component, double frontOffset, double leftOffset,
                            int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component, frontOffset, leftOffset, tag);
+        super(controller, shooter, speed, frontOffset, leftOffset, tag);
 
         this.controller = controller;
         this.damage = damage;

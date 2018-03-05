@@ -161,12 +161,12 @@ public class GameLoop {
                                             }
                                             else if (getDistanceFromTarget(new Point2D(1, updateable.getPosition().getY()),
                                                         new Point2D(1, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
-                                                    updateable.collides(updateable2);
+                                                updateable.collides(updateable2);
                                             }
                                         }
                                     }
                                 }
-                                // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa.
+                                // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
                                 updateable.setTag(UNDEFINED_TAG);
                             }
                         }

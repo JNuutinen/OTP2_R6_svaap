@@ -55,7 +55,7 @@ public class TrackerEnemy extends Unit implements Updateable {
         Component c = new Component("triangle", 3, 0, Color.YELLOW, 50, 0);
         components.add(c);
         equipComponents(components);
-        setHitbox(100);
+        setHitbox(60);
 
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         triangle.getPoints().addAll(-30.0, -30.0,

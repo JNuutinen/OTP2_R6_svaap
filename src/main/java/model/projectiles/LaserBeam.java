@@ -24,20 +24,16 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     private int tag;
     private boolean hitTarget = false;
 
-    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag) {
+    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, double frontOffset, double leftOffset) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, tag);
+        super(controller, shooter, speed, frontOffset, leftOffset, tag);
 
         this.controller = controller;
         this.damage = damage;
 
 
-        // TODO: hitboxin koko kovakoodattu
-        setHitbox(10);
-
         shape = buildLaser(color);
-        this.getChildren().add(shape);
-
+        getChildren().add(shape);
     }
 
     @Override

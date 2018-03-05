@@ -47,7 +47,7 @@ public class Enemy extends Unit implements Updateable {
         Component c4 = new Component("triangle", 3, 0, Color.PURPLE, 20, -10);
         components.add(c4);
         equipComponents(components);
-        this.setHitbox(50);
+        this.setHitbox(60);
 
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         triangle.getPoints().addAll(-60.0, -30.0,

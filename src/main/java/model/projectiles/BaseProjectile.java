@@ -62,11 +62,10 @@ class BaseProjectile extends Sprite {
      * @param controller
      * @param shooter
      * @param speed
-     * @param component
      * @param frontOffset ammuksen aloituspaikan poikkeus aluksen etusuuntaan
      * @param leftOffset ammuksne aloituspaikan poikkeus aluksen vasempaan suuntaan
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, Component component, double frontOffset, double leftOffset, int tag) {
+    BaseProjectile(Controller controller, Unit shooter, double speed, double frontOffset, double leftOffset, int tag) {
         this(controller, shooter, speed, tag);
         double xOffset = degreesToVector(shooter.getDirection()).getX() * frontOffset;
         double yOffset = degreesToVector(shooter.getDirection()).getY() * frontOffset;
