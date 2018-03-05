@@ -34,9 +34,9 @@ public class LazyMissile extends Missile {
      * @param direction Projectilen väri.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double initialRotatingSpeed, double latterRotatingSpeed, Component component) {
+                       double initialRotatingSpeed, double latterRotatingSpeed, int tag) {
         // Kutsutaaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, initialRotatingSpeed, component);
+        super(controller, shooter, speed, damage, initialRotatingSpeed, tag);
         this.latterRotatingSpeed = latterRotatingSpeed;
         this.initialRotatingSpeed = initialRotatingSpeed;
 
@@ -55,9 +55,9 @@ public class LazyMissile extends Missile {
      * @param color Projectilen väri.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double rotatingSpeed, double latterRotatingSpeed, Color color, Component component) {
+                       double rotatingSpeed, double latterRotatingSpeed, Color color, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, direction, component);
+        super(controller, shooter, speed, damage, direction, tag);
         this.latterRotatingSpeed = latterRotatingSpeed;
 
 

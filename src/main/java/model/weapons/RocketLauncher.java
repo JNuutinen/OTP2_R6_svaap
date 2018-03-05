@@ -3,8 +3,12 @@ package model.weapons;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import model.Component;
+import model.Player;
 import model.Unit;
 import model.projectiles.Missile;
+
+import static view.GameMain.ENEMY_PROJECTILE_TAG;
+import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Raketinheitin. Paitsi ampuu ohjuksia.
@@ -43,6 +47,8 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private Unit shooter;
 
+    private int tag;
+
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
      * @param controller Pelin kontrolleri.
@@ -59,6 +65,12 @@ public class RocketLauncher extends Component implements Weapon {
         this.controller = controller;
         this.shooter = shooter;
         this.rotatingSpeed = rotatingSpeed;
+        if (shooter instanceof Player){
+            this.tag = PLAYER_PROJECTILE_TAG;
+        }
+        else{
+            this.tag = ENEMY_PROJECTILE_TAG;
+        }
     }
 
     @Override
@@ -68,6 +80,6 @@ public class RocketLauncher extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, this));
+        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag));
     }
 }

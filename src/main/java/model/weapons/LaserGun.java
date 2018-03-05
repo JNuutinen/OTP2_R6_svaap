@@ -3,9 +3,13 @@ package model.weapons;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import model.Component;
+import model.Player;
 import model.Unit;
 import model.projectiles.LaserBeam;
 import model.projectiles.SmallProjectile;
+
+import static view.GameMain.ENEMY_TRACE_TAG;
+import static view.GameMain.PLAYER_TRACE_TAG;
 
 public class LaserGun extends Component implements Weapon {
 
@@ -41,6 +45,8 @@ public class LaserGun extends Component implements Weapon {
 
     private Color laserColor;
 
+    private int tag;
+
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
      * @param controller Pelin kontrolleri.
@@ -57,6 +63,12 @@ public class LaserGun extends Component implements Weapon {
         this.controller = controller;
         this.shooter = shooter;
         this.laserColor = laserColor;
+        if (shooter instanceof Player){
+            this.tag = PLAYER_TRACE_TAG;
+        }
+        else{
+            this.tag = ENEMY_TRACE_TAG;
+        }
     }
 
     @Override
@@ -66,7 +78,7 @@ public class LaserGun extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, laserColor, this));
+        controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, laserColor, tag));
     }
 }
 

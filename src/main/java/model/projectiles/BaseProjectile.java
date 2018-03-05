@@ -38,11 +38,9 @@ class BaseProjectile extends Sprite {
      * @param shooter Unit, joka ampui ammuksen.
      * @param speed Ammuksen nopeus.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, Component component) {
+    BaseProjectile(Controller controller, Unit shooter, double speed, int tag) {
         this.controller = controller;
-        // Ammuksen tagi ampujan mukaan
-        if (shooter instanceof Player) setTag(PLAYER_PROJECTILE_TAG);
-        else setTag(ENEMY_PROJECTILE_TAG);
+        setTag(tag);
         // Suunta ja aloituspiste otetaan ampujasta johon laskettu mukaan aloituspisteen poikkeama.
         this.shooter = shooter;
         Point2D startingLocation = new Point2D(shooter.getPosition().getX(), shooter.getPosition().getY());
@@ -68,8 +66,8 @@ class BaseProjectile extends Sprite {
      * @param frontOffset ammuksen aloituspaikan poikkeus aluksen etusuuntaan
      * @param leftOffset ammuksne aloituspaikan poikkeus aluksen vasempaan suuntaan
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, Component component, double frontOffset, double leftOffset) {
-        this(controller, shooter, speed, component);
+    BaseProjectile(Controller controller, Unit shooter, double speed, Component component, double frontOffset, double leftOffset, int tag) {
+        this(controller, shooter, speed, tag);
         double xOffset = degreesToVector(shooter.getDirection()).getX() * frontOffset;
         double yOffset = degreesToVector(shooter.getDirection()).getY() * frontOffset;
         xOffset = xOffset + degreesToVector(shooter.getDirection() + 90).getX() * leftOffset;

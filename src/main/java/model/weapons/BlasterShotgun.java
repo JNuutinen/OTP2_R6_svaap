@@ -3,8 +3,12 @@ package model.weapons;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import model.Component;
+import model.Player;
 import model.Unit;
 import model.projectiles.SmallProjectile;
+
+import static view.GameMain.ENEMY_PROJECTILE_TAG;
+import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 public class BlasterShotgun extends Component implements Weapon {
 
@@ -40,6 +44,8 @@ public class BlasterShotgun extends Component implements Weapon {
 
     private Color projectileColor;
 
+    private int tag;
+
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
      * @param controller Pelin kontrolleri.
@@ -58,6 +64,12 @@ public class BlasterShotgun extends Component implements Weapon {
         this.controller = controller;
         this.shooter = shooter;
         this.projectileColor = projectileColor;
+        if (shooter instanceof Player){
+            tag = PLAYER_PROJECTILE_TAG;
+        }
+        else{
+            tag = ENEMY_PROJECTILE_TAG;
+        }
     }
 
     @Override
@@ -69,7 +81,7 @@ public class BlasterShotgun extends Component implements Weapon {
     public void shoot() {
         for(int i = -1; i < 2; i++) {
             controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, this,
-                    getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, i * 5));
+                    getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, i * 5, tag));
         }
     }
 }

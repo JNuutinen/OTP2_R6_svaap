@@ -8,11 +8,11 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.transform.Rotate;
 import model.Component;
+import model.Player;
 import model.Unit;
 import model.Updateable;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.*;
 
 public class LaserBeam extends BaseProjectile implements Updateable {
 
@@ -21,13 +21,16 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     private int damage;
     private Polyline shape;
     private Color color = Color.WHITE;
+    private int tag;
+    private boolean hitTarget = false;
 
-    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, Component component) {
+    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
+        super(controller, shooter, speed, tag);
 
         this.controller = controller;
         this.damage = damage;
+
 
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
@@ -44,20 +47,20 @@ public class LaserBeam extends BaseProjectile implements Updateable {
 
     @Override
     public void collides(Updateable collidingUpdateable) {
-        destroyThis();
-        for (Unit unit : controller.getCollisionList()) {
-            if (unit == collidingUpdateable) {
-                unit.takeDamage(damage);
+        if(!hitTarget) {
+            for (Unit unit : controller.getCollisionList()) {
+                if (unit == collidingUpdateable) {
+                    unit.takeDamage(damage);
+                }
             }
         }
     }
 
-    double i = 1;
 
     @Override
     public void update(double deltaTime) {
 
-        double deltaTimeMultiplied = deltaTime * 3;
+        double deltaTimeMultiplied = deltaTime * 2;
 
         if(color.getRed() > deltaTimeMultiplied) {
             color = new Color(color.getRed() - deltaTimeMultiplied,
@@ -68,7 +71,7 @@ public class LaserBeam extends BaseProjectile implements Updateable {
             i -= deltaTimeMultiplied;
         }*/
         else{
-            controller.removeUpdateable(this);
+            destroyThis();
         }
 
     }

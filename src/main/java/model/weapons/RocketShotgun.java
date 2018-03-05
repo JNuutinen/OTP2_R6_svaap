@@ -3,8 +3,11 @@ package model.weapons;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import model.Component;
+import model.Player;
 import model.Unit;
 import model.projectiles.LazyMissile;
+
+import static view.GameMain.*;
 
 /**
  * Raketinheitin. Paitsi ampuu ohjuksia.
@@ -55,6 +58,8 @@ public class RocketShotgun extends Component implements Weapon {
      */
     private Unit shooter;
 
+    private int tag;
+
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
      * @param controller Pelin kontrolleri.
@@ -72,6 +77,12 @@ public class RocketShotgun extends Component implements Weapon {
         this.shooter = shooter;
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;
         this.latterMissileRotatingSpeed = latterMissileRotatingSpeed;
+        if (shooter instanceof Player){
+            this.tag = PLAYER_PROJECTILE_TAG;
+        }
+        else{
+            this.tag = ENEMY_PROJECTILE_TAG;
+        }
     }
 
     @Override
@@ -83,7 +94,7 @@ public class RocketShotgun extends Component implements Weapon {
     public void shoot() {
         for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
             controller.addUpdateable(new LazyMissile(controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
-                    initialMissileRotatingSpeed, latterMissileRotatingSpeed, this));
+                    initialMissileRotatingSpeed, latterMissileRotatingSpeed, tag));
         }
     }
 }

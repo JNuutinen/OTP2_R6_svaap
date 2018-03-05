@@ -51,6 +51,7 @@ public class Missile extends BaseProjectile implements Updateable {
      */
     private Updateable target;
     private Trail trail;
+    private int tag;
 
 
     /**
@@ -60,9 +61,9 @@ public class Missile extends BaseProjectile implements Updateable {
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, Component component) {
+    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component);
+        super(controller, shooter, speed, tag);
         this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
         this.damage = damage;

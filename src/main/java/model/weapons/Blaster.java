@@ -3,8 +3,12 @@ package model.weapons;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import model.Component;
+import model.Player;
 import model.Unit;
 import model.projectiles.SmallProjectile;
+
+import static view.GameMain.ENEMY_PROJECTILE_TAG;
+import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Blaster pyssy.
@@ -35,6 +39,8 @@ public class Blaster extends Component implements Weapon {
 
     private double projectileSpeed;
 
+    private int tag;
+
 
 
     /**
@@ -61,9 +67,16 @@ public class Blaster extends Component implements Weapon {
                    double yOffset, Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
         super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
+        if (shooter instanceof Player){
+            this.tag = PLAYER_PROJECTILE_TAG;
+        }
+        else{
+            this.tag = ENEMY_PROJECTILE_TAG;
+        }
         this.shooter = shooter;
         this.projectileColor = projectileColor;
         this.projectileSpeed = projectileSpeed;
+
     }
 
     @Override
@@ -74,6 +87,6 @@ public class Blaster extends Component implements Weapon {
     @Override
     public void shoot() {
         controller.addUpdateable(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE, this,
-                getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor));
+                getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, tag));
     }
 }

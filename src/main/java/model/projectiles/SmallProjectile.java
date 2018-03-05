@@ -32,9 +32,10 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param speed Projectilen nopeus
      * @param damage Projectilen vahinko
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component, double frontOffset, double leftOffset) {
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component, double frontOffset, double leftOffset,
+                           int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, component, frontOffset, leftOffset);
+        super(controller, shooter, speed, component, frontOffset, leftOffset, tag);
 
         this.controller = controller;
         this.damage = damage;
@@ -52,8 +53,8 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param color Projectilen väri
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
-                           double frontOffset, double leftOffset, Color color) {
-        this(controller, shooter, speed, damage, component, frontOffset, leftOffset);
+                           double frontOffset, double leftOffset, Color color, int tag) {
+        this(controller, shooter, speed, damage, component, frontOffset, leftOffset, tag);
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
     }
@@ -66,8 +67,8 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param direction Projectilen suunta
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
-                           double frontOffset, double leftOffset, Color color, double direction) {
-        this(controller, shooter, speed, damage, component, frontOffset, leftOffset, color);
+                           double frontOffset, double leftOffset, Color color, double direction, int tag) {
+        this(controller, shooter, speed, damage, component, frontOffset, leftOffset, color, tag);
         rotate(direction);
     }
 

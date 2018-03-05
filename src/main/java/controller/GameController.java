@@ -54,7 +54,6 @@ public class GameController implements Controller {
         gameLoop.queueUpdateable(updateable);
     }
 
-
     @Override
     public int getScore() {
         if (player != null) return player.getScore();

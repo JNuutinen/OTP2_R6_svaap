@@ -34,6 +34,9 @@ public class GameMain extends Application implements View {
     public static final int BOSS_SHIP_TAG = 5;
     public static final int PLAYER_PROJECTILE_TAG = 3;
     public static final int ENEMY_PROJECTILE_TAG = 4;
+    public static final int PLAYER_TRACE_TAG = 5;
+    public static final int ENEMY_TRACE_TAG = 6;
+
 
     /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
@@ -224,9 +227,9 @@ public class GameMain extends Application implements View {
         //SIVUASE
         //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
         //Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
-        //Component secondary = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE);
-        Component secondary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.FUCHSIA,
-                45, 100, -20);
+        Component secondary = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE);
+        /*Component secondary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.FUCHSIA,
+                45, 100, -20);*/
         player.setSecondaryWeapon((Weapon) secondary);
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä

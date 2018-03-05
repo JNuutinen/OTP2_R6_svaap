@@ -1,5 +1,6 @@
 package model;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import controller.Controller;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
@@ -143,7 +144,30 @@ public class GameLoop {
                                             }
                                         }
                                     }
+
                                 }
+                            }
+                            if (updateable.getTag() == PLAYER_TRACE_TAG) {
+                                for (Updateable updateable2 : updateables) {
+                                    if (updateable != updateable2 && updateable2 != null) {
+                                        if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
+                                            // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
+                                            if(updateable.getPosition().getX() > updateable2.getPosition().getX()){
+                                                // jos vihun hitboxin säde yltää laseriin
+                                                if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                        (updateable.getHitboxRadius())) {
+                                                    updateable.collides(updateable2);
+                                                }
+                                            }
+                                            else if (getDistanceFromTarget(new Point2D(1, updateable.getPosition().getY()),
+                                                        new Point2D(1, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
+                                                    updateable.collides(updateable2);
+                                            }
+                                        }
+                                    }
+                                }
+                                // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa.
+                                updateable.setTag(UNDEFINED_TAG);
                             }
                         }
                     }
