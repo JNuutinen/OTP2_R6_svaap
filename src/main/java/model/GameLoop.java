@@ -124,14 +124,8 @@ public class GameLoop {
                                                 // kutsu objektin collides-metodia
                                                 updateable.collides(updateable2);
                                             }
-                                            /* TODO Hege poistaa
-                                            if (((Path) Shape.intersect(updateable.getHitboxShape(),
-                                                    updateable2.getHitboxShape())).getElements().size() > 0) {
-                                                updateable.collides(updateable2);
-                                            }*/
                                         }
                                     }
-
                                 }
                             }
                             if (updateable.getTag() == PLAYER_PROJECTILE_TAG) {
@@ -144,7 +138,6 @@ public class GameLoop {
                                             }
                                         }
                                     }
-
                                 }
                             }
                             if (updateable.getTag() == PLAYER_TRACE_TAG) {
@@ -159,8 +152,30 @@ public class GameLoop {
                                                     updateable.collides(updateable2);
                                                 }
                                             }
-                                            else if (getDistanceFromTarget(new Point2D(1, updateable.getPosition().getY()),
-                                                        new Point2D(1, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
+                                            else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
+                                                        new Point2D(0, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
+                                                updateable.collides(updateable2);
+                                            }
+                                        }
+                                    }
+                                }
+                                // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
+                                updateable.setTag(UNDEFINED_TAG);
+                            }
+                            if (updateable.getTag() == ENEMY_TRACE_TAG) {
+                                for (Updateable updateable2 : updateables) {
+                                    if (updateable != updateable2 && updateable2 != null) {
+                                        if (updateable2.getTag() == PLAYER_SHIP_TAG) {
+                                            // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
+                                            if(updateable.getPosition().getX() < updateable2.getPosition().getX()){
+                                                // jos vihun hitboxin säde yltää laseriin
+                                                if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                        (updateable.getHitboxRadius())) {
+                                                    updateable.collides(updateable2);
+                                                }
+                                            }
+                                            else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
+                                                    new Point2D(0, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
                                                 updateable.collides(updateable2);
                                             }
                                         }

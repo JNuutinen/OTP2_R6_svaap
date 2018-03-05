@@ -16,9 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.*;
-import model.weapons.Blaster;
-import model.weapons.LaserGun;
-import model.weapons.Weapon;
+import model.weapons.*;
 
 import java.util.ArrayList;
 
@@ -219,10 +217,14 @@ public class GameMain extends Application implements View {
 
         // Pelaajan aseet
         // PÄÄASE
-        Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.AQUA,
-                45, 100, 20);
+        Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
+                45, 100, 12);
+        player.addToPrimaryWeapons((Weapon) primary);
+        primary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
+                45, 100, -12);
+        player.addToPrimaryWeapons((Weapon) primary);
 
-        player.setPrimaryWeapon((Weapon) primary);
+
         //SIVUASE
         //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
         //Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);

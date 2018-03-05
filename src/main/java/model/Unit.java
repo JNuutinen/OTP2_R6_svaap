@@ -7,6 +7,7 @@ import javafx.scene.shape.Shape;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static view.GameMain.*;
 
@@ -41,7 +42,7 @@ public class Unit extends Sprite implements Updateable {
     /**
      * Pääase.
      */
-    private Weapon primaryWeapon;
+    private List<Weapon> primaryWeapons = new ArrayList<>();
 
     /**
      * Sivuase.
@@ -97,16 +98,16 @@ public class Unit extends Sprite implements Updateable {
      * Palauttaa Unitin pääaseen.
      * @return Unitin pääase.
      */
-    Weapon getPrimaryWeapon() {
-        return primaryWeapon;
+    List<Weapon> getPrimaryWeapons() {
+        return primaryWeapons;
     }
 
     /**
      * Asettaa Unitin pääaseen.
-     * @param primaryWeapon Weapon-rajapinnan toteuttava ase.
+     * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
-    public void setPrimaryWeapon(Weapon primaryWeapon) {
-        this.primaryWeapon = primaryWeapon;
+    public void addToPrimaryWeapons(Weapon primaryWeapon) {
+        this.primaryWeapons.add(primaryWeapon);
     }
 
     /**
@@ -168,8 +169,10 @@ public class Unit extends Sprite implements Updateable {
      * Ampuu yksikön pääaseella.
      */
     void shootPrimary() {
-        if (primaryWeapon != null) {
-            primaryWeapon.shoot();
+        if (primaryWeapons.get(0) != null) {
+            for(Weapon primaryWeapon : primaryWeapons) {
+                primaryWeapon.shoot();
+            }
         } else {
             System.out.println(getTag() + ": No primary weapon set.");
         }

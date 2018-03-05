@@ -15,7 +15,7 @@ import static view.GameMain.*;
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
  */
-public class Level extends Thread {
+public class Level3 extends Thread {
 
     /**
      * Millisekunteina spawnausajan lyhyin aika, pohjalukema johon vaikuttaa konstruktorin
@@ -76,7 +76,6 @@ public class Level extends Thread {
      * Viittaa tason viimeiseen viholliseen (Bossiin). Käytetään tason loppumisen tarkkailuun.
      */
     private Updateable lastEnemy;
-    private Boss boss = new Boss();
 
 
     /**
@@ -89,8 +88,8 @@ public class Level extends Thread {
      * @param enemyDamageModifier Kerroin, joka kasvattaa/pienentää vihollisten aseiden tekemää vahinkoa. TODO: ei käytös
      * @param levelNumber Tason numero.
      */
-    public Level(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, double spawnFrequencyModifier,
-                 double enemyHealthModifier, double enemyDamageModifier, int levelNumber) {
+    public Level3(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, double spawnFrequencyModifier,
+                  double enemyHealthModifier, double enemyDamageModifier, int levelNumber) {
         this.controller = controller;
         this.enemyTypes = enemyTypes;
         this.numberOfEnemies = numberOfEnemies;
@@ -98,21 +97,10 @@ public class Level extends Thread {
         this.enemyHealthModifier = enemyHealthModifier;
         this.enemyDamageModifier = enemyDamageModifier;
         this.levelNumber = levelNumber;
-        boss.constructBosses(controller);
     }
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(200);
-            hegenTestausMetodi();
-
-            Thread.sleep(900);
-            hegenTestausMetodi();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
 
         // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
@@ -126,7 +114,7 @@ public class Level extends Thread {
                 if(numberOfEnemies > 0) {
                     long sleepTime = ThreadLocalRandom.current().nextLong((long)(BASE_SPAWN_FREQ_LOW * spawnFrequencyModifier),
                             (long)(BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
-                    Thread.sleep(sleepTime);
+                    //Thread.sleep(sleepTime);
 
 
 
@@ -145,10 +133,9 @@ public class Level extends Thread {
                     // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                     // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                     if (numberOfEnemies == 1) {
-                        Thread.sleep(3000);
-                        boss = boss.bossList.get(0);
-                        lastEnemy = boss;
-                        controller.addUpdateable(boss);
+                        Thread.sleep(2000);
+                        lastEnemy = new BossSprinkler(controller, 1000, 10);
+                        controller.addUpdateable(lastEnemy);
                     }
                     numberOfEnemies--;
                 }

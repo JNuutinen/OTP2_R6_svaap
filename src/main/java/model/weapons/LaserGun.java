@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -102,7 +103,17 @@ public class LaserGun extends Component implements Weapon, Updateable {
     public void shoot() {
         chargingEffect = buildChargingEffect(Color.WHITE);
         shooter.getChildren().add(chargingEffect);
-        chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset());
+
+        // en oo iha varma miten tää toimii mut toimii kuitenkin TODO poista kommentti
+        if (shooter instanceof Player) {
+            chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset());
+            chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset());
+        }
+        else{
+            chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset() * -1);
+            chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset() * -1);
+        }
+
         triggeredShoot = true;
     }
 
@@ -128,7 +139,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
         chargingEffect = new Circle();
         chargingEffect.setRadius(1);
         Bloom bloom = new Bloom(0.0);
-        GaussianBlur blur = new GaussianBlur(10.0);
+        GaussianBlur blur = new GaussianBlur(6);
         blur.setInput(bloom);
         chargingEffect.setEffect(blur);
         chargingEffect.setFill(color);

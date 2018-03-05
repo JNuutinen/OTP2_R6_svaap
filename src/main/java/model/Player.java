@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import model.weapons.Weapon;
 
 import static view.GameMain.*;
 
@@ -80,10 +81,12 @@ public class Player extends Unit {
 
         // Primary fire
         if (input.contains("O")) {
-            if (getPrimaryWeapon() != null) {
-                if (fireRateCounter > getPrimaryWeapon().getFireRate()) {
+            if (getPrimaryWeapons().get(0) != null) {
+                if (fireRateCounter > getPrimaryWeapons().get(0).getFireRate()) {
                     fireRateCounter = 0;
-                    shootPrimary();
+                    for(Weapon primaryWeapon : getPrimaryWeapons()){
+                        primaryWeapon.shoot();
+                    }
                 }
             }
         }

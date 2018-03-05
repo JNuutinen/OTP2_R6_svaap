@@ -49,12 +49,6 @@ class BaseProjectile extends Sprite {
         rotate(shooter.getDirection());
         setVelocity(speed);
         setIsMoving(true);
-        //Projektile lähtee aluksen kärjestä. Viholliset ja pelaaja erikseen
-        /*if (shooter instanceof Player) { //Jos ampuja on pelaaja
-            this.setPosition(startingLocation.getX()  + component.getxOffset(), startingLocation.getY() + component.getyOffset());
-        } else { //Jos ampuja on joku muu
-            this.setPosition(startingLocation.getX() - shooter.getWidth() + component.getxOffset(), startingLocation.getY() + component.getyOffset());
-        }*/
     }
 
     /**

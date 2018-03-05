@@ -154,7 +154,7 @@ public class Boss extends Unit implements Updateable {
                 Color.CORAL, 400, -98, 80, -98);
         Component blaster2 = new BlasterShotgun(controller, boss1, "circle", 5, 2,
                 Color.CORNSILK, 400, 98, 80, 98);
-        boss1.setPrimaryWeapon((Weapon) blaster1);
+        boss1.addToPrimaryWeapons((Weapon) blaster1);
         boss1.setSecondaryWeapon((Weapon) blaster2);
         bossList.add(boss1);
     }

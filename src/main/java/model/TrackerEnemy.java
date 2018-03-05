@@ -87,7 +87,7 @@ public class TrackerEnemy extends Unit implements Updateable {
 
         //laskee oman kulman ja kohteeseen katsottavan kulman erotuksen ja pitaa asteet -180 ja 180 valilla
 
-        double angleToTarget = 180;
+        double angleToTarget;
         if(!shootingTarget) {
             // kun paasee tarpeeksi lahelle maaranpaata, vaiha maaranpaa seuraavaan
             if(getDistanceFromTarget(path[currentDestinationIndex]) < 15){
@@ -143,20 +143,5 @@ public class TrackerEnemy extends Unit implements Updateable {
                 target = updateable;
             }
         }
-    }
-
-    public void setMovementPattern(int movementPattern) {
-        this.movementPattern = movementPattern;
-        if (movementPattern == MOVE_NONE) setIsMoving(false);
-        else setIsMoving(true);
-    }
-
-    public int getMovementPattern() {
-        return movementPattern;
-    }
-
-    public void setInitPosition(double initialX, double initialY) {
-        this.initialX = initialX;
-        this.initialY = initialY;
     }
 }

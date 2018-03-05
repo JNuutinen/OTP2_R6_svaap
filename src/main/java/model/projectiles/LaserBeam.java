@@ -21,7 +21,6 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     private int damage;
     private Polyline shape;
     private Color color = Color.WHITE;
-    private int tag;
     private boolean hitTarget = false;
 
     public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, double frontOffset, double leftOffset) {

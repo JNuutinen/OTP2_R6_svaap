@@ -37,7 +37,7 @@ public class Enemy extends Unit implements Updateable {
         this.initialX = initialX;
         this.initialY = initialY;
 
-        // TODO nää on vissii kovakoodattu?
+        // TODO
         Component c = new Component("triangle", 3, 0, Color.PURPLE, 30, 40);
         components.add(c);
         Component c2 = new Component("triangle", 3, 0, Color.PURPLE, 0, -20);
