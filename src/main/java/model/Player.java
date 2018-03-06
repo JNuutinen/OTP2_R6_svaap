@@ -37,7 +37,7 @@ public class Player extends Unit {
 
         drawShip(triangle);
 
-        setHitbox(30);
+        setHitbox(45);
     }
 
 

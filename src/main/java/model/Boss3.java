@@ -46,7 +46,7 @@ public class Boss3 extends Unit implements Updateable {
         this.controller = controller;
         this.setPosition(initialX, initialY);
         this.setTag(BOSS_SHIP_TAG);
-        this.setVelocity(60);
+        this.setVelocity(40);
         this.controller = controller;
         controller.addUnitToCollisionList(this);
         rotate(180);
@@ -176,10 +176,10 @@ public class Boss3 extends Unit implements Updateable {
                 -140, 240, 0.5);
         this.addToPrimaryWeapons(laserGun);
 
-        Weapon blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.CORAL,
+        Weapon blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.ORANGE,
                 26, -20, -110, 5);
         this.addToPrimaryWeapons(blasterSprinkler);
-        blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.CORAL,
+        blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.ORANGE,
                 26, -20, 110, 5);
         this.addToPrimaryWeapons(blasterSprinkler);
     }
