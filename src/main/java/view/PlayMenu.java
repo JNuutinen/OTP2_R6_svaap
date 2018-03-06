@@ -2,7 +2,6 @@ package view;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.image.Image;
@@ -11,12 +10,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import static view.GameMain.BANNER_HEIGHT;
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.*;
 
 class PlayMenu {
     Button startButton;
+    Button backButton;
 
     private Spinner<Integer> levelSpinner;
     private Group playMenuGroup;
@@ -28,6 +26,8 @@ class PlayMenu {
         borderPane.setStyle("-fx-background-color: black");
 
         startButton = new Button();
+        backButton = new Button("Main menu");
+        backButton.setPrefWidth(Double.MAX_VALUE);
         startButton.setGraphic(new ImageView(new Image("/images/Start.png")));
         startButton.setStyle("-fx-background-color: transparent");
         Text levelSelectText = new Text("Select level:");
@@ -39,7 +39,7 @@ class PlayMenu {
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(100);
-        vBox.getChildren().addAll(startButton, levelSelectText, levelSpinner);
+        vBox.getChildren().addAll(startButton, levelSelectText, levelSpinner, backButton);
 
         borderPane.setCenter(vBox);
 

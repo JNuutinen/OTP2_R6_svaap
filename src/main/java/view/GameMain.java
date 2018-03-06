@@ -7,24 +7,25 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
-import model.weapons.*;
+import model.weapons.Blaster;
+import model.weapons.RocketShotgun;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
 
@@ -176,19 +177,9 @@ public class GameMain extends Application implements View {
         StackPane bannerSpace = new StackPane(svaapBanner);
         bannerSpace.setPadding(new Insets(100,0,100,0));
 
-        mainMenu.play.setOnAction(event -> {
-            menuSpace.getChildren().add(playMenuGroup);
-            double width = menuSpace.getWidth();
-            KeyFrame start = new KeyFrame(Duration.ZERO,
-                    new KeyValue(playMenuGroup.translateXProperty(), width),
-                    new KeyValue(mainMenuGroup.translateXProperty(), 0));
-            KeyFrame end = new KeyFrame(Duration.seconds(0.5),
-                    new KeyValue(playMenuGroup.translateXProperty(), 0),
-                    new KeyValue(mainMenuGroup.translateXProperty(), -width));
-            Timeline slide = new Timeline(start, end);
-            slide.setOnFinished(e -> menuSpace.getChildren().remove(mainMenuGroup));
-            slide.play();
-        });
+        mainMenu.play.setOnAction(event -> slideIn(mainMenuGroup, playMenuGroup, menuSpace));
+
+        playMenu.backButton.setOnAction(event -> slideOut(playMenuGroup, mainMenuGroup, menuSpace));
 
         pane = new Pane();
         pane.setStyle("-fx-background-color: black");
@@ -215,12 +206,11 @@ public class GameMain extends Application implements View {
 
     private void startGame(Stage primaryStage) {
         gameRoot = new Pane();
+        pane.getChildren().add(gameRoot);
         FadeTransition ft = new FadeTransition(Duration.millis(2000), gameRoot);
         ft.setFromValue(0.0);
         ft.setToValue(1.0);
         ft.play();
-
-        pane.getChildren().add(gameRoot);
 
         score = new Label("Score: " + controller.getScore());
         score.setFont(new Font("Cambria", 32));
@@ -314,6 +304,46 @@ public class GameMain extends Application implements View {
         controller.startLoop();
         System.out.println(playMenu.getSelectedLevel());
         controller.startLevel(playMenu.getSelectedLevel());
+    }
+
+    /**
+     * Liukumasiirtymä, näkymää vieritetään vasemmalle.
+     * @param from Group, joka vieritetään pois näytöstä. Täytyy olla jo lisättynä Paneen.
+     * @param to Group, joka vieritetään näyttöön. Lisätään paneen metodissa.
+     * @param pane Pane, jota käsitellään.
+     */
+    private void slideIn(Group from, Group to, Pane pane) {
+        pane.getChildren().add(to);
+        double width = pane.getWidth();
+        KeyFrame start = new KeyFrame(Duration.ZERO,
+                new KeyValue(to.translateXProperty(), width),
+                new KeyValue(from.translateXProperty(), 0));
+        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                new KeyValue(to.translateXProperty(), 0),
+                new KeyValue(from.translateXProperty(), -width));
+        Timeline slide = new Timeline(start, end);
+        slide.setOnFinished(e -> pane.getChildren().remove(from));
+        slide.play();
+    }
+
+    /**
+     * Liukumasiirtymä, näkymää vieritetään oikealle.
+     * @param from Group, joka vieritetään pois näytöstä. Täytyy olla jo lisättynä Paneen.
+     * @param to Group, joka vieritetään näyttöön. Lisätään paneen metodissa.
+     * @param pane Pane, jota käsitellään.
+     */
+    private void slideOut(Group from, Group to, Pane pane) {
+        pane.getChildren().add(to);
+        double width = pane.getWidth();
+        KeyFrame start = new KeyFrame(Duration.ZERO,
+                new KeyValue(to.translateXProperty(), -width),
+                new KeyValue(from.translateXProperty(), 0));
+        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                new KeyValue(to.translateXProperty(), 0),
+                new KeyValue(from.translateXProperty(), width));
+        Timeline slide = new Timeline(start, end);
+        slide.setOnFinished(e -> pane.getChildren().remove(from));
+        slide.play();
     }
 
 
