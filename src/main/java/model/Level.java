@@ -145,7 +145,7 @@ public class Level extends Thread {
                     // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                     // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                     if (numberOfEnemies == 1) {
-                        Thread.sleep(3000);
+                        Thread.sleep(5000);
                         boss = boss.bossList.get(0);
                         lastEnemy = boss;
                         controller.addUpdateable(boss);

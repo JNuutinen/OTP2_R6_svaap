@@ -2,19 +2,27 @@ package view;
 
 import controller.Controller;
 import controller.GameController;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.*;
 import model.weapons.*;
 
@@ -23,8 +31,7 @@ import java.util.ArrayList;
 public class GameMain extends Application implements View {
     public static final int WINDOW_WIDTH = 1280;
     public static final int WINDOW_HEIGHT = 720;
-    public static final int MAIN_MENU_WIDTH = 400;
-    public static final int MAIN_MENU_HEIGHT = 400;
+    public static final int BANNER_HEIGHT = 200;
     public static final int UNDEFINED_TAG = 0;
     public static final int PLAYER_SHIP_TAG = 1;
     public static final int ENEMY_SHIP_TAG = 2;
@@ -41,9 +48,11 @@ public class GameMain extends Application implements View {
     private static final int NUMBER_OF_LEVELS = 6;
     public static ArrayList<String> input;
 
-    private MainMenu mainMenu;
+    private PlayMenu playMenu;
     private ArrayList<Unit> units;
     private Pane pane;
+    private Scene scene;
+    private Pane gameRoot;
     private Controller controller;
     private Label score;
     private Stage primaryStage;
@@ -54,12 +63,6 @@ public class GameMain extends Application implements View {
     private double debugger_secondCounter = 0;
     private ImageView healthIv = new ImageView();
 
-
-    @Override
-    public void init() {
-        //controller = new GameController(this);
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -69,34 +72,17 @@ public class GameMain extends Application implements View {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
         primaryStage.setResizable(false);
-        mainMenu(this.primaryStage);
+        setupGame(this.primaryStage);
     }
 
     public void returnToMain(){
-        mainMenu(primaryStage);
-    }
-
-
-    public void mainMenu(Stage primaryStage) {
-        controller = new GameController(this);
-        units = new ArrayList<>();
-        // sulje ohjelma kun ikkunan sulkee
-        primaryStage.setOnCloseRequest(event -> System.exit(0));
-
-        // Päävalikon luonti
-        mainMenu = new MainMenu(NUMBER_OF_LEVELS);
-        Scene mainMenuScene = mainMenu.scene();
-        primaryStage.setScene(mainMenuScene);
-
-        // Start game painiketta painaessa mainMenuScene vaihdetaan pelin sceneen ja peli käynnistyy
-        mainMenu.start.setOnAction((event) -> startGame(primaryStage));
-
-        primaryStage.show();
+        pane.getChildren().remove(gameRoot);
+        setupGame(primaryStage);
     }
 
     @Override
     public void addSprite(Sprite sprite) {
-        pane.getChildren().add(sprite);
+        gameRoot.getChildren().add(sprite);
     }
 
     @Override
@@ -115,7 +101,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void removeSprite(Sprite sprite){
-        pane.getChildren().remove(sprite);
+        gameRoot.getChildren().remove(sprite);
     }
 
     @Override
@@ -174,40 +160,86 @@ public class GameMain extends Application implements View {
         }
     }
 
-    private void startGame(Stage primaryStage) {
+    private void setupGame(Stage primaryStage) {
+        controller = new GameController(this);
+        units = new ArrayList<>();
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
+        MainMenu mainMenu = new MainMenu();
+        Group mainMenuGroup = mainMenu.getGroup();
+        playMenu = new PlayMenu(NUMBER_OF_LEVELS);
+        Group playMenuGroup = playMenu.getGroup();
+        StackPane menuSpace = new StackPane(mainMenuGroup);
 
+        ImageView svaapBanner = new ImageView(new Image("images/svaap.png"));
+        svaapBanner.resize(200, 50);
+        svaapBanner.setStyle("-fx-background-color: transparent");
+        StackPane bannerSpace = new StackPane(svaapBanner);
+        bannerSpace.setPadding(new Insets(100,0,100,0));
 
+        mainMenu.play.setOnAction(event -> {
+            menuSpace.getChildren().add(playMenuGroup);
+            double width = menuSpace.getWidth();
+            KeyFrame start = new KeyFrame(Duration.ZERO,
+                    new KeyValue(playMenuGroup.translateXProperty(), width),
+                    new KeyValue(mainMenuGroup.translateXProperty(), 0));
+            KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                    new KeyValue(playMenuGroup.translateXProperty(), 0),
+                    new KeyValue(mainMenuGroup.translateXProperty(), -width));
+            Timeline slide = new Timeline(start, end);
+            slide.setOnFinished(e -> menuSpace.getChildren().remove(mainMenuGroup));
+            slide.play();
+        });
 
-
-
-        // Peligrafiikoiden luonti
         pane = new Pane();
-        VBox.setVgrow(pane, Priority.NEVER);
-        VBox vbox;
-        vbox = new VBox(pane);
-        Scene scene = new Scene(vbox, WINDOW_WIDTH, WINDOW_HEIGHT);
-        vbox.setStyle("-fx-background-color: black");
+        pane.setStyle("-fx-background-color: black");
+        BorderPane uiRoot = new BorderPane();
+        uiRoot.setStyle("-fx-background-color: black");
+        uiRoot.setTop(bannerSpace);
+        uiRoot.setCenter(menuSpace);
+
+        pane.getChildren().add(uiRoot);
+        scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
+        primaryStage.setScene(scene);
+        playMenu.startButton.setOnAction(event -> {
+            FadeTransition ft = new FadeTransition(Duration.millis(1000), uiRoot);
+            ft.setFromValue(1.0);
+            ft.setToValue(0.0);
+            ft.play();
+            ft.setOnFinished(event1 -> {
+                pane.getChildren().remove(uiRoot);
+                startGame(primaryStage);
+            });
+        });
+        primaryStage.show();
+    }
+
+    private void startGame(Stage primaryStage) {
+        gameRoot = new Pane();
+        FadeTransition ft = new FadeTransition(Duration.millis(2000), gameRoot);
+        ft.setFromValue(0.0);
+        ft.setToValue(1.0);
+        ft.play();
+
+        pane.getChildren().add(gameRoot);
 
         score = new Label("Score: " + controller.getScore());
         score.setFont(new Font("Cambria", 32));
-        pane.getChildren().add(score);
-        pane.getChildren().add(healthIv);
-
+        gameRoot.getChildren().add(score);
+        gameRoot.getChildren().add(healthIv);
 
         GameBackground gmg = new GameBackground(controller);
-
 
         //---------------- debugger
         if(debuggerToolsEnabled) {
             debugger_fps = new Label("fps");
             debugger_fps.setFont(new Font("Cambria", 16));
             debugger_fps.setLayoutX(250);
-            pane.getChildren().add(debugger_fps);
+            gameRoot.getChildren().add(debugger_fps);
 
             debugger_currentFps = new Label("currentFps");
             debugger_currentFps.setFont(new Font("Cambria", 16));
             debugger_currentFps.setLayoutX(540);
-            pane.getChildren().add(debugger_currentFps);
+            gameRoot.getChildren().add(debugger_currentFps);
         }
 
 
@@ -280,8 +312,8 @@ public class GameMain extends Application implements View {
         primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
         primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
         controller.startLoop();
-        controller.startLevel(mainMenu.getSelectedLevel());
-
+        System.out.println(playMenu.getSelectedLevel());
+        controller.startLevel(playMenu.getSelectedLevel());
     }
 
 
