@@ -39,7 +39,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
 
         this.controller = controller;
         this.damage = damage;
-        setHitbox(10);// TODO: hitboxin koko kovakoodattu
+        setHitbox(16);// TODO: hitboxin koko kovakoodattu
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
     }
@@ -111,17 +111,17 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         // Ammuksen muoto
         Polygon shape = new Polygon();
         shape.getPoints().addAll(-6.0, 0.0,
-                0.0, -3.0,
-                speed*0.6+1.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
-                0.0, 3.0);
+                0.0, -6.0,
+                speed*0.4+6.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
+                0.0, 6.0);
 
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);
         blur.setInput(bloom);
-        shape.setEffect(blur);
-        shape.setFill(Color.TRANSPARENT);
+        //shape.setEffect(blur);
+        shape.setFill(Color.WHITE);
         shape.setStroke(color);
-        shape.setStrokeWidth(5.0);
+        shape.setStrokeWidth(3.0);
         shape.getTransforms().add(new Rotate(180, 0, 0));
         return shape;
     }
