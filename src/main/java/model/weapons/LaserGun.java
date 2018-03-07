@@ -5,7 +5,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Shape;
 import model.Component;
@@ -62,6 +66,9 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
     private Circle chargingEffect;
 
+    private Line pointerEffect;
+    private double visibilityAmount = 0;
+
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
      * @param controller Pelin kontrolleri.
@@ -103,16 +110,26 @@ public class LaserGun extends Component implements Weapon, Updateable {
     public void shoot() {
         chargingEffect = buildChargingEffect(Color.WHITE);
         shooter.getChildren().add(chargingEffect);
+        pointerEffect = buildPointerEffect(Color.WHITE);
+        shooter.getChildren().add(pointerEffect);
 
         // en oo iha varma miten tää toimii mut toimii kuitenkin TODO poista kommentti
         if (shooter instanceof Player) {
             chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset());
             chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset());
+
+            pointerEffect.setStartX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset());
+            pointerEffect.setStartY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset());
         }
         else{
             chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset() * -1);
             chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset() * -1);
+
+            pointerEffect.setStartX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset() * -1);
+            pointerEffect.setStartY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset() * -1);
         }
+        pointerEffect.setEndX(pointerEffect.getStartX() + (WINDOW_WIDTH * 0.4));
+        pointerEffect.setEndY(pointerEffect.getStartY());
 
         triggeredShoot = true;
     }
@@ -123,6 +140,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
             timeCounter += deltaTime;
             chargingEffect.setRadius(chargingEffect.getRadius() + deltaTime * 17 / shootingDelay);
             chargingEffect.setStrokeWidth(chargingEffect.getStrokeWidth() + deltaTime * 4 / shootingDelay);
+            //pointerEffect.setStroke();
 
             if(timeCounter > shootingDelay){
                 controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, laserColor, tag,
@@ -146,6 +164,14 @@ public class LaserGun extends Component implements Weapon, Updateable {
         chargingEffect.setStroke(Color.GREEN);
         chargingEffect.setStrokeWidth(1);
         return chargingEffect;
+    }
+
+    private Line buildPointerEffect(Color color){
+        Stop[] stops1 = new Stop[] { new Stop(0, Color.color(0, 1, 0, 1)), new Stop(1, Color.TRANSPARENT)};
+        LinearGradient lg = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops1);
+        Line line = new Line(0, 0, WINDOW_WIDTH * 0.6 * -1, 0);
+        line.setStroke(lg);
+        return line;
     }
 
     @Override

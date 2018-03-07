@@ -42,7 +42,7 @@ public class Boss3 extends Unit implements Updateable {
 
     public Boss3(Controller controller, double initialX, double initialY){
 
-        super(controller, Color.ORANGERED);
+        super(controller, Color.ORANGE);
         this.controller = controller;
         this.setPosition(initialX, initialY);
         this.setTag(BOSS_SHIP_TAG);
