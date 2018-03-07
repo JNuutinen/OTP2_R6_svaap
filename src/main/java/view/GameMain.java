@@ -426,6 +426,6 @@ public class GameMain extends Application implements View {
         slide.setOnFinished(e -> pane.getChildren().remove(from));
         slide.play();
     }
-    
+
 }
 

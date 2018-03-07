@@ -71,6 +71,10 @@ public class CustomizeMenu {
         primary2ComboBox.setValue(primaryWeapon2Names.get(0));
         secondaryComboBox.setValue(secondaryWeaponNames.get(0));
 
+        primary1ComboBox.setPrefWidth(Double.MAX_VALUE);
+        primary2ComboBox.setPrefWidth(Double.MAX_VALUE);
+        secondaryComboBox.setPrefWidth(Double.MAX_VALUE);
+
         backButton = new Button("Back");
         backButton.setPrefWidth(Double.MAX_VALUE);
 
