@@ -78,8 +78,8 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         controller.removeUpdateable(this);
     }
 
+    /*
     @Override
-    //TODO vertailu kannattaa vaihtaa cästäykseen niin peli optimoituu !
     public void collides(Updateable collidingUpdateable){
         destroyThis();
         for (Unit unit : controller.getCollisionList()) {
@@ -87,6 +87,14 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
                 unit.takeDamage(damage);
             }
         }
+    }
+    */
+
+    @Override
+    //Optimoidumpi versio collidesta (?)
+    public void collides(Updateable collidingUpdateable){
+        destroyThis();
+        ((Unit)collidingUpdateable).takeDamage(damage);
     }
 
     @Override

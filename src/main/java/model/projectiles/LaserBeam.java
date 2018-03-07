@@ -39,7 +39,7 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     public void destroyThis() {
         controller.removeUpdateable(this);
     }
-
+    /*
     @Override
     public void collides(Updateable collidingUpdateable) {
         if(!hitTarget) {
@@ -49,6 +49,13 @@ public class LaserBeam extends BaseProjectile implements Updateable {
                 }
             }
         }
+    }
+    */
+    @Override
+    //Optimoidumpi versio collidesta (?)
+    public void collides(Updateable collidingUpdateable){
+        destroyThis();
+        ((Unit)collidingUpdateable).takeDamage(damage);
     }
 
 

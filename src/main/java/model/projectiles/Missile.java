@@ -82,7 +82,7 @@ public class Missile extends BaseProjectile implements Updateable {
         trail.destroyThis();
         controller.removeUpdateable(this);
     }
-
+    /*
     @Override
     public void collides(Updateable collidingUpdateable){
         destroyThis();
@@ -91,6 +91,14 @@ public class Missile extends BaseProjectile implements Updateable {
                 unit.takeDamage(damage);
             }
         }
+    }
+    */
+
+    @Override
+    //Optimoidumpi versio collidesta (?)
+    public void collides(Updateable collidingUpdateable){
+        destroyThis();
+        ((Unit)collidingUpdateable).takeDamage(damage);
     }
 
     @Override
