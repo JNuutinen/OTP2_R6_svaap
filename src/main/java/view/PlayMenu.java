@@ -15,6 +15,7 @@ import static view.GameMain.*;
 class PlayMenu {
     Button startButton;
     Button backButton;
+    Button customizeButton;
 
     private Spinner<Integer> levelSpinner;
     private Group playMenuGroup;
@@ -35,11 +36,14 @@ class PlayMenu {
         levelSpinner = new Spinner<>(1, levels, 1);
         levelSpinner.setPrefWidth(Double.MAX_VALUE);
 
+        customizeButton = new Button("Select weapons");
+        customizeButton.setPrefWidth(Double.MAX_VALUE);
+
         VBox vBox = new VBox();
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(100);
-        vBox.getChildren().addAll(startButton, levelSelectText, levelSpinner, backButton);
+        vBox.getChildren().addAll(startButton, levelSelectText, levelSpinner, customizeButton, backButton);
 
         borderPane.setCenter(vBox);
 

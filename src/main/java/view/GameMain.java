@@ -166,32 +166,71 @@ public class GameMain extends Application implements View {
         controller = new GameController(this);
         units = new ArrayList<>();
         primaryStage.setOnCloseRequest(event -> System.exit(0));
-        MainMenu mainMenu = new MainMenu();
-        Group mainMenuGroup = mainMenu.getGroup();
-        playMenu = new PlayMenu(NUMBER_OF_LEVELS);
-        Group playMenuGroup = playMenu.getGroup();
-        StackPane menuSpace = new StackPane(mainMenuGroup);
 
+        // Banneri
         ImageView svaapBanner = new ImageView(new Image("images/svaap.png"));
         svaapBanner.resize(200, 50);
         svaapBanner.setStyle("-fx-background-color: transparent");
         StackPane bannerSpace = new StackPane(svaapBanner);
         bannerSpace.setPadding(new Insets(100,0,100,0));
 
+        // Luodaan gameRoot jo tässä, koska pelaaja luodaan ja sen Sprite lisätään siihen
+        gameRoot = new Pane();
+
+        //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
+        Player player = new Player(controller, Color.CYAN);
+        player.setHp(1000000);
+
+        // Valittavat aselistat
+        ArrayList<Weapon> primaries1 = createPlayerPrimaries1(player);
+        ArrayList<Weapon> primaries2 = createPlayerPrimaries2(player);
+        ArrayList<Weapon> secondaries = createPlayerSecondaries(player);
+
+        // Main menu
+        MainMenu mainMenu = new MainMenu();
+        Group mainMenuGroup = mainMenu.getGroup();
+
+        // Play menu
+        playMenu = new PlayMenu(NUMBER_OF_LEVELS);
+        Group playMenuGroup = playMenu.getGroup();
+
+        // Pane kaikille menuille
+        StackPane menuSpace = new StackPane(mainMenuGroup);
+
+        // Customize menu
+        CustomizeMenu customizeMenu = new CustomizeMenu(primaries1, primaries2, secondaries);
+        Group customizeMenuGroup = customizeMenu.getGroup();
+        customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenuGroup, playMenuGroup, menuSpace));
+
+        // Main menun play click event
         mainMenu.play.setOnAction(event -> slideIn(mainMenuGroup, playMenuGroup, menuSpace));
 
+        // Play menun back button click event
         playMenu.backButton.setOnAction(event -> slideOut(playMenuGroup, mainMenuGroup, menuSpace));
 
+        // Play menun customize button click event
+        playMenu.customizeButton.setOnAction(event -> slideIn(playMenuGroup, customizeMenuGroup, menuSpace));
+
+        // Pane, se kaikkien isä (uiRoot, gameRoot)
         pane = new Pane();
         pane.setStyle("-fx-background-color: black");
         BorderPane uiRoot = new BorderPane();
         uiRoot.setStyle("-fx-background-color: black");
+
+        // Banner uiRootin yläosaan
         uiRoot.setTop(bannerSpace);
+
+        // kaikki menut uiRootin keskelle
         uiRoot.setCenter(menuSpace);
 
+        // uiRoot pääpaneen
         pane.getChildren().add(uiRoot);
+
+        // Ohjelman scene
         scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
+
+        // Pelin aloituspainike click event
         playMenu.startButton.setOnAction(event -> {
             FadeTransition ft = new FadeTransition(Duration.millis(1000), uiRoot);
             ft.setFromValue(1.0);
@@ -199,14 +238,19 @@ public class GameMain extends Application implements View {
             ft.play();
             ft.setOnFinished(event1 -> {
                 pane.getChildren().remove(uiRoot);
-                startGame(primaryStage);
+                startGame(primaryStage, player, customizeMenu.getSelectedPrimaryWeapon1(),
+                        customizeMenu.getSelectedPrimaryWeapon2(), customizeMenu.getSelectedSecondaryWeapon());
             });
         });
+
+        // Show käyntiin
         primaryStage.show();
     }
 
-    private void startGame(Stage primaryStage) {
-        gameRoot = new Pane();
+    private void startGame(Stage primaryStage, Player player, Weapon primary1, Weapon primary2, Weapon secondary) {
+        player.addToPrimaryWeapons(primary1);
+        player.addToPrimaryWeapons(primary2);
+        player.setSecondaryWeapon(secondary);
         pane.getChildren().add(gameRoot);
         FadeTransition ft = new FadeTransition(Duration.millis(2000), gameRoot);
         ft.setFromValue(0.0);
@@ -233,34 +277,11 @@ public class GameMain extends Application implements View {
             gameRoot.getChildren().add(debugger_currentFps);
         }
 
-
-        //pelaajan luonti
-        Player player = new Player(controller, Color.CYAN);
-        player.setHp(1000000);
-
-        // Pelaajan aseet
-        // PÄÄASE
-        Component primary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
-                45, 100, 12);
-        player.addToPrimaryWeapons((Weapon) primary);
-        primary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
-                45, 100, -12);
-        player.addToPrimaryWeapons((Weapon) primary);
-
-
-        //SIVUASE
-        //Component secondary = new RocketLauncher(controller, player, "circle", 7, 0, -5, 0);
-        //Component secondary = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
-        Component secondary = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE,
-                80, 0, 0.2);
-        /*Component secondary = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.FUCHSIA,
-                45, 100, -20);*/
-        player.setSecondaryWeapon((Weapon) secondary);
-
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä
         ArrayList<Component> components = new ArrayList<>();
-        components.add(primary);
-        components.add(secondary);
+        components.add((Component)primary1);
+        components.add((Component)primary2);
+        components.add((Component)secondary);
 
         Component b = new Component("circle", 10, 0, Color.RED, 0,0);
         components.add(b);
@@ -297,7 +318,7 @@ public class GameMain extends Application implements View {
             input.remove(code);
         });
         primaryStage.setScene(scene);
-        
+
         // keskitetään ikkuna näyttöön
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
@@ -305,6 +326,65 @@ public class GameMain extends Application implements View {
         controller.startLoop();
         System.out.println(playMenu.getSelectedLevel());
         controller.startLevel(playMenu.getSelectedLevel());
+    }
+
+    /**
+     * Luo listan valittavissa olevista pääaseista
+     * @param player Pelaaja
+     * @return Lista, joka sisältää aseita
+     */
+    private ArrayList<Weapon> createPlayerPrimaries1(Player player) {
+        ArrayList<Weapon> weapons = new ArrayList<>();
+
+        Weapon blaster = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
+                45, 100, 12);
+        ((Component) blaster).setName("Blaster");
+
+        Weapon rocketShotgun = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
+        ((Component) rocketShotgun).setName("Rocket Shotgun");
+
+        Weapon laserGun = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE,
+                80, 0, 0.5);
+        ((Component) laserGun).setName("Laser Gun");
+
+        weapons.add(blaster);
+        weapons.add(rocketShotgun);
+        weapons.add(laserGun);
+        return weapons;
+    }
+
+    /**
+     * Luo listan valittavissa olevista toisista pääaseista
+     * @param player Pelaaja
+     * @return Lista, joka sisältää aseita
+     */
+    private ArrayList<Weapon> createPlayerPrimaries2(Player player) {
+        ArrayList<Weapon> weapons = new ArrayList<>();
+        Weapon blaster = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
+                45, 100, -12);
+        ((Component) blaster).setName("Blaster");
+        weapons.add(blaster);
+        return weapons;
+    }
+
+    /**
+     * Luo listan valittavissa olevista sivuaseista
+     * @param player Pelaaja
+     * @return Lista, joka sisältää aseita
+     */
+    private ArrayList<Weapon> createPlayerSecondaries(Player player) {
+        ArrayList<Weapon> weapons = new ArrayList<>();
+
+        Weapon rocketShotgun = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
+        ((Component) rocketShotgun).setName("Rocket Shotgun");
+
+        Weapon laserGun = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE,
+                80, 0, 0.5);
+        ((Component) laserGun).setName("Laser Gun");
+
+        weapons.add(rocketShotgun);
+        weapons.add(laserGun);
+        return weapons;
     }
 
     /**
@@ -346,8 +426,6 @@ public class GameMain extends Application implements View {
         slide.setOnFinished(e -> pane.getChildren().remove(from));
         slide.play();
     }
-
-
-
+    
 }
 

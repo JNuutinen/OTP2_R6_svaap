@@ -4,7 +4,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
 public class Component extends Sprite {
@@ -17,6 +18,8 @@ public class Component extends Sprite {
 
     private double projectileFrontOffset = 0;
     private double projectileLeftOffset = 0;
+
+    private String name = "undefined";
 
 
     //UnitX & UnitY: Spawnataan komponentti samaan paikkaan isännänsä kanssa
@@ -61,6 +64,14 @@ public class Component extends Sprite {
         this.projectileLeftOffset = projectileLeftOffset;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Shape triangle(int size, int orientation, Color color) {
         double tip = 6 * size * 1.3;
         double point = 3 * size * 1.3;
@@ -84,7 +95,7 @@ public class Component extends Sprite {
         rectangle.setStroke(color);
         rectangle.setStrokeWidth(2.0);
         rectangle.getTransforms().add(new Rotate(90 * orientation, 50, 30));
-        return (Shape)rectangle;
+        return rectangle;
     }
 
     public Shape circle(int size, Color color) {
@@ -92,7 +103,7 @@ public class Component extends Sprite {
         circle.setFill(Color.BLACK);
         circle.setStroke(color);
         circle.setStrokeWidth(2.0);
-        return (Shape)circle;
+        return circle;
     }
 
     public void addVelocity(double x, double y) {
