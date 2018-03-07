@@ -68,7 +68,6 @@ private ImageView nextDiagonalImage;
 
 
         if (centerImage.getImage().getWidth() + centerImage.getX() <= 0) {
-            System.out.println("ye");
             ImageView iv = centerImage;
             centerImage = nextHorizontalImage;
             nextHorizontalImage = iv;

@@ -53,7 +53,7 @@ public class Player extends Unit {
                 decelerateX();
             }
         } else if (input.contains("D")) {
-            if (getXPosition() < WINDOW_WIDTH - getWidth()) {
+            if (getXPosition() < WINDOW_WIDTH - getHitboxRadius()) {
                 addVelocity(1, 0);
             } else {
                 decelerateX();
@@ -63,14 +63,14 @@ public class Player extends Unit {
         }
 
         if (input.contains("W")) {
-            // TODO: 100px kovakoodattu
-            if (getYPosition() > 100) {
+            // TODO: 50px kovakoodattu
+            if (getYPosition() > 50) {
                 addVelocity(0, -1);
             } else {
                 decelerateY();
             }
         } else if (input.contains("S")) {
-            if (getYPosition() < WINDOW_HEIGHT - getHeight()) {
+            if (getYPosition() < WINDOW_HEIGHT - getHitboxRadius()) {
                 addVelocity(0, 1);
             } else {
                 decelerateY();

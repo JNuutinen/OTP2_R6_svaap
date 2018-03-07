@@ -142,7 +142,7 @@ public class Missile extends BaseProjectile implements Updateable {
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);
         blur.setInput(bloom);
-        shape.setEffect(blur);
+        //shape.setEffect(blur); TODO
         shape.setFill(Color.TRANSPARENT);
 
 
