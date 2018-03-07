@@ -70,7 +70,9 @@ public class Unit extends Sprite implements Updateable {
 
     @Override
     public void destroyThis() {
+        new PowerUp(controller, this, (int)(Math.random() * 10), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         controller.removeUpdateable(this);
+        controller.removeFromCollisionList(this);
     }
 
     @Override
@@ -215,8 +217,9 @@ public class Unit extends Sprite implements Updateable {
     public void takeDamage(int damage) {
         hp -= damage;
         if(hp <= 0){
-            controller.removeUpdateable(this);
-            controller.removeFromCollisionList(this);
+            destroyThis();
+            //controller.removeUpdateable(this);
+
             if(getTag() == ENEMY_SHIP_TAG){
                 controller.addScore(100);
             }

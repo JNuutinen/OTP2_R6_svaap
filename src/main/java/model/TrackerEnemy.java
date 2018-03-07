@@ -85,6 +85,7 @@ public class TrackerEnemy extends Unit implements Updateable {
             moveStep(deltaTime);
         }
 
+
         //laskee oman kulman ja kohteeseen katsottavan kulman erotuksen ja pitaa asteet -180 ja 180 valilla
 
         double angleToTarget;
@@ -135,7 +136,6 @@ public class TrackerEnemy extends Unit implements Updateable {
             }
         }
     }
-
     //etsii pelaajan updateable listasta ja asettaa sen kohteeksi
     public void findAndSetTarget(){
         for(Updateable updateable : controller.getUpdateables()){

@@ -79,6 +79,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     }
 
     @Override
+    //TODO vertailu kannattaa vaihtaa cästäykseen niin peli optimoituu !
     public void collides(Updateable collidingUpdateable){
         destroyThis();
         for (Unit unit : controller.getCollisionList()) {

@@ -122,6 +122,9 @@ public class Player extends Unit {
         return score;
     }
 
+    public void powerUp(PowerUp powerUp) {
+
+    }
     // laske ja lisaa vauhtia alukseen riippuen sen nykyisestä nopeudesta ja sen suunnasta: x/yVelocity
     private void addVelocity(double directionX, double directionY) {
         if(directionX == 0);
