@@ -94,12 +94,14 @@ public class Boss3 extends Unit implements Updateable {
             fireRateCounter = 0;
             switch (currentLaser) {
                 case 0:
+                    getSecondaryWeapon().shoot();
                     getPrimaryWeapons().get(0).shoot();
                     break;
                 case 1:
                     getPrimaryWeapons().get(1).shoot();
                     break;
                 case 2:
+                    getSecondaryWeapon().shoot();
                     getPrimaryWeapons().get(2).shoot();
                     break;
                 case 3:
@@ -182,5 +184,9 @@ public class Boss3 extends Unit implements Updateable {
         blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.ORANGE,
                 26, -20, 110, 5);
         this.addToPrimaryWeapons(blasterSprinkler);
+
+        Weapon rocketLauncher = new RocketLauncher(controller, this, "circle", 7, 2, -5, 0,
+                3, true);
+        this.setSecondaryWeapon(rocketLauncher);
     }
 }

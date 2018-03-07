@@ -18,7 +18,7 @@ public class RocketLauncher extends Component implements Weapon {
     /**
      * Raketinheittimen ammuksien nopeus.
      */
-    private static final int SPEED = 40;
+    private static final int SPEED = 35;
 
     private double rotatingSpeed = 9.0;
 
@@ -49,6 +49,8 @@ public class RocketLauncher extends Component implements Weapon {
 
     private int tag;
 
+    private boolean setInitialDirectionToTarget = false;
+
     /**
      * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
      * @param controller Pelin kontrolleri.
@@ -73,6 +75,12 @@ public class RocketLauncher extends Component implements Weapon {
         }
     }
 
+    public RocketLauncher(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
+                          double yOffset, double rotatingSpeed, boolean initialDirectionToTarget) {
+        this(controller, shooter, shape, size, orientation, xOffset, yOffset, rotatingSpeed);
+        this.setInitialDirectionToTarget = initialDirectionToTarget;
+    }
+
     @Override
     public double getFireRate() {
         return FIRE_RATE;
@@ -80,6 +88,11 @@ public class RocketLauncher extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag));
+        if(setInitialDirectionToTarget){
+            controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag, true));
+        }
+        else{
+            controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag));
+        }
     }
 }

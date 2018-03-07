@@ -6,10 +6,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.Component;
-import model.Trail;
-import model.Unit;
-import model.Updateable;
+import model.*;
 
 import static view.GameMain.*;
 
@@ -51,7 +48,8 @@ public class Missile extends BaseProjectile implements Updateable {
      */
     private Updateable target;
     private Trail trail;
-    private int tag;
+    private boolean initialDirectionToTarget = false;
+    private double closestDistance = 999999;
 
 
     /**
@@ -75,6 +73,11 @@ public class Missile extends BaseProjectile implements Updateable {
 
         trail = new Trail(controller, this);
         this.getChildren().addAll(trail);
+    }
+
+    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean initialDirectionToTarget){
+        this(controller, shooter, speed, damage, rotatingSpeed, tag);
+        this.initialDirectionToTarget = initialDirectionToTarget;
     }
 
     @Override
@@ -116,16 +119,36 @@ public class Missile extends BaseProjectile implements Updateable {
 
         double angleToTarget;
         if (target != null) {
+            if(initialDirectionToTarget){ // suorittaa sisällön kerran
+                //TODO KOVAKOODATTU ):
+                if(getShooter() instanceof Player){
+                    this.rotate(getAngleFromTarget(target.getPosition()) - getDirection() - this.getDirection());
+                }
+                else{
+                    this.rotate(getAngleFromTarget(target.getPosition()) - getDirection() - this.getDirection() + 180);
+                }
+                initialDirectionToTarget = false;
+            }
             if (controller.getUpdateables().contains(target)) {
-                angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
-                // taa vaa pitaa asteet -180 & 180 valissa
-                while (angleToTarget >= 180.0) {
-                    angleToTarget -= 360.0;
+                double distanceToTarget = getDistanceFromTarget(target.getPosition());
+                if(distanceToTarget < closestDistance){
+                    closestDistance = distanceToTarget;
                 }
-                while (angleToTarget < -180) {
-                    angleToTarget += 360.0;
+                if(distanceToTarget > closestDistance + 1){
+
                 }
-                rotate(angleToTarget * rotatingSpeed * deltaTime);
+                else{
+                    angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
+                    // taa vaa pitaa asteet -180 & 180 valissa
+                    while (angleToTarget >= 180.0) {
+                        angleToTarget -= 360.0;
+                    }
+                    while (angleToTarget < -180) {
+                        angleToTarget += 360.0;
+                    }
+                    rotate(angleToTarget * rotatingSpeed * deltaTime);
+                }
+
             } else {
                 findAndSetTarget();
             }
@@ -168,16 +191,30 @@ public class Missile extends BaseProjectile implements Updateable {
     private void findAndSetTarget() {
         double shortestDistance = Double.MAX_VALUE;
         Updateable closestEnemy = null;
-        for (Updateable updateable : controller.getUpdateables()) {
-            if (updateable.getTag() == ENEMY_SHIP_TAG || updateable.getTag() == BOSS_SHIP_TAG ) {
-                double distance = getShooter().getDistanceFromTarget(updateable.getPosition());
-                if (distance < shortestDistance) {
-                    shortestDistance = distance;
-                    closestEnemy = updateable;
+        if (getShooter().getTag() == PLAYER_SHIP_TAG){
+            for (Updateable updateable : controller.getUpdateables()) {
+                if (updateable.getTag() == ENEMY_SHIP_TAG || updateable.getTag() == BOSS_SHIP_TAG) {
+                    double distance = getShooter().getDistanceFromTarget(updateable.getPosition());
+                    if (distance < shortestDistance) {
+                        shortestDistance = distance;
+                        closestEnemy = updateable;
+                    }
+                }
+            }
+        }
+        else if(getShooter().getTag() == ENEMY_SHIP_TAG || getShooter().getTag() == BOSS_SHIP_TAG){
+            for (Updateable updateable : controller.getUpdateables()) {
+                if (updateable.getTag() == PLAYER_SHIP_TAG) {
+                    double distance = getShooter().getDistanceFromTarget(updateable.getPosition());
+                    if (distance < shortestDistance) {
+                        shortestDistance = distance;
+                        closestEnemy = updateable;
+                    }
                 }
             }
         }
         target = closestEnemy;
+        closestDistance = 9999999;
     }
 
     /**
