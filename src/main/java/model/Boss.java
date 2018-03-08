@@ -117,7 +117,7 @@ public class Boss extends Unit implements Updateable {
             setPosition(getXPosition(), upOrDown());
             moveBoss(deltaTime);
         }
-        controller.setHealthbar(hpPercentage());
+        controller.setHealthbar(hpPercentage(), 0);
     }
 
     /**

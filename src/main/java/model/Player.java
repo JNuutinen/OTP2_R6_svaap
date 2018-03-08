@@ -19,7 +19,6 @@ public class Player extends Unit {
     private double secondaryFirerate;
     private double secondaryFirerateCounter;
 
-
     private final double accelerationForce = 5000; // voima joka kiihdyttaa alusta
     private final double maxVelocity = 300.0; // maksiminopeus
     private final double decelerateForce = 1000; // kitkavoima joka  hidastaa alusta jos nappia ei paineta
@@ -113,6 +112,7 @@ public class Player extends Unit {
         // Päivitä sijainti
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
+        controller.setHealthbar(hpPercentage(), 1);
     }
 
     public void addScore(int points){
@@ -197,5 +197,15 @@ public class Player extends Unit {
     private void resetVelocity() {
         //xVelocity = 0;
         //yVelocity = 0;
+    }
+
+    public int hpPercentage(){
+        int tenthHp = this.getOriginalHp() / 10;
+        int percentage = getHp() / tenthHp;
+        if (percentage == 0 && getHp() > 0){
+            return 1;
+        }else {
+            return percentage;
+        }
     }
 }

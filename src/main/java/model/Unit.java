@@ -21,7 +21,7 @@ public class Unit extends Sprite implements Updateable {
      * Kontrolleri.
      */
     private Controller controller;
-
+    private int originalHp;
     private Color color;
 
     /**
@@ -94,6 +94,15 @@ public class Unit extends Sprite implements Updateable {
      */
     public void setHp(int hp){
         this.hp = hp;
+        originalHp = hp;
+    }
+
+    /**
+     * Palauttaa yksikön alkuperäiset hitpointit
+     * @return Alkuperäiset hitpointit.
+     */
+    public int getOriginalHp(){
+        return originalHp;
     }
 
     /**
@@ -224,11 +233,12 @@ public class Unit extends Sprite implements Updateable {
                 controller.addScore(100);
             }
             if(getTag() == PLAYER_SHIP_TAG){
+                controller.setHealthbar(0, 1);
                 controller.returnToMain();
             }
             if(getTag() == BOSS_SHIP_TAG){
                 controller.addScore(1000);
-                controller.setHealthbar(0);
+                controller.setHealthbar(0, 0);
             }
         }
         if(getTag() == PLAYER_SHIP_TAG){
