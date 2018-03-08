@@ -20,6 +20,11 @@ public class Boss3 extends Unit implements Updateable {
     /**
      * Apumuuttuja pomon alkuperäisestä hp:stä
      */
+    private int originalHp;
+
+    /**
+     * Apumuuttuja pomon alkuperäisestä hp:stä
+     */
     private int originalhp;
 
     // Ampumisen kovakoodit
@@ -154,7 +159,7 @@ public class Boss3 extends Unit implements Updateable {
      * @return Palauttaa kuinka monta kymmenystä pomon hp:stä on jäljellä.
      */
     public int hpPercentage(){
-        int tenthHp = originalhp / 10;
+        int tenthHp = originalHp / 10;
         int percentage = getHp() / tenthHp;
         if (percentage == 0 && getHp() > 0){
             return 1;

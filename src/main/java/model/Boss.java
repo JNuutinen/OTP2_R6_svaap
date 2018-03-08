@@ -107,26 +107,12 @@ public class Boss extends Unit implements Updateable {
             destroyThis();
         }
         controller.setHealthbar(hpPercentage(), 0);
-    }
-
-    /**
-     * Liikuttaa pomoa ylös tai alas, riippuen siitä kuinka paljon pomo on liikkunut yhteen suuntaan.
-     * @return Palauttaa y-koordinaatin, johon pomon liikkuu.
-     */
-    public double upOrDown(){
-        if (!up){
-            if(movementCounter >= 400){ up = true;}
-            return initialY + movementCounter++;
-        }else{
-            if(movementCounter <= 100){ up = false;}
-            return initialY + movementCounter--;
-        controller.setHealthbar(hpPercentage());
 
         moveStep(deltaTime);
         if(!inFightingStage){
             double distanceToTargetX = Math.abs(getXPosition() - (WINDOW_WIDTH * 0.8));
             setVelocity(distanceToTargetX * deltaTime * 200);
-            if(distanceToTargetX < 10){
+            if(distanceToTargetX < 3){
                 inFightingStage = true;
                 lockDirection(270);
                 setVelocity(70);
@@ -145,7 +131,6 @@ public class Boss extends Unit implements Updateable {
             }
         }
     }
-
 
     /**
      * Laskee pomon jäljellä olevan hp:n kymmenyksissä. Käytetään healthbarin päivittämiseen
