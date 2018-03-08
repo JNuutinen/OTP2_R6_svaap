@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
@@ -81,7 +82,6 @@ public class Level extends Thread {
      * Viittaa tason viimeiseen viholliseen (Bossiin). Käytetään tason loppumisen tarkkailuun.
      */
     private Updateable lastEnemy;
-    private Boss boss = new Boss();
 
 
     /**
@@ -103,7 +103,6 @@ public class Level extends Thread {
         this.enemyHealthModifier = enemyHealthModifier;
         this.enemyDamageModifier = enemyDamageModifier;
         this.levelNumber = levelNumber;
-        boss.constructBosses(controller);
     }
 
     @Override
@@ -148,10 +147,9 @@ public class Level extends Thread {
                         // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                         // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                         if (numberOfEnemies == 1) {
-                            Thread.sleep(5000);
-                            boss = boss.bossList.get(0);
-                            lastEnemy = boss;
-                            controller.addUpdateable(boss);
+                            Thread.sleep(2000);
+                            lastEnemy = new Boss(controller, 1000, WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5);
+                            controller.addUpdateable(lastEnemy);
                         }
                         numberOfEnemies--;
                     }

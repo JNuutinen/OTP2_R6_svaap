@@ -126,7 +126,6 @@ public class Boss3 extends Unit implements Updateable {
 
 
 
-
         moveStep(deltaTime);
         if(movingDown){
             if(getYPosition() > WINDOW_HEIGHT * 0.55){

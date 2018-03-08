@@ -56,11 +56,16 @@ public class Unit extends Sprite implements Updateable {
     /**
      * Konstruktori asettaa kontrollerin.
      * @param controller Pelin kontrolleri.
-     * @param color aluksen väri
+     *
      */
-    public Unit(Controller controller, Color color) {
-        this.color = color;
+    public Unit(Controller controller) {
         this.controller = controller;
+    }
+
+    // @param color aluksen väri
+    public Unit(Controller controller, Color color){
+        this(controller);
+        this.color = color;
     }
 
     @Override
