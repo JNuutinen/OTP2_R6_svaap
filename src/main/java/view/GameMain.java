@@ -310,7 +310,7 @@ public class GameMain extends Application implements View {
         player.setSecondaryWeapon(secondary);
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
-        Image uiIMG = new Image("/images/playerUI.png");
+        Image uiIMG = new Image("/images/PlayerUi.png");
         uiIV.setImage(uiIMG);
         uiPane.getChildren().add(uiIV);
         pane.setCenter(gameRoot);
