@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.weapons.Weapon;
@@ -104,6 +105,10 @@ public class Player extends Unit {
         fireRateCounter += deltaTime;
         secondaryFirerateCounter += deltaTime;
         if (input.contains("V")) System.exit(0);
+
+        if (input.contains(KeyCode.ESCAPE.toString())) {
+            controller.pauseGame();
+        }
 
         // Päivitä sijainti
         setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);

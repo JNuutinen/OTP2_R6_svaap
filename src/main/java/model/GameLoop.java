@@ -1,11 +1,8 @@
 package model;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import controller.Controller;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,6 +19,12 @@ public class GameLoop {
 
     private AnimationTimer mainLoop;
     private AnimationTimer collisionLoop;
+
+    /**
+     * Kerroin, jolla delta timen voi muuttaa nollaksi = peli on pausella. Jos ei pausella, tää saa
+     * arvon 1 = ei vaikuta deltatimeen
+     */
+    private int pauseModifier = 1;
 
     public GameLoop(Controller controller) {
         this.controller = controller;
@@ -40,6 +43,14 @@ public class GameLoop {
 
     public ArrayList<Updateable> getUpdateables(){
         return updateables;
+    }
+
+    public void pauseGame() {
+        pauseModifier = 0;
+    }
+
+    public void continueGame() {
+        pauseModifier = 1;
     }
 
     public void stopLoops(){
@@ -61,7 +72,7 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
-                double deltaTime = (now - lastUpdate) / 1_000_000_000.0;
+                double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
                 // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
                 if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/250.0) {
                     controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));

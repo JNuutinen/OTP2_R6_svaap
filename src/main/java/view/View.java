@@ -1,6 +1,5 @@
 package view;
 
-import javafx.stage.Stage;
 import model.Sprite;
 import model.Unit;
 
@@ -17,4 +16,5 @@ public interface View {
     void setScore(int score);
     void returnToMain();
     void setHealthbar(int hp);
+    void pause();
 }

@@ -2,7 +2,6 @@ package controller;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.*;
 import view.GameMain;
@@ -161,6 +160,19 @@ public class GameController implements Controller {
                 break;
         }
 
+    }
+
+    @Override
+    public void pauseGame() {
+        gameLoop.pauseGame();
+        Level.pauseLevel();
+        view.pause();
+    }
+
+    @Override
+    public void continueGame() {
+        gameLoop.continueGame();
+        Level.continueLevel();
     }
 
     @Override

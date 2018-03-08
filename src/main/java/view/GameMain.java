@@ -29,7 +29,6 @@ import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
-import static javafx.geometry.Pos.*;
 
 
 public class GameMain extends Application implements View {
@@ -56,7 +55,7 @@ public class GameMain extends Application implements View {
     private ArrayList<Unit> units;
     private BorderPane pane;
     private Scene scene;
-    private Pane gameRoot;
+    private BorderPane gameRoot;
     private Controller controller;
     private Label score;
     private Stage primaryStage;
@@ -81,10 +80,16 @@ public class GameMain extends Application implements View {
     }
 
     public void returnToMain(){
-        pane.getChildren().remove(uiPane);
-        uiPane = null;
-        pane.getChildren().remove(gameRoot);
-        setupGame(primaryStage);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), gameRoot);
+        ft.setFromValue(1.0);
+        ft.setToValue(0.0);
+        ft.play();
+        ft.setOnFinished(event1 -> {
+            pane.getChildren().remove(uiPane);
+            uiPane = null;
+            pane.getChildren().remove(gameRoot);
+            setupGame(primaryStage);
+        });
     }
 
     @Override
@@ -182,7 +187,7 @@ public class GameMain extends Application implements View {
         bannerSpace.setPadding(new Insets(100,0,100,0));
 
         // Luodaan gameRoot jo tässä, koska pelaaja luodaan ja sen Sprite lisätään siihen
-        gameRoot = new Pane();
+        gameRoot = new BorderPane();
 
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
         Player player = new Player(controller, Color.CYAN);
@@ -232,6 +237,12 @@ public class GameMain extends Application implements View {
 
         // uiRoot pääpaneen
         pane.getChildren().add(uiRoot);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), uiRoot);
+        ft.setFromValue(0.0);
+        ft.setToValue(1.0);
+        ft.play();
+        ft.setOnFinished(event1 -> {
+        });
 
         // Ohjelman scene
         scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -239,11 +250,11 @@ public class GameMain extends Application implements View {
 
         // Pelin aloituspainike click event
         playMenu.startButton.setOnAction(event -> {
-            FadeTransition ft = new FadeTransition(Duration.millis(1000), uiRoot);
-            ft.setFromValue(1.0);
-            ft.setToValue(0.0);
-            ft.play();
-            ft.setOnFinished(event1 -> {
+            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), uiRoot);
+            ft2.setFromValue(1.0);
+            ft2.setToValue(0.0);
+            ft2.play();
+            ft2.setOnFinished(event1 -> {
                 pane.getChildren().remove(uiRoot);
                 startGame(primaryStage, player, customizeMenu.getSelectedPrimaryWeapon1(),
                         customizeMenu.getSelectedPrimaryWeapon2(), customizeMenu.getSelectedSecondaryWeapon());
@@ -252,6 +263,22 @@ public class GameMain extends Application implements View {
 
         // Show käyntiin
         primaryStage.show();
+    }
+
+    @Override
+    public void pause() {
+        PauseMenu pauseMenu = new PauseMenu();
+        Group pauseMenuGroup = pauseMenu.getGroup();
+
+        pauseMenu.continueButton.setOnAction(event -> {
+            gameRoot.setCenter(null);
+            controller.continueGame();
+        });
+
+        pauseMenu.quitButton.setOnAction(event -> {
+            controller.returnToMain();
+        });
+        gameRoot.setCenter(pauseMenuGroup);
     }
 
     private void startGame(Stage primaryStage, Player player, Weapon primary1, Weapon primary2, Weapon secondary) {

@@ -18,6 +18,11 @@ import static view.GameMain.*;
 public class Level extends Thread {
 
     /**
+     * Jos true, thread on käynnissä, muuten false
+     */
+    private static volatile boolean isRunning = true;
+
+    /**
      * Millisekunteina spawnausajan lyhyin aika, pohjalukema johon vaikuttaa konstruktorin
      * parametrina annettu spawnFrequencyModifier.
      */
@@ -119,48 +124,48 @@ public class Level extends Thread {
         try {
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
 
+                if (isRunning) {
+                    System.out.println("run");
+                    // paussi vihollisten välillä
+                    // TODO: Monen vihollisen yhtäaikainen spawnaus
+                    if (numberOfEnemies > 0) {
+                        long sleepTime = ThreadLocalRandom.current().nextLong((long) (BASE_SPAWN_FREQ_LOW * spawnFrequencyModifier),
+                                (long) (BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
+                        Thread.sleep(sleepTime);
 
 
-                // paussi vihollisten välillä
-                // TODO: Monen vihollisen yhtäaikainen spawnaus
-                if(numberOfEnemies > 0) {
-                    long sleepTime = ThreadLocalRandom.current().nextLong((long)(BASE_SPAWN_FREQ_LOW * spawnFrequencyModifier),
-                            (long)(BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
-                    Thread.sleep(sleepTime);
+                        // arvotaan spawnauspaikka
+                        double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT - 50);
 
+                        // arvotaan vihollinen tyyppilistasta
+                        Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
+                        Enemy enemy = new Enemy(controller, Color.YELLOW, enemyType.getMovementPattern(), WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
+                        enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
+                        Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 50, 0, Color.CORAL,
+                                20, 100, 0);
+                        enemy.addToPrimaryWeapons((Weapon) blaster);
 
-
-                    // arvotaan spawnauspaikka
-                    double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT - 50);
-
-                    // arvotaan vihollinen tyyppilistasta
-                    Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
-                    Enemy enemy = new Enemy(controller, Color.YELLOW, enemyType.getMovementPattern(), WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
-                    enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
-                    Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 50, 0, Color.CORAL,
-                            20, 100, 0);
-                    enemy.addToPrimaryWeapons((Weapon) blaster);
-
-                    controller.addUpdateable(enemy);
-                    // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
-                    // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
-                    if (numberOfEnemies == 1) {
-                        Thread.sleep(5000);
-                        boss = boss.bossList.get(0);
-                        lastEnemy = boss;
-                        controller.addUpdateable(boss);
+                        controller.addUpdateable(enemy);
+                        // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
+                        // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
+                        if (numberOfEnemies == 1) {
+                            Thread.sleep(5000);
+                            boss = boss.bossList.get(0);
+                            lastEnemy = boss;
+                            controller.addUpdateable(boss);
+                        }
+                        numberOfEnemies--;
                     }
-                    numberOfEnemies--;
                 }
             }
             // Levelin viholliset spawnattu, venataan vähän aikaa ennen levelin loppumista
 
-            System.out.println("Voitit tason " + (levelNumber) +"!");
+            System.out.println("Voitit tason " + (levelNumber) + "!");
             Platform.runLater(() -> controller.addScore(500));
 
             // Ilmoita levelin loppumisesta
             Platform.runLater(() -> controller.returnToMain());
-           //controller.startLevel(levelNumber+1);
+            //controller.startLevel(levelNumber+1);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -191,5 +196,13 @@ public class Level extends Thread {
                 20, 50, 0);
         trackerEnemy.addToPrimaryWeapons(blaster);
         controller.addUpdateable(trackerEnemy);
+    }
+
+    public static void pauseLevel() {
+        isRunning = false;
+    }
+
+    public static void continueLevel() {
+        isRunning = true;
     }
 }

@@ -22,4 +22,6 @@ public interface Controller {
     void removeUpdateable(Updateable updateable);
     void returnToMain();
     void setHealthbar(int hp);
+    void pauseGame();
+    void continueGame();
 }
