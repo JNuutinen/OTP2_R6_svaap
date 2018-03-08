@@ -35,8 +35,8 @@ public class GameController implements Controller {
         view.setScore(player.getScore());
     }
 
-    public void setHealthbar(int hp){
-       Platform.runLater(() -> view.setHealthbar(hp));
+    public void setHealthbar(int hp, int selector){
+       Platform.runLater(() -> view.setHealthbar(hp, selector));
     }
 
     @Override

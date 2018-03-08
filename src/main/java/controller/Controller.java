@@ -21,7 +21,7 @@ public interface Controller {
     void setCurrentFps(double fps);
     void removeUpdateable(Updateable updateable);
     void returnToMain();
-    void setHealthbar(int hp);
+    void setHealthbar(int hp, int selector);
     void pauseGame();
     void continueGame();
 }

@@ -30,8 +30,8 @@ import java.util.ArrayList;
 
 
 public class GameMain extends Application implements View {
-    public static final int WINDOW_WIDTH = 1280;
-    public static final int WINDOW_HEIGHT = 720;
+    public static final int WINDOW_WIDTH = 1260;
+    public static final int WINDOW_HEIGHT = 820;
     public static final int BANNER_HEIGHT = 200;
     public static final int UNDEFINED_TAG = 0;
     public static final int PLAYER_SHIP_TAG = 1;
@@ -62,7 +62,8 @@ public class GameMain extends Application implements View {
     private Label debugger_currentFps;
     private boolean debugger_droppedBelowFpsTarget = false;
     private double debugger_secondCounter = 0;
-    private ImageView healthIv = new ImageView();
+    private ImageView bossHealth = new ImageView();
+    private ImageView playerHealth = new ImageView();
     private Pane uiPane;
 
     public static void main(String[] args) {
@@ -162,14 +163,34 @@ public class GameMain extends Application implements View {
         this.score.toFront();
     }
 
-    public void setHealthbar(int hp){
-        if(hp > 0 && hp <= 10) {
-            Image healthbar = new Image("/images/healthbar/" + hp + ".png");
-            healthIv.setX(WINDOW_WIDTH / 2);
-            healthIv.setImage(healthbar);
-            healthIv.toFront();
-        }else{
-            healthIv.setImage(null);
+    /**
+     * Asettaa näkyvän healthbarin selectorin mukaan, 0 tarkoittaa bossia ja 1 tarkoittaa pelaajaa.
+     * @param hp Unitin hp kymmenyksissä.
+     * @param selector Unitin tunniste. 0 = boss ja 1 = pelaaja
+     */
+    public void setHealthbar(int hp, int selector){
+        switch(selector){
+            case 0:
+                if(hp > 0 && hp <= 10) {
+                    Image healthbar = new Image("/images/bossHPBar/"+hp+".png");
+                    bossHealth.setX(700);
+                    bossHealth.setY(7);
+                    bossHealth.setImage(healthbar);
+                    bossHealth.toFront();
+                }else{
+                    bossHealth.setImage(null);
+                }
+                break;
+            case 1:
+                if(hp > 0 && hp <= 10) {
+                    Image healthbar = new Image("/images/playerHPBar/"+hp+".png");
+                    playerHealth.setX(200);
+                    playerHealth.setY(7);
+                    playerHealth.setImage(healthbar);
+                    playerHealth.toFront();
+                }else{
+                    playerHealth.setImage(null);
+                }
         }
     }
 
@@ -190,7 +211,7 @@ public class GameMain extends Application implements View {
 
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
         Player player = new Player(controller, Color.CYAN);
-        player.setHp(1000000);
+        player.setHp(50);
 
         // Valittavat aselistat
         ArrayList<Weapon> primaries1 = createPlayerPrimaries1(player);
@@ -288,7 +309,10 @@ public class GameMain extends Application implements View {
         player.addToPrimaryWeapons(primary2);
         player.setSecondaryWeapon(secondary);
         uiPane = new Pane();
-        uiPane.setStyle("-fx-background-color: black");
+        ImageView uiIV = new ImageView();
+        Image uiIMG = new Image("/images/PlayerUi.png");
+        uiIV.setImage(uiIMG);
+        uiPane.getChildren().add(uiIV);
         pane.setCenter(gameRoot);
         pane.setTop(uiPane);
         FadeTransition ft = new FadeTransition(Duration.millis(2000), gameRoot);
@@ -302,7 +326,8 @@ public class GameMain extends Application implements View {
         GameBackground gmg = new GameBackground(controller);
 
         uiPane.getChildren().add(score);
-        gameRoot.getChildren().add(healthIv);
+        uiPane.getChildren().add(playerHealth);
+        uiPane.getChildren().add(bossHealth);
 
         //---------------- debugger
         if(debuggerToolsEnabled) {

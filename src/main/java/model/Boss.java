@@ -106,6 +106,20 @@ public class Boss extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         }
+        controller.setHealthbar(hpPercentage(), 0);
+    }
+
+    /**
+     * Liikuttaa pomoa ylös tai alas, riippuen siitä kuinka paljon pomo on liikkunut yhteen suuntaan.
+     * @return Palauttaa y-koordinaatin, johon pomon liikkuu.
+     */
+    public double upOrDown(){
+        if (!up){
+            if(movementCounter >= 400){ up = true;}
+            return initialY + movementCounter++;
+        }else{
+            if(movementCounter <= 100){ up = false;}
+            return initialY + movementCounter--;
         controller.setHealthbar(hpPercentage());
 
         moveStep(deltaTime);
