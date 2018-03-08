@@ -125,7 +125,6 @@ public class Level extends Thread {
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
 
                 if (isRunning) {
-                    System.out.println("run");
                     // paussi vihollisten välillä
                     // TODO: Monen vihollisen yhtäaikainen spawnaus
                     if (numberOfEnemies > 0) {
