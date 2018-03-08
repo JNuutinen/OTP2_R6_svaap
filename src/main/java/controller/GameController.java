@@ -9,6 +9,7 @@ import view.View;
 
 import java.util.ArrayList;
 
+import static model.Enemy.MOVE_SINE;
 import static model.Enemy.MOVE_STRAIGHT;
 import static view.GameMain.ENEMY_SHIP_TAG;
 
@@ -191,11 +192,13 @@ public class GameController implements Controller {
 
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this, Color.GRAY, 0, 0, 0, ENEMY_SHIP_TAG);
-        enemy1.setMovementPattern(MOVE_STRAIGHT);
+        Enemy enemy1 = new Enemy(this, Color.GRAY, MOVE_STRAIGHT, 0, 0, ENEMY_SHIP_TAG);
         enemy1.setImage(enemyImage, 1, 1);// width aj height arvoilla ei ole merkitysta koska vihu piirretty vektoreilla
+        Enemy enemy2 = new Enemy(this, Color.PALEGOLDENROD, MOVE_SINE, 0, 0, ENEMY_SHIP_TAG);
+        enemy2.setImage(enemyImage, 1, 1);
         ArrayList<Enemy> enemies = new ArrayList<>();
         enemies.add(enemy1);
+        enemies.add(enemy2);
         return enemies;
     }
 
