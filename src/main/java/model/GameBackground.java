@@ -41,9 +41,9 @@ private ImageView nextDiagonalImage;
                 (double) GameMain.WINDOW_WIDTH, (double)GameMain.WINDOW_HEIGHT, false, false));
 
 
-        centerImage.setY(centerImage.getY() + 15); //siirretään backgroundia alemmas, jotta fps näkyy
+        centerImage.setY(centerImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
 
-        nextHorizontalImage.setY(nextHorizontalImage.getY() + 15); //siirretään backgroundia alemmas, jotta fps näkyy
+        nextHorizontalImage.setY(nextHorizontalImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
         nextHorizontalImage.setX(centerImage.getX() + centerImage.getImage().getWidth());
 
         //nextDiagonalImage.setX(nextDiagonalImage.getX() + nextDiagonalImage.getImage().getWidth());

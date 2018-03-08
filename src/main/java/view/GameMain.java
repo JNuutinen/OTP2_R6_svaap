@@ -29,6 +29,8 @@ import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
+import static javafx.geometry.Pos.*;
+
 
 public class GameMain extends Application implements View {
     public static final int WINDOW_WIDTH = 1280;
@@ -52,7 +54,7 @@ public class GameMain extends Application implements View {
 
     private PlayMenu playMenu;
     private ArrayList<Unit> units;
-    private Pane pane;
+    private BorderPane pane;
     private Scene scene;
     private Pane gameRoot;
     private Controller controller;
@@ -64,6 +66,7 @@ public class GameMain extends Application implements View {
     private boolean debugger_droppedBelowFpsTarget = false;
     private double debugger_secondCounter = 0;
     private ImageView healthIv = new ImageView();
+    private Pane uiPane;
 
     public static void main(String[] args) {
         launch(args);
@@ -78,6 +81,8 @@ public class GameMain extends Application implements View {
     }
 
     public void returnToMain(){
+        pane.getChildren().remove(uiPane);
+        uiPane = null;
         pane.getChildren().remove(gameRoot);
         setupGame(primaryStage);
     }
@@ -150,6 +155,7 @@ public class GameMain extends Application implements View {
     @Override
     public void setScore(int score) {
         this.score.setText("Score: " + score);
+        this.score.toFront();
     }
 
     public void setHealthbar(int hp){
@@ -157,6 +163,7 @@ public class GameMain extends Application implements View {
             Image healthbar = new Image("/images/healthbar/" + hp + ".png");
             healthIv.setX(WINDOW_WIDTH / 2);
             healthIv.setImage(healthbar);
+            healthIv.toFront();
         }else{
             healthIv.setImage(null);
         }
@@ -212,7 +219,7 @@ public class GameMain extends Application implements View {
         playMenu.customizeButton.setOnAction(event -> slideIn(playMenuGroup, customizeMenuGroup, menuSpace));
 
         // Pane, se kaikkien isä (uiRoot, gameRoot)
-        pane = new Pane();
+        pane = new BorderPane();
         pane.setStyle("-fx-background-color: black");
         BorderPane uiRoot = new BorderPane();
         uiRoot.setStyle("-fx-background-color: black");
@@ -251,7 +258,10 @@ public class GameMain extends Application implements View {
         player.addToPrimaryWeapons(primary1);
         player.addToPrimaryWeapons(primary2);
         player.setSecondaryWeapon(secondary);
-        pane.getChildren().add(gameRoot);
+        uiPane = new Pane();
+        uiPane.setStyle("-fx-background-color: black");
+        pane.setCenter(gameRoot);
+        pane.setTop(uiPane);
         FadeTransition ft = new FadeTransition(Duration.millis(2000), gameRoot);
         ft.setFromValue(0.0);
         ft.setToValue(1.0);
@@ -259,22 +269,24 @@ public class GameMain extends Application implements View {
 
         score = new Label("Score: " + controller.getScore());
         score.setFont(new Font("Cambria", 32));
-        gameRoot.getChildren().add(score);
-        gameRoot.getChildren().add(healthIv);
 
         GameBackground gmg = new GameBackground(controller);
+
+        uiPane.getChildren().add(score);
+        gameRoot.getChildren().add(healthIv);
 
         //---------------- debugger
         if(debuggerToolsEnabled) {
             debugger_fps = new Label("fps");
             debugger_fps.setFont(new Font("Cambria", 16));
             debugger_fps.setLayoutX(250);
-            gameRoot.getChildren().add(debugger_fps);
+            uiPane.getChildren().add(debugger_fps);
+
 
             debugger_currentFps = new Label("currentFps");
             debugger_currentFps.setFont(new Font("Cambria", 16));
             debugger_currentFps.setLayoutX(540);
-            gameRoot.getChildren().add(debugger_currentFps);
+            uiPane.getChildren().add(debugger_currentFps);
         }
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä
