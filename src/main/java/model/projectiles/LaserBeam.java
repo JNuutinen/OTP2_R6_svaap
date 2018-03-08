@@ -62,7 +62,7 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     @Override
     public void update(double deltaTime) {
 
-        double deltaTimeMultiplied = deltaTime * 2;
+        double deltaTimeMultiplied = deltaTime * 3;
 
         if(color.getRed() > deltaTimeMultiplied) {
             color = new Color(color.getRed() - deltaTimeMultiplied,

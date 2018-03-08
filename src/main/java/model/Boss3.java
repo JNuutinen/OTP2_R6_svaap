@@ -26,7 +26,7 @@ public class Boss3 extends Unit implements Updateable {
     /**
      * tulinopeus
      */
-    private double fireRate = 0.5;
+    private double fireRate = 0.7;
     /**
      *  ampumisen ajanlaskuri
      */
@@ -85,7 +85,7 @@ public class Boss3 extends Unit implements Updateable {
     public void update(double deltaTime){
 
 
-        if(stageTimeCounter > 12){
+        if(stageTimeCounter > 14){
             getPrimaryWeapons().get(4).shoot();
             getPrimaryWeapons().get(5).shoot();
             stageTimeCounter = 0;
@@ -178,6 +178,7 @@ public class Boss3 extends Unit implements Updateable {
                 -140, 240, 0.5);
         this.addToPrimaryWeapons(laserGun);
 
+
         Weapon blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.ORANGE,
                 26, -20, -110, 5);
         this.addToPrimaryWeapons(blasterSprinkler);
@@ -185,8 +186,9 @@ public class Boss3 extends Unit implements Updateable {
                 26, -20, 110, 5);
         this.addToPrimaryWeapons(blasterSprinkler);
 
+
         Weapon rocketLauncher = new RocketLauncher(controller, this, "circle", 7, 2, -5, 0,
-                3, true);
+                4.8, true);
         this.setSecondaryWeapon(rocketLauncher);
     }
 }
