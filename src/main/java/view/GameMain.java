@@ -86,6 +86,7 @@ public class GameMain extends Application implements View {
             pane.getChildren().remove(uiPane);
             uiPane = null;
             pane.getChildren().remove(gameRoot);
+            gameRoot = null;
             setupGame(primaryStage);
         });
     }
@@ -213,7 +214,8 @@ public class GameMain extends Application implements View {
         customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenuGroup, playMenuGroup, menuSpace));
 
         // Main menun play click event
-        mainMenu.play.setOnAction(event -> slideIn(mainMenuGroup, playMenuGroup, menuSpace));
+        mainMenu.play.setOnAction(event ->
+            slideIn(mainMenuGroup, playMenuGroup, menuSpace));
 
         // Play menun back button click event
         playMenu.backButton.setOnAction(event -> slideOut(playMenuGroup, mainMenuGroup, menuSpace));
@@ -248,6 +250,7 @@ public class GameMain extends Application implements View {
 
         // Pelin aloituspainike click event
         playMenu.startButton.setOnAction(event -> {
+            playMenu.startButton.setDisable(true);
             FadeTransition ft2 = new FadeTransition(Duration.millis(1000), uiRoot);
             ft2.setFromValue(1.0);
             ft2.setToValue(0.0);
@@ -274,6 +277,7 @@ public class GameMain extends Application implements View {
         });
 
         pauseMenu.quitButton.setOnAction(event -> {
+            pauseMenu.quitButton.setDisable(true);
             controller.returnToMain();
         });
         gameRoot.setCenter(pauseMenuGroup);
