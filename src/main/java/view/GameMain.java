@@ -200,7 +200,7 @@ public class GameMain extends Application implements View {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
 
         // Banneri
-        ImageView svaapBanner = new ImageView(new Image("images/svaap.png"));
+        ImageView svaapBanner = new ImageView(new Image("images/SVAAP_logo_white.png"));
         svaapBanner.resize(200, 50);
         svaapBanner.setStyle("-fx-background-color: transparent");
         StackPane bannerSpace = new StackPane(svaapBanner);

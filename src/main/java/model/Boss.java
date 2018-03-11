@@ -112,7 +112,7 @@ public class Boss extends Unit implements Updateable {
         if(!inFightingStage){
             double distanceToTargetX = Math.abs(getXPosition() - (WINDOW_WIDTH * 0.8));
             setVelocity(distanceToTargetX * deltaTime * 200);
-            if(distanceToTargetX < 3){
+            if(distanceToTargetX < 5){
                 inFightingStage = true;
                 lockDirection(270);
                 setVelocity(70);

@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -76,6 +77,7 @@ public class Unit extends Sprite implements Updateable {
     @Override
     public void destroyThis() {
         new PowerUp(controller, this, (int)(Math.random() * 10), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+
         controller.removeUpdateable(this);
         controller.removeFromCollisionList(this);
     }
@@ -231,11 +233,11 @@ public class Unit extends Sprite implements Updateable {
     public void takeDamage(int damage) {
         hp -= damage;
         if(hp <= 0){
-            destroyThis();
-            //controller.removeUpdateable(this);
-
+            hp = 9999; // ettei voi ottaa vahinkoa poiston yhteydessä
             if(getTag() == ENEMY_SHIP_TAG){
                 controller.addScore(100);
+                System.out.println("22");
+                new Explosion(controller, Color.YELLOW, getPosition());
             }
             if(getTag() == PLAYER_SHIP_TAG){
                 controller.setHealthbar(0, 1);
@@ -245,6 +247,8 @@ public class Unit extends Sprite implements Updateable {
                 controller.addScore(1000);
                 controller.setHealthbar(0, 0);
             }
+
+            destroyThis();
         }
         if(getTag() == PLAYER_SHIP_TAG){
             controller.addScore(-50);

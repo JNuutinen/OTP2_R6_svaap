@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import model.Component;
+import model.Explosion;
 import model.Unit;
 import model.Updateable;
 

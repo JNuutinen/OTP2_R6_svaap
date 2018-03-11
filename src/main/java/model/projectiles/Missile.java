@@ -134,7 +134,7 @@ public class Missile extends BaseProjectile implements Updateable {
                 if(distanceToTarget < closestDistance){
                     closestDistance = distanceToTarget;
                 }
-                if(distanceToTarget > closestDistance + 50){
+                if(distanceToTarget > closestDistance + 40){
 
                 }
                 else{
