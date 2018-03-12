@@ -35,16 +35,23 @@ public class Blaster extends Component implements Weapon {
      */
     private static final Color COLOR = Color.ORANGE;
 
+    /**
+     * Ammuksien väri.
+     */
     private Color projectileColor = COLOR;
 
+    /**
+     * Ammuksien nopeus.
+     */
     private double projectileSpeed;
 
+    /**
+     * Ammuksien tagi.
+     */
     private int tag;
 
-
-
     /**
-     * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
+     * Pelin kontrolleri.
      */
     private Controller controller;
 
@@ -54,12 +61,16 @@ public class Blaster extends Component implements Weapon {
     private Unit shooter;
 
     /**
-     * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jolla ase on käytössä.
-     * @param orientation Blasterin suunta (orientation * 90 astetta)
-     * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
-     * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param projectileColor Ammuksen väri.
+     * @param projectileSpeed Ammuksen nopeus.
+     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
      */
     public Blaster(Controller controller, Unit shooter, int orientation, double xOffset,
                    double yOffset, Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
@@ -77,7 +88,20 @@ public class Blaster extends Component implements Weapon {
 
     }
 
-    // shape ja size voi määritellä erikseen
+    /**
+     * Konstruktori aseen shapen ja koon määrittämisellä.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param shape Aseen shape merkkijonona.
+     * @param size Aseen shapen koko.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param projectileColor Ammuksen väri.
+     * @param projectileSpeed Ammuksen nopeus.
+     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     */
     public Blaster(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
                    double yOffset, Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
         super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);

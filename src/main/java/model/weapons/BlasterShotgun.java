@@ -10,25 +10,28 @@ import model.projectiles.SmallProjectile;
 import static view.GameMain.ENEMY_PROJECTILE_TAG;
 import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
+/**
+ * Blasterhaulikkoase.
+ */
 public class BlasterShotgun extends Component implements Weapon {
 
     /**
-     * Blasterin ammuksien nopeus
+     * Aseen ammuksien nopeus
      */
     private static final int SPEED = 25;
 
     /**
-     * Blasterin ammuksien vahinko.
+     * Aseen ammuksien vahinko.
      */
     private static final int DAMAGE = 5;
 
     /**
-     * Blasterin tulinopeus.
+     * Aseen tulinopeus.
      */
     private static final double FIRE_RATE = 0.2;
 
     /**
-     * Blasterin väri.
+     * Aseen väri.
      */
     private static final Color COLOR = Color.YELLOW;
 
@@ -42,21 +45,26 @@ public class BlasterShotgun extends Component implements Weapon {
      */
     private Unit shooter;
 
+    /**
+     * Ammuksen väri.
+     */
     private Color projectileColor;
 
+    /**
+     * Ammuksen tagi.
+     */
     private int tag;
 
     /**
-     * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jolla ase on käytössä.
-     * @param shape Blasterin muoto merkkijonona.
-     * @param size Blasterin koko.
-     * @param orientation Blasterin suunta (kulma).
-     * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
-     * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
-     * @param projectileFrontOffset ammuksen aloituspaikan poikkeama aluksen etusuuntaan
-     * @param projectileLeftOffset ammuksen aloituspaikan poikkeama aluksn vasempaan suuntaan
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param projectileColor Ammuksen väri.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
      */
     public BlasterShotgun(Controller controller, Unit shooter, int orientation, Color projectileColor, double xOffset,
                    double yOffset, double projectileFrontOffset, double projectileLeftOffset) {

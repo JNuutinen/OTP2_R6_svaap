@@ -4,25 +4,53 @@ import controller.Controller;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
-import javafx.scene.transform.Rotate;
-import model.Component;
-import model.Player;
 import model.Unit;
 import model.Updateable;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_WIDTH;
 
+/**
+ * Lasersädeammus.
+ */
 public class LaserBeam extends BaseProjectile implements Updateable {
 
-    private static final Color COLOR = Color.WHITE;
+    /**
+     * Pelin kontrolleri.
+     */
     private Controller controller;
+
+    /**
+     * Ammuksen tekemä vahinko.
+     */
     private int damage;
+
+    /**
+     * Ammuksen shape (viiva).
+     */
     private Polyline shape;
+
+    /**
+     * Ammuksen väri.
+     */
     private Color color = Color.WHITE;
+
+    /**
+     * Kertoo osuiko ammus.
+     */
     private boolean hitTarget = false;
 
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param color Ammuksen väri.
+     * @param tag Ammuksen tagi.
+     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     */
     public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, double frontOffset, double leftOffset) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, frontOffset, leftOffset, tag);
@@ -78,16 +106,16 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     }
 
     /**
-     * Rakentaa projectilen Polygonin
+     * Rakentaa projectilen Shapen
      *
      * @param color Projectilen väri
-     * @return Rakennettu Polygon
+     * @return Rakennettu Shape
      */
     private Polyline buildLaser(Color color) {
         // Ammuksen muoto
         shape = new Polyline();
         shape.getPoints().addAll(-0.0, 0.0,
-                (double)WINDOW_WIDTH, 0.0);
+                WINDOW_WIDTH, 0.0);
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);
         blur.setInput(bloom);

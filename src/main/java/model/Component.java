@@ -8,6 +8,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
+import static view.GameMain.SPRITE_NAME_UNDEFINED;
+
 public class Component extends Sprite {
     Point2D startingPosition;
     private double xVelocity;
@@ -19,7 +21,7 @@ public class Component extends Sprite {
     private double projectileFrontOffset = 0;
     private double projectileLeftOffset = 0;
 
-    private String name = "undefined";
+    private String name = SPRITE_NAME_UNDEFINED;
 
 
     //UnitX & UnitY: Spawnataan komponentti samaan paikkaan isännänsä kanssa

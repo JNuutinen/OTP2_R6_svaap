@@ -3,12 +3,15 @@ package model;
 import controller.Controller;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.weapons.*;
+import model.weapons.BlasterSprinkler;
+import model.weapons.LaserGun;
+import model.weapons.RocketLauncher;
+import model.weapons.Weapon;
 
 import static view.GameMain.*;
-
+//TODO: javadoc
 /**
- * Tason loppupomo
+ * Tason loppupomo 3
  */
 public class Boss3 extends Unit implements Updateable {
 
@@ -27,15 +30,16 @@ public class Boss3 extends Unit implements Updateable {
      */
     private int originalhp;
 
-    // Ampumisen kovakoodit
     /**
      * tulinopeus
      */
     private double fireRate = 0.7;
+
     /**
      *  ampumisen ajanlaskuri
      */
     private double fireRateCounter = 0;
+
 
     private double stageTimeCounter = 0;
 

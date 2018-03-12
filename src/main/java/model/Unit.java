@@ -1,7 +1,6 @@
 package model;
 
 import controller.Controller;
-import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -15,7 +14,6 @@ import static view.GameMain.*;
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
  */
-@SuppressWarnings("unused")
 public class Unit extends Sprite implements Updateable {
 
     /**

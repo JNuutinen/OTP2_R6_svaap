@@ -12,47 +12,68 @@ import static view.GameMain.ENEMY_PROJECTILE_TAG;
 import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
- * Blaster pyssy.
+ * Blasterruiskuttelija.
  */
 public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     /**
-     * Blasterin ammuksien nopeus
+     * Aseen ammuksien nopeus
      */
     private static final int SPEED = 30;
 
     /**
-     * Blasterin ammuksien vahinko.
+     * Aseen ammuksien vahinko.
      */
     private static final int DAMAGE = 5;
 
     /**
-     * Blasterin tulinopeus.
+     * Aseen tulinopeus.
      */
     private double firerate = 0.075;
 
     /**
-     * Blasterin väri.
+     * Aseen vakioväri.
      */
     private static final Color COLOR = Color.RED;
 
+    /**
+     * Ammuksen väri.
+     */
     private Color projectileColor;
 
+    /**
+     * Ammuksen nopeus.
+     */
     private double projectileSpeed;
 
+    /**
+     * Ammuksen tagi.
+     */
     private int tag;
 
+    /**
+     * Tieto siitä, ammutaanko parhaillaan.
+     */
     private boolean isShooting = false;
 
+    /**
+     * Fireraten laskuri.
+     */
     private double firerateCounter = 0;
 
+    /**
+     * Ampumisen pituus.
+     */
     private double shootingTime = 0;
 
+    /**
+     * Ampumisajan laskuri.
+     */
     private double shootingTimeCounter = 0;
 
 
     /**
-     * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
+     * Pelin kontrolleri.
      */
     private Controller controller;
 
@@ -62,14 +83,17 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     private Unit shooter;
 
     /**
-     * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jolla ase on käytössä.
-     * @param shape Blasterin muoto merkkijonona.
-     * @param size Blasterin koko.
-     * @param orientation Blasterin suunta (kulma).
-     * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
-     * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param projectileColor Ammuksen väri.
+     * @param projectileSpeed Ammuksen nopeus.
+     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param shootingTime Ampumisen kesto.
      */
     public BlasterSprinkler(Controller controller, Unit shooter, int orientation, double xOffset, double yOffset,
                             Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset, double shootingTime) {

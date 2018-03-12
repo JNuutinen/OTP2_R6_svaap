@@ -47,17 +47,31 @@ public class Missile extends BaseProjectile implements Updateable {
      * Ammuksen kohde.
      */
     private Updateable target;
-    private Trail trail;
-    private boolean initialDirectionToTarget = false;
-    private double closestDistance = 999999;
-
 
     /**
-     * Konstruktori projectilen vakiovärillä ja kääntymisnopeudella.
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan
-     * @param speed Projectilen nopeus
-     * @param damage Projectilen vahinko
+     * Ammuksen visuaalinen häntä.
+     */
+    private Trail trail;
+
+    /**
+     * Kertoo, osoittaako ammus spawnatessaan kohdettaansa kohti.
+     */
+    private boolean initialDirectionToTarget = false;
+
+    /**
+     * Apumuuttuja, joka pitää kirjaa lähimmästä matkasta kohteeseensa sen elinkaaren aikana.
+     * Käytetään sen määrittämisessä, menettääkö ohjust lukituksen kohteeseensa.
+     */
+    private double closestDistance = 999999;
+
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param tag Ammuksen tagi.
      */
     public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
@@ -75,6 +89,16 @@ public class Missile extends BaseProjectile implements Updateable {
         this.getChildren().addAll(trail);
     }
 
+    /**
+     * Konstruktori, osoitus kohteeseen spawnatessa määritetty.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param tag Ammuksen tagi.
+     * @param initialDirectionToTarget Kertoo, osoittaako ammus spawnatessaan kohdettaan päin.
+     */
     public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean initialDirectionToTarget){
         this(controller, shooter, speed, damage, rotatingSpeed, tag);
         this.initialDirectionToTarget = initialDirectionToTarget;
@@ -226,6 +250,10 @@ public class Missile extends BaseProjectile implements Updateable {
         this.rotatingSpeed = rotatingSpeed;
     }
 
+    /**
+     * Palauttaa ammuksen kääntymisnopeuden.
+     * @return Ammuksen kääntymisnopeus.
+     */
     public double getRotatingSpeed(){
         return rotatingSpeed;
     }

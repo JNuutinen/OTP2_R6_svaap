@@ -42,6 +42,7 @@ public class GameMain extends Application implements View {
     public static final int ENEMY_PROJECTILE_TAG = 5;
     public static final int PLAYER_TRACE_TAG = 6;
     public static final int ENEMY_TRACE_TAG = 7;
+    public static final String SPRITE_NAME_UNDEFINED = "undefined";
 
 
     /**

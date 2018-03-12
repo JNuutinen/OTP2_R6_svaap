@@ -20,6 +20,9 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private static final int SPEED = 35;
 
+    /**
+     * Ammuksien kääntymisnopeus.
+     */
     private double rotatingSpeed = 9.0;
 
     /**
@@ -47,19 +50,24 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private Unit shooter;
 
+    /**
+     * Ammuksen tagi.
+     */
     private int tag;
 
+    /**
+     * Kertoo, osoittaako ohjus spawnatessaan kohdettaan päin.
+     */
     private boolean setInitialDirectionToTarget = false;
 
     /**
-     * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jolla ase on käytössä.
-     * @param shape Raketinheittimen muoto merkkijonona.
-     * @param size Raketinheittimen koko.
-     * @param orientation Raketinheittimen suunta (kulma).
-     * @param xOffset Raketinheittimen sijainnin heitto unitista x-suunnassa.
-     * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param rotatingSpeed Ammuksen kääntymisnopeus.
      */
     public RocketLauncher(Controller controller, Unit shooter, int orientation, double xOffset,
                           double yOffset, double rotatingSpeed) {
@@ -75,6 +83,16 @@ public class RocketLauncher extends Component implements Weapon {
         }
     }
 
+    /**
+     * Konstruktori tiedolla, osoittaako ammus kohdettaan spawnatessaan.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param initialDirectionToTarget Kertoo, osoittaako ohjus spawnatessaan kohdettaan päin.
+     */
     public RocketLauncher(Controller controller, Unit shooter, int orientation, double xOffset,
                           double yOffset, double rotatingSpeed, boolean initialDirectionToTarget) {
         this(controller, shooter, orientation, xOffset, yOffset, rotatingSpeed);
