@@ -28,14 +28,14 @@ public class Blaster extends Component implements Weapon {
     /**
      * Blasterin tulinopeus.
      */
-    private static final double FIRE_RATE = 0.2;
+    private static final double FIRE_RATE = 0.05;
 
     /**
      * Blasterin väri.
      */
-    private static final Color COLOR = Color.HOTPINK;
+    private static final Color COLOR = Color.RED;
 
-    private Color projectileColor;
+    private Color projectileColor = Color.LIGHTBLUE;
 
     private double projectileSpeed;
 
@@ -65,7 +65,22 @@ public class Blaster extends Component implements Weapon {
      */
     public Blaster(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
                    double yOffset, Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+        super(shape, size, orientation, projectileColor, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+        this.controller = controller;
+        if (shooter instanceof Player){
+            this.tag = PLAYER_PROJECTILE_TAG;
+        }
+        else{
+            this.tag = ENEMY_PROJECTILE_TAG;
+        }
+        this.shooter = shooter;
+        this.projectileSpeed = projectileSpeed;
+
+    }
+    /*
+    public Blaster(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
+                   double yOffset, Color componentColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
+        super(shape, size, orientation, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
         if (shooter instanceof Player){
             this.tag = PLAYER_PROJECTILE_TAG;
@@ -78,6 +93,7 @@ public class Blaster extends Component implements Weapon {
         this.projectileSpeed = projectileSpeed;
 
     }
+    */
 
     @Override
     public double getFireRate() {

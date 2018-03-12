@@ -28,7 +28,7 @@ public class Unit extends Sprite implements Updateable {
     /**
      * Yksikön hitpointsit.
      */
-    private int hp = 30;
+    int hp = 30;
 
     /**
      * Yksikön taso.
@@ -76,7 +76,7 @@ public class Unit extends Sprite implements Updateable {
 
     @Override
     public void destroyThis() {
-        new PowerUp(controller, this, (int)(Math.random() * 10), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         new Explosion(controller, color, getPosition());
         controller.removeUpdateable(this);
         controller.removeFromCollisionList(this);

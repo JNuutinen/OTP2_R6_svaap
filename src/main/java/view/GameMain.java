@@ -211,7 +211,7 @@ public class GameMain extends Application implements View {
 
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
         Player player = new Player(controller, Color.CYAN);
-        player.setHp(50);
+
 
         // Valittavat aselistat
         ArrayList<Weapon> primaries1 = createPlayerPrimaries1(player);
@@ -348,16 +348,17 @@ public class GameMain extends Application implements View {
         components.add((Component)primary1);
         components.add((Component)primary2);
         components.add((Component)secondary);
-
+/*
         Component b = new Component("circle", 10, 0, Color.RED, 0,0);
         components.add(b);
 
         Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0,0);
         components.add(c);
 
-        Component d = new Component("triangle", 10, 0, Color.BLUE, 0,0);
+        Component d = new Component("triangle", 6, 0, Color.BLUE, 0,0);
         components.add(d);
 
+        */
         player.equipComponents(components);
 
 
@@ -398,14 +399,14 @@ public class GameMain extends Application implements View {
     private ArrayList<Weapon> createPlayerPrimaries1(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon blaster = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
+        Weapon blaster = new Blaster(controller, player, "circle", 8, 0, -10, -10, Color.RED,
                 45, 100, 12);
         ((Component) blaster).setName("Blaster");
 
-        Weapon rocketShotgun = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
+        Weapon rocketShotgun = new RocketShotgun(controller, player, "rectangle", 10, 1, -120, 0, Color.PURPLE, 3, 20);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE,
+        Weapon laserGun = new LaserGun(controller, player, "circle", 0, 0, 0, 5, Color.WHITE,
                 80, 0, 0.5);
         ((Component) laserGun).setName("Laser Gun");
 
@@ -422,10 +423,11 @@ public class GameMain extends Application implements View {
      */
     private ArrayList<Weapon> createPlayerPrimaries2(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
-        Weapon blaster = new Blaster(controller, player, "circle", 5, 0, 0, 5, Color.LIGHTBLUE,
+        Weapon blaster = new Blaster(controller, player, "circle", 3, 0, -20, 5, Color.BLUE,
                 45, 100, -12);
         ((Component) blaster).setName("Blaster");
         weapons.add(blaster);
+
         return weapons;
     }
 
@@ -437,10 +439,10 @@ public class GameMain extends Application implements View {
     private ArrayList<Weapon> createPlayerSecondaries(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon rocketShotgun = new RocketShotgun(controller, player, "circle", 7, 0, -5, 0, 3, 20);
+        Weapon rocketShotgun = new RocketShotgun(controller, player, "rectangle", 10, 1, -120, 0, Color.PURPLE, 3, 20);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, player, "circle", 5, 0, 0, 5, Color.WHITE,
+        Weapon laserGun = new LaserGun(controller, player, "triangle", 10, 0, -150, 50, Color.GREEN,
                 80, 0, 0.5);
         ((Component) laserGun).setName("Laser Gun");
 

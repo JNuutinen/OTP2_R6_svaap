@@ -18,7 +18,7 @@ public class Player extends Unit {
     private double deltaTime = 0;
     private double secondaryFirerate;
     private double secondaryFirerateCounter;
-
+    private final int MAX_HP = 50;
     private final double accelerationForce = 5000; // voima joka kiihdyttaa alusta
     private final double maxVelocity = 300.0; // maksiminopeus
     private final double decelerateForce = 1000; // kitkavoima joka  hidastaa alusta jos nappia ei paineta
@@ -27,7 +27,7 @@ public class Player extends Unit {
         super(controller, shipColor);
         setTag(PLAYER_SHIP_TAG);
         this.controller = controller;
-        setHp(500);
+        setHp(MAX_HP );
         controller.addUnitToCollisionList(this);
 
         Polygon triangle = new Polygon();
@@ -123,13 +123,20 @@ public class Player extends Unit {
         }
     }
 
+    public void addHP(int hp){
+        this.hp += hp;
+        controller.setHealthbar(hpPercentage(), 1);
+    }
+
+    public int getMaxHp() {
+        return MAX_HP;
+    }
+
     public int getScore() {
         return score;
     }
 
-    public void powerUp(PowerUp powerUp) {
 
-    }
     // laske ja lisaa vauhtia alukseen riippuen sen nykyisestä nopeudesta ja sen suunnasta: x/yVelocity
     private void addVelocity(double directionX, double directionY) {
         if(directionX == 0);

@@ -26,6 +26,7 @@ public class PowerUp extends Sprite implements Updateable{
                 type = HP;
                 shape = circle(size, Color.GREEN);
                 break;
+                /*
             case DAMAGE:
                 type = DAMAGE;
                 shape = rectangle(size, 3, Color.PURPLE);
@@ -34,6 +35,7 @@ public class PowerUp extends Sprite implements Updateable{
                 type = SPEED;
                 shape = rectangle(size, 0, Color.BLUE);
                 break;
+                */
             case SCORE:
                 type = SCORE;
                 shape = circle(size, Color.YELLOW);
@@ -51,6 +53,8 @@ public class PowerUp extends Sprite implements Updateable{
         Point2D startingLocation = new Point2D(deadUnit.getPosition().getX() + xOffset, deadUnit.getPosition().getY() + yOffset);
         this.setPosition(startingLocation.getX(), startingLocation.getY());
 
+        this.setIsMoving(true);
+        this.setVelocity(-50);
         getChildren().add(shape);
     }
 
@@ -73,7 +77,7 @@ public class PowerUp extends Sprite implements Updateable{
 
     public Shape rectangle(int size, int orientation, Color color) {
         double x = 5 * size;
-        double y = 3 * size;
+        double y = 5 * size;
         Rectangle rectangle = new Rectangle(x, y);
         rectangle.setFill(Color.BLACK);
         rectangle.setStroke(color);
@@ -93,17 +97,25 @@ public class PowerUp extends Sprite implements Updateable{
     public void givePowerUp(Player player) {
         switch (type) {
             case HP:
-                player.addHP(value);
-                System.out.println("hp++");
+                System.out.println(player.getMaxHp());
+                if (player.getHp() < player.getMaxHp()) {
+                    player.addHP(value);
+                    if (player.getHp() > player.getMaxHp()) {
+                        player.setHp(player.getMaxHp());
+                    }
+                    System.out.println("hp++");
+                }
                 break;
+                /*
             case DAMAGE:
                 //TODO player.getPrimaryWeapon().setDamage(value); tms
                 System.out.println("QUAD DAMAGE ACTIVATED");
                 break;
             case SPEED:
                 //TODO player.setAcceleration(value); tms
-                System.out.println("FAST FAST FAST");
+                System.out.println("GAS GAS GAS");
                 break;
+                */
             case SCORE:
                 player.addScore(value);
                 System.out.println("Score++");
@@ -113,7 +125,6 @@ public class PowerUp extends Sprite implements Updateable{
 
     @Override
     public void update(double deltaTime) {
-        setPosition(getXPosition() - 1, getYPosition());
         moveStep(deltaTime);
     }
 

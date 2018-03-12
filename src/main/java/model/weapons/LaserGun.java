@@ -80,8 +80,8 @@ public class LaserGun extends Component implements Weapon, Updateable {
      * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
      */
     public LaserGun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                    double yOffset, Color laserColor, double projectileFrontOffset, double projectileLeftOffset) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+                    double yOffset, Color componentColor, double projectileFrontOffset, double projectileLeftOffset) {
+        super(shape, size, orientation, componentColor, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.laserColor = laserColor;

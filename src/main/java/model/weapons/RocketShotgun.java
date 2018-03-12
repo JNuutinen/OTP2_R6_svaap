@@ -72,8 +72,8 @@ public class RocketShotgun extends Component implements Weapon {
      * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
      */
     public RocketShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                          double yOffset, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset);
+                          double yOffset, Color color, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
+        super(shape, size, orientation, color, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;
