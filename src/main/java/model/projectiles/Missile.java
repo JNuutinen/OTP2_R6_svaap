@@ -83,6 +83,7 @@ public class Missile extends BaseProjectile implements Updateable {
     @Override
     public void destroyThis(){
         trail.destroyThis();
+        new Explosion(controller, Color.WHITE, getPosition(), 0.2);
         controller.removeUpdateable(this);
     }
     /*

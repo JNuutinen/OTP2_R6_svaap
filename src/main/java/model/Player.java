@@ -127,7 +127,9 @@ public class Player extends Unit {
         }
 
         // Päivitä sijainti
-        setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+        if(deltaTime < 1) { // TODO
+            setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+        }
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
         controller.setHealthbar(hpPercentage(), 1);
     }
@@ -156,27 +158,25 @@ public class Player extends Unit {
 
     // laske ja lisaa vauhtia alukseen riippuen sen nykyisestä nopeudesta ja sen suunnasta: x/yVelocity
     private void addVelocity(double directionX, double directionY) {
-        if(directionX == 0);
-        else if(directionX * xVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
+        if (directionX == 0) ;
+        else if (directionX * xVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
             if (xVelocity < maxVelocity && xVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
                 xVelocity += directionX * deltaTime * accelerationForce;
             } else { // jos ylittaa maksiminopeuden
                 xVelocity = maxVelocity * directionX;
             }
-        }
-        else{ // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
+        } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             xVelocity += directionX * deltaTime * accelerationForce;
         }
         //samat Y:lle
-        if(directionY==0);
-        else if(directionY * yVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
+        if (directionY == 0) ;
+        else if (directionY * yVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
             if (yVelocity < maxVelocity && yVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
                 yVelocity += directionY * deltaTime * accelerationForce;
             } else { // jos ylittaa maksiminopeuden
                 yVelocity = maxVelocity * directionY;
             }
-        }
-        else{ // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
+        } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             yVelocity += directionY * deltaTime * accelerationForce;
         }
     }

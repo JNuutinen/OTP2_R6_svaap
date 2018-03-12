@@ -34,7 +34,7 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     /**
      * Blasterin väri.
      */
-    private static final Color COLOR = Color.HOTPINK;
+    private static final Color COLOR = Color.RED;
 
     private Color projectileColor;
 
@@ -71,9 +71,9 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
      * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
      */
-    public BlasterSprinkler(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset, double yOffset,
+    public BlasterSprinkler(Controller controller, Unit shooter, int orientation, double xOffset, double yOffset,
                             Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset, double shootingTime) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+        super("rectangle", 4, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.shootingTime = shootingTime;
         this.controller = controller;
         controller.addUpdateable(this);

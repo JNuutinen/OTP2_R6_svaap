@@ -47,7 +47,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon väri.
      */
-    private static final Color COLOR = Color.PINK;
+    private static final Color COLOR = Color.TURQUOISE;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
@@ -71,9 +71,9 @@ public class RocketShotgun extends Component implements Weapon {
      * @param xOffset Raketinheittimen sijainnin heitto unitista x-suunnassa.
      * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
      */
-    public RocketShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                          double yOffset, Color color, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
-        super(shape, size, orientation, color, xOffset, yOffset);
+    public RocketShotgun(Controller controller, Unit shooter, int orientation, double xOffset,
+                          double yOffset, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
+        super("circle", 4, orientation, COLOR, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;

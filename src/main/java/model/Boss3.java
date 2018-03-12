@@ -52,6 +52,14 @@ public class Boss3 extends Unit implements Updateable {
     public Boss3(Controller controller, double initialX, double initialY){
 
         super(controller, Color.ORANGE);
+
+        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
+        triangle.getPoints().addAll(-100.0, -230.0,
+                300.0, 00.0,
+                -100.0, 230.0);
+        drawShip(triangle);
+
+
         this.controller = controller;
         this.setPosition(initialX, initialY);
         this.setTag(BOSS_SHIP_TAG);
@@ -60,27 +68,17 @@ public class Boss3 extends Unit implements Updateable {
         controller.addUnitToCollisionList(this);
         rotate(180);
         setIsMoving(true);
-        armShip();
+
         setHp(1000);
         this.setHitbox(450);
 
 
-        Component c = new Component("triangle", 3, 0, Color.PURPLE, 30, 40);
-        components.add(c);
-        Component c2 = new Component("triangle", 3, 0, Color.PURPLE, 0, -20);
-        components.add(c2);
-        Component c3 = new Component("triangle", 3, 0, Color.PURPLE, 20, 10);
-        components.add(c3);
-        Component c4 = new Component("triangle", 3, 0, Color.PURPLE, 20, -10);
-        components.add(c4);
-        equipComponents(components);
 
 
-        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
-        triangle.getPoints().addAll(-100.0, -230.0,
-                300.0, 00.0,
-                -100.0, 230.0);
-        drawShip(triangle);
+
+
+        armShip();
+        //equipComponents();
 
     }
 
@@ -158,6 +156,7 @@ public class Boss3 extends Unit implements Updateable {
                 inFightingStage = true;
                 lockDirection(270);
                 setVelocity(70);
+                stageTimeCounter = 6;
             }
         }
         else if(movingDown){
@@ -197,29 +196,29 @@ public class Boss3 extends Unit implements Updateable {
     }
 
     public void armShip(){
-        Weapon laserGun = new LaserGun(controller, this, "circle", 5, 0, 0, 5, Color.WHITE,
-                -140, -240, 0.5);
-        this.addToPrimaryWeapons(laserGun);
-        laserGun = new LaserGun(controller, this, "circle", 5, 0, 0, 5, Color.WHITE,
-                60, -70, 0.5);
-        this.addToPrimaryWeapons(laserGun);
-        laserGun = new LaserGun(controller, this, "circle", 5, 0, 0, 5, Color.WHITE,
-                60, 70, 0.5);
-        this.addToPrimaryWeapons(laserGun);
-        laserGun = new LaserGun(controller, this, "circle", 5, 0, 0, 5, Color.WHITE,
-                -140, 240, 0.5);
-        this.addToPrimaryWeapons(laserGun);
+        Weapon laserGun = new LaserGun(controller, this, 0, -100, -240,
+                -100, -240, 0.6);
+        this.addToPrimaryWeapon(laserGun);
+        laserGun = new LaserGun(controller, this, 0,  60, -70,
+                60, -70, 0.6);
+        this.addToPrimaryWeapon(laserGun);
+        laserGun = new LaserGun(controller, this, 0, 60, 70,
+                60, 70, 0.6);
+        this.addToPrimaryWeapon(laserGun);
+        laserGun = new LaserGun(controller, this, 0, -100, 240,
+                -100, 240, 0.6);
+        this.addToPrimaryWeapon(laserGun);
 
 
-        Weapon blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.ORANGE,
+        Weapon blasterSprinkler = new BlasterSprinkler(controller, this, 2, -20, -110, Color.ORANGE,
                 26, -20, -110, 5);
-        this.addToPrimaryWeapons(blasterSprinkler);
-        blasterSprinkler = new BlasterSprinkler(controller, this, "circle", 5, 2, 100, -110, Color.ORANGE,
+        this.addToPrimaryWeapon(blasterSprinkler);
+        blasterSprinkler = new BlasterSprinkler(controller, this, 2, -20, 110, Color.ORANGE,
                 26, -20, 110, 5);
-        this.addToPrimaryWeapons(blasterSprinkler);
+        this.addToPrimaryWeapon(blasterSprinkler);
 
 
-        Weapon rocketLauncher = new RocketLauncher(controller, this, "circle", 7, 2, -5, 0,
+        Weapon rocketLauncher = new RocketLauncher(controller, this, 2, -5, 0,
                 4.8, true);
         this.setSecondaryWeapon(rocketLauncher);
     }

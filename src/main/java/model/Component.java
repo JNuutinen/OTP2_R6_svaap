@@ -82,19 +82,21 @@ public class Component extends Sprite {
                 tip/2 * -1, point / 2 * -1);
         triangle.setFill(Color.BLACK);
         triangle.setStroke(color);
-        triangle.setStrokeWidth(2.0);
+        triangle.setStrokeWidth(4.0);
         triangle.getTransforms().add(new Rotate(90 * orientation, 50, 30));
         return triangle;
     }
 
     public Shape rectangle(int size, int orientation, Color color) {
-        double x = 5 * size;
-        double y = 3 * size;
-        Rectangle rectangle = new Rectangle(x, y);
+        double x = 10 * size;
+        double y = 6 * size;
+        Rectangle rectangle = new Rectangle(x * 0.5, y * 0.5);
         rectangle.setFill(Color.BLACK);
         rectangle.setStroke(color);
-        rectangle.setStrokeWidth(2.0);
-        rectangle.getTransforms().add(new Rotate(90 * orientation, 50, 30));
+        rectangle.setStrokeWidth(4.0);
+        rectangle.setX(x * -0.25);
+        rectangle.setY(y * -0.25);
+        //rectangle.getTransforms().add(new Rotate(90 * orientation, x, y));
         return rectangle;
     }
 
@@ -102,7 +104,7 @@ public class Component extends Sprite {
         Circle circle = new Circle(3 * size);
         circle.setFill(Color.BLACK);
         circle.setStroke(color);
-        circle.setStrokeWidth(2.0);
+        circle.setStrokeWidth(4.0);
         return circle;
     }
 

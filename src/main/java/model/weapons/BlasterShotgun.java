@@ -15,7 +15,7 @@ public class BlasterShotgun extends Component implements Weapon {
     /**
      * Blasterin ammuksien nopeus
      */
-    private static final int SPEED = 30;
+    private static final int SPEED = 25;
 
     /**
      * Blasterin ammuksien vahinko.
@@ -30,7 +30,7 @@ public class BlasterShotgun extends Component implements Weapon {
     /**
      * Blasterin väri.
      */
-    private static final Color COLOR = Color.HOTPINK;
+    private static final Color COLOR = Color.YELLOW;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
@@ -58,9 +58,9 @@ public class BlasterShotgun extends Component implements Weapon {
      * @param projectileFrontOffset ammuksen aloituspaikan poikkeama aluksen etusuuntaan
      * @param projectileLeftOffset ammuksen aloituspaikan poikkeama aluksn vasempaan suuntaan
      */
-    public BlasterShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, Color projectileColor, double xOffset,
+    public BlasterShotgun(Controller controller, Unit shooter, int orientation, Color projectileColor, double xOffset,
                    double yOffset, double projectileFrontOffset, double projectileLeftOffset) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+        super("rectangle", 4, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.projectileColor = projectileColor;
@@ -81,7 +81,7 @@ public class BlasterShotgun extends Component implements Weapon {
     public void shoot() {
         for(int i = -1; i < 2; i++) {
             controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, this,
-                    getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, i * 5, tag));
+                    getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, i * 7, tag));
         }
     }
 }

@@ -150,11 +150,11 @@ public class Boss extends Unit implements Updateable {
     }
 
     public void armBoss(Controller controller){
-        Component blaster1 = new BlasterShotgun(controller, this, "circle", 5, 2,
-                Color.CORAL, 400, -98, 80, -98);
-        Component blaster2 = new BlasterShotgun(controller, this, "circle", 5, 2,
-                Color.CORNSILK, 400, 98, 80, 98);
-        addToPrimaryWeapons((Weapon) blaster1);
+        Component blaster1 = new BlasterShotgun(controller, this, 2,
+                Color.CYAN, 2, -92, 80, -92);
+        Component blaster2 = new BlasterShotgun(controller, this, 2,
+                Color.CYAN, 2, 92, 80, 92);
+        addToPrimaryWeapon((Weapon) blaster1);
         setSecondaryWeapon((Weapon) blaster2);
     }
 }

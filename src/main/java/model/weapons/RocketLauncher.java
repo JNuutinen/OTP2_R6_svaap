@@ -35,7 +35,7 @@ public class RocketLauncher extends Component implements Weapon {
     /**
      * Raketinheittimen väri.
      */
-    private static final Color COLOR = Color.PINK;
+    private static final Color COLOR = Color.BLUE;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
@@ -61,9 +61,9 @@ public class RocketLauncher extends Component implements Weapon {
      * @param xOffset Raketinheittimen sijainnin heitto unitista x-suunnassa.
      * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
      */
-    public RocketLauncher(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
+    public RocketLauncher(Controller controller, Unit shooter, int orientation, double xOffset,
                           double yOffset, double rotatingSpeed) {
-        super(shape, size, orientation, COLOR, xOffset, yOffset);
+        super("circle", 4, orientation, COLOR, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.rotatingSpeed = rotatingSpeed;
@@ -75,9 +75,9 @@ public class RocketLauncher extends Component implements Weapon {
         }
     }
 
-    public RocketLauncher(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
+    public RocketLauncher(Controller controller, Unit shooter, int orientation, double xOffset,
                           double yOffset, double rotatingSpeed, boolean initialDirectionToTarget) {
-        this(controller, shooter, shape, size, orientation, xOffset, yOffset, rotatingSpeed);
+        this(controller, shooter, orientation, xOffset, yOffset, rotatingSpeed);
         this.setInitialDirectionToTarget = initialDirectionToTarget;
     }
 

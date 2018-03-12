@@ -42,7 +42,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
     /**
      * Blasterin väri.
      */
-    private static final Color COLOR = Color.HOTPINK;
+    private static final Color COLOR = Color.LIME;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
@@ -54,7 +54,6 @@ public class LaserGun extends Component implements Weapon, Updateable {
      */
     private Unit shooter;
 
-    private Color laserColor;
 
     private int tag;
 
@@ -79,12 +78,11 @@ public class LaserGun extends Component implements Weapon, Updateable {
      * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
      * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
      */
-    public LaserGun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                    double yOffset, Color componentColor, double projectileFrontOffset, double projectileLeftOffset) {
-        super(shape, size, orientation, componentColor, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+    public LaserGun(Controller controller, Unit shooter, int orientation, double xOffset,
+                    double yOffset, double projectileFrontOffset, double projectileLeftOffset) {
+        super("triangle", 4, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
         this.shooter = shooter;
-        this.laserColor = laserColor;
         controller.addUpdateable(this);
         if (shooter instanceof Player){
             this.tag = PLAYER_TRACE_TAG;
@@ -95,9 +93,9 @@ public class LaserGun extends Component implements Weapon, Updateable {
     }
 
     // ampumisviiveen kanssa
-    public LaserGun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                    double yOffset, Color laserColor, double projectileFrontOffset, double projectileLeftOffset, double shootingDelay) {
-        this(controller, shooter, shape, size, orientation, xOffset, yOffset, laserColor, projectileFrontOffset, projectileLeftOffset);
+    public LaserGun(Controller controller, Unit shooter, int orientation, double xOffset,
+                    double yOffset, double projectileFrontOffset, double projectileLeftOffset, double shootingDelay) {
+        this(controller, shooter, orientation, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.shootingDelay = shootingDelay;
     }
 
@@ -155,7 +153,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
             if(timeCounter > shootingDelay){
 
-                controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, laserColor, tag,
+                controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, Color.WHITE, tag,
                         getProjectileFrontOffset(), getProjectileLeftOffset()));
                 triggeredShoot = false;
                 timeCounter = 0;
