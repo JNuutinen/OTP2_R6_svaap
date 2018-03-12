@@ -135,7 +135,7 @@ public class Level3 extends Thread {
                     // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                     if (numberOfEnemies == 1) {
                         Thread.sleep(2000);
-                        lastEnemy = new Boss3(controller, 1000, 10);
+                        lastEnemy = new Boss3(controller, WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5);
                         controller.addUpdateable(lastEnemy);
                     }
                     numberOfEnemies--;
