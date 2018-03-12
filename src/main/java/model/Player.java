@@ -70,7 +70,7 @@ public class Player extends Unit {
                 decelerateX();
             }
         } else if (input.contains("D")) {
-            if (getXPosition() < WINDOW_WIDTH - getHitboxRadius()) {
+            if (getXPosition() < PLAYER_X_LIMIT) {
                 addVelocity(1, 0);
             } else {
                 decelerateX();

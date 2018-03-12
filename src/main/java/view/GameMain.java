@@ -30,8 +30,9 @@ import java.util.ArrayList;
 
 
 public class GameMain extends Application implements View {
-    public static final int WINDOW_WIDTH = 1260;
-    public static final int WINDOW_HEIGHT = 820;
+    public static final double WINDOW_WIDTH = 1260;
+    public static final double WINDOW_HEIGHT = 820;
+    public static final double PLAYER_X_LIMIT = WINDOW_WIDTH * .55;
     public static final int BANNER_HEIGHT = 200;
     public static final int UNDEFINED_TAG = 0;
     public static final int PLAYER_SHIP_TAG = 1;
