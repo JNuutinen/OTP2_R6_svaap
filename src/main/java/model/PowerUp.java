@@ -10,10 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
-import javax.xml.bind.annotation.XmlType;
-
 import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_SHIP_TAG;
 
 public class PowerUp extends Sprite implements Updateable{
     int value;
@@ -31,18 +28,18 @@ public class PowerUp extends Sprite implements Updateable{
                 break;
             case DAMAGE:
                 type = DAMAGE;
-                shape = triangle(size, 3, Color.PURPLE);
+                shape = rectangle(size, 3, Color.PURPLE);
                 break;
             case SPEED:
                 type = SPEED;
-                shape = triangle(size, 0, Color.BLUE);
+                shape = rectangle(size, 0, Color.BLUE);
                 break;
             case SCORE:
                 type = SCORE;
                 shape = circle(size, Color.YELLOW);
                 break;
             default:
-                return;
+                return; //Jos vihollinen ei droppaa mitään
         }
         this.controller = controller;
         setTag(ENEMY_PROJECTILE_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
@@ -104,7 +101,7 @@ public class PowerUp extends Sprite implements Updateable{
                 System.out.println("QUAD DAMAGE ACTIVATED");
                 break;
             case SPEED:
-                //TODO tää
+                //TODO player.setAcceleration(value); tms
                 System.out.println("FAST FAST FAST");
                 break;
             case SCORE:
@@ -116,7 +113,8 @@ public class PowerUp extends Sprite implements Updateable{
 
     @Override
     public void update(double deltaTime) {
-
+        setPosition(getXPosition() - 1, getYPosition());
+        moveStep(deltaTime);
     }
 
     @Override
@@ -128,5 +126,6 @@ public class PowerUp extends Sprite implements Updateable{
     @Override
     public void destroyThis() {
         controller.removeUpdateable(this);
+
     }
 }
