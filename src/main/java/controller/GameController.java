@@ -4,6 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import model.*;
+import model.level.Level;
+import model.level.Level3;
+import model.level.LevelN;
 import view.GameMain;
 import view.View;
 
@@ -17,6 +20,7 @@ public class GameController implements Controller {
     private View view;
     private GameLoop gameLoop;
     private Player player;
+    private Level level;
 
     public GameController(GameMain view) {
         gameLoop = new GameLoop(this);
@@ -78,7 +82,6 @@ public class GameController implements Controller {
 
     @Override
     public void startLevel(int levelNumber) {
-        Level level;
         ArrayList<Enemy> enemies;
         switch (levelNumber) {
             default:
@@ -89,9 +92,8 @@ public class GameController implements Controller {
                 double enemyHealthModifier = 1;
                 double enemyDamageModifier = 1;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
-                level.start();
                 break;
             case 1:
                 enemies = createEnemyTypes();
@@ -100,9 +102,8 @@ public class GameController implements Controller {
                 enemyHealthModifier = 1.5;
                 enemyDamageModifier = 1.5;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
-                level.start();
                 break;
             case 2:
                 enemies = createEnemyTypes();
@@ -111,9 +112,8 @@ public class GameController implements Controller {
                 enemyHealthModifier = 2.5;
                 enemyDamageModifier = 2;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
-                level.start();
                 break;
             case 3:
                 enemies = createEnemyTypes();
@@ -122,9 +122,8 @@ public class GameController implements Controller {
                 enemyHealthModifier = 3;
                 enemyDamageModifier = 2;
 
-                Level3 level3 = new Level3(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level3(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
-                level3.start();
                 break;
             case 4:
                 enemies = createEnemyTypes();
@@ -133,9 +132,8 @@ public class GameController implements Controller {
                 enemyHealthModifier = 0.1;
                 enemyDamageModifier = 2;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
-                level.start();
                 break;
             case 5:
                 enemies = createEnemyTypes();
@@ -144,9 +142,8 @@ public class GameController implements Controller {
                 enemyHealthModifier = 0.1;
                 enemyDamageModifier = 2;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
-                level.start();
                 break;
             case 6:
                 enemies = createEnemyTypes();
@@ -155,25 +152,25 @@ public class GameController implements Controller {
                 enemyHealthModifier = 1;
                 enemyDamageModifier = 0;
 
-                level = new Level(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
-                level.start();
                 break;
         }
+        level.startLevel();
 
     }
 
     @Override
     public void pauseGame() {
         gameLoop.pauseGame();
-        Level.pauseLevel();
+        level.pauseLevel();
         view.pause();
     }
 
     @Override
     public void continueGame() {
         gameLoop.continueGame();
-        Level.continueLevel();
+        level.continueLevel();
     }
 
     @Override
@@ -205,6 +202,7 @@ public class GameController implements Controller {
     @Override
     public void returnToMain(){
         Platform.runLater(()->view.returnToMain());
+        level.destroyLevel();
         gameLoop.stopLoops();
     }
 }

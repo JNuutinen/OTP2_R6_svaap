@@ -262,8 +262,6 @@ public class GameMain extends Application implements View {
         ft.setFromValue(0.0);
         ft.setToValue(1.0);
         ft.play();
-        ft.setOnFinished(event1 -> {
-        });
 
         // Ohjelman scene
         scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
