@@ -23,6 +23,9 @@ public class Player extends Unit {
     private final double maxVelocity = 300.0; // maksiminopeus
     private final double decelerateForce = 1000; // kitkavoima joka  hidastaa alusta jos nappia ei paineta
 
+    private double damagedTimeCounter = 0;
+    private boolean tookDamage2 = false;
+
     public Player(Controller controller, Color shipColor) {
         super(controller, shipColor);
         setTag(PLAYER_SHIP_TAG);
@@ -43,6 +46,20 @@ public class Player extends Unit {
 
     @Override
     public void update(double deltaTime){
+        if(getTookDamage()){
+            tookDamage2 = true;
+            damagedTimeCounter = 0;
+            setTookDamage(false);
+        }
+        if(tookDamage2 && damagedTimeCounter > 0.1){
+            tookDamage2 = false;
+            setOriginalColor();
+            damagedTimeCounter = 0;
+        }
+        else if(tookDamage2){
+            damagedTimeCounter += deltaTime;
+        }
+
         this.deltaTime = deltaTime;
         resetVelocity(); // TODO: tää kutsu?
         if (input.contains("A")) {

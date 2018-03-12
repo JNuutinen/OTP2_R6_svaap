@@ -45,6 +45,9 @@ public class Boss3 extends Unit implements Updateable {
 
     private boolean lasersTopToDown = true;
 
+    private double damagedTimeCounter = 0;
+    private boolean tookDamage2 = false;
+
     public Boss3(Controller controller, double initialX, double initialY){
 
         super(controller, Color.ORANGE);
@@ -88,6 +91,21 @@ public class Boss3 extends Unit implements Updateable {
      */
     @Override
     public void update(double deltaTime){
+
+        if(getTookDamage()){
+            tookDamage2 = true;
+            damagedTimeCounter = 0;
+            setTookDamage(false);
+        }
+        if(tookDamage2 && damagedTimeCounter > 0.1){
+            tookDamage2 = false;
+            setOriginalColor();
+            damagedTimeCounter = 0;
+        }
+        else if(tookDamage2){
+            damagedTimeCounter += deltaTime;
+        }
+
 
 
         if(stageTimeCounter > 14){

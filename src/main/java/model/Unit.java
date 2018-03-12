@@ -24,6 +24,8 @@ public class Unit extends Sprite implements Updateable {
     private Controller controller;
     private int originalHp;
     private Color color;
+    private boolean tookDamage = false; // efektiä varten
+    private Shape shape;
 
     /**
      * Yksikön hitpointsit.
@@ -157,12 +159,13 @@ public class Unit extends Sprite implements Updateable {
      * @param shape Aluksen Shape-olio.
      */
     void drawShip(Shape shape) {
+        this.shape = shape;
         int tag = getTag();
-        shape.setEffect(new GaussianBlur(2.0));
-        shape.setFill(Color.BLACK);
-        shape.setStrokeWidth(5.0);
-        this.getChildren().add(shape);
-        shape.setStroke(color);
+        this.shape.setEffect(new GaussianBlur(2.0));
+        this.shape.setFill(Color.BLACK);
+        this.shape.setStrokeWidth(5.0);
+        getChildren().add(this.shape);
+        this.shape.setStroke(color);
     }
 
     /**
@@ -225,12 +228,18 @@ public class Unit extends Sprite implements Updateable {
         }
     }
 
+
     /**
      * Yksikkö ottaa vahinkoa. Kutsutaan osuman tapahtuessa.
      *
      * @param damage Vahinkomäärä, jonka yksikkö ottaa.
      */
     public void takeDamage(int damage) {
+        tookDamage = true; // efektiä varten
+        if(shape != null){
+            shape.setStroke(Color.WHITE);
+        }
+
         hp -= damage;
         if(hp <= 0){
             hp = 9999; // ettei voi ottaa vahinkoa poiston yhteydessä
@@ -253,19 +262,16 @@ public class Unit extends Sprite implements Updateable {
         }
     }
 
-    /*
-    public void setDirection(double direction) {
-        this.rotate(direction);
-        for (Component component : components) {
-            component.rotate(direction);
-        }
+    public boolean getTookDamage(){
+        return tookDamage;
     }
 
-    public void stopMoving() {
-        this.setIsMoving(false);
-        for (Component component : components) {
-            component.setIsMoving(false);
-        }
+    public void setOriginalColor(){
+        shape.setStroke(color);
     }
-    */
+
+    public void setTookDamage(boolean tookDamage){
+        this.tookDamage = tookDamage;
+    }
+
 }

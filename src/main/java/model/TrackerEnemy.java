@@ -30,6 +30,9 @@ public class TrackerEnemy extends Unit implements Updateable {
     private double fireRate = 99999;
     private double fireRateCounter = 0;
 
+    private double damagedTimeCounter = 0;
+    private boolean tookDamage2 = false;
+
 
     public TrackerEnemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, Point2D[] path,
                         int tag) {
@@ -67,6 +70,20 @@ public class TrackerEnemy extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
+        if(getTookDamage()){
+            tookDamage2 = true;
+            damagedTimeCounter = 0;
+            setTookDamage(false);
+        }
+        if(tookDamage2 && damagedTimeCounter > 0.1){
+            tookDamage2 = false;
+            setOriginalColor();
+            damagedTimeCounter = 0;
+        }
+        else if(tookDamage2){
+            damagedTimeCounter += deltaTime;
+        }
+
         if (fireRateCounter <= fireRate){
             fireRateCounter += deltaTime;
         }
