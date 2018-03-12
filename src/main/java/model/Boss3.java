@@ -45,20 +45,24 @@ public class Boss3 extends Unit implements Updateable {
 
     private boolean lasersTopToDown = true;
 
+    private double damagedTimeCounter = 0;
+    private boolean tookDamage2 = false;
+    private boolean inFightingStage = false;
+
     public Boss3(Controller controller, double initialX, double initialY){
 
         super(controller, Color.ORANGE);
         this.controller = controller;
         this.setPosition(initialX, initialY);
         this.setTag(BOSS_SHIP_TAG);
-        this.setVelocity(40);
+        this.setVelocity(30);
         this.controller = controller;
         controller.addUnitToCollisionList(this);
         rotate(180);
         setIsMoving(true);
-        lockDirection(270);
         armShip();
         setHp(1000);
+        this.setHitbox(450);
 
 
         Component c = new Component("triangle", 3, 0, Color.PURPLE, 30, 40);
@@ -70,12 +74,12 @@ public class Boss3 extends Unit implements Updateable {
         Component c4 = new Component("triangle", 3, 0, Color.PURPLE, 20, -10);
         components.add(c4);
         equipComponents(components);
-        this.setHitbox(160);
+
 
         Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
-        triangle.getPoints().addAll(-200.0, -230.0,
-                200.0, 00.0,
-                -200.0, 230.0);
+        triangle.getPoints().addAll(-100.0, -230.0,
+                300.0, 00.0,
+                -100.0, 230.0);
         drawShip(triangle);
 
     }
@@ -88,6 +92,21 @@ public class Boss3 extends Unit implements Updateable {
      */
     @Override
     public void update(double deltaTime){
+
+        if(getTookDamage()){
+            tookDamage2 = true;
+            damagedTimeCounter = 0;
+            setTookDamage(false);
+        }
+        if(tookDamage2 && damagedTimeCounter > 0.1){
+            tookDamage2 = false;
+            setOriginalColor();
+            damagedTimeCounter = 0;
+        }
+        else if(tookDamage2){
+            damagedTimeCounter += deltaTime;
+        }
+
 
 
         if(stageTimeCounter > 14){
@@ -132,7 +151,16 @@ public class Boss3 extends Unit implements Updateable {
 
 
         moveStep(deltaTime);
-        if(movingDown){
+        if(!inFightingStage){
+            double distanceToTargetX = Math.abs(getXPosition() - (WINDOW_WIDTH * 0.8));
+            setVelocity(distanceToTargetX * deltaTime * 200);
+            if(distanceToTargetX < 5){
+                inFightingStage = true;
+                lockDirection(270);
+                setVelocity(70);
+            }
+        }
+        else if(movingDown){
             if(getYPosition() > WINDOW_HEIGHT * 0.55){
                 lockDirection(90);
                 movingDown = false;

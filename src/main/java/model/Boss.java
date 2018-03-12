@@ -35,6 +35,9 @@ public class Boss extends Unit implements Updateable {
 
     private boolean inFightingStage = false;
 
+    private double damagedTimeCounter = 0;
+    private boolean tookDamage2 = false;
+
     /**
      * Apumuuttuja pomon alkuperäisestä hp:stä
      */

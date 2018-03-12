@@ -10,7 +10,7 @@ import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 public class GameBackground extends Sprite implements Updateable  {
-private double scrollSpeed = 0.4;
+private double scrollSpeed = 30;
 
     /**
      * Pelin kontrolleri
@@ -57,15 +57,10 @@ private ImageView nextDiagonalImage;
 
     @Override
     public void update(double deltaTime) {
-
-
-        centerImage.setX(centerImage.getX() - scrollSpeed);
-        nextHorizontalImage.setX(nextHorizontalImage.getX() - scrollSpeed);
-
-
-
-
-
+        if(deltaTime < 100){ // fiksaa oudon bugin tason alussa
+            centerImage.setX(centerImage.getX() - (scrollSpeed * deltaTime));
+            nextHorizontalImage.setX(nextHorizontalImage.getX() - (scrollSpeed * deltaTime));
+        }
 
         if (centerImage.getImage().getWidth() + centerImage.getX() <= 0) {
             ImageView iv = centerImage;

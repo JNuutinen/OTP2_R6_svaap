@@ -1,10 +1,10 @@
-package model;
+package model.level;
 
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import model.*;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
 
@@ -16,12 +16,7 @@ import static view.GameMain.*;
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
  */
-public class Level extends Thread {
-
-    /**
-     * Jos true, thread on käynnissä, muuten false
-     */
-    private static volatile boolean isRunning = true;
+public class LevelN extends Thread implements Level {
 
     /**
      * Millisekunteina spawnausajan lyhyin aika, pohjalukema johon vaikuttaa konstruktorin
@@ -34,6 +29,17 @@ public class Level extends Thread {
      * parametrina annettu spawnFrequencyModifier.
      */
     private final int BASE_SPAWN_FREQ_HIGH = 6000;
+
+    /**
+     * Jos true, thread on käynnissä, muuten false
+     */
+    private volatile boolean isRunning = true;
+
+    /**
+     * Jos true, thread on käynnissä tai tauolla. Jos false,
+     * thread lakkaa olemasta.
+     */
+    private volatile boolean isAlive = true;
 
     /**
      * Viittaus pelin kontrolleriin, mahdollistaa vihollisolioiden lisäämisen peliin.
@@ -94,8 +100,8 @@ public class Level extends Thread {
      * @param enemyDamageModifier Kerroin, joka kasvattaa/pienentää vihollisten aseiden tekemää vahinkoa. TODO: ei käytös
      * @param levelNumber Tason numero.
      */
-    public Level(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, double spawnFrequencyModifier,
-                 double enemyHealthModifier, double enemyDamageModifier, int levelNumber) {
+    public LevelN(Controller controller, ArrayList<Enemy> enemyTypes, int numberOfEnemies, double spawnFrequencyModifier,
+                  double enemyHealthModifier, double enemyDamageModifier, int levelNumber) {
         this.controller = controller;
         this.enemyTypes = enemyTypes;
         this.numberOfEnemies = numberOfEnemies;
@@ -103,6 +109,26 @@ public class Level extends Thread {
         this.enemyHealthModifier = enemyHealthModifier;
         this.enemyDamageModifier = enemyDamageModifier;
         this.levelNumber = levelNumber;
+    }
+
+    @Override
+    public void continueLevel() {
+        isRunning = true;
+    }
+
+    @Override
+    public void destroyLevel() {
+        isAlive = false;
+    }
+
+    @Override
+    public void pauseLevel() {
+        isRunning = false;
+    }
+
+    @Override
+    public void startLevel() {
+        start();
     }
 
     @Override
@@ -119,11 +145,12 @@ public class Level extends Thread {
         }
 
 
-        // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
+        // LevelN thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
-
-                if (isRunning) {
+                if (!isAlive) {
+                    break;
+                } else if (isRunning) {
                     // paussi vihollisten välillä
                     // TODO: Monen vihollisen yhtäaikainen spawnaus
                     if (numberOfEnemies > 0) {
@@ -193,13 +220,5 @@ public class Level extends Thread {
                 20, 50, 0);
         trackerEnemy.addToPrimaryWeapons(blaster);
         controller.addUpdateable(trackerEnemy);
-    }
-
-    public static void pauseLevel() {
-        isRunning = false;
-    }
-
-    public static void continueLevel() {
-        isRunning = true;
     }
 }

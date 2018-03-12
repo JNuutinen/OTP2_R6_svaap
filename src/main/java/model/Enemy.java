@@ -22,6 +22,8 @@ public class Enemy extends Unit implements Updateable {
     // tulinopeus sekunneissa, ja sen apumuuttuja
     private double fireRate = 3;
     private double fireRateCounter = 2;
+    private double damagedTimeCounter = 0;
+    private boolean tookDamage2 = false;
 
 
     public Enemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, int tag) {
@@ -74,6 +76,20 @@ public class Enemy extends Unit implements Updateable {
 
     @Override
     public void update(double deltaTime){
+        if(getTookDamage()){
+            tookDamage2 = true;
+            damagedTimeCounter = 0;
+            setTookDamage(false);
+        }
+        if(tookDamage2 && damagedTimeCounter > 0.1){
+            tookDamage2 = false;
+            setOriginalColor();
+            damagedTimeCounter = 0;
+        }
+        else if(tookDamage2){
+            damagedTimeCounter += deltaTime;
+        }
+
         if (fireRateCounter <= fireRate) {
             fireRateCounter += deltaTime;
         }

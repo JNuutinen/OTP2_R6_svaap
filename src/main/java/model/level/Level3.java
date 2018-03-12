@@ -1,9 +1,10 @@
-package model;
+package model.level;
 
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import model.*;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
 
@@ -15,7 +16,7 @@ import static view.GameMain.*;
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
  */
-public class Level3 extends Thread {
+public class Level3 extends Thread implements Level {
 
     /**
      * Millisekunteina spawnausajan lyhyin aika, pohjalukema johon vaikuttaa konstruktorin
@@ -28,6 +29,17 @@ public class Level3 extends Thread {
      * parametrina annettu spawnFrequencyModifier.
      */
     private final int BASE_SPAWN_FREQ_HIGH = 6000;
+
+    /**
+     * Jos true, thread on käynnissä, muuten false
+     */
+    private volatile boolean isRunning = true;
+
+    /**
+     * Jos true, thread on käynnissä tai tauolla. Jos false,
+     * thread lakkaa olemasta.
+     */
+    private volatile boolean isAlive = true;
 
     /**
      * Viittaus pelin kontrolleriin, mahdollistaa vihollisolioiden lisäämisen peliin.
@@ -100,45 +112,67 @@ public class Level3 extends Thread {
     }
 
     @Override
+    public void continueLevel() {
+        isRunning = true;
+    }
+
+    @Override
+    public void destroyLevel() {
+        isAlive = false;
+    }
+
+    @Override
+    public void pauseLevel() {
+        isRunning = false;
+    }
+
+    @Override
+    public void startLevel() {
+        start();
+    }
+
+    @Override
     public void run() {
 
 
-        // Level thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
+        // LevelN thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
+                if (!isAlive) {
+                    break;
+                } else if (isRunning) {
 
 
-
-                // paussi vihollisten välillä
-                // TODO: Monen vihollisen yhtäaikainen spawnaus
-                if(numberOfEnemies > 0) {
-                    long sleepTime = ThreadLocalRandom.current().nextLong((long)(BASE_SPAWN_FREQ_LOW * spawnFrequencyModifier),
-                            (long)(BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
-                    //read.sleep(sleepTime);
-                    Thread.sleep(200);
-
+                    // paussi vihollisten välillä
+                    // TODO: Monen vihollisen yhtäaikainen spawnaus
+                    if (numberOfEnemies > 0) {
+                        long sleepTime = ThreadLocalRandom.current().nextLong((long) (BASE_SPAWN_FREQ_LOW * spawnFrequencyModifier),
+                                (long) (BASE_SPAWN_FREQ_HIGH * spawnFrequencyModifier + 1));
+                        //read.sleep(sleepTime);
+                        Thread.sleep(200);
 
 
-                    // arvotaan spawnauspaikka
-                    double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT - 50);
+                        // arvotaan spawnauspaikka
+                        double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT - 50);
 
-                    // arvotaan vihollinen tyyppilistasta
-                    Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
-                    Enemy enemy = new Enemy(controller, Color.YELLOW, enemyType.getMovementPattern(), WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
-                    enemy.setHp((int)(enemy.getHp() * enemyHealthModifier));
-                    Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 50, 0, Color.CORAL,
-                            20, 100, 0);
-                    enemy.addToPrimaryWeapons((Weapon) blaster);
+                        // arvotaan vihollinen tyyppilistasta
+                        Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
+                        Enemy enemy = new Enemy(controller, Color.YELLOW, enemyType.getMovementPattern(), WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
+                        enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
+                        Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 50, 0, Color.CORAL,
+                                20, 100, 0);
+                        enemy.addToPrimaryWeapons((Weapon) blaster);
 
-                    controller.addUpdateable(enemy);
-                    // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
-                    // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
-                    if (numberOfEnemies == 1) {
-                        Thread.sleep(2000);
-                        lastEnemy = new Boss3(controller, 1000, 10);
-                        controller.addUpdateable(lastEnemy);
+                        controller.addUpdateable(enemy);
+                        // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
+                        // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
+                        if (numberOfEnemies == 1) {
+                            Thread.sleep(2000);
+                            lastEnemy = new Boss3(controller, 1000, 10);
+                            controller.addUpdateable(lastEnemy);
+                        }
+                        numberOfEnemies--;
                     }
-                    numberOfEnemies--;
                 }
             }
             // Levelin viholliset spawnattu, venataan vähän aikaa ennen levelin loppumista
