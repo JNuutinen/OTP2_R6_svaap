@@ -49,6 +49,8 @@ public class Explosion extends Sprite implements Updateable{
         getChildren().addAll(lines);
         controller.addUpdateable(this);
 
+        destroyThis();
+
     }
 
     //TODO onks taa nyt hyva?
@@ -57,7 +59,7 @@ public class Explosion extends Sprite implements Updateable{
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
