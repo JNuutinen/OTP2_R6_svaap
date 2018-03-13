@@ -6,7 +6,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
@@ -15,7 +14,6 @@ import static view.GameMain.UNDEFINED_TAG;
 /**
  * Perusluokka kaikille spriteille.
  */
-@SuppressWarnings("unused")
 public class Sprite extends Pane {
 
     /**
@@ -28,6 +26,9 @@ public class Sprite extends Pane {
      */
     private double velocity = 200;
 
+    /**
+     * Ympyrähitboxin halkaisija.
+     */
     private double hitboxRadius = 0;
 
     /**

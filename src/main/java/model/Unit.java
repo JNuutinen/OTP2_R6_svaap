@@ -20,9 +20,25 @@ public class Unit extends Sprite implements Updateable {
      * Kontrolleri.
      */
     private Controller controller;
+
+    /**
+     * Unitin alkuperäiset hitpointsit.
+     */
     private int originalHp;
+
+    /**
+     * Unitin shapen väri.
+     */
     private Color color;
-    private boolean tookDamage = false; // efektiä varten
+
+    /**
+     * Tieto siitä, onko Unit ottanut vahinkoa. Käytetään osumaefektin tekemiseen.
+     */
+    private boolean tookDamage = false;
+
+    /**
+     * Unitin shape.
+     */
     private Shape shape;
 
 
@@ -51,12 +67,8 @@ public class Unit extends Sprite implements Updateable {
      */
     private Weapon secondaryWeapon;
 
-    public Unit(){
-
-    }
-
     /**
-     * Konstruktori asettaa kontrollerin.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
      *
      */
@@ -64,7 +76,11 @@ public class Unit extends Sprite implements Updateable {
         this.controller = controller;
     }
 
-    // @param color aluksen väri
+    /**
+     * Konstruktori Unitin shapen värin valinnalla.
+     * @param controller Pelin kontrolleri.
+     * @param color Unitin shapen väri.
+     */
     public Unit(Controller controller, Color color){
         this(controller);
         this.color = color;
@@ -188,6 +204,10 @@ public class Unit extends Sprite implements Updateable {
         }
     }
 
+    /**
+     * Kiinnittää komponentin Unittiin.
+     * @param component Komponentti, joka lisätään.
+     */
     public void equipComponent(Component component) {
         Shape shape = component.getShape();
         shape.setLayoutY(component.getyOffset());
@@ -196,6 +216,11 @@ public class Unit extends Sprite implements Updateable {
         setTag(getTag());
     }
 
+    /**
+     * Lisää komponentin komponenttilistaan. Komponenttilistassa olevat komponentit kiinnitetään Unittiin
+     * equipComponents() metodissa.
+     * @param component Komponentti, joka lisätään komponenttilistaan.
+     */
     public void addComponent(Component component){
         components.add(component);
     }
@@ -275,14 +300,25 @@ public class Unit extends Sprite implements Updateable {
         }
     }
 
+    /**
+     * Palauttaa tiedon, onko Unit ottanut vahinkoa.
+     * @return Tieto onko Unit ottanut vahinkoa.
+     */
     public boolean getTookDamage(){
         return tookDamage;
     }
 
+    /**
+     * Asettaa Unitin shapen värin.
+     */
     public void setOriginalColor(){
         shape.setStroke(color);
     }
 
+    /**
+     * Asettaa Unittiin tiedon, onko se ottanut vahinkoa.
+     * @param tookDamage True jos Unit on ottanut vahinkoa, muuten false.
+     */
     public void setTookDamage(boolean tookDamage){
         this.tookDamage = tookDamage;
     }
