@@ -233,5 +233,6 @@ public class GameController implements Controller {
         Platform.runLater(()->view.returnToMain());
         level.destroyLevel();
         gameLoop.stopLoops();
+
     }
 }

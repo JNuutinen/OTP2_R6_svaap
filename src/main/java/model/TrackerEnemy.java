@@ -9,9 +9,24 @@ import model.weapons.Weapon;
 
 import static view.GameMain.*;
 
+/**
+ * TrackerEnemy vihollinen seuraa "katsellaan" ja ampuu pelaajaa kohti.
+ */
 public class TrackerEnemy extends Unit implements Updateable {
+
+    /**
+     * Jos vihollinen ei liiku, se saa arvon -1
+     */
     public static final int MOVE_NONE = -1;
+
+    /**
+     * Jos vihollinen liikkuu suoraan -x suunnassa, se saa 0.
+     */
     public static final int MOVE_STRAIGHT = 0;
+
+    /**
+     * Jos vihollinen liikkuu siniaallon tavoin, se saa arvon 1.
+     */
     public static final int MOVE_SINE = 1;
 
     private Controller controller;
@@ -34,6 +49,16 @@ public class TrackerEnemy extends Unit implements Updateable {
     private boolean tookDamage2 = false;
 
 
+    /**
+     * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
+     * @param controller
+     * @param shipColor
+     * @param movementPattern
+     * @param initialX
+     * @param initialY
+     * @param path
+     * @param tag
+     */
     public TrackerEnemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, Point2D[] path,
                         int tag) {
         super(controller, shipColor);

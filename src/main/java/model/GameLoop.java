@@ -51,6 +51,7 @@ public class GameLoop {
      */
     private int pauseModifier = 1;
 
+
     /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
@@ -124,44 +125,44 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
-                double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
-                // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
-                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/250.0) {
-                   // controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
-                    // Tarkista updateable -jono
-                    if (!updateableQueue.isEmpty()) {
-                        updateables.addAll(updateableQueue);
-                        updateableQueue.clear();
-                    }
+                    double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
+                    // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
+                    if ((double) (now - lastUpdate) / 1_000_000_000.0 >= 1.0 / 250.0) {
+                        // controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
+                        // Tarkista updateable -jono
+                        if (!updateableQueue.isEmpty()) {
+                            updateables.addAll(updateableQueue);
+                            updateableQueue.clear();
+                        }
 
-                    // tarkista poistojono
-                    if (!removeUpdateableQueue.isEmpty()) {
-                        for (Updateable toBeRemoved : removeUpdateableQueue) {
-                            if (updateables.contains(toBeRemoved)) {
-                                updateables.remove(toBeRemoved);
+                        // tarkista poistojono
+                        if (!removeUpdateableQueue.isEmpty()) {
+                            for (Updateable toBeRemoved : removeUpdateableQueue) {
+                                if (updateables.contains(toBeRemoved)) {
+                                    updateables.remove(toBeRemoved);
+                                }
+                            }
+                            removeUpdateableQueue.clear();
+                        }
+
+                        // Gameloopin taika
+                        for (Updateable updateable : updateables) {
+                            if (updateable != null) {
+                                //paivita rajapintaoliot
+                                updateable.update(deltaTime);
                             }
                         }
-                        removeUpdateableQueue.clear();
-                    }
 
-                    // Gameloopin taika
-                    for (Updateable updateable : updateables) {
-                        if (updateable != null){
-                            //paivita rajapintaoliot
-                            updateable.update(deltaTime);
+                        debugger_toSecondCounter += deltaTime;
+                        debugger_frameCounter++;
+                        if (debugger_toSecondCounter > 1) {
+                            controller.setFps(debugger_frameCounter);
+                            debugger_toSecondCounter = 0;
+                            debugger_frameCounter = 0;
                         }
+                        lastUpdate = now;
                     }
-
-                    debugger_toSecondCounter += deltaTime;
-                    debugger_frameCounter++;
-                    if(debugger_toSecondCounter > 1){
-                        controller.setFps(debugger_frameCounter);
-                        debugger_toSecondCounter = 0;
-                        debugger_frameCounter = 0;
-                    }
-                    lastUpdate = now ;
                 }
-            }
         };
 
         // ------ osumatarkastelun looppi
@@ -171,86 +172,84 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
-                if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/150.0) {
-                    // Gameloopin taika
-                    for (Updateable updateable : updateables) {
-                        if (updateable != null) {
-                            //osumistarkastelu
-                            //TODO taa on KOVAKOODATTU >:(
-                            if (updateable.getTag() == ENEMY_PROJECTILE_TAG) {
-                                for (Updateable updateable2 : updateables) {
-                                    if (updateable != updateable2 && updateable2 != null) {
-                                        if (updateable2.getTag() == PLAYER_SHIP_TAG) {
-                                            // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
-                                            if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
-                                                    (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
-                                                // kutsu objektin collides-metodia
-                                                updateable.collides(updateable2);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (updateable.getTag() == PLAYER_PROJECTILE_TAG) {
-                                for (Updateable updateable2 : updateables) {
-                                    if (updateable != updateable2 && updateable2 != null) {
-                                        if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
-                                            if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
-                                                    (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
-                                                updateable.collides(updateable2);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (updateable.getTag() == PLAYER_TRACE_TAG) {
-                                for (Updateable updateable2 : updateables) {
-                                    if (updateable != updateable2 && updateable2 != null) {
-                                        if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
-                                            // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
-                                            if(updateable.getPosition().getX() > updateable2.getPosition().getX()){
-                                                // jos vihun hitboxin säde yltää laseriin
+                    if ((double) (now - lastUpdate) / 1_000_000_000.0 >= 1.0 / 150.0) {
+                        // Gameloopin taika
+                        for (Updateable updateable : updateables) {
+                            if (updateable != null) {
+                                //osumistarkastelu
+                                //TODO taa on KOVAKOODATTU >:(
+                                if (updateable.getTag() == ENEMY_PROJECTILE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == PLAYER_SHIP_TAG) {
+                                                // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
                                                 if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
-                                                        (updateable.getHitboxRadius())) {
+                                                        (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
+                                                    // kutsu objektin collides-metodia
                                                     updateable.collides(updateable2);
                                                 }
                                             }
-                                            else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
+                                        }
+                                    }
+                                }
+                                if (updateable.getTag() == PLAYER_PROJECTILE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
+                                                if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                        (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
+                                                    updateable.collides(updateable2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (updateable.getTag() == PLAYER_TRACE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
+                                                // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
+                                                if (updateable.getPosition().getX() > updateable2.getPosition().getX()) {
+                                                    // jos vihun hitboxin säde yltää laseriin
+                                                    if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                            (updateable.getHitboxRadius())) {
+                                                        updateable.collides(updateable2);
+                                                    }
+                                                } else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
                                                         new Point2D(0, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
-                                                updateable.collides(updateable2);
-                                            }
-                                        }
-                                    }
-                                }
-                                // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
-                                updateable.setTag(UNDEFINED_TAG);
-                            }
-                            if (updateable.getTag() == ENEMY_TRACE_TAG) {
-                                for (Updateable updateable2 : updateables) {
-                                    if (updateable != updateable2 && updateable2 != null) {
-                                        if (updateable2.getTag() == PLAYER_SHIP_TAG) {
-                                            // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
-                                            if(updateable.getPosition().getX() < updateable2.getPosition().getX()){
-                                                // jos vihun hitboxin säde yltää laseriin
-                                                if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
-                                                        (updateable.getHitboxRadius())) {
                                                     updateable.collides(updateable2);
                                                 }
                                             }
-                                            else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
-                                                    new Point2D(0, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
-                                                updateable.collides(updateable2);
+                                        }
+                                    }
+                                    // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
+                                    updateable.setTag(UNDEFINED_TAG);
+                                }
+                                if (updateable.getTag() == ENEMY_TRACE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == PLAYER_SHIP_TAG) {
+                                                // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
+                                                if (updateable.getPosition().getX() < updateable2.getPosition().getX()) {
+                                                    // jos vihun hitboxin säde yltää laseriin
+                                                    if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                            (updateable.getHitboxRadius())) {
+                                                        updateable.collides(updateable2);
+                                                    }
+                                                } else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
+                                                        new Point2D(0, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
+                                                    updateable.collides(updateable2);
+                                                }
                                             }
                                         }
                                     }
+                                    // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
+                                    updateable.setTag(UNDEFINED_TAG);
                                 }
-                                // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
-                                updateable.setTag(UNDEFINED_TAG);
                             }
                         }
                     }
                 }
-            }
         };
         mainLoop.start();
         collisionLoop.start();

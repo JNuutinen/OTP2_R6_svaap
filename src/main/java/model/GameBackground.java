@@ -10,7 +10,11 @@ import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 public class GameBackground extends Sprite implements Updateable  {
-private double scrollSpeed = 30;
+
+    /**
+     * Taustan liikkumisnopeus
+     */
+    private double scrollSpeed = 30;
 
     /**
      * Pelin kontrolleri
@@ -21,6 +25,7 @@ private ImageView centerImage;
 private ImageView nextHorizontalImage;
 private ImageView nextVerticalImage;
 private ImageView nextDiagonalImage;
+
 
     public GameBackground(Controller controller) {
 

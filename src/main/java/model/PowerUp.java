@@ -140,17 +140,29 @@ public class PowerUp extends Sprite implements Updateable{
         }
     }
 
+    /**
+     * Päivittää PowerUpin paikkaa suhteessa maailmaan.
+     * @param deltaTime Kulunut aika viime päivityksestä.
+     */
     @Override
     public void update(double deltaTime) {
         moveStep(deltaTime);
     }
 
+    /**
+     * Tarkistaa osuuko pelaaja PowerUppiin, antaa sen pelaajalle jos osuu, jonka jälkeen
+     * PowerUp poistetaan.
+     * @param collidingUpdateable Updateable-rajapinnan toteuttava olio, johon törmätty.
+     */
     @Override
     public void collides(Updateable collidingUpdateable){
         givePowerUp((Player)collidingUpdateable);
         destroyThis();
     }
 
+    /**
+     * Poistaa objektin pelimaailmasta.
+     */
     @Override
     public void destroyThis() {
         controller.removeUpdateable(this);
