@@ -11,18 +11,45 @@ import javafx.scene.transform.Rotate;
 
 import static view.GameMain.ENEMY_PROJECTILE_TAG;
 
+/**
+ * Power uppien luokka.
+ */
 public class PowerUp extends Sprite implements Updateable{
+
+    /**
+     * Powerupin arvo.
+     */
     int value;
+
+    /**
+     * Powerupin tyyppi.
+     */
     int type;
+
+    /**
+     * Powerupin tyyppien vakiot.
+     */
     static final int HP = 0, DAMAGE = 1, SPEED = 2, SCORE = 3;
+
+    /**
+     * Powerupin koko.
+     */
     int size = 5;
+
+    /**
+     * Powerupin Shape.
+     */
     Shape shape;
+
+    /**
+     * Pelin kontrolleri.
+     */
     Controller controller;
 
 
     /**
-     *
-     * @param controller
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
      * @param deadUnit Unit, joka pudottaa power up:in
      * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
      *                    HP lisää pelaajan elämäpisteitä
@@ -102,6 +129,12 @@ public class PowerUp extends Sprite implements Updateable{
      * @return Shape, ympyrä muoto.
      */
 
+    /**
+     * Luo ympyränmuotoisen Shapen.
+     * @param size Shapen koko.
+     * @param color Shapen väri.
+     * @return Luotu Shape.
+     */
     public Shape circle(int size, Color color) {
         Circle circle = new Circle(3 * size);
         circle.setFill(Color.BLACK);
@@ -109,8 +142,10 @@ public class PowerUp extends Sprite implements Updateable{
         circle.setStrokeWidth(2.0);
         return (Shape)circle;
     }
+    
     /**
      * Asetetaan power up:in vaikutukset pelaajan.
+     * @param player Pelaaja, jolle powerup annetaan.
      */
     public void givePowerUp(Player player) {
         switch (type) {
