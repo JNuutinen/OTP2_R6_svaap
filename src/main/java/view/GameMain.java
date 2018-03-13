@@ -488,10 +488,11 @@ public class GameMain extends Application implements View {
         ArrayList<Component> components = new ArrayList<>();
         components.add((Component)primary);
         components.add((Component)secondary);
-/*
+
         Component b = new Component("circle", 10, 0, Color.RED, 0,0);
         components.add(b);
 
+        /*
         Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0,0);
         components.add(c);
 

@@ -223,7 +223,7 @@ public class Boss3 extends Unit implements Updateable {
 
 
         Weapon rocketLauncher = new RocketLauncher(controller, this, 2, -5, 0,
-                4.8, true);
+                4.8);
         this.setSecondaryWeapon(rocketLauncher);
     }
 }

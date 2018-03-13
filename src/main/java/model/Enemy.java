@@ -56,7 +56,6 @@ public class Enemy extends Unit implements Updateable {
         addComponent(c3);
         Component c4 = new Component("triangle", 3, 0, Color.PURPLE, 20, -10);
         components.add(c4);
-        //equipComponents();
 
     }
 

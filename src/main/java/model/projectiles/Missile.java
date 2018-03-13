@@ -89,21 +89,6 @@ public class Missile extends BaseProjectile implements Updateable {
         this.getChildren().addAll(trail);
     }
 
-    /**
-     * Konstruktori, osoitus kohteeseen spawnatessa määritetty.
-     * @param controller Pelin kontrolleri.
-     * @param shooter Ammuksen ampuja.
-     * @param speed Ammuksen nopeus.
-     * @param damage Ammuksen tekemä vahinko.
-     * @param rotatingSpeed Ammuksen kääntymisnopeus.
-     * @param tag Ammuksen tagi.
-     * @param initialDirectionToTarget Kertoo, osoittaako ammus spawnatessaan kohdettaan päin.
-     */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean initialDirectionToTarget){
-        this(controller, shooter, speed, damage, rotatingSpeed, tag);
-        this.initialDirectionToTarget = initialDirectionToTarget;
-    }
-
     @Override
     public void destroyThis(){
         trail.destroyThis();
@@ -144,16 +129,6 @@ public class Missile extends BaseProjectile implements Updateable {
 
         double angleToTarget;
         if (target != null) {
-            if(initialDirectionToTarget){ // suorittaa sisällön kerran
-                //TODO KOVAKOODATTU ):
-                if(getShooter() instanceof Player){
-                    this.rotate(getAngleFromTarget(target.getPosition()) - getDirection() - this.getDirection());
-                }
-                else{
-                    this.rotate(getAngleFromTarget(target.getPosition()) - getDirection() - this.getDirection() + 180);
-                }
-                initialDirectionToTarget = false;
-            }
             if (controller.getUpdateables().contains(target)) {
                 double distanceToTarget = getDistanceFromTarget(target.getPosition());
                 if(distanceToTarget < closestDistance){

@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import model.*;
 import model.weapons.Blaster;
 import model.weapons.LaserGun;
+import model.weapons.RocketLauncher;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -134,16 +135,8 @@ public class LevelN extends Thread implements Level {
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(200);
-            hegenTestausMetodi();
 
-            Thread.sleep(900);
-            hegenTestausMetodi();
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
 
         // LevelN thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
@@ -196,7 +189,7 @@ public class LevelN extends Thread implements Level {
         }
     }
 
-    public void hegenTestausMetodi(){
+    public void hardcodedSpawner(){
         //enem_tracker testausta varten
         Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,100),
                 new Point2D(WINDOW_WIDTH * 0.9, 100),
@@ -216,11 +209,16 @@ public class LevelN extends Thread implements Level {
         trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
                 WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  ENEMY_SHIP_TAG);
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-        blaster = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                20, 50, 0);
-        blaster = new LaserGun(controller, trackerEnemy, 0, 0, 0,
+
+        Weapon laserGun = new LaserGun(controller, trackerEnemy, 0, 0, 0,
                 20, 0, 2d);
-        trackerEnemy.addToPrimaryWeapon(blaster);
+        Weapon rocketLauncher = new RocketLauncher(controller, trackerEnemy, 2, -5, 0,
+                4);
+
+        trackerEnemy.addToPrimaryWeapon(rocketLauncher);
         controller.addUpdateable(trackerEnemy);
+
+
+
     }
 }

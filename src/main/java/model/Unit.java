@@ -143,7 +143,6 @@ public class Unit extends Sprite implements Updateable {
      */
     public void addToPrimaryWeapon(Weapon primaryWeapon) {
         addComponent((Component)primaryWeapon);
-        equipComponent((Component)primaryWeapon);
         this.primaryWeapons.add(primaryWeapon);
     }
 
@@ -161,7 +160,6 @@ public class Unit extends Sprite implements Updateable {
      */
     public void setSecondaryWeapon(Weapon secondaryWeapon) {
         addComponent((Component)secondaryWeapon);
-        equipComponent((Component)secondaryWeapon);
         this.secondaryWeapon = secondaryWeapon;
     }
 
@@ -222,6 +220,7 @@ public class Unit extends Sprite implements Updateable {
      * @param component Komponentti, joka lisätään komponenttilistaan.
      */
     public void addComponent(Component component){
+        equipComponent(component);
         components.add(component);
     }
 
