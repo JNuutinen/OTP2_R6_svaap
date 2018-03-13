@@ -3,30 +3,32 @@ package model;
 import controller.Controller;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import view.GameMain;
 
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
-
+/**
+ * Pelin liikkuva tausta. Sprite ei itsessään liiku, vaan se liikuttelee kuvia itsensä sisällä.
+ */
 public class GameBackground extends Sprite implements Updateable  {
 
     /**
-     * Taustan liikkumisnopeus
+     * Taustan vierimisnopeus.
      */
     private double scrollSpeed = 30;
 
     /**
-     * Pelin kontrolleri
+     * Kuva1
      */
-private Controller controller;
+    private ImageView centerImage;
 
-private ImageView centerImage;
-private ImageView nextHorizontalImage;
-private ImageView nextVerticalImage;
-private ImageView nextDiagonalImage;
+    /**
+     * Seuraava kuva
+     */
+    private ImageView nextHorizontalImage;
 
-
+    /**
+     * Konstruktori, luo kuvat ja lisää ne tämän Spriten Paneen.
+     * @param controller Pelin kontrolleri.
+     */
     public GameBackground(Controller controller) {
 
         controller.addUpdateable(this);
@@ -34,30 +36,18 @@ private ImageView nextDiagonalImage;
         String imagePath = "images/darkSpace.jpg";
 
         centerImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
-                (double) GameMain.WINDOW_WIDTH, (double)GameMain.WINDOW_HEIGHT, false, false));
+                GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
 
         nextHorizontalImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
-                (double) GameMain.WINDOW_WIDTH, (double)GameMain.WINDOW_HEIGHT, false, false));
-
-        nextVerticalImage = new ImageView(new Image(imagePath,
-                (double) GameMain.WINDOW_WIDTH, (double)GameMain.WINDOW_HEIGHT, false, false));
-
-        nextDiagonalImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
-                (double) GameMain.WINDOW_WIDTH, (double)GameMain.WINDOW_HEIGHT, false, false));
-
+                GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
 
         centerImage.setY(centerImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
 
         nextHorizontalImage.setY(nextHorizontalImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
         nextHorizontalImage.setX(centerImage.getX() + centerImage.getImage().getWidth());
 
-        //nextDiagonalImage.setX(nextDiagonalImage.getX() + nextDiagonalImage.getImage().getWidth());
-        //nextDiagonalImage.setY(1);
-
-
         this.getChildren().add(centerImage);
         this.getChildren().add(nextHorizontalImage);
-
     }
 
     @Override

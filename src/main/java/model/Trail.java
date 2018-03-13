@@ -1,30 +1,52 @@
 package model;
 
 import controller.Controller;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Häntä ammuksille.
+ */
 public class Trail extends Sprite implements Updateable{
 
+    /**
+     * Updateable, josta häntä lähtee.
+     */
     private Updateable target;
-    private Polyline polyline = new Polyline();
-    private List<Line> lines = new ArrayList<Line>();
-    private List<Stop[]> colors = new ArrayList<Stop[]>();
-    private Point2D newestTrailPoint = null;
+
+    /**
+     * Lista, jossa trailin muodostavat viivat.
+     */
+    private List<Line> lines;
+
+    /**
+     * Trailin värien muutokset.
+     */
+    private List<Stop[]> colors;
+
+    /**
+     * Uusin piste trailille.
+     */
+    private Point2D newestTrailPoint;
+
+    /**
+     * Pelin kontrolleri.
+     */
     private Controller controller;
 
+    /**
+     * Konstruktori, luo trailin.
+     * @param controller Pelin kontrolleri.
+     * @param target Updateable, josta trail lähtee.
+     */
     public Trail(Controller controller, Updateable target){
         this.controller = controller;
         this.target = target;
@@ -32,21 +54,14 @@ public class Trail extends Sprite implements Updateable{
 
         newestTrailPoint = new Point2D(target.getPosition().getX(), target.getPosition().getY());
 
-        /*
-        polyline.setStrokeWidth(5.0);
-        newestTrailPoint = new Point2D(target.getPosition().getX(), target.getPosition().getY());
-        polyline.getPoints().addAll(newestTrailPoint.getX(), newestTrailPoint.getY());
-
-
-        polyline.getPoints().addAll(newestTrailPoint.getX(), newestTrailPoint.getY());
-        */
-
         Stop[] stops = new Stop[] { new Stop(0, Color.GREEN), new Stop(1, Color.BLUE)};
+        colors = new ArrayList<Stop[]>();
         this.colors.add(stops);
 
         LinearGradient lg = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, this.colors.get(0));
         //polyline.setStroke(lg);
 
+        lines = new ArrayList<Line>();
         lines.add(new Line(target.getPosition().getX(), target.getPosition().getY(), target.getPosition().getX(), target.getPosition().getY()));
 
         this.getChildren().addAll(lines);
@@ -54,27 +69,23 @@ public class Trail extends Sprite implements Updateable{
 
     }
 
-    //TODO onks taa nyt hyva?
+    @Override
     public void destroyThis(){
         Trail toBeRemved = this;
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        toBeRemved.destroyCompletely();
-                    }
-                });
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            Platform.runLater(() -> toBeRemved.destroyCompletely());
         });
         thread.start();
     }
 
+    /**
+     * Poistaa trailin.
+     */
     private void destroyCompletely(){
         controller.removeUpdateable(this);
     }
@@ -121,6 +132,12 @@ public class Trail extends Sprite implements Updateable{
 
     }
 
+    /**
+     * Palauttaa kahden pisteen etäisyyden toisistaan.
+     * @param source Piste1.
+     * @param target Piste2.
+     * @return Pisteiden etäisyys toisistaan.
+     */
     private double getDistanceFromBetweenPoints(Point2D source, Point2D target){
         return Math.sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
     }

@@ -8,25 +8,58 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Räjähdysefekti Spriteille.
+ */
 public class Explosion extends Sprite implements Updateable{
 
-    private List<Line> lines = new ArrayList<>();
+    /**
+     * Räjähdyksestä lähtevien viivojen lista.
+     */
+    private List<Line> lines;
+
+    /**
+     * Räjähdysviivojen pituus.
+     */
     private final double lineLength = 150;
+
+    /**
+     * Pelin kontrolleri.
+     */
     private Controller controller;
+
+    /**
+     * Stopit värinmuutoksille.
+     */
     private Stop[] colors;
 
+    /**
+     * Räjähdyksestä lähtevien viivojen määrä.
+     */
     private final int linesAmount = 5;
+
+    /**
+     * Lista räjädyksestä lähtevien viivojen suuntavektoreista.
+     */
     private Point2D[] directionVector;
-    private double scaleMultiplier = 1;
 
+    /**
+     * Trailin skaalauskerroin.
+     */
+    private double scaleMultiplier;
 
-
+    /**
+     * Konstruktori luo trailin ja lisää sen Updateableihin. Lopussa kutsuu destroyThis() metodia,
+     * jossa annetaan räjähdyksen olla hetken "elossa" ja animoitua, jonka jälkeen se poistetaan.
+     * @param controller Pelin kontrolleri.
+     * @param color Räjähdyksen väri.
+     * @param position Räjähdyksen sijainti.
+     * @param scaleMultiplier Räjähdyksen viivojen skaalauskerroin.
+     */
     public Explosion(Controller controller, Color color, Point2D position, double scaleMultiplier){
         this.controller = controller;
         this.setPosition(position.getX(), position.getY());
@@ -35,6 +68,7 @@ public class Explosion extends Sprite implements Updateable{
 
 
         directionVector = new Point2D[linesAmount];
+        lines = new ArrayList<>();
         for(int i = 0; i < linesAmount; i++){
             directionVector[i] = degreesToVector(Math.random() * (360 / linesAmount) + i * (360 / linesAmount));
             //lines.add(new Line(0, 0, -0.9085408752374184 * 100, -0.41779597655174416 * 100));
@@ -57,7 +91,7 @@ public class Explosion extends Sprite implements Updateable{
 
     }
 
-    //TODO onks taa nyt hyva?
+    @Override
     public void destroyThis(){
         Explosion toBeRemved = this;
         Thread thread = new Thread(new Runnable() {
@@ -78,6 +112,9 @@ public class Explosion extends Sprite implements Updateable{
         thread.start();
     }
 
+    /**
+     * Poistaa räjähdyksen pelistä.
+     */
     private void destroyCompletely(){
         controller.removeUpdateable(this);
     }
