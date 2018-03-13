@@ -127,7 +127,7 @@ public class GameMain extends Application implements View {
         } else{
             debugger_fps.setTextFill(Color.web("#ffffff"));//valkone
         }
-        debugger_fps.setText("mainLoop frames in last sec: " + fps);
+        debugger_fps.setText(String.valueOf(fps));
     }
 
     // ------ Debugger
@@ -161,7 +161,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void setScore(int score) {
-        this.score.setText("Score: " + score);
+        this.score.setText(String.valueOf(score));
         this.score.toFront();
     }
 
@@ -317,7 +317,10 @@ public class GameMain extends Application implements View {
         ft.setToValue(1.0);
         ft.play();
 
-        score = new Label("Score: " + controller.getScore());
+        score = new Label(String.valueOf(controller.getScore()));
+        score.setTextFill(Color.WHITE);
+        score.setLayoutX(210);
+        score.setLayoutY(51);
         score.setFont(new Font("Cambria", 32));
 
         GameBackground gmg = new GameBackground(controller);
@@ -329,15 +332,16 @@ public class GameMain extends Application implements View {
         //---------------- debugger
         if(debuggerToolsEnabled) {
             debugger_fps = new Label("fps");
-            debugger_fps.setFont(new Font("Cambria", 16));
-            debugger_fps.setLayoutX(250);
+            debugger_fps.setFont(new Font("Cambria", 32));
+            debugger_fps.setLayoutX(1010);
+            debugger_fps.setLayoutY(51);
             uiPane.getChildren().add(debugger_fps);
 
 
-            debugger_currentFps = new Label("currentFps");
+          /*  debugger_currentFps = new Label("currentFps");
             debugger_currentFps.setFont(new Font("Cambria", 16));
             debugger_currentFps.setLayoutX(540);
-            uiPane.getChildren().add(debugger_currentFps);
+            uiPane.getChildren().add(debugger_currentFps);*/
         }
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä

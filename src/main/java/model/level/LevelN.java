@@ -185,10 +185,7 @@ public class LevelN extends Thread implements Level {
                     }
                 }
             }
-            // Levelin viholliset spawnattu, venataan vähän aikaa ennen levelin loppumista
 
-            System.out.println("Voitit tason " + (levelNumber) + "!");
-            Platform.runLater(() -> controller.addScore(500));
 
             // Ilmoita levelin loppumisesta
             Platform.runLater(() -> controller.returnToMain());

@@ -127,7 +127,7 @@ public class GameLoop {
                 double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
                 // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
                 if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/250.0) {
-                    controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
+                   // controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
                     // Tarkista updateable -jono
                     if (!updateableQueue.isEmpty()) {
                         updateables.addAll(updateableQueue);
