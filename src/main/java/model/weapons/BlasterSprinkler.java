@@ -29,7 +29,7 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     /**
      * Aseen tulinopeus.
      */
-    private double firerate = 0.075;
+    private double firerate = 0.07;
 
     /**
      * Aseen vakioväri.
