@@ -2,13 +2,8 @@ package model.projectiles;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import model.Component;
-import model.Player;
 import model.Sprite;
 import model.Unit;
-
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Apuluokka eri projectileille. Pitää sisällään projectilen perus
@@ -32,11 +27,11 @@ class BaseProjectile extends Sprite {
     private Unit shooter;
 
     /**
-     * Konstruktori, asettaa kontrollerin ja nopeuden. Shooter
-     * -parametrin avulla asettaa tagin, ammuksen suunnan, sekä ammuksen lähtösijainnin.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Unit, joka ampui ammuksen.
+     * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
+     * @param tag Ammuksen tagi.
      */
     BaseProjectile(Controller controller, Unit shooter, double speed, int tag) {
         this.controller = controller;
@@ -52,12 +47,13 @@ class BaseProjectile extends Sprite {
     }
 
     /**
-     *
-     * @param controller
-     * @param shooter
-     * @param speed
-     * @param frontOffset ammuksen aloituspaikan poikkeus aluksen etusuuntaan
-     * @param leftOffset ammuksne aloituspaikan poikkeus aluksen vasempaan suuntaan
+     * Konstruktori aloitussijainnin siirtymillä.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param tag Ammuksen tagi.
      */
     BaseProjectile(Controller controller, Unit shooter, double speed, double frontOffset, double leftOffset, int tag) {
         this(controller, shooter, speed, tag);

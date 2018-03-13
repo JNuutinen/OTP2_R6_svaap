@@ -33,9 +33,19 @@ public class Boss extends Unit implements Updateable {
      */
     private boolean movingDown = true;
 
+    /**
+     * Onko boss taistelutilassa.
+     */
     private boolean inFightingStage = false;
 
+    /**
+     * joku
+     */
     private double damagedTimeCounter = 0;
+
+    /**
+     * joku2
+     */
     private boolean tookDamage2 = false;
 
     /**
@@ -43,11 +53,11 @@ public class Boss extends Unit implements Updateable {
      */
     private int originalHp;
 
-    // Ampumisen kovakoodit'
     /**
      * Kuinka usein ammutaan
      */
     private int fireRate = 100;
+
     /**
      * Kasvatetaan kunnes sama kuin fireRate, jolloin ammutaan ja fireRateCounter asetetaan 0.
      */
@@ -149,12 +159,16 @@ public class Boss extends Unit implements Updateable {
         }
     }
 
+    /**
+     * Kädettää pomon
+     * @param controller Pelin kontrolleri.
+     */
     public void armBoss(Controller controller){
-        Component blaster1 = new BlasterShotgun(controller, this, "circle", 5, 2,
-                Color.CORAL, 400, -98, 80, -98);
-        Component blaster2 = new BlasterShotgun(controller, this, "circle", 5, 2,
-                Color.CORNSILK, 400, 98, 80, 98);
-        addToPrimaryWeapons((Weapon) blaster1);
+        Component blaster1 = new BlasterShotgun(controller, this, 2,
+                Color.CYAN, 2, -92, 80, -92);
+        Component blaster2 = new BlasterShotgun(controller, this, 2,
+                Color.CYAN, 2, 92, 80, 92);
+        addToPrimaryWeapon((Weapon) blaster1);
         setSecondaryWeapon((Weapon) blaster2);
     }
 }

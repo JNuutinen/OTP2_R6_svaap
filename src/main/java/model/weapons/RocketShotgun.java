@@ -31,9 +31,13 @@ public class RocketShotgun extends Component implements Weapon {
     private static final double FIRE_RATE = 4;
 
     /**
-     * Ammusten käääntymisnopeus.
+     * Ammusten käääntymisnopeus aluksi.
      */
     private double initialMissileRotatingSpeed = 11;
+
+    /**
+     * Ammusten kääntymisnopeus hetken jälkeen.
+     */
     private double latterMissileRotatingSpeed = 11;
 
     /**
@@ -47,7 +51,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon väri.
      */
-    private static final Color COLOR = Color.PINK;
+    private static final Color COLOR = Color.TURQUOISE;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
@@ -59,21 +63,24 @@ public class RocketShotgun extends Component implements Weapon {
      */
     private Unit shooter;
 
+    /**
+     * Ammuksen tagi.
+     */
     private int tag;
 
     /**
-     * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jolla ase on käytössä.
-     * @param shape Raketinheittimen muoto merkkijonona.
-     * @param size Raketinheittimen koko.
-     * @param orientation Raketinheittimen suunta (kulma).
-     * @param xOffset Raketinheittimen sijainnin heitto unitista x-suunnassa.
-     * @param yOffset Raketinheittimen sijainnin heitto unitista y-suunnassa.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
+     * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      */
-    public RocketShotgun(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                          double yOffset, Color color, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
-        super(shape, size, orientation, color, xOffset, yOffset);
+    public RocketShotgun(Controller controller, Unit shooter, int orientation, double xOffset,
+                          double yOffset, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
+        super("circle", 4, orientation, COLOR, xOffset, yOffset);
         this.controller = controller;
         this.shooter = shooter;
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;

@@ -10,14 +10,39 @@ import java.util.Queue;
 
 import static view.GameMain.*;
 
+/**
+ * Pelin game loop. Päivittää liikuteltavien spritejen sijainnin ja tarkastelee osumia.
+ */
 public class GameLoop {
 
+    /**
+     * Pelin kontrolleri.
+     */
     private Controller controller;
+
+    /**
+     * Jono olioista, jotka lisätään Updateable listaan seuraavan loopin alussa.
+     */
     private volatile Queue<Updateable> updateableQueue;
+
+    /**
+     * Jono olioista, jotka poistetaan Updateable listasta seuraavan loopin alussa.
+     */
     private volatile Queue<Updateable> removeUpdateableQueue;
+
+    /**
+     * Lista pelissä olevista päivitettävistä olioista, jonka looppi käy läpi.
+     */
     private ArrayList<Updateable> updateables;
 
+    /**
+     * Spritejen liikuttelusta vastaava AnimationTimer looppi.
+     */
     private AnimationTimer mainLoop;
+
+    /**
+     * Osumatarkastelujen AnimationTimer looppi.
+     */
     private AnimationTimer collisionLoop;
 
     /**
@@ -26,6 +51,10 @@ public class GameLoop {
      */
     private int pauseModifier = 1;
 
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     */
     public GameLoop(Controller controller) {
         this.controller = controller;
         updateableQueue = new LinkedList<>();
@@ -33,33 +62,56 @@ public class GameLoop {
         updateables = new ArrayList<>();
     }
 
+    /**
+     * Lisää olion jonoon, odottamaan lisäystä Updateable listaan.
+     * @param updateable Updateable olio, joka lisätään listaan.
+     */
     synchronized public void queueUpdateable(Updateable updateable) {
         updateableQueue.add(updateable);
     }
 
+    /**
+     * Lisää olion jonoon, odottamaan poistoa Updateable listasta.
+     * @param updateable Updateable olio, joka poistetaan listasta.
+     */
     synchronized public void removeUpdateable(Updateable updateable) {
         removeUpdateableQueue.add(updateable);
     }
 
+    /**
+     * Palauttaa Updateable listan.
+     * @return ArrayList, joka sisältää Updateable olioita.
+     */
     public ArrayList<Updateable> getUpdateables(){
         return updateables;
     }
 
+    /**
+     * Asettaa GameLoopissa kuluneen ajan nollaksi, eli pysäyttää kaikkien Spritejen liikkeet.
+     */
     public void pauseGame() {
         pauseModifier = 0;
     }
 
+    /**
+     * Poistaa nollauksen GameLoopissa kuluneesta ajasta, Spritet jatkavat liikkeitään.
+     */
     public void continueGame() {
         pauseModifier = 1;
     }
 
+    /**
+     * Pysäyttää pääloopin ja osumatarkasteluloopin.
+     */
     public void stopLoops(){
         mainLoop.stop();
         collisionLoop.stop();
     }
 
 
-    // ----- looppien alotusmetodi
+    /**
+     * Alustaa ja käynnistää pääloopin ja osumatarkasteluloopin.
+     */
     public void startLoop(){
 
         // -------- main looppi
@@ -204,6 +256,12 @@ public class GameLoop {
         collisionLoop.start();
     }
 
+    /**
+     * Apumetodi joka palauttaa kahden pisteen etäisyyden toisistaan.
+     * @param source Piste 1.
+     * @param target Piste 2.
+     * @return Pisteiden etäisyys toisistaan.
+     */
     private double getDistanceFromTarget(Point2D source, Point2D target){
         return Math.sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
     }

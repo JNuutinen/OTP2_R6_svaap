@@ -1,7 +1,6 @@
 package model;
 
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Shape;
 
 /**
  * Rajapinta Pelin loopissa päivitettävillä olioille.
@@ -26,6 +25,10 @@ public interface Updateable {
      */
     void destroyThis();
 
+    /**
+     * Palauttaa ympyränmuotoisen hitboxin halkaisijan.
+     * @return Hitboxin halkaisija.
+     */
     double getHitboxRadius();
 
 

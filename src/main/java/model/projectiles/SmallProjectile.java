@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import model.Component;
-import model.Explosion;
 import model.Unit;
 import model.Updateable;
 
@@ -27,11 +26,15 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     private int damage;
 
     /**
-     * Konstruktori projectilen vakiovärillä
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan
-     * @param speed Projectilen nopeus
-     * @param damage Projectilen vahinko
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param component TODO: refaktoroi pois.
+     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param tag Ammuksen tagi.
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component, double frontOffset, double leftOffset,
                            int tag) {
@@ -46,12 +49,16 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     }
 
     /**
-     * Konstruktori värin valinnalla ja ammuksen aloituspaikan poikkeaman valinnalla
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan
-     * @param speed Projectilen nopeus
-     * @param damage Projectilen vahinko
-     * @param color Projectilen väri
+     * Konstruktori värin valinnalla.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param component TODO: refaktoroi poiis
+     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param color Ammuksen väri.
+     * @param tag Ammuksen tagi.
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
                            double frontOffset, double leftOffset, Color color, int tag) {
@@ -59,20 +66,25 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
     }
+
     /**
-     * Konstruktori värin valinnalla ja ammuksen aloituspaikan poikkeaman valinnalla, ja suunnan valinnalla
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan
-     * @param speed Projectilen nopeus
-     * @param damage Projectilen vahinko
-     * @param direction Projectilen suunta
+     * Konstruktori suunnan ja värin valinnalla.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param component TODO: refaktoroi poiis
+     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param color Ammuksen väri.
+     * @param direction Ammuksen suunta.
+     * @param tag Ammuksen tagi.
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
                            double frontOffset, double leftOffset, Color color, double direction, int tag) {
         this(controller, shooter, speed, damage, component, frontOffset, leftOffset, color, tag);
         rotate(direction);
     }
-
 
     @Override
     public void destroyThis(){

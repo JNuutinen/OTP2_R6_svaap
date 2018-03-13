@@ -1,7 +1,6 @@
 package model;
 
 import controller.Controller;
-import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -15,17 +14,33 @@ import static view.GameMain.*;
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
  */
-@SuppressWarnings("unused")
 public class Unit extends Sprite implements Updateable {
 
     /**
      * Kontrolleri.
      */
     private Controller controller;
+
+    /**
+     * Unitin alkuperäiset hitpointsit.
+     */
     private int originalHp;
+
+    /**
+     * Unitin shapen väri.
+     */
     private Color color;
-    private boolean tookDamage = false; // efektiä varten
+
+    /**
+     * Tieto siitä, onko Unit ottanut vahinkoa. Käytetään osumaefektin tekemiseen.
+     */
+    private boolean tookDamage = false;
+
+    /**
+     * Unitin shape.
+     */
     private Shape shape;
+
 
     /**
      * Yksikön hitpointsit.
@@ -52,12 +67,8 @@ public class Unit extends Sprite implements Updateable {
      */
     private Weapon secondaryWeapon;
 
-    public Unit(){
-
-    }
-
     /**
-     * Konstruktori asettaa kontrollerin.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
      *
      */
@@ -65,7 +76,11 @@ public class Unit extends Sprite implements Updateable {
         this.controller = controller;
     }
 
-    // @param color aluksen väri
+    /**
+     * Konstruktori Unitin shapen värin valinnalla.
+     * @param controller Pelin kontrolleri.
+     * @param color Unitin shapen väri.
+     */
     public Unit(Controller controller, Color color){
         this(controller);
         this.color = color;
@@ -79,7 +94,7 @@ public class Unit extends Sprite implements Updateable {
     @Override
     public void destroyThis() {
         new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
-        new Explosion(controller, color, getPosition());
+        new Explosion(controller, color, getPosition(), 1);
         controller.removeUpdateable(this);
         controller.removeFromCollisionList(this);
     }
@@ -126,7 +141,9 @@ public class Unit extends Sprite implements Updateable {
      * Asettaa Unitin pääaseen.
      * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
-    public void addToPrimaryWeapons(Weapon primaryWeapon) {
+    public void addToPrimaryWeapon(Weapon primaryWeapon) {
+        addComponent((Component)primaryWeapon);
+        equipComponent((Component)primaryWeapon);
         this.primaryWeapons.add(primaryWeapon);
     }
 
@@ -143,6 +160,8 @@ public class Unit extends Sprite implements Updateable {
      * @param secondaryWeapon Weapon-rajapinnan toteuttava ase.
      */
     public void setSecondaryWeapon(Weapon secondaryWeapon) {
+        addComponent((Component)secondaryWeapon);
+        equipComponent((Component)secondaryWeapon);
         this.secondaryWeapon = secondaryWeapon;
     }
 
@@ -170,11 +189,10 @@ public class Unit extends Sprite implements Updateable {
 
     /**
      * Kiinnittää komponentit Unittiin. Jos samaa komponenttia koitetaan lisätä usealla kutsulla, tulee virhe.
-     * @param components Unitin komponenttilista.
      */
-    public void equipComponents(ArrayList<Component> components) {
+    public void equipComponentss() {
         //int offset = -5;
-        sortComponents(components); //Lajittelee komponentit isoimmasta pienimpään
+        sortComponents(); //Lajittelee komponentit isoimmasta pienimpään
         for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
             Shape shape = component.getShape();
             shape.setLayoutY(component.getyOffset()); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
@@ -184,6 +202,27 @@ public class Unit extends Sprite implements Updateable {
             setTag(getTag());
            // offset += 20;
         }
+    }
+
+    /**
+     * Kiinnittää komponentin Unittiin.
+     * @param component Komponentti, joka lisätään.
+     */
+    public void equipComponent(Component component) {
+        Shape shape = component.getShape();
+        shape.setLayoutY(component.getyOffset());
+        shape.setLayoutX(component.getxOffset());
+        this.getChildren().add(component.getShape());
+        setTag(getTag());
+    }
+
+    /**
+     * Lisää komponentin komponenttilistaan. Komponenttilistassa olevat komponentit kiinnitetään Unittiin
+     * equipComponents() metodissa.
+     * @param component Komponentti, joka lisätään komponenttilistaan.
+     */
+    public void addComponent(Component component){
+        components.add(component);
     }
 
     /**
@@ -212,9 +251,8 @@ public class Unit extends Sprite implements Updateable {
 
     /**
      * Lajittelee komponenttilistan komoponenttien koon mukaan suurimmasta pienimpään. Apumetodi equipComponents():lle.
-     * @param components Unitin komponenttilista.
      */
-    private void sortComponents(ArrayList<Component> components) {
+    private void sortComponents() {
         for (int i = 0; i < components.size(); i++) { //Lajitellaan komponentit suurimmasta pienimpään
             for (int n = 0; n < components.size(); n++) {
                 if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i).getShape().getLayoutBounds().getWidth()
@@ -262,14 +300,25 @@ public class Unit extends Sprite implements Updateable {
         }
     }
 
+    /**
+     * Palauttaa tiedon, onko Unit ottanut vahinkoa.
+     * @return Tieto onko Unit ottanut vahinkoa.
+     */
     public boolean getTookDamage(){
         return tookDamage;
     }
 
+    /**
+     * Asettaa Unitin shapen värin.
+     */
     public void setOriginalColor(){
         shape.setStroke(color);
     }
 
+    /**
+     * Asettaa Unittiin tiedon, onko se ottanut vahinkoa.
+     * @param tookDamage True jos Unit on ottanut vahinkoa, muuten false.
+     */
     public void setTookDamage(boolean tookDamage){
         this.tookDamage = tookDamage;
     }

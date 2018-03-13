@@ -159,16 +159,16 @@ public class Level3 extends Thread implements Level {
                         Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
                         Enemy enemy = new Enemy(controller, Color.YELLOW, enemyType.getMovementPattern(), WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
                         enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                        Component blaster = new Blaster(controller, enemy, "triangle", 5, 2, 50, 0, Color.CORAL,
+                        Component blaster = new Blaster(controller, enemy, 2, 50, 0, Color.CORAL,
                                 20, 100, 0);
-                        enemy.addToPrimaryWeapons((Weapon) blaster);
+                        enemy.addToPrimaryWeapon((Weapon) blaster);
 
                         controller.addUpdateable(enemy);
                         // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                         // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                         if (numberOfEnemies == 1) {
                             Thread.sleep(2000);
-                            lastEnemy = new Boss3(controller, 1000, 10);
+                            lastEnemy = new Boss3(controller, WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5);
                             controller.addUpdateable(lastEnemy);
                         }
                         numberOfEnemies--;
@@ -203,7 +203,7 @@ public class Level3 extends Thread implements Level {
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
         Weapon blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 50, 0, Color.DEEPSKYBLUE,
                 20, 100, 0);
-        trackerEnemy.addToPrimaryWeapons(blaster);
+        trackerEnemy.addToPrimaryWeapon(blaster);
         controller.addUpdateable(trackerEnemy);
 
         trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
@@ -211,7 +211,7 @@ public class Level3 extends Thread implements Level {
         trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
         blaster = new Blaster(controller, trackerEnemy, "triangle", 5, 2, 0, 0, Color.DEEPSKYBLUE,
                 20, 50, 0);
-        trackerEnemy.addToPrimaryWeapons(blaster);
+        trackerEnemy.addToPrimaryWeapon(blaster);
         controller.addUpdateable(trackerEnemy);
     }
 }

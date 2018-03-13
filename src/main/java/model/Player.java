@@ -8,24 +8,81 @@ import model.weapons.Weapon;
 
 import static view.GameMain.*;
 
+/**
+ * Pelaajaluokka. Unitin alaluokka. Sisältää pelaajan käsittelymetodeita sekä näppäinpainalluksien kuuntelun.
+ */
 public class Player extends Unit {
-    private Controller controller;
-    private double xVelocity;
-    private double yVelocity;
-    private int score = 0;
-    private double fireRate;//sekunneissa
-    private double fireRateCounter;
-    private double deltaTime = 0;
-    private double secondaryFirerate;
-    private double secondaryFirerateCounter;
-    private final int MAX_HP = 50;
-    private final double accelerationForce = 5000; // voima joka kiihdyttaa alusta
-    private final double maxVelocity = 300.0; // maksiminopeus
-    private final double decelerateForce = 1000; // kitkavoima joka  hidastaa alusta jos nappia ei paineta
 
+    /**
+     * Pelin kontrolleri.
+     */
+    private Controller controller;
+
+    /**
+     * Nopeus suuntaan x.
+     */
+    private double xVelocity;
+
+    /**
+     * Nopeus suuntaan y.
+     */
+    private double yVelocity;
+
+    /**
+     * Pelaajan pisteet.
+     */
+    private int score = 0;
+
+    /**
+     * Laskuri pääaseen ampumisesta kuluneeseen aikaan. Vertaillaan pääaseen tulinopeuteen.
+     */
+    private double fireRateCounter;
+
+    /**
+     * Viime päivityksestä kulunut aika.
+     */
+    private double deltaTime = 0;
+
+    /**
+     * Laskuri sivuaseen ampumisesta kuluneeseen aikaan. Vertaillaan sivuaseen tulinopeuteen.
+     */
+    private double secondaryFirerateCounter;
+
+    /**
+     * Maximi hitpointsit.
+     */
+    private final int MAX_HP = 50;
+
+    /**
+     * Alusta kiihdyttävän voiman suuruus.
+     */
+    private final double accelerationForce = 5000;
+
+    /**
+     * Aluksen maximinopeus.
+     */
+    private final double maxVelocity = 300.0;
+
+    /**
+     * Alusta hidastava kitkavoima, kun kiihdytystä ei ole.
+     */
+    private final double decelerateForce = 1000;
+
+    /**
+     * Laskuri, jota käytetään aluksen ottaessa osumaa, osumaefektiä varten.
+     */
     private double damagedTimeCounter = 0;
+
+    /**
+     * Ilmoittaa, kun alus ottaa osumaa.
+     */
     private boolean tookDamage2 = false;
 
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param shipColor Aluksen väri.
+     */
     public Player(Controller controller, Color shipColor) {
         super(controller, shipColor);
         setTag(PLAYER_SHIP_TAG);
@@ -61,7 +118,6 @@ public class Player extends Unit {
         }
 
         this.deltaTime = deltaTime;
-        resetVelocity(); // TODO: tää kutsu?
         if (input.contains("A")) {
             // TODO: 70px kovakoodattu
             if (getXPosition() > 70) {
@@ -127,11 +183,17 @@ public class Player extends Unit {
         }
 
         // Päivitä sijainti
-        setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+        if(deltaTime < 1) { // TODO
+            setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+        }
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
         controller.setHealthbar(hpPercentage(), 1);
     }
 
+    /**
+     * Kasvattaa pelaajan pistemäärää.
+     * @param points Pisteet, jotka lisätään pelaajalle.
+     */
     public void addScore(int points){
 
         score += points;
@@ -140,48 +202,63 @@ public class Player extends Unit {
         }
     }
 
+    @Override
     public void addHP(int hp){
         this.hp += hp;
         controller.setHealthbar(hpPercentage(), 1);
     }
 
+    /**
+     * Palauttaa pelaajan maximihitpointsit.
+     * @return Pelaajan maximihitpointsit.
+     */
     public int getMaxHp() {
         return MAX_HP;
     }
 
+    /**
+     * Palauttaa pelaajan pistemäärän.
+     * @return Pelaajan pisteet.
+     */
     public int getScore() {
         return score;
     }
 
 
     // laske ja lisaa vauhtia alukseen riippuen sen nykyisestä nopeudesta ja sen suunnasta: x/yVelocity
+
+    /**
+     * Lisää aluksen vauhtia riippuen sen nykyisestä nopeudesta, suunnasta ja kuluneesta ajasta.
+     * @param directionX Nopeus suuntaan x.
+     * @param directionY Nopeus suuntaan y.
+     */
     private void addVelocity(double directionX, double directionY) {
-        if(directionX == 0);
-        else if(directionX * xVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
+        if (directionX == 0) ;
+        else if (directionX * xVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
             if (xVelocity < maxVelocity && xVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
                 xVelocity += directionX * deltaTime * accelerationForce;
             } else { // jos ylittaa maksiminopeuden
                 xVelocity = maxVelocity * directionX;
             }
-        }
-        else{ // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
+        } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             xVelocity += directionX * deltaTime * accelerationForce;
         }
         //samat Y:lle
-        if(directionY==0);
-        else if(directionY * yVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
+        if (directionY == 0) ;
+        else if (directionY * yVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
             if (yVelocity < maxVelocity && yVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
                 yVelocity += directionY * deltaTime * accelerationForce;
             } else { // jos ylittaa maksiminopeuden
                 yVelocity = maxVelocity * directionY;
             }
-        }
-        else{ // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
+        } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             yVelocity += directionY * deltaTime * accelerationForce;
         }
     }
 
-    // hidasta x suunnassa
+    /**
+     * Hidastaa aluksen vauhtia suunnassa x.
+     */
     private void decelerateX() {
         if (xVelocity > 0) {
             if (xVelocity < decelerateForce * deltaTime) { // pysayta jos nopeus < seuraavan framen nopeus
@@ -198,7 +275,9 @@ public class Player extends Unit {
         }
     }
 
-    // hidasta y suunnassa
+    /**
+     * Hidastaa aluksen vauhtia suunnassa y.
+     */
     private void decelerateY(){
         if(yVelocity > 0){
             if(yVelocity < decelerateForce * deltaTime){ // pysayta jos nopeus < seuraavan framen nopeus
@@ -217,12 +296,10 @@ public class Player extends Unit {
         }
     }
 
-    // TODO: ei käytössä?
-    private void resetVelocity() {
-        //xVelocity = 0;
-        //yVelocity = 0;
-    }
-
+    /**
+     * Palauttaa pelaajan nykyisten hitpointsien määrän prosentteina maximin suhteen.
+     * @return Pelaajan hitpointsit prosentteina maximiin nähden.
+     */
     public int hpPercentage(){
         int tenthHp = this.getOriginalHp() / 10;
         int percentage = getHp() / tenthHp;

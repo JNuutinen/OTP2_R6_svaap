@@ -28,23 +28,30 @@ public class Blaster extends Component implements Weapon {
     /**
      * Blasterin tulinopeus.
      */
-    private static final double FIRE_RATE = 0.05;
+    private static final double FIRE_RATE = 0.2;
 
     /**
      * Blasterin väri.
      */
-    private static final Color COLOR = Color.RED;
-
-    private Color projectileColor = Color.LIGHTBLUE;
-
-    private double projectileSpeed;
-
-    private int tag;
-
-
+    private static final Color COLOR = Color.ORANGE;
 
     /**
-     * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
+     * Ammuksien väri.
+     */
+    private Color projectileColor = COLOR;
+
+    /**
+     * Ammuksien nopeus.
+     */
+    private double projectileSpeed;
+
+    /**
+     * Ammuksien tagi.
+     */
+    private int tag;
+
+    /**
+     * Pelin kontrolleri.
      */
     private Controller controller;
 
@@ -54,18 +61,50 @@ public class Blaster extends Component implements Weapon {
     private Unit shooter;
 
     /**
-     * Konstruktori. Kutsuu yliluokan (Component) konstruktoria jonka jälkeen asettaa kontrollerin ja ampujan.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jolla ase on käytössä.
-     * @param shape Blasterin muoto merkkijonona.
-     * @param size Blasterin koko.
-     * @param orientation Blasterin suunta (kulma).
-     * @param xOffset Blasterin sijainnin heitto unitista x-suunnassa.
-     * @param yOffset Blasterin sijainnin heitto unitista y-suunnassa.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param projectileColor Ammuksen väri.
+     * @param projectileSpeed Ammuksen nopeus.
+     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     */
+    public Blaster(Controller controller, Unit shooter, int orientation, double xOffset,
+                   double yOffset, Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
+        super("rectangle", 4, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+        this.controller = controller;
+        if (shooter instanceof Player){
+            this.tag = PLAYER_PROJECTILE_TAG;
+        }
+        else{
+            this.tag = ENEMY_PROJECTILE_TAG;
+        }
+        this.shooter = shooter;
+        this.projectileSpeed = projectileSpeed;
+        this.projectileColor = projectileColor;
+
+    }
+
+    /**
+     * Konstruktori aseen shapen ja koon määrittämisellä.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param shape Aseen shape merkkijonona.
+     * @param size Aseen shapen koko.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param projectileColor Ammuksen väri.
+     * @param projectileSpeed Ammuksen nopeus.
+     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
      */
     public Blaster(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
                    double yOffset, Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
-        super(shape, size, orientation, projectileColor, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+        super(shape, size, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
         this.controller = controller;
         if (shooter instanceof Player){
             this.tag = PLAYER_PROJECTILE_TAG;
@@ -75,25 +114,9 @@ public class Blaster extends Component implements Weapon {
         }
         this.shooter = shooter;
         this.projectileSpeed = projectileSpeed;
-
-    }
-    /*
-    public Blaster(Controller controller, Unit shooter, String shape, int size, int orientation, double xOffset,
-                   double yOffset, Color componentColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset) {
-        super(shape, size, orientation, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
-        this.controller = controller;
-        if (shooter instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
-        }
-        this.shooter = shooter;
         this.projectileColor = projectileColor;
-        this.projectileSpeed = projectileSpeed;
 
     }
-    */
 
     @Override
     public double getFireRate() {

@@ -18,17 +18,16 @@ import static view.GameMain.*;
 public class CustomizeMenu {
     Button backButton;
 
-    private ArrayList<Weapon> p1, p2, s;
+    private ArrayList<Weapon> primaryWeapon, secondaryWeapon;
     private ComboBox<String> primary1ComboBox;
     private ComboBox<String> primary2ComboBox;
     private ComboBox<String> secondaryComboBox;
 
     private Group customizeMenuGroup;
 
-    CustomizeMenu(ArrayList<Weapon> primaryWeapons1, ArrayList<Weapon> primaryWeapons2, ArrayList<Weapon> secondaryWeapons) {
-        p1 = primaryWeapons1;
-        p2 = primaryWeapons2;
-        s = secondaryWeapons;
+    CustomizeMenu(ArrayList<Weapon> primaryWeapons1, ArrayList<Weapon> secondaryWeapons) {
+        this.primaryWeapon = primaryWeapons1;
+        this.secondaryWeapon = secondaryWeapons;
 
         customizeMenuGroup = new Group();
         BorderPane borderPane = new BorderPane();
@@ -49,11 +48,6 @@ public class CustomizeMenu {
             primaryWeapon1Names.add(((Component) w).getName());
         }
 
-        ArrayList<String>primaryWeapon2Names = new ArrayList<>(primaryWeapons2.size());
-        for (Weapon w : primaryWeapons2) {
-            primaryWeapon2Names.add(((Component) w).getName());
-        }
-
         ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
         for (Weapon w : secondaryWeapons) {
             secondaryWeaponNames.add(((Component) w).getName());
@@ -64,11 +58,9 @@ public class CustomizeMenu {
         secondaryComboBox = new ComboBox<>();
 
         primary1ComboBox.setItems(FXCollections.observableArrayList(primaryWeapon1Names));
-        primary2ComboBox.setItems(FXCollections.observableArrayList(primaryWeapon2Names));
         secondaryComboBox.setItems(FXCollections.observableArrayList(secondaryWeaponNames));
 
         primary1ComboBox.setValue(primaryWeapon1Names.get(0));
-        primary2ComboBox.setValue(primaryWeapon2Names.get(0));
         secondaryComboBox.setValue(secondaryWeaponNames.get(0));
 
         primary1ComboBox.setPrefWidth(Double.MAX_VALUE);
@@ -96,17 +88,7 @@ public class CustomizeMenu {
 
     Weapon getSelectedPrimaryWeapon1() {
         String selected = primary1ComboBox.getValue();
-        for (Weapon w : p1) {
-            if (((Component) w).getName().equals(selected)) {
-                return w;
-            }
-        }
-        return null;
-    }
-
-    Weapon getSelectedPrimaryWeapon2() {
-        String selected = primary2ComboBox.getValue();
-        for (Weapon w : p2) {
+        for (Weapon w : primaryWeapon) {
             if (((Component) w).getName().equals(selected)) {
                 return w;
             }
@@ -116,7 +98,7 @@ public class CustomizeMenu {
 
     Weapon getSelectedSecondaryWeapon() {
         String selected = secondaryComboBox.getValue();
-        for (Weapon w : s) {
+        for (Weapon w : secondaryWeapon) {
             if (((Component) w).getName().equals(selected)) {
                 return w;
             }

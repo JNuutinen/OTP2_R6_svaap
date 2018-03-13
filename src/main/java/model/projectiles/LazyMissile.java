@@ -2,7 +2,6 @@ package model.projectiles;
 
 import controller.Controller;
 import javafx.scene.paint.Color;
-import model.Component;
 import model.Unit;
 
 /**
@@ -15,9 +14,25 @@ public class LazyMissile extends Missile {
      * Viive millisekunteina, jonka jälkeen ohjus alkaa hakeutua kohteisiin.
      */
     private static final long HOMING_DELAY = 400;
+
+    /**
+     * Ammuksen myöhempi kääntymisnopeus.
+     */
     private double latterRotatingSpeed = 0;
+
+    /**
+     * Ammuksen alkukääntymisnopeus.
+     */
     private double initialRotatingSpeed = 0;
+
+    /**
+     * Aikalaskuri, käytetään ammuksen kääntönopeuden määrittämisessä.
+     */
     private double timeCounter = 0;
+
+    /**
+     * Apumuuttuja, käytetään ammuksen kääntönopeuden määrittämisessä.
+     */
     boolean doOnce = true;
 
     /**
@@ -26,12 +41,15 @@ public class LazyMissile extends Missile {
     private long aliveTime = 0;
 
     /**
-     * Konstruktori vakiovärillä, aloitussuunnalla ja kääntymisnopeudella.
-     * @param controller Pelin kontrolleri
-     * @param shooter Unit, jonka aseesta projectile ammutaan.
-     * @param speed Projectilen nopeus.
-     * @param damage Projectilen vahinko.
-     * @param direction Projectilen väri.
+     * Konstruktori.
+     * @param controller Kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param direction Ammuksen suunta.
+     * @param initialRotatingSpeed Ammuksen alkukääntymisnopeus.
+     * @param latterRotatingSpeed Ammuksen myöhempi kääntymisnopeus.
+     * @param tag Ammuksen tagi.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
                        double initialRotatingSpeed, double latterRotatingSpeed, int tag) {
@@ -47,19 +65,23 @@ public class LazyMissile extends Missile {
     }
 
     /**
-     * Konstruktori värin valinnalla, aloitussuunnalla ja kääntymisnopeuden .
-     * @param controller Pelin kontrolleri.
-     * @param shooter Unit, jonka aseesta projectile ammutaan.
-     * @param speed Projectilen nopeus.
-     * @param damage Projectilen vahinko.
-     * @param color Projectilen väri.
+     * Konstruktori värin valinnalla.
+     * @param controller Kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param direction Ammuksen suunta.
+     * @param initialRotatingSpeed Ammuksen alkukääntymisnopeus.
+     * @param latterRotatingSpeed Ammuksen myöhempi kääntymisnopeus.
+     * @param color Ammuksen väri.
+     * @param tag Ammuksen tagi.
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double rotatingSpeed, double latterRotatingSpeed, Color color, int tag) {
+                       double initialRotatingSpeed, double latterRotatingSpeed, Color color, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, damage, direction, tag);
         this.latterRotatingSpeed = latterRotatingSpeed;
-
+        this.initialRotatingSpeed = initialRotatingSpeed;
 
         // Asetetaan projectilen suunta
         rotate(direction);

@@ -16,12 +16,35 @@ import static model.Enemy.MOVE_SINE;
 import static model.Enemy.MOVE_STRAIGHT;
 import static view.GameMain.ENEMY_SHIP_TAG;
 
+/**
+ * Pelin kontrolleri.
+ */
 public class GameController implements Controller {
+
+    /**
+     * Pelin view.
+     */
     private View view;
+
+    /**
+     * Pelin gameloop.
+     */
     private GameLoop gameLoop;
+
+    /**
+     * Pelaajaolio.
+     */
     private Player player;
+
+    /**
+     * Nykyinen taso.
+     */
     private Level level;
 
+    /**
+     * Konstruktori, luo GameLoopin.
+     * @param view Pelin view.
+     */
     public GameController(GameMain view) {
         gameLoop = new GameLoop(this);
         this.view = view;
@@ -78,6 +101,7 @@ public class GameController implements Controller {
         gameLoop.removeUpdateable(updateable);
     }
 
+    @Override
     public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
     @Override
@@ -183,10 +207,15 @@ public class GameController implements Controller {
         view.setFps(fps);
     }
 
+    @Override
     public void setCurrentFps(double currentFps){
         view.setCurrentFps(currentFps);
     }
 
+    /**
+     * Luo listan tasossa ilmenevistä vihollisista. Vihollistyypeissä erona esim. väri ja liikkumistyyli.
+     * @return ArrayList, joka sisältää eri vihollistyypit.
+     */
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
         Enemy enemy1 = new Enemy(this, Color.GRAY, MOVE_STRAIGHT, 0, 0, ENEMY_SHIP_TAG);
