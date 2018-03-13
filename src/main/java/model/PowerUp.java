@@ -171,7 +171,7 @@ public class PowerUp extends Sprite implements Updateable{
                 break;
                 */
             case SCORE:
-                player.addScore(value);
+                controller.addScore(value);
                 System.out.println("Score++");
                 break;
         }

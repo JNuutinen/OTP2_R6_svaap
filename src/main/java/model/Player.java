@@ -195,7 +195,6 @@ public class Player extends Unit {
      * @param points Pisteet, jotka lisätään pelaajalle.
      */
     public void addScore(int points){
-
         score += points;
         if(score < 0){
             score = 0;
