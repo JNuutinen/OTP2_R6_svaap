@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -8,14 +8,35 @@ import javafx.scene.layout.VBox;
 
 import static view.GameMain.*;
 
-class MainMenu {
+/**
+ * Rakentaa päävalikkonäkymän.
+ */
+public class MainMenu {
+
+    /**
+     * Pelaa -painike. OnClick asetetaan ulkopuolelta, siksi public.
+     */
     public Button play;
 
+    /**
+     * Group, johon valikko rakennetaan.
+     */
     private Group mainMenuGroup;
+
+    /**
+     * Pelin lopetuspainike.
+     */
     private Button exit;
+
+    /**
+     * Asetukset -painike.
+     */
     private Button settings;
 
-    MainMenu(){
+    /**
+     * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
+     */
+    public MainMenu(){
         mainMenuGroup = new Group();
         build();
         BorderPane bpane = new BorderPane();
@@ -26,17 +47,27 @@ class MainMenu {
         mainMenuGroup.getChildren().addAll(bpane);
     }
 
-    Group getGroup(){
+    /**
+     * Palauttaa luodun Groupin.
+     * @return Group, jossa valikko.
+     */
+    public Group getGroup(){
         return mainMenuGroup;
     }
 
+    /**
+     * Alustaa painikkeet.
+     */
     private void build() {
-        // Painikkeiden luonti
         play = new Button("Play");
         exit = new Button("Exit");
         settings = new Button("Settings");
     }
 
+    /**
+     * Luo VBoxin, johon lisätään komponentit. VBox lisätään Groupiin.
+     * @return Luotu VBox.
+     */
     private VBox vbox() {
         VBox vbox = new VBox();
         vbox.setSpacing(8);
@@ -46,7 +77,8 @@ class MainMenu {
         exit.setPrefWidth(Double.MAX_VALUE);
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setMaxWidth(100);
-        vbox.getChildren().addAll(play, settings, exit);
+        // TODO: settings
+        vbox.getChildren().addAll(play, exit);
         return vbox;
     }
 }

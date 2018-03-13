@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,12 +9,29 @@ import javafx.scene.layout.VBox;
 
 import static view.GameMain.*;
 
+/**
+ * Rakentaa taukovalikkonäkymän.
+ */
 public class PauseMenu {
-    Button continueButton;
-    Button quitButton;
 
+    /**
+     * Jatka peliä -painike. OnClick asetetaan ulkopuolelta, siksi public.
+     */
+    public Button continueButton;
+
+    /**
+     * Palaa päävalikkoon -painike. OnClick asetetaan ulkopuolelta, siksi public.
+     */
+    public Button quitButton;
+
+    /**
+     * Taukovalikon Group.
+     */
     private Group pauseMenuGroup;
 
+    /**
+     * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
+     */
     public PauseMenu() {
         continueButton = new Button("Continue");
         continueButton.setMinWidth(100);
@@ -47,6 +64,10 @@ public class PauseMenu {
         pauseMenuGroup.getChildren().add(borderPane);
     }
 
+    /**
+     * Palauttaa luodun taukovalikko Groupin.
+     * @return Valikon Group.
+     */
     public Group getGroup() {
         return pauseMenuGroup;
     }

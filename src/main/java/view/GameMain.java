@@ -25,23 +25,81 @@ import model.weapons.Blaster;
 import model.weapons.LaserGun;
 import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
+import view.menus.CustomizeMenu;
+import view.menus.MainMenu;
+import view.menus.PauseMenu;
+import view.menus.PlayMenu;
 
 import java.util.ArrayList;
 
-
+/**
+ * Pelin View. JavaFX Application.
+ */
 public class GameMain extends Application implements View {
+
+    /**
+     * Peli-ikkunan leveys.
+     */
     public static final double WINDOW_WIDTH = 1260;
+
+    /**
+     * Peli-ikkunan korkeus.
+     */
     public static final double WINDOW_HEIGHT = 820;
+
+    /**
+     * Raja x-akselilla, mitä edemmäs pelaaja ei voi liikkua.
+     */
     public static final double PLAYER_X_LIMIT = WINDOW_WIDTH * .55;
+
+    /**
+     * svaap -bannerin korkeus menuissa.
+     */
     public static final int BANNER_HEIGHT = 200;
+
+    /**
+     * Tagi, jota ei ole erityisesti asetettu.
+     */
     public static final int UNDEFINED_TAG = 0;
+
+    /**
+     * Pelaajan aluksen tagi.
+     */
     public static final int PLAYER_SHIP_TAG = 1;
+
+    /**
+     * Vihollisaluksien tagi.
+     */
     public static final int ENEMY_SHIP_TAG = 2;
+
+    /**
+     * Bossien tagi.
+     */
     public static final int BOSS_SHIP_TAG = 3;
+
+    /**
+     * Pelaajan ammuksien tagi.
+     */
     public static final int PLAYER_PROJECTILE_TAG = 4;
+
+    /**
+     * Vihollisten ammuksien tagi.
+     */
     public static final int ENEMY_PROJECTILE_TAG = 5;
+
+    /**
+     * Pelaajan trace tag.
+     */
     public static final int PLAYER_TRACE_TAG = 6;
+
+    /**
+     * Vihollisten trace tag.
+     */
     public static final int ENEMY_TRACE_TAG = 7;
+
+    /**
+     * Spriten määrittämätön nimitagi.
+     */
     public static final String SPRITE_NAME_UNDEFINED = "undefined";
 
 
@@ -49,23 +107,91 @@ public class GameMain extends Application implements View {
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
     private static final int NUMBER_OF_LEVELS = 6;
+
+    /**
+     * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
+     */
     public static ArrayList<String> input;
 
+
+    /**
+     * Pelaa -valikko.
+     */
     private PlayMenu playMenu;
+
+    /**
+     * Lista Uniteista.
+     */
     private ArrayList<Unit> units;
+
+    /**
+     * Ohjelman uloin Pane.
+     */
     private BorderPane pane;
+
+    /**
+     * Ohjelman Scene.
+     */
     private Scene scene;
+
+    /**
+     * BorderPane, jossa sijaitsee itse peli (Spritet yms).
+     */
     private BorderPane gameRoot;
+
+    /**
+     * Pelin kontrolleri.
+     */
     private Controller controller;
+
+    /**
+     * Label, jossa näytetään pelaajan pisteet.
+     */
     private Label score;
+
+    /**
+     * Ohjelman Primary Stage.
+     */
     private Stage primaryStage;
+
+    /**
+     * Kytkin, jonka perusteella näytetään debuggaus fps mittarit.
+     */
     private boolean debuggerToolsEnabled = true;
+
+    /**
+     * Label debug fps 1.
+     */
     private Label debugger_fps;
+
+    /**
+     * Labes debug fps 2.
+     */
     private Label debugger_currentFps;
+
+    /**
+     * Kertoo, onko nykyinen fps alle tavoitteen.
+     */
     private boolean debugger_droppedBelowFpsTarget = false;
+
+    /**
+     * Debuggereiden sekuntimittari.
+     */
     private double debugger_secondCounter = 0;
+
+    /**
+     * Bossin healthbar ImageView.
+     */
     private ImageView bossHealth = new ImageView();
+
+    /**
+     * Pelaajan healthbar ImageView.
+     */
     private ImageView playerHealth = new ImageView();
+
+    /**
+     * Pane, jossa sijaitsee pelin aikana näkyvä ui.
+     */
     private Pane uiPane;
 
     public static void main(String[] args) {
@@ -80,6 +206,9 @@ public class GameMain extends Application implements View {
         setupGame(this.primaryStage);
     }
 
+    /**
+     * Palauttaa ohjelman pelistä päävalikkoon.
+     */
     public void returnToMain(){
         FadeTransition ft = new FadeTransition(Duration.millis(1000), gameRoot);
         ft.setFromValue(1.0);
@@ -196,6 +325,10 @@ public class GameMain extends Application implements View {
         }
     }
 
+    /**
+     * Alustaa ohjelman.
+     * @param primaryStage Ohjelman Primary Stage.
+     */
     private void setupGame(Stage primaryStage) {
         controller = new GameController(this);
         units = new ArrayList<>();
@@ -277,7 +410,7 @@ public class GameMain extends Application implements View {
             ft2.play();
             ft2.setOnFinished(event1 -> {
                 pane.getChildren().remove(uiRoot);
-                startGame(primaryStage, player, customizeMenu.getSelectedPrimaryWeapon1(), customizeMenu.getSelectedSecondaryWeapon());
+                startGame(primaryStage, player, customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
             });
         });
 
@@ -302,8 +435,15 @@ public class GameMain extends Application implements View {
         gameRoot.setCenter(pauseMenuGroup);
     }
 
-    private void startGame(Stage primaryStage, Player player, Weapon primary1, Weapon secondary) {
-        player.addToPrimaryWeapon(primary1);
+    /**
+     * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
+     * @param primaryStage Ohjelman Primary Stage.
+     * @param player Pelaaja.
+     * @param primary Pelaajan pääase.
+     * @param secondary Pelaajan sivuase.
+     */
+    private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
+        player.addToPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
@@ -346,7 +486,7 @@ public class GameMain extends Application implements View {
 
         // Aseiden lisäys komponentteihin, jotta aseet näkyvissä
         ArrayList<Component> components = new ArrayList<>();
-        components.add((Component)primary1);
+        components.add((Component)primary);
         components.add((Component)secondary);
 /*
         Component b = new Component("circle", 10, 0, Color.RED, 0,0);

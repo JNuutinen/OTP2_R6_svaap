@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
@@ -15,18 +15,43 @@ import java.util.ArrayList;
 
 import static view.GameMain.*;
 
+/**
+ * Luo aluksen muokkausvalikon.
+ */
 public class CustomizeMenu {
-    Button backButton;
 
+    /**
+     * Takaisin -painike, joka vie pelaavalikkoon.
+     */
+    public Button backButton;
+
+    /**
+     * Valittavien aseiden listat, joiden perusteella ComboBoxit tehdään.
+     */
     private ArrayList<Weapon> primaryWeapon, secondaryWeapon;
-    private ComboBox<String> primary1ComboBox;
-    private ComboBox<String> primary2ComboBox;
+
+    /**
+     * ComboBox pääaseen valintaan.
+     */
+    private ComboBox<String> primaryComboBox;
+
+    /**
+     * ComboBox sivuaseen valintaan.
+     */
     private ComboBox<String> secondaryComboBox;
 
+    /**
+     * Group, johon valikko tehdään.
+     */
     private Group customizeMenuGroup;
 
-    CustomizeMenu(ArrayList<Weapon> primaryWeapons1, ArrayList<Weapon> secondaryWeapons) {
-        this.primaryWeapon = primaryWeapons1;
+    /**
+     * Konstruktori. Luo komponentit ja lisää Groupiin.
+     * @param primaryWeapons Lista valittavista pääaseista.
+     * @param secondaryWeapons Lista valittavista sivuaseista.
+     */
+    public CustomizeMenu(ArrayList<Weapon> primaryWeapons, ArrayList<Weapon> secondaryWeapons) {
+        this.primaryWeapon = primaryWeapons;
         this.secondaryWeapon = secondaryWeapons;
 
         customizeMenuGroup = new Group();
@@ -43,8 +68,8 @@ public class CustomizeMenu {
         Text secondaryText = new Text("Secondary weapon (\"p\")");
         secondaryText.setStyle("-fx-fill: white");
 
-        ArrayList<String>primaryWeapon1Names = new ArrayList<>(primaryWeapons1.size());
-        for (Weapon w : primaryWeapons1) {
+        ArrayList<String>primaryWeapon1Names = new ArrayList<>(primaryWeapons.size());
+        for (Weapon w : primaryWeapons) {
             primaryWeapon1Names.add(((Component) w).getName());
         }
 
@@ -53,18 +78,16 @@ public class CustomizeMenu {
             secondaryWeaponNames.add(((Component) w).getName());
         }
 
-        primary1ComboBox = new ComboBox<>();
-        primary2ComboBox = new ComboBox<>();
+        primaryComboBox = new ComboBox<>();
         secondaryComboBox = new ComboBox<>();
 
-        primary1ComboBox.setItems(FXCollections.observableArrayList(primaryWeapon1Names));
+        primaryComboBox.setItems(FXCollections.observableArrayList(primaryWeapon1Names));
         secondaryComboBox.setItems(FXCollections.observableArrayList(secondaryWeaponNames));
 
-        primary1ComboBox.setValue(primaryWeapon1Names.get(0));
+        primaryComboBox.setValue(primaryWeapon1Names.get(0));
         secondaryComboBox.setValue(secondaryWeaponNames.get(0));
 
-        primary1ComboBox.setPrefWidth(Double.MAX_VALUE);
-        primary2ComboBox.setPrefWidth(Double.MAX_VALUE);
+        primaryComboBox.setPrefWidth(Double.MAX_VALUE);
         secondaryComboBox.setPrefWidth(Double.MAX_VALUE);
 
         backButton = new Button("Back");
@@ -74,20 +97,27 @@ public class CustomizeMenu {
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(100);
-        vBox.getChildren().addAll(primary1Text, primary1ComboBox, primary2Text, primary2ComboBox, secondaryText,
-                secondaryComboBox, backButton);
+        vBox.getChildren().addAll(primary1Text, primaryComboBox, secondaryText, secondaryComboBox, backButton);
 
         borderPane.setCenter(vBox);
 
         customizeMenuGroup.getChildren().add(borderPane);
     }
 
-    Group getGroup() {
+    /**
+     * Palauttaa valikon Groupin.
+     * @return Valikon Group.
+     */
+    public Group getGroup() {
         return customizeMenuGroup;
     }
 
-    Weapon getSelectedPrimaryWeapon1() {
-        String selected = primary1ComboBox.getValue();
+    /**
+     * Palauttaa ComboBoxissa valitun pääaseen.
+     * @return Valittu pääase.
+     */
+    public Weapon getSelectedPrimaryWeapon() {
+        String selected = primaryComboBox.getValue();
         for (Weapon w : primaryWeapon) {
             if (((Component) w).getName().equals(selected)) {
                 return w;
@@ -96,7 +126,11 @@ public class CustomizeMenu {
         return null;
     }
 
-    Weapon getSelectedSecondaryWeapon() {
+    /**
+     * Palauttaa ComboBoxissa valitun sivuaseen.
+     * @return Valittu sivuase.
+     */
+    public Weapon getSelectedSecondaryWeapon() {
         String selected = secondaryComboBox.getValue();
         for (Weapon w : secondaryWeapon) {
             if (((Component) w).getName().equals(selected)) {

@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -12,15 +12,41 @@ import javafx.scene.text.Text;
 
 import static view.GameMain.*;
 
-class PlayMenu {
-    Button startButton;
-    Button backButton;
-    Button customizeButton;
+/**
+ * Luo pelaa -valikon.
+ */
+public class PlayMenu {
 
+    /**
+     * Pelin käynnistyspainike. OnClick asetetaan ulkopuolelta, siksi public.
+     */
+    public Button startButton;
+
+    /**
+     * Takaisin painike, joka vie päävalikkoon. OnClick asetetaan ulkopuolelta, siksi public.
+     */
+    public Button backButton;
+
+    /**
+     * Muokkausvalikkoon siirtymisen painike. OnClick asetetaan ulkopuolelta, siksi public.
+     */
+    public Button customizeButton;
+
+    /**
+     * Spinner tason valintaan.
+     */
     private Spinner<Integer> levelSpinner;
+
+    /**
+     * Valikon Group.
+     */
     private Group playMenuGroup;
 
-    PlayMenu(int levels) {
+    /**
+     * Konstruktori, joka luo komponentit ja lisää Groupiin.
+     * @param levels Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
+     */
+    public PlayMenu(int levels) {
         playMenuGroup = new Group();
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
@@ -50,11 +76,19 @@ class PlayMenu {
         playMenuGroup.getChildren().add(borderPane);
     }
 
-    Group getGroup() {
+    /**
+     * Palautaa valikon Groupin.
+     * @return Valikon Group.
+     */
+    public Group getGroup() {
         return playMenuGroup;
     }
 
-    int getSelectedLevel() {
+    /**
+     * Palauttaa Spinnerissä valitun tason numeron.
+     * @return Valitun tason numero.
+     */
+    public int getSelectedLevel() {
         return levelSpinner.getValue();
     }
 }
