@@ -544,7 +544,8 @@ public class GameMain extends Application implements View {
                 45, 100, 0);
         ((Component) blaster).setName("Blaster");
 
-        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, -30, 0, 3, 20);
+        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, -30, 0, 3,
+                20, false);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
         Weapon laserGun = new LaserGun(controller, player, 0, -30, 5,
@@ -566,7 +567,8 @@ public class GameMain extends Application implements View {
     private ArrayList<Weapon> createPlayerSecondaries(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, 10, 0, 3, 20);
+        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, 10, 0, 3,
+                20, false);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
         Weapon laserGun = new LaserGun(controller, player, 0, 10, 50,

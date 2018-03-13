@@ -65,6 +65,11 @@ public class Missile extends BaseProjectile implements Updateable {
     private double closestDistance = 999999;
 
     /**
+     * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
+     */
+    private boolean canLoseTarget = true;
+
+    /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
@@ -87,6 +92,13 @@ public class Missile extends BaseProjectile implements Updateable {
 
         trail = new Trail(controller, this);
         this.getChildren().addAll(trail);
+    }
+
+    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean canLoseTarget) {
+        this(controller, shooter, speed, damage, rotatingSpeed, tag);
+        this.canLoseTarget = canLoseTarget;
+
+
     }
 
     @Override

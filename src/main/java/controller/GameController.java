@@ -123,7 +123,7 @@ public class GameController implements Controller {
                 enemies = createEnemyTypes();
                 numberOfEnemies = 3;
                 spawnFrequencyModifier = 0.9;
-                enemyHealthModifier = 1.5;
+                enemyHealthModifier = 1.25;
                 enemyDamageModifier = 1.5;
 
                 level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
@@ -133,7 +133,7 @@ public class GameController implements Controller {
                 enemies = createEnemyTypes();
                 numberOfEnemies = 20;
                 spawnFrequencyModifier = 0.8;
-                enemyHealthModifier = 2.5;
+                enemyHealthModifier = 1.5;
                 enemyDamageModifier = 2;
 
                 level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
@@ -143,7 +143,7 @@ public class GameController implements Controller {
                 enemies = createEnemyTypes();
                 numberOfEnemies = 1;
                 spawnFrequencyModifier = 0.7;
-                enemyHealthModifier = 3;
+                enemyHealthModifier = 1.75;
                 enemyDamageModifier = 2;
 
                 level = new Level3(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
@@ -153,7 +153,7 @@ public class GameController implements Controller {
                 enemies = createEnemyTypes();
                 numberOfEnemies = 30;
                 spawnFrequencyModifier = 0.2;
-                enemyHealthModifier = 0.1;
+                enemyHealthModifier = 2.0;
                 enemyDamageModifier = 2;
 
                 level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,

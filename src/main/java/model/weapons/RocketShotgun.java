@@ -69,6 +69,11 @@ public class RocketShotgun extends Component implements Weapon {
     private int tag;
 
     /**
+     * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
+     */
+    private boolean missileCanLoseTarget = true;
+
+    /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
@@ -91,6 +96,25 @@ public class RocketShotgun extends Component implements Weapon {
         else{
             this.tag = ENEMY_PROJECTILE_TAG;
         }
+    }
+
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
+     * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
+     * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
+     */
+
+    public RocketShotgun(Controller controller, Unit shooter, int orientation, double xOffset, double yOffset,
+                         double initialMissileRotatingSpeed, double latterMissileRotatingSpeed, boolean missileCanLoseTarget) {
+        this(controller, shooter, orientation, xOffset, yOffset, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
+        this.missileCanLoseTarget = missileCanLoseTarget;
+
     }
 
     @Override

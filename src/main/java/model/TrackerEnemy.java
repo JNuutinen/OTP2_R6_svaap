@@ -169,7 +169,7 @@ public class TrackerEnemy extends Unit implements Updateable {
         double angleToTarget;
         if(!shootingTarget) {
             // kun paasee tarpeeksi lahelle maaranpaata, vaiha maaranpaa seuraavaan
-            if(getDistanceFromTarget(path[currentDestinationIndex]) < 15){
+            if(getDistanceFromTarget(path[currentDestinationIndex]) < 18){
                 if(path[currentDestinationIndex] == path[lastDestinationIndex]){
                     shootingTarget = true;
                     lockDirection(180);

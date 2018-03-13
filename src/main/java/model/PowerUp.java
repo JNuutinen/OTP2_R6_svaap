@@ -2,6 +2,8 @@ package model;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
@@ -139,7 +141,7 @@ public class PowerUp extends Sprite implements Updateable{
         Circle circle = new Circle(3 * size);
         circle.setFill(Color.BLACK);
         circle.setStroke(color);
-        circle.setStrokeWidth(2.0);
+        circle.setStrokeWidth(3.0);
         return (Shape)circle;
     }
     

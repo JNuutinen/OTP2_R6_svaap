@@ -87,9 +87,9 @@ public class Level3 extends Thread implements Level {
     private int levelNumber;
 
     /**
-     * Viittaa tason viimeiseen viholliseen (Bossiin). Käytetään tason loppumisen tarkkailuun.
+     * Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
      */
-    private Updateable lastEnemy;
+    private Updateable finalBoss;
 
 
     /**
@@ -269,14 +269,12 @@ public class Level3 extends Thread implements Level {
                     new Point2D(WINDOW_WIDTH * 0.75, WINDOW_HEIGHT - 200)};
 
             Point2D[] path5 = {
-                    new Point2D(WINDOW_WIDTH * 0.2,WINDOW_HEIGHT - 200),
-                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 200),
+                    new Point2D(WINDOW_WIDTH * 0.25,WINDOW_HEIGHT - 200),
                     new Point2D(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT - 170),
                     new Point2D(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT - 450)};
 
             Point2D[] path4 = {
                     new Point2D(WINDOW_WIDTH * 0.5,WINDOW_HEIGHT - 200),
-                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 200),
                     new Point2D(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT - 170),
                     new Point2D(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT - 700)};
 
@@ -292,7 +290,6 @@ public class Level3 extends Thread implements Level {
 
             Thread.sleep(1_000);
 
-
             trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
                     WINDOW_WIDTH * 0.1, WINDOW_HEIGHT + 50, path4, ENEMY_SHIP_TAG);
             trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
@@ -301,38 +298,33 @@ public class Level3 extends Thread implements Level {
             trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
             controller.addUpdateable(trackerEnemy);
 
-
             Thread.sleep(1_000);
 
             trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH * 0.4, WINDOW_HEIGHT + 50, path5, ENEMY_SHIP_TAG);
+                    WINDOW_WIDTH * 0.1, WINDOW_HEIGHT + 50, path5, ENEMY_SHIP_TAG);
             trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
             weapon = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
                     20, 100, 0);
             trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
             controller.addUpdateable(trackerEnemy);
 
-            Thread.sleep(13_000);
 
 
 
 
 
+            Thread.sleep(16_000);
 
 
+            finalBoss = new Boss3(controller, WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5);
+            controller.addUpdateable(finalBoss);
 
+            while(controller.getCollisionList().contains(finalBoss)){
+                //bossi on olemas
+                Thread.sleep(1_000);
+            }
 
-
-
-
-
-
-
-            lastEnemy = new Boss3(controller, WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5);
-            controller.addUpdateable(lastEnemy);
-
-            Thread.sleep(1000_000);
-            // Levelin viholliset spawnattu, venataan vähän aikaa ennen levelin loppumista
+            Thread.sleep(4_000);
 
             System.out.println("Voitit tason " + (levelNumber) +"!");
             Platform.runLater(() -> controller.addScore(500));
@@ -343,10 +335,5 @@ public class Level3 extends Thread implements Level {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public void hardcodedSpawner(){
-        //enem_tracker testausta varten
-
     }
 }

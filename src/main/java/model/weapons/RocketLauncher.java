@@ -55,10 +55,11 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private int tag;
 
+
     /**
-     * Kertoo, osoittaako ohjus spawnatessaan kohdettaan päin.
+     * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
      */
-    private boolean setInitialDirectionToTarget = false;
+    private boolean missileCanLoseTarget = true;
 
     /**
      * Konstruktori.
@@ -83,6 +84,22 @@ public class RocketLauncher extends Component implements Weapon {
         }
     }
 
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param orientation Aseen orientation.
+     * @param xOffset Aseen x-offset.
+     * @param yOffset Aseen y-offset.
+     * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
+     */
+    public RocketLauncher(Controller controller, Unit shooter, int orientation, double xOffset,
+                          double yOffset, double rotatingSpeed, boolean missileCanLoseTarget) {
+        this(controller, shooter, orientation, xOffset, yOffset, rotatingSpeed);
+        this.missileCanLoseTarget = missileCanLoseTarget;
+    }
+
     @Override
     public double getFireRate() {
         return FIRE_RATE;
@@ -90,6 +107,6 @@ public class RocketLauncher extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag));
+        controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag, missileCanLoseTarget));
     }
 }
