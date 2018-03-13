@@ -29,35 +29,67 @@ public class TrackerEnemy extends Unit implements Updateable {
      */
     public static final int MOVE_SINE = 1;
 
+    /**
+     * Pelin kontrolleri
+     */
     private Controller controller;
+
+    /**
+     * Alkuposition x-koordinaatti.
+     */
     private double initialX;
+
+    /**
+     * Alkuposition y-koordinaatti.
+     */
     private double initialY;
+
+    /**
+     * Aluksen liikkumatapa.
+     */
     private int movementPattern;
     private Point2D[] path;
     private int currentDestinationIndex = 0;
     private int lastDestinationIndex = 0;
+
+    /**
+     * Aluksen kääntymisnopeus
+     */
     private double rotatingSpeed = 4;
     private boolean shootingTarget = false;
     private Updateable target = null;
     private final double initialVelocity = 300;
 
-    // tulinopeus sekunneissa, ja sen apumuuttuja
+    /**
+     * Tulinopeus
+     */
     private double fireRate = 99999;
+
+    /**
+     * Tulinopeuden apulaskuri
+     */
     private double fireRateCounter = 0;
 
+    /**
+     * Osuma-efektin aikalaskuri
+     */
     private double damagedTimeCounter = 0;
+
+    /**
+     * Osuma-efketin totuusarvo.
+     */
     private boolean tookDamage2 = false;
 
 
     /**
      * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
-     * @param controller
-     * @param shipColor
-     * @param movementPattern
-     * @param initialX
-     * @param initialY
-     * @param path
-     * @param tag
+     * @param controller Pelin kontrolleri
+     * @param shipColor Aluksen väri
+     * @param movementPattern Aluksen liikkumatyyli
+     * @param initialX Alkuposition x-koordinaatti
+     * @param initialY Alkuposition y-koordinaatti
+     * @param path Aluksen reitti
+     * @param tag Vihollisen tunniste. Käytä tagia "enemy" jos kyseessä perusvihollinen.
      */
     public TrackerEnemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, Point2D[] path,
                         int tag) {
@@ -93,6 +125,10 @@ public class TrackerEnemy extends Unit implements Updateable {
 
     }
 
+    /**
+     * Aluksen liikkumisen, ampumisen ja kääntymisen päivittäminen.
+     * @param deltaTime Kulunut aika viime päivityksestä.
+     */
     @Override
     public void update(double deltaTime){
         if(getTookDamage()){
@@ -178,7 +214,10 @@ public class TrackerEnemy extends Unit implements Updateable {
             }
         }
     }
-    //etsii pelaajan updateable listasta ja asettaa sen kohteeksi
+
+    /**
+     * Etsii pelaajan updateable listasta ja asettaa sen kohteeksi
+     */
     public void findAndSetTarget(){
         for(Updateable updateable : controller.getUpdateables()){
             if(updateable.getTag() == PLAYER_SHIP_TAG) {
