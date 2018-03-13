@@ -30,7 +30,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
     /**
      * Aseen ammuksien vahinko.
      */
-    private static final int DAMAGE = 13;
+    private static final int DAMAGE = 15;
 
     /**
      * Aseen tulinopeus.

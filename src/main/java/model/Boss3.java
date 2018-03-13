@@ -57,11 +57,43 @@ public class Boss3 extends Unit implements Updateable {
 
         super(controller, Color.ORANGE);
 
-        Polygon triangle = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
-        triangle.getPoints().addAll(-100.0, -230.0,
-                300.0, 00.0,
-                -100.0, 230.0);
-        drawShip(triangle);
+        Polygon shape = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
+        shape.getPoints().addAll(300.0, 25.0,
+                275.0, 50.0,
+                250.0, 50.0,
+                200.0, 100.0,
+                150.0, 100.0,
+                125.0, 125.0,
+                125.0, 175.0,
+                75.0, 250.0,
+                -50.0, 250.0,
+                -50.0, 225.0,
+                -100.0, 175.0,
+                -150.0, 175.0,
+                -150.0, 100.0,
+                -200.0, 75.0,
+                -200.0, 35.0,
+                -175.0, 35.0,
+                -250.0, 25.0,
+
+                -250.0, -25.0,
+                -175.0, -35.0,
+                -200.0, -35.0,
+                -200.0, -75.0,
+                -150.0, -100.0,
+                -150.0, -175.0,
+                -100.0, -175.0,
+                -50.0, -225.0,
+                -50.0, -250.0,
+                75.0, -250.0,
+                125.0, -175.0,
+                125.0, -125.0,
+                150.0, -100.0,
+                200.0, -100.0,
+                250.0, -50.0,
+                275.0, -50.0,
+                300.0, -25.0);
+        drawShip(shape);
 
 
         this.controller = controller;
@@ -76,13 +108,10 @@ public class Boss3 extends Unit implements Updateable {
         setHp(1000);
         this.setHitbox(450);
 
-
-
-
-
+        Component c3 = new Component("triangle", 3, 0, Color.PURPLE, 20, 10);
+        addComponent(c3);
 
         armShip();
-        //equipComponents();
 
     }
 
@@ -200,17 +229,18 @@ public class Boss3 extends Unit implements Updateable {
     }
 
     public void armShip(){
-        Weapon laserGun = new LaserGun(controller, this, 0, -100, -240,
-                -100, -240, 0.6);
+        //Platform.runLater(() ->
+        Weapon laserGun = new LaserGun(controller, this, 0, 0, -240,
+                0, -240, 0.6);
         this.addToPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, this, 0,  60, -70,
-                60, -70, 0.6);
+        laserGun = new LaserGun(controller, this, 0,  200, -70,
+                200, -70, 0.6);
         this.addToPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, this, 0, 60, 70,
-                60, 70, 0.6);
+        laserGun = new LaserGun(controller, this, 0, 200, 70,
+                200, 70, 0.6);
         this.addToPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, this, 0, -100, 240,
-                -100, 240, 0.6);
+        laserGun = new LaserGun(controller, this, 0, 0, 240,
+                0, 240, 0.6);
         this.addToPrimaryWeapon(laserGun);
 
 
@@ -222,7 +252,7 @@ public class Boss3 extends Unit implements Updateable {
         this.addToPrimaryWeapon(blasterSprinkler);
 
 
-        Weapon rocketLauncher = new RocketLauncher(controller, this, 2, -5, 0,
+        Weapon rocketLauncher = new RocketLauncher(controller, this, 2, -15, 0,
                 4.8);
         this.setSecondaryWeapon(rocketLauncher);
     }

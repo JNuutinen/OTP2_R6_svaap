@@ -177,7 +177,7 @@ public class Sprite extends Pane {
         shape = new Circle(0, 0, circleHitboxDiameter/2);
         shape.setFill(Color.TRANSPARENT);
         if(debuggerToolsEnabled) {
-            shape.setStroke(Color.LIGHTGREY);
+            //shape.setStroke(Color.LIGHTGREY);
         }
         shape.setStrokeWidth(0.4);
         this.getChildren().add(shape);

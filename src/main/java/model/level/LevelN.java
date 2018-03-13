@@ -166,6 +166,7 @@ public class LevelN extends Thread implements Level {
                         enemy.addToPrimaryWeapon((Weapon) blaster);
 
 
+
                         // Kun vihuja on yksi jäljellä, tallennetaan se lastEnemyyn. While loopista poistutaan kun
                         // lastEnemy on poistuu collisionListiltä, eli on tuhottu tai poistuu ruudulta.
                         if (numberOfEnemies == 1) {

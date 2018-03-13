@@ -149,12 +149,12 @@ public class Level3 extends Thread implements Level {
 
             Point2D[] path5 = {
                     new Point2D(WINDOW_WIDTH * 0.25,WINDOW_HEIGHT - 200),
-                    new Point2D(WINDOW_WIDTH * 0.87, WINDOW_HEIGHT - 170),
+                    new Point2D(WINDOW_WIDTH * 0.80, WINDOW_HEIGHT - 170),
                     new Point2D(WINDOW_WIDTH * 0.87, WINDOW_HEIGHT - 450)};
 
             Point2D[] path4 = {
                     new Point2D(WINDOW_WIDTH * 0.5,WINDOW_HEIGHT - 200),
-                    new Point2D(WINDOW_WIDTH * 0.86, WINDOW_HEIGHT - 170),
+                    new Point2D(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT - 170),
                     new Point2D(WINDOW_WIDTH * 0.86, WINDOW_HEIGHT - 700)};
 
             Thread.sleep(1000);
@@ -167,14 +167,14 @@ public class Level3 extends Thread implements Level {
 
                 enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200, ENEMY_SHIP_TAG);
                 enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                weapon = new Blaster(controller, enemy, 2, 0, 0, Color.CORAL,
+                weapon = new Blaster(controller, enemy, 2, 0, 0, Color.YELLOW,
                         20, 100, 0);
                 enemy.addToPrimaryWeapon((Weapon) weapon);
                 controller.addUpdateable(enemy);
 
                 enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, 100, ENEMY_SHIP_TAG);
                 enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                weapon = new Blaster(controller, enemy, 2, 0, 0, Color.CORAL,
+                weapon = new Blaster(controller, enemy, 2, 0, 0, Color.YELLOW,
                         20, 100, 0);
                 enemy.addToPrimaryWeapon((Weapon) weapon);
                 controller.addUpdateable(enemy);
@@ -230,17 +230,15 @@ public class Level3 extends Thread implements Level {
             trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
             controller.addUpdateable(trackerEnemy);
 
-            Thread.sleep(12_000);
+            Thread.sleep(11_000);
 
             for(int i = 0; i < 2; i++){
-                if(i == 0 || i == 1){
-                    enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200, ENEMY_SHIP_TAG);
-                    enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                    weapon = new RocketLauncher(controller, enemy, 2, -5, 0,
-                            4);
-                    enemy.addToPrimaryWeapon((Weapon) weapon);
-                    controller.addUpdateable(enemy);
-                }
+                enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200, ENEMY_SHIP_TAG);
+                enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
+                weapon = new RocketLauncher(controller, enemy, 2, -5, 0,
+                        4);
+                enemy.addToPrimaryWeapon((Weapon) weapon);
+                controller.addUpdateable(enemy);
                 if(i == 1) {
                     trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
                             WINDOW_WIDTH * 0.1, WINDOW_HEIGHT + 50, path4, ENEMY_SHIP_TAG);
@@ -273,8 +271,8 @@ public class Level3 extends Thread implements Level {
             trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
                     WINDOW_WIDTH * 0.1, WINDOW_HEIGHT + 50, path4, ENEMY_SHIP_TAG);
             trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                    20, 100, 0);
+            weapon = new RocketLauncher(controller, trackerEnemy, 2, -5, 0,
+                    4);
             trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
             controller.addUpdateable(trackerEnemy);
 
@@ -303,10 +301,10 @@ public class Level3 extends Thread implements Level {
                 //bossi on olemas
                 Thread.sleep(1_000);
             }
-
-            Thread.sleep(4_000);
-
             System.out.println("Voitit tason " + (levelNumber) +"!");
+            Thread.sleep(2_000);
+
+
             Platform.runLater(() -> controller.addScore(500));
 
             // Ilmoita levelin loppumisesta

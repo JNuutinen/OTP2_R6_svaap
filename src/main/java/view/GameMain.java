@@ -540,15 +540,15 @@ public class GameMain extends Application implements View {
     private ArrayList<Weapon> createPlayerPrimaries1(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon blaster = new Blaster(controller, player, 0, -30, 0, Color.LIME,
+        Weapon blaster = new Blaster(controller, player, 0, -15, 0, Color.LIME,
                 45, 100, 0);
         ((Component) blaster).setName("Blaster");
 
-        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, -30, 0, 3,
+        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, -15, 0, 3,
                 20, false);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, player, 0, -30, 5,
+        Weapon laserGun = new LaserGun(controller, player, 0, -15, 5,
                 80, 0, 0.5);
         ((Component) laserGun).setName("Laser Gun");
 

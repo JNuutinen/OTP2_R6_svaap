@@ -90,14 +90,29 @@ public class Player extends Unit {
         setHp(MAX_HP );
         controller.addUnitToCollisionList(this);
 
-        Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(-60.0, -30.0,
-                60.0, 00.0,
-                -60.0, 30.0);
+        Polygon shape = new Polygon();
+        shape.getPoints().addAll(60.0, 1.0,
+                6.0, 14.0,
+                -8.0, 40.0,
+                -20.0, 40.0,
+                -26.0, 14.0,
+                -40.0, 26.0,
+                -46.0, 26.0,
+                -40.0, 6.0,
+                -32.0, 6.0,
+                -32.0, -6.0,
+                -40.0, -6.0,
+                -46.0, -26.0,
+                -40.0, -26.0,
+                -26.0, -14.0,
+                -20.0, -40.0,
+                -8.0, -40.0,
+                6.0, -14.0,
+                60.0, -1.0);
 
-        drawShip(triangle);
+        drawShip(shape);
 
-        setHitbox(45);
+        setHitbox(60);
     }
 
 

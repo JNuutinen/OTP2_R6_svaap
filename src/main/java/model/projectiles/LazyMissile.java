@@ -57,15 +57,12 @@ public class LazyMissile extends Missile {
         super(controller, shooter, speed, damage, initialRotatingSpeed, tag);
         this.latterRotatingSpeed = latterRotatingSpeed;
         this.initialRotatingSpeed = initialRotatingSpeed;
-
         // Asetetaan projectilen suunta
         rotate(direction);
-
-
     }
 
     /**
-     * Konstruktori värin valinnalla.
+     * Konstruktori.
      * @param controller Kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
@@ -73,16 +70,15 @@ public class LazyMissile extends Missile {
      * @param direction Ammuksen suunta.
      * @param initialRotatingSpeed Ammuksen alkukääntymisnopeus.
      * @param latterRotatingSpeed Ammuksen myöhempi kääntymisnopeus.
-     * @param color Ammuksen väri.
      * @param tag Ammuksen tagi.
+     * @param canLoseTarget pystyykö ohjus kadottaa kohteen jos menee liian kauas kohteesta
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
-                       double initialRotatingSpeed, double latterRotatingSpeed, Color color, int tag) {
-        // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, direction, tag);
+                       double initialRotatingSpeed, double latterRotatingSpeed, int tag, boolean canLoseTarget) {
+        // Kutsutaaan BaseProjectilen konstruktoria
+        super(controller, shooter, speed, damage, initialRotatingSpeed, tag, canLoseTarget);
         this.latterRotatingSpeed = latterRotatingSpeed;
         this.initialRotatingSpeed = initialRotatingSpeed;
-
         // Asetetaan projectilen suunta
         rotate(direction);
     }
@@ -90,7 +86,6 @@ public class LazyMissile extends Missile {
     @Override
     public void update(double deltaTime) {
         moveStep(deltaTime * getVelocity());
-
         // Sen jälkeen missilelle ominaiset updatet, kun on kulunut luonnista HOMING_DELAY verran aikaa.
         if (aliveTime > HOMING_DELAY) {
             super.update(deltaTime);
@@ -100,9 +95,6 @@ public class LazyMissile extends Missile {
                 setVelocity(25);
             }
         }
-
-
-
         if(timeCounter > 0.8){
             if(doOnce){
                 this.setRotatingSpeed(latterRotatingSpeed);

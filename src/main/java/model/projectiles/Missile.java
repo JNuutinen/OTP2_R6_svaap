@@ -107,17 +107,6 @@ public class Missile extends BaseProjectile implements Updateable {
         new Explosion(controller, Color.WHITE, getPosition(), 0.2);
         controller.removeUpdateable(this);
     }
-    /*
-    @Override
-    public void collides(Updateable collidingUpdateable){
-        destroyThis();
-        for (Unit unit : controller.getCollisionList()) {
-            if (unit == collidingUpdateable) {
-                unit.takeDamage(damage);
-            }
-        }
-    }
-    */
 
     @Override
     //Optimoidumpi versio collidesta (?)
@@ -146,11 +135,9 @@ public class Missile extends BaseProjectile implements Updateable {
                 if(distanceToTarget < closestDistance){
                     closestDistance = distanceToTarget;
                 }
-                if(distanceToTarget > closestDistance + 40){
 
-                }
-                else{
-                    angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
+                angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
+                if(distanceToTarget < closestDistance + 40 && canLoseTarget){
                     // taa vaa pitaa asteet -180 & 180 valissa
                     while (angleToTarget >= 180.0) {
                         angleToTarget -= 360.0;
@@ -160,7 +147,15 @@ public class Missile extends BaseProjectile implements Updateable {
                     }
                     rotate(angleToTarget * rotatingSpeed * deltaTime);
                 }
-
+                else if(!canLoseTarget){
+                    while (angleToTarget >= 180.0) {
+                        angleToTarget -= 360.0;
+                    }
+                    while (angleToTarget < -180) {
+                        angleToTarget += 360.0;
+                    }
+                    rotate(angleToTarget * rotatingSpeed * deltaTime);
+                }
             } else {
                 findAndSetTarget();
             }
@@ -180,7 +175,7 @@ public class Missile extends BaseProjectile implements Updateable {
         Polygon shape = new Polygon();
         shape.getPoints().addAll(-9.0, 0.0,
                 0.0, -3.0,
-                speed*0.6+1.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
+                speed*0.6+1.0, 0.0, // ammuksen häntä skaalautuu nopeuden mukaan, mutta on ainakin 1.0
                 0.0, 3.0);
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);
