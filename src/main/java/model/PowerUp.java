@@ -1,6 +1,5 @@
 package model;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_BLUEPeer;
 import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -20,13 +19,23 @@ public class PowerUp extends Sprite implements Updateable{
     Shape shape;
     Controller controller;
 
+
+    /**
+     *
+     * @param controller
+     * @param deadUnit Unit, joka pudottaa power up:in
+     * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
+     *                    HP lisää pelaajan elämäpisteitä
+     *                    SCORE lisää pelaajan pisteitä
+     * @param value Arvo, joka lisätään power up:in vaikuttamaan muutujaan
+     */
     public PowerUp(Controller controller, Unit deadUnit,  int powerUpType, int value){
         switch (powerUpType) {
             case HP:
                 type = HP;
                 shape = circle(size, Color.GREEN);
                 break;
-                /*
+                /* //TODO:
             case DAMAGE:
                 type = DAMAGE;
                 shape = rectangle(size, 3, Color.PURPLE);
@@ -59,7 +68,7 @@ public class PowerUp extends Sprite implements Updateable{
     }
 
 
-
+    /*
     public Shape triangle(int size, int orientation, Color color) {
         double tip = 6 * size * 1.3;
         double point = 3 * size * 1.3;
@@ -85,6 +94,13 @@ public class PowerUp extends Sprite implements Updateable{
         rectangle.getTransforms().add(new Rotate(90 * orientation, 50, 30));
         return (Shape)rectangle;
     }
+    */
+    /**
+     * @param size säteen pituus
+     * @param color muodon väri
+     * Palauttaa tiedon ammuksen ampujasta.
+     * @return Shape, ympyrä muoto.
+     */
 
     public Shape circle(int size, Color color) {
         Circle circle = new Circle(3 * size);
@@ -93,7 +109,9 @@ public class PowerUp extends Sprite implements Updateable{
         circle.setStrokeWidth(2.0);
         return (Shape)circle;
     }
-
+    /**
+     * Asetetaan power up:in vaikutukset pelaajan.
+     */
     public void givePowerUp(Player player) {
         switch (type) {
             case HP:
@@ -103,7 +121,6 @@ public class PowerUp extends Sprite implements Updateable{
                     if (player.getHp() > player.getMaxHp()) {
                         player.setHp(player.getMaxHp());
                     }
-                    System.out.println("hp++");
                 }
                 break;
                 /*
