@@ -106,6 +106,7 @@ public class Boss3 extends Unit implements Updateable {
         setIsMoving(true);
 
         setHp(1000);
+        originalHp = getHp();
         this.setHitbox(450);
 
         Component c3 = new Component("triangle", 3, 0, Color.PURPLE, 20, 10);
@@ -211,6 +212,8 @@ public class Boss3 extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         }
+
+        controller.setHealthbar(hpPercentage(), 0);
     }
 
 
