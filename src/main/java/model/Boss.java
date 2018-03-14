@@ -160,7 +160,7 @@ public class Boss extends Unit implements Updateable {
     }
 
     /**
-     * Kädettää pomon
+     * Varustaa aluksen aseilla.
      * @param controller Pelin kontrolleri.
      */
     public void armBoss(Controller controller){

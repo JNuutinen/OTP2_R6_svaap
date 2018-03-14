@@ -17,11 +17,6 @@ import static view.GameMain.PLAYER_PROJECTILE_TAG;
 public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     /**
-     * Aseen ammuksien nopeus
-     */
-    private static final int SPEED = 30;
-
-    /**
      * Aseen ammuksien vahinko.
      */
     private static final int DAMAGE = 5;

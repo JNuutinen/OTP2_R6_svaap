@@ -14,6 +14,8 @@ import static view.GameMain.*;
 
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
+ *
+ * Luokka tehty ennaltamääriteltyn tason testaamista varten.
  */
 public class Level3 extends Thread implements Level {
 

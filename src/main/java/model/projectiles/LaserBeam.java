@@ -67,18 +67,7 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     public void destroyThis() {
         controller.removeUpdateable(this);
     }
-    /*
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-        if(!hitTarget) {
-            for (Unit unit : controller.getCollisionList()) {
-                if (unit == collidingUpdateable) {
-                    unit.takeDamage(damage);
-                }
-            }
-        }
-    }
-    */
+
     @Override
     //Optimoidumpi versio collidesta (?)
     public void collides(Updateable collidingUpdateable){
@@ -96,9 +85,6 @@ public class LaserBeam extends BaseProjectile implements Updateable {
                     1, color.getBlue() - deltaTimeMultiplied, color.getOpacity() - deltaTimeMultiplied);
             shape.setStroke(color);
         }
-        /*if(i > deltaTimeMultiplied){
-            i -= deltaTimeMultiplied;
-        }*/
         else{
             destroyThis();
         }

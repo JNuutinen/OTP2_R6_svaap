@@ -62,7 +62,7 @@ public class LazyMissile extends Missile {
     }
 
     /**
-     * Konstruktori.
+     * Konstruktori jossa lisäksi canLoseTarget
      * @param controller Kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
@@ -71,6 +71,7 @@ public class LazyMissile extends Missile {
      * @param initialRotatingSpeed Ammuksen alkukääntymisnopeus.
      * @param latterRotatingSpeed Ammuksen myöhempi kääntymisnopeus.
      * @param tag Ammuksen tagi.
+     *
      * @param canLoseTarget pystyykö ohjus kadottaa kohteen jos menee liian kauas kohteesta
      */
     public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
@@ -95,6 +96,8 @@ public class LazyMissile extends Missile {
                 setVelocity(25);
             }
         }
+
+        // 0.8 sec jälkeen vaihda kääntymisnopeutta. Tarkoitus lentoradan näyttää paremmalata ampumisen jällkeen.
         if(timeCounter > 0.8){
             if(doOnce){
                 this.setRotatingSpeed(latterRotatingSpeed);
@@ -102,7 +105,6 @@ public class LazyMissile extends Missile {
             }
             this.setRotatingSpeed(getRotatingSpeed() + 4 *deltaTime);
         }
-
         timeCounter += deltaTime;
     }
 }

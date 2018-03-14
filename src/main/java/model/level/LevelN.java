@@ -136,9 +136,6 @@ public class LevelN extends Thread implements Level {
     @Override
     public void run() {
 
-
-
-
         // LevelN thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
             while (numberOfEnemies > 0 || controller.getCollisionList().contains(lastEnemy)) {
@@ -188,38 +185,5 @@ public class LevelN extends Thread implements Level {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public void hardcodedSpawner(){
-        //enem_tracker testausta varten
-        Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,100),
-                new Point2D(WINDOW_WIDTH * 0.9, 100),
-                new Point2D(WINDOW_WIDTH * 0.9, 650)};
-        Point2D[] path2 = {new Point2D(WINDOW_WIDTH * 0.7,WINDOW_HEIGHT - 100),
-                new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 100),
-                new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 650)};
-
-        TrackerEnemy trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                WINDOW_WIDTH / 2, -50, path, ENEMY_SHIP_TAG);
-        trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-        Weapon blaster = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                20, 100, 0);
-        trackerEnemy.addToPrimaryWeapon(blaster);
-        controller.addUpdateable(trackerEnemy);
-
-        trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  ENEMY_SHIP_TAG);
-        trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-
-        Weapon laserGun = new LaserGun(controller, trackerEnemy, 0, 0, 0,
-                20, 0, 2d);
-        Weapon rocketLauncher = new RocketLauncher(controller, trackerEnemy, 2, -5, 0,
-                4);
-
-        trackerEnemy.addToPrimaryWeapon(rocketLauncher);
-        controller.addUpdateable(trackerEnemy);
-
-
-
     }
 }

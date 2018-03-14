@@ -119,7 +119,7 @@ public class Boss3 extends Unit implements Updateable {
 
 
     /**
-     * Päivittää pomon liikkumisen, ampumisen ja healthbarin. Kutsu VAIN gameloopista!
+     * Päivittää pomon liikkumisen, ampumisen, värin kun ottaa vahinkoa ja healthbarin. Kutsu VAIN gameloopista!
      * @param deltaTime Kulunut aika viime päivityksestä.
      */
     @Override
@@ -180,8 +180,6 @@ public class Boss3 extends Unit implements Updateable {
         fireRateCounter += deltaTime;
         stageTimeCounter += deltaTime;
 
-
-
         moveStep(deltaTime);
         if(!inFightingStage){
             double distanceToTargetX = Math.abs(getXPosition() - (WINDOW_WIDTH * 0.8));
@@ -231,6 +229,9 @@ public class Boss3 extends Unit implements Updateable {
         }
     }
 
+    /**
+     * varustaa aluksen aseilla
+     */
     public void armShip(){
         //Platform.runLater(() ->
         Weapon laserGun = new LaserGun(controller, this, 0, 0, -240,

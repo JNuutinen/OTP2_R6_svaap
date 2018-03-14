@@ -168,18 +168,18 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
     @Override
     public void update(double deltaTime) {
-        if(triggeredShoot){
-            timeCounter += deltaTime;
+        if(triggeredShoot){ // jos ase on lataamassa laseria
+            timeCounter += deltaTime; // viime silmukasta kulunut aika lisätään aikalaskuriin
             chargingEffect.setRadius(chargingEffect.getRadius() + deltaTime * 17 / shootingDelay);
             chargingEffect.setStrokeWidth(chargingEffect.getStrokeWidth() + deltaTime * 4 / shootingDelay);
 
-
+            // jos latausefektin läpinäkyvyysarvo on suurempi kuin lisättävä näkyvyysarvo, niin lisää näkyvyysarvo
             if(1 - stops1[0].getColor().getOpacity() > deltaTime * 1 / shootingDelay) {
                 stops1[0] = new Stop(0, Color.color(0, 1, 0, stops1[0].getColor().getOpacity() + deltaTime * 1 / shootingDelay));
                 pointerEffect.setStroke(new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops1));
             }
 
-
+            // jos aikaa on kulunut enemmän kuin ampumisviiveessä, niin luo LaserBeam peliin.
             if(timeCounter > shootingDelay){
 
                 controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, Color.WHITE, tag,

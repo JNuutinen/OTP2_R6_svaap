@@ -90,6 +90,12 @@ public class Trail extends Sprite implements Updateable{
         controller.removeUpdateable(this);
     }
 
+    /**
+     * vähentää joka päivityksessä väri- ja läpinäkyvyysarvon jokaisesta viivasta joka trailissa on.
+     * Poistaa viivat hännästä joiden läpinäkyvyysarvo tippuu alle vähennettävän arvon.
+     *
+     * @param deltaTime Kulunut aika viime päivityksestä.
+     */
     @Override
     public void update(double deltaTime) {
         if(getDistanceFromBetweenPoints(newestTrailPoint, target.getPosition()) > 30.0){

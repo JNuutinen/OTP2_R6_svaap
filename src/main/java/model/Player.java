@@ -51,7 +51,7 @@ public class Player extends Unit {
     /**
      * Maximi hitpointsit.
      */
-    private final int MAX_HP = 50;
+    private final int MAX_HP = 200;
 
     /**
      * Alusta kiihdyttävän voiman suuruus.

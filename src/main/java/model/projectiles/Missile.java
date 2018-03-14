@@ -94,6 +94,17 @@ public class Missile extends BaseProjectile implements Updateable {
         this.getChildren().addAll(trail);
     }
 
+    /**
+     * Konstruktori, jossa myös canLoseTarget
+     * @param controller Pelin kontrolleri.
+     * @param shooter Ammuksen ampuja.
+     * @param speed Ammuksen nopeus.
+     * @param damage Ammuksen tekemä vahinko.
+     * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param tag Ammuksen tagi.
+     *
+     * @param canLoseTarget voiko ohjus kadottaa kohteen jos siirtyy liikaa liian kauas koteesta
+     */
     public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean canLoseTarget) {
         this(controller, shooter, speed, damage, rotatingSpeed, tag);
         this.canLoseTarget = canLoseTarget;
@@ -180,12 +191,7 @@ public class Missile extends BaseProjectile implements Updateable {
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(3.0);
         blur.setInput(bloom);
-        //shape.setEffect(blur); TODO
         shape.setFill(Color.TRANSPARENT);
-
-
-        //setVelocity(0);
-
         shape.setStroke(Color.WHITE);
         shape.setStrokeWidth(5.0);
         shape.getTransforms().add(new Rotate(180, 0, 0));
@@ -221,7 +227,7 @@ public class Missile extends BaseProjectile implements Updateable {
             }
         }
         target = closestEnemy;
-        closestDistance = 9999999;
+        closestDistance = Double.MAX_VALUE; // asettaa lähimmän etäisyyden kohteesta maksimiin koska kohde vaihtui
     }
 
     /**

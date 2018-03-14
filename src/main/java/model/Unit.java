@@ -187,6 +187,7 @@ public class Unit extends Sprite implements Updateable {
 
     /**
      * Kiinnittää komponentit Unittiin. Jos samaa komponenttia koitetaan lisätä usealla kutsulla, tulee virhe.
+     * Ei käytössä
      */
     public void equipComponentss() {
         //int offset = -5;

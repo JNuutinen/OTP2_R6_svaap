@@ -80,6 +80,9 @@ public class BlasterShotgun extends Component implements Weapon {
         }
     }
 
+    /**
+     * @return tulinopeus
+     */
     @Override
     public double getFireRate() {
         return FIRE_RATE;

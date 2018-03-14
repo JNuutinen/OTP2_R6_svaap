@@ -54,7 +54,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
-     * @param component TODO: refaktoroi poiis
+     * @param component TODO: refaktoroi pois
      * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
      * @param color Ammuksen väri.
@@ -91,17 +91,6 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
         controller.removeUpdateable(this);
     }
 
-    /*
-    @Override
-    public void collides(Updateable collidingUpdateable){
-        destroyThis();
-        for (Unit unit : controller.getCollisionList()) {
-            if (unit == collidingUpdateable) {
-                unit.takeDamage(damage);
-            }
-        }
-    }
-    */
 
     @Override
     //Optimoidumpi versio collidesta (?)
