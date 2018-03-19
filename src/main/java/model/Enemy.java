@@ -9,6 +9,10 @@ import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Vihollisen pääluokka. Perii unitin ja implementoi Updateable rajapinnan.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Enemy extends Unit implements Updateable {
 

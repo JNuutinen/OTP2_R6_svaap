@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 /**
  * Ohjelman kontrolleri. Ottaa vastaan kutsuja sekä Viewiltä että Modelilta.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public interface Controller {
 

@@ -12,6 +12,10 @@ import static view.GameMain.SPRITE_NAME_UNDEFINED;
 /**
  * Komponenttien luokka. Komponentit voivat olla aseita tai passiivisia komponentteja,
  * jotka näkyvät aluksessa, johon ne ovat lisätty.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Component extends Sprite {
 

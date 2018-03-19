@@ -12,6 +12,10 @@ import static view.GameMain.*;
 
 /**
  * Pelin game loop. Päivittää liikuteltavien spritejen sijainnin ja tarkastelee osumia.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class GameLoop {
 

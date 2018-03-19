@@ -13,6 +13,10 @@ import static view.GameMain.*;
 
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Unit extends Sprite implements Updateable {
 

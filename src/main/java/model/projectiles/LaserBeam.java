@@ -12,6 +12,10 @@ import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Lasersädeammus.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class LaserBeam extends BaseProjectile implements Updateable {
 

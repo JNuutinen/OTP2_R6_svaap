@@ -34,6 +34,10 @@ import java.util.ArrayList;
 
 /**
  * Pelin View. JavaFX Application.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class GameMain extends Application implements View {
 

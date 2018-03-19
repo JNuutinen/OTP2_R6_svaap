@@ -14,6 +14,10 @@ import static view.GameMain.*;
 
 /**
  * Luo pelaa -valikon.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class PlayMenu {
 

@@ -4,6 +4,10 @@ import javafx.geometry.Point2D;
 
 /**
  * Rajapinta Pelin loopissa päivitettävillä olioille.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public interface Updateable {
 

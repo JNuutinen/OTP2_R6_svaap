@@ -14,6 +14,10 @@ import java.util.List;
 
 /**
  * Häntä ammuksille.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Trail extends Sprite implements Updateable{
 

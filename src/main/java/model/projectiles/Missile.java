@@ -14,6 +14,10 @@ import static view.GameMain.*;
  * Ohjusammuksen luokka. Luokassa vain ohjukselle ominaisten
  * piirteiden hallinta, kaikille ammuksille yhteiset piirteet
  * yliluokassa (BaseProjectile).
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Missile extends BaseProjectile implements Updateable {
 

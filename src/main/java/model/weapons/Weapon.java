@@ -2,6 +2,10 @@ package model.weapons;
 
 /**
  * Rajapinta aseille.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public interface Weapon {
 

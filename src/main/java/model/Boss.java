@@ -10,6 +10,10 @@ import static view.GameMain.*;
 
 /**
  * Tason loppupomo
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Boss extends Unit implements Updateable {
 

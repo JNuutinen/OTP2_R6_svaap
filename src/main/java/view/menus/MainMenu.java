@@ -10,6 +10,10 @@ import static view.GameMain.*;
 
 /**
  * Rakentaa päävalikkonäkymän.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class MainMenu {
 

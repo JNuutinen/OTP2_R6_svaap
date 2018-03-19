@@ -18,6 +18,10 @@ import static view.GameMain.ENEMY_SHIP_TAG;
 
 /**
  * Pelin kontrolleri.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class GameController implements Controller {
 

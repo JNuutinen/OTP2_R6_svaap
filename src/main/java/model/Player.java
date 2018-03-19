@@ -10,6 +10,10 @@ import static view.GameMain.*;
 
 /**
  * Pelaajaluokka. Unitin alaluokka. Sisältää pelaajan käsittelymetodeita sekä näppäinpainalluksien kuuntelun.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Player extends Unit {
 

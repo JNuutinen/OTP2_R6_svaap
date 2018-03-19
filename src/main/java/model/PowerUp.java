@@ -15,6 +15,10 @@ import static view.GameMain.ENEMY_PROJECTILE_TAG;
 
 /**
  * Power uppien luokka.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class PowerUp extends Sprite implements Updateable{
 

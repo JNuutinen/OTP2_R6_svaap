@@ -11,6 +11,10 @@ import static view.GameMain.*;
 
 /**
  * Rakentaa taukovalikkonäkymän.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class PauseMenu {
 

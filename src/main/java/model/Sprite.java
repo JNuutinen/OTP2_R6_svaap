@@ -13,6 +13,10 @@ import static view.GameMain.UNDEFINED_TAG;
 
 /**
  * Perusluokka kaikille spriteille.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Sprite extends Pane {
 
