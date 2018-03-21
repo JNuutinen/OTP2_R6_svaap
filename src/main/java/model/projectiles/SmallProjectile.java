@@ -108,6 +108,8 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
+
+            setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime);
             moveStep(deltaTime * getVelocity());
         }
     }

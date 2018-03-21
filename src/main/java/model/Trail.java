@@ -136,6 +136,7 @@ public class Trail extends Sprite implements Updateable{
             colorsIndex++;
         }
 
+
     }
 
     /**

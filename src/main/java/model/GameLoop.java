@@ -56,6 +56,8 @@ public class GameLoop {
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      */
+    private double deltaTime = 0;
+
     public GameLoop(Controller controller) {
         this.controller = controller;
         updateableQueue = new LinkedList<>();
@@ -125,7 +127,7 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
-                    double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
+                    deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
                     // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
                     if ((double) (now - lastUpdate) / 1_000_000_000.0 >= 1.0 / 250.0) {
                         // controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
@@ -263,5 +265,9 @@ public class GameLoop {
      */
     private double getDistanceFromTarget(Point2D source, Point2D target){
         return Math.sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
+    }
+
+    public double getDeltaTime() {
+        return deltaTime;
     }
 }

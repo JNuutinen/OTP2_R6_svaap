@@ -111,4 +111,10 @@ public interface Controller {
      * Jatkaa peliä taukotilasta.
      */
     void continueGame();
+
+    void moveWorld(double y);
+
+    void decelerateWorld();
 }
+
+

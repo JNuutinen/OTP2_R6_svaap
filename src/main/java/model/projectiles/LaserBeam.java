@@ -78,6 +78,8 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     @Override
     public void update(double deltaTime) {
 
+
+
         double deltaTimeMultiplied = deltaTime * 3;
 
         if(color.getRed() > deltaTimeMultiplied) {
@@ -88,7 +90,8 @@ public class LaserBeam extends BaseProjectile implements Updateable {
         else{
             destroyThis();
         }
-
+        setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime);
+        moveStep(deltaTime);
     }
 
     /**

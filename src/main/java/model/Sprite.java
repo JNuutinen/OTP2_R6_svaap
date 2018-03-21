@@ -140,7 +140,7 @@ public class Sprite extends Pane {
      * Palauttaa Spriten x-koordinaatin.
      * @return X-koordinaatti.
      */
-    protected double getXPosition(){
+    public double getXPosition(){
         return this.getLayoutX();
     }
 
@@ -148,7 +148,7 @@ public class Sprite extends Pane {
      * Palauttaa Spriten y-koordinaatin.
      * @return Y-koordinaatti.
      */
-    protected double getYPosition(){
+    public double getYPosition(){
         return this.getLayoutY();
     }
 
@@ -164,14 +164,67 @@ public class Sprite extends Pane {
      * Asettaa Spriten nopeuden.
      * @param velocity Spriten uusi nopeus.
      */
-    protected void setVelocity(double velocity){
+    public void setVelocity(double velocity){
         this.velocity = velocity;
+    }
+
+
+    double maxVelocity = 300.0;
+    double xVelocity = 0;
+    public double yVelocity = 0;
+    double accelerationForce = 5000;
+    double deltaTime;
+
+    public void addVelocity(double directionX, double directionY, double deltaTime) {
+        if (directionX == 0) ;
+        else if (directionX * xVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
+            if (xVelocity < maxVelocity && xVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
+                xVelocity += directionX * deltaTime * accelerationForce;
+            } else { // jos ylittaa maksiminopeuden
+                xVelocity = maxVelocity * directionX;
+            }
+        } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
+            xVelocity += directionX * deltaTime * accelerationForce;
+        }
+        //samat Y:lle
+        if (directionY == 0) ;
+        else if (directionY * yVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
+            if (yVelocity < maxVelocity && yVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
+                yVelocity += directionY * deltaTime * accelerationForce;
+            } else { // jos ylittaa maksiminopeuden
+                yVelocity = maxVelocity * directionY;
+            }
+        } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
+            yVelocity += directionY * deltaTime * accelerationForce;
+        }
+    }
+
+    double decelerateForce = 1000;
+
+    public void decelerateY(double deltaTime){
+        if(yVelocity > 0){
+            if(yVelocity < decelerateForce * deltaTime){ // pysayta jos nopeus < seuraavan framen nopeus
+                yVelocity = 0;
+            }
+            else {
+                yVelocity -= decelerateForce * deltaTime;
+            }
+        }
+        else {//xVelociy < 0
+            if (yVelocity * -1 < decelerateForce * deltaTime) {
+                yVelocity = 0;
+            } else {
+                yVelocity += decelerateForce * deltaTime;
+            }
+        }
     }
 
     /**
      * Asettaa Spriten ympyränmuotoisen hitboxin.
      * @param circleHitboxDiameter Hitboxin halkaisija.
      */
+
+
     protected void setHitbox(double circleHitboxDiameter){
         hitboxRadius = circleHitboxDiameter/2;
         shape = new Circle(0, 0, circleHitboxDiameter/2);
@@ -276,5 +329,12 @@ public class Sprite extends Pane {
         while(direction < -180){
             direction += 360.0;
         }
+    }
+
+
+
+    public void move(double deltaTime) {
+        //System.out.println("asd");
+        setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
     }
 }

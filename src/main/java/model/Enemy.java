@@ -180,7 +180,9 @@ public class Enemy extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
-            setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
+            //setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
+
+            setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime + (((Math.sin(getXPosition() / 70) * 60)) * movementPattern));
             moveStep(deltaTime);
         }
     }

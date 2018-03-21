@@ -143,6 +143,8 @@ public class Boss extends Unit implements Updateable {
                 movingDown = true;
             }
         }
+        setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime);
+        moveStep(deltaTime);
     }
 
     /**

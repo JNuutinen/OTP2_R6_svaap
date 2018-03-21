@@ -179,7 +179,7 @@ public class Boss3 extends Unit implements Updateable {
         }
         fireRateCounter += deltaTime;
         stageTimeCounter += deltaTime;
-
+        setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime);
         moveStep(deltaTime);
         if(!inFightingStage){
             double distanceToTargetX = Math.abs(getXPosition() - (WINDOW_WIDTH * 0.8));

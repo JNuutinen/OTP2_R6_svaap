@@ -93,6 +93,7 @@ public class Unit extends Sprite implements Updateable {
 
     @Override
     public void destroyThis() {
+
         new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         new Explosion(controller, color, getPosition(), 1);
         controller.removeUpdateable(this);

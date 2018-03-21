@@ -153,18 +153,27 @@ public class Player extends Unit {
         if (input.contains("W")) {
             // TODO: 50px kovakoodattu
             if (getYPosition() > 50) {
-                addVelocity(0, -1);
+                //addVelocity(0, -1);
+
+                controller.moveWorld(-1);
+
             } else {
                 decelerateY();
+                controller.decelerateWorld();
             }
         } else if (input.contains("S")) {
             if (getYPosition() < WINDOW_HEIGHT - getHitboxRadius()) {
-                addVelocity(0, 1);
+                //addVelocity(0, 1);
+
+                controller.moveWorld(1);
+
             } else {
                 decelerateY();
+                controller.decelerateWorld();
             }
         } else if(yVelocity != 0) {
             decelerateY();
+            controller.decelerateWorld();
         }
 
         // Primary fire
@@ -246,7 +255,7 @@ public class Player extends Unit {
      * @param directionX Nopeus suuntaan x.
      * @param directionY Nopeus suuntaan y.
      */
-    private void addVelocity(double directionX, double directionY) {
+    public void addVelocity(double directionX, double directionY) {
         if (directionX == 0) ;
         else if (directionX * xVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
             if (xVelocity < maxVelocity && xVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
@@ -292,6 +301,7 @@ public class Player extends Unit {
     /**
      * Hidastaa aluksen vauhtia suunnassa y.
      */
+
     private void decelerateY(){
         if(yVelocity > 0){
             if(yVelocity < decelerateForce * deltaTime){ // pysayta jos nopeus < seuraavan framen nopeus

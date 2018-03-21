@@ -183,6 +183,7 @@ public class PowerUp extends Sprite implements Updateable{
      */
     @Override
     public void update(double deltaTime) {
+        setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime);
         moveStep(deltaTime);
     }
 

@@ -86,7 +86,8 @@ public class LazyMissile extends Missile {
 
     @Override
     public void update(double deltaTime) {
-        moveStep(deltaTime * getVelocity());
+        //setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime);
+        //moveStep(deltaTime * getVelocity());
         // Sen jälkeen missilelle ominaiset updatet, kun on kulunut luonnista HOMING_DELAY verran aikaa.
         if (aliveTime > HOMING_DELAY) {
             super.update(deltaTime);

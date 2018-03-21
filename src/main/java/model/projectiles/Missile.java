@@ -136,7 +136,8 @@ public class Missile extends BaseProjectile implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT + OUT_OF_AREA_TRESHOLD) {
             destroyThis();
         } else {
-            moveStep(deltaTime * getVelocity());
+            setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime);
+            moveStep(deltaTime * getVelocity());//täs oli ennen  deltaTime * getVelocity()
         }
 
         double angleToTarget;
