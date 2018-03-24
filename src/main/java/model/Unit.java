@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.application.Platform;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -68,22 +69,19 @@ public class Unit extends Sprite implements Updateable {
     private Weapon secondaryWeapon;
 
     /**
-     * Konstruktori.
-     * @param controller Pelin kontrolleri.
-     *
-     */
-    public Unit(Controller controller) {
-        this.controller = controller;
-    }
-
-    /**
      * Konstruktori Unitin shapen värin valinnalla.
      * @param controller Pelin kontrolleri.
      * @param color Unitin shapen väri.
      */
-    public Unit(Controller controller, Color color){
-        this(controller);
+    public Unit(Controller controller, Color color, ArrayList<Weapon> primaries){
+        this.controller = controller;
+
         this.color = color;
+        if(primaries != null) {
+            for (Weapon primary : primaries) {
+                addPrimaryWeapon(primary);
+            }
+        }
     }
 
     @Override
@@ -141,9 +139,10 @@ public class Unit extends Sprite implements Updateable {
      * Asettaa Unitin pääaseen.
      * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
-    public void addToPrimaryWeapon(Weapon primaryWeapon) {
-        addComponent((Component)primaryWeapon);
+    public void addPrimaryWeapon(Weapon primaryWeapon) {
+        primaryWeapon.setShooter(this);
         this.primaryWeapons.add(primaryWeapon);
+        addComponent((Component)primaryWeapon);
     }
 
     /**
@@ -177,7 +176,6 @@ public class Unit extends Sprite implements Updateable {
      */
     void drawShip(Shape shape) {
         this.shape = shape;
-        int tag = getTag();
         this.shape.setEffect(new GaussianBlur(2.0));
         this.shape.setFill(Color.BLACK);
         this.shape.setStrokeWidth(5.0);
@@ -194,8 +192,10 @@ public class Unit extends Sprite implements Updateable {
         sortComponents(); //Lajittelee komponentit isoimmasta pienimpään
         for (Component component : components) { //Lista käy läpi kaikki komponentit ja asettaa kuvat päällekkäin
             Shape shape = component.getShape();
-            shape.setLayoutY(component.getyOffset()); //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
-            shape.setLayoutX(component.getxOffset());
+            //Näitä muokkaamalla voi vaihtaa mihin komponentti tulee
+            shape.setLayoutX(component.getOffset().getX());
+            shape.setLayoutY(component.getOffset().getY());
+
             //setPosition(this.getXPosition(), this.getYPosition() + 100);
             this.getChildren().add(component.getShape());
             setTag(getTag());
@@ -209,9 +209,9 @@ public class Unit extends Sprite implements Updateable {
      */
     public void equipComponent(Component component) {
         Shape shape = component.getShape();
-        shape.setLayoutY(component.getyOffset());
-        shape.setLayoutX(component.getxOffset());
-        this.getChildren().add(component.getShape());
+        shape.setLayoutX(component.getOffset().getX());
+        shape.setLayoutY(component.getOffset().getY());
+        this.getChildren().add(shape); //addComponent((Component)primaryWeapon);
         setTag(getTag());
     }
 
@@ -229,7 +229,7 @@ public class Unit extends Sprite implements Updateable {
      * Ampuu yksikön pääaseella.
      */
     void shootPrimary() {
-        if (primaryWeapons.get(0) != null) {
+        if (primaryWeapons != null) {
             for(Weapon primaryWeapon : primaryWeapons) {
                 primaryWeapon.shoot();
             }
@@ -321,6 +321,10 @@ public class Unit extends Sprite implements Updateable {
      */
     public void setTookDamage(boolean tookDamage){
         this.tookDamage = tookDamage;
+    }
+
+    public Color getUnitColor(){
+        return color;
     }
 
 }

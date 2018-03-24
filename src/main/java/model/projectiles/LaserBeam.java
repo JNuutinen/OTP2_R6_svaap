@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -48,12 +49,11 @@ public class LaserBeam extends BaseProjectile implements Updateable {
      * @param damage Ammuksen tekemä vahinko.
      * @param color Ammuksen väri.
      * @param tag Ammuksen tagi.
-     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param offset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      */
-    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, double frontOffset, double leftOffset) {
+    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, frontOffset, leftOffset, tag);
+        super(controller, shooter, speed, offset, tag);
 
         this.controller = controller;
         this.damage = damage;

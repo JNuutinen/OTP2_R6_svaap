@@ -219,8 +219,8 @@ extends <a href="../model/Sprite.html" title="class in model">Sprite</a></pre>
          int&nbsp;size,
          int&nbsp;orientation,
          javafx.scene.paint.Color&nbsp;color,
-         double&nbsp;xOffset,
-         double&nbsp;yOffset)</code>
+         double&nbsp;offset,
+         double&nbsp;leftOffset)</code>
 <div class="block">Konstruktori ilman projectilen offsettejä.</div>
 </td>
 </tr>
@@ -229,9 +229,9 @@ extends <a href="../model/Sprite.html" title="class in model">Sprite</a></pre>
          int&nbsp;size,
          int&nbsp;orientation,
          javafx.scene.paint.Color&nbsp;color,
-         double&nbsp;xOffset,
-         double&nbsp;yOffset,
-         double&nbsp;projectileFrontOffset,
+         double&nbsp;offset,
+         double&nbsp;leftOffset,
+         double&nbsp;projectileOffset,
          double&nbsp;projectileLeftOffset)</code>
 <div class="block">Konstruktori projectilen offseteillä.</div>
 </td>
@@ -354,8 +354,8 @@ extends <a href="../model/Sprite.html" title="class in model">Sprite</a></pre>
                  int&nbsp;size,
                  int&nbsp;orientation,
                  javafx.scene.paint.Color&nbsp;color,
-                 double&nbsp;xOffset,
-                 double&nbsp;yOffset)</pre>
+                 double&nbsp;offset,
+                 double&nbsp;leftOffset)</pre>
 <div class="block">Konstruktori ilman projectilen offsettejä.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -363,8 +363,8 @@ extends <a href="../model/Sprite.html" title="class in model">Sprite</a></pre>
 <dd><code>size</code> - Komponentin koko.</dd>
 <dd><code>orientation</code> - Komponentin orientaatio.</dd>
 <dd><code>color</code> - Komponentin väri.</dd>
-<dd><code>xOffset</code> - Komponentin x-offset.</dd>
-<dd><code>yOffset</code> - Komponentin y-offset.</dd>
+<dd><code>offset</code> - Komponentin x-offset.</dd>
+<dd><code>leftOffset</code> - Komponentin y-offset.</dd>
 </dl>
 </li>
 </ul>
@@ -378,9 +378,9 @@ extends <a href="../model/Sprite.html" title="class in model">Sprite</a></pre>
                  int&nbsp;size,
                  int&nbsp;orientation,
                  javafx.scene.paint.Color&nbsp;color,
-                 double&nbsp;xOffset,
-                 double&nbsp;yOffset,
-                 double&nbsp;projectileFrontOffset,
+                 double&nbsp;offset,
+                 double&nbsp;leftOffset,
+                 double&nbsp;projectileOffset,
                  double&nbsp;projectileLeftOffset)</pre>
 <div class="block">Konstruktori projectilen offseteillä.</div>
 <dl>
@@ -389,9 +389,9 @@ extends <a href="../model/Sprite.html" title="class in model">Sprite</a></pre>
 <dd><code>size</code> - Komponentin koko.</dd>
 <dd><code>orientation</code> - Komponentin orientaatio.</dd>
 <dd><code>color</code> - Komponentin väri.</dd>
-<dd><code>xOffset</code> - Komponentin x-offset.</dd>
-<dd><code>yOffset</code> - Komponentin y-offset.</dd>
-<dd><code>projectileFrontOffset</code> - ammuksen aloituspaikan poikkeama aluksen etusuuntaan</dd>
+<dd><code>offset</code> - Komponentin x-offset.</dd>
+<dd><code>leftOffset</code> - Komponentin y-offset.</dd>
+<dd><code>projectileOffset</code> - ammuksen aloituspaikan poikkeama aluksen etusuuntaan</dd>
 <dd><code>projectileLeftOffset</code> - ammuksen aloituspaikan poikkeama aluksen vasempaan suuntaan</dd>
 </dl>
 </li>

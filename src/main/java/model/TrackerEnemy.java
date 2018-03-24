@@ -7,6 +7,8 @@ import javafx.scene.shape.Polygon;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
 
+import java.util.ArrayList;
+
 import static view.GameMain.*;
 
 /**
@@ -85,37 +87,28 @@ public class TrackerEnemy extends Unit implements Updateable {
      * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
      * @param controller Pelin kontrolleri
      * @param shipColor Aluksen väri
-     * @param movementPattern Aluksen liikkumatyyli
-     * @param initialX Alkuposition x-koordinaatti
-     * @param initialY Alkuposition y-koordinaatti
+     * @param initialPosition Aloitussijainti
      * @param path Aluksen reitti
-     * @param tag Vihollisen tunniste. Käytä tagia "enemy" jos kyseessä perusvihollinen.
      */
-    public TrackerEnemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, Point2D[] path,
-                        int tag) {
-        super(controller, shipColor);
+    public TrackerEnemy(Controller controller, Color shipColor, ArrayList<Weapon> primaries, Point2D initialPosition, Point2D[] path) {
+        super(controller, shipColor, primaries);
         this.path = path;
         this.controller = controller;
-        setTag(tag);
+        setTag(ENEMY_SHIP_TAG);
         lastDestinationIndex = path.length-1;
         controller.addUnitToCollisionList(this);
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
         findAndSetTarget();
-
-
-
         rotate(-160);
-        this.movementPattern = movementPattern;
-        if (movementPattern == MOVE_NONE) setIsMoving(false);
-        else setIsMoving(true);
-        this.initialX = initialX;
-        this.initialY = initialY;
-
-        Component c = new Component("triangle", 3, 0, Color.YELLOW, 50, 0);
-        components.add(c);
-        //equipComponents();
+        setIsMoving(true);
+        this.initialX = initialPosition.getX();
+        this.initialY = initialPosition.getY();
         setHitbox(80);
+        setHp((int) (40 * controller.getLevel().getEnemyHealthModifier()));
+
+        Component c = new Component("triangle", 3, 0, Color.YELLOW, new Point2D(50, 0));
+        components.add(c);
 
         Polygon shape = new Polygon();
         // aluksen muoto
@@ -138,7 +131,6 @@ public class TrackerEnemy extends Unit implements Updateable {
                 60.0, -10.0,
                 30.0, -10.0);
         drawShip(shape);
-
     }
 
     /**
@@ -175,12 +167,8 @@ public class TrackerEnemy extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
-            //setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
         }
-
-
-        //laskee oman kulman ja kohteeseen katsottavan kulman erotuksen ja pitaa asteet -180 ja 180 valilla
 
         double angleToTarget;
         if(!shootingTarget) {
@@ -206,13 +194,7 @@ public class TrackerEnemy extends Unit implements Updateable {
             while (angleToTarget < -180) {
                 angleToTarget += 360.0;
             }
-
-            /*if (angleToTarget < rotatingSpeed - 3) {     // TODO HEGE POISTAA
-                rotate(angleToTarget * 0.05);
-            } else if (angleToTarget > rotatingSpeed + 3) {*/
             rotate(angleToTarget * rotatingSpeed * deltaTime);
-            //}
-
         }
         else{
             if(target != null) {

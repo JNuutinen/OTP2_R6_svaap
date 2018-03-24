@@ -6,6 +6,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.weapons.Weapon;
 
+import java.util.ArrayList;
+
 import static view.GameMain.*;
 
 /**
@@ -83,8 +85,8 @@ public class Player extends Unit {
      * @param controller Pelin kontrolleri.
      * @param shipColor Aluksen väri.
      */
-    public Player(Controller controller, Color shipColor) {
-        super(controller, shipColor);
+    public Player(Controller controller, Color shipColor, ArrayList<Weapon> primaries) {
+        super(controller, shipColor, null);
         setTag(PLAYER_SHIP_TAG);
         this.controller = controller;
         setHp(MAX_HP );
@@ -113,6 +115,7 @@ public class Player extends Unit {
         drawShip(shape);
 
         setHitbox(60);
+
     }
 
 
