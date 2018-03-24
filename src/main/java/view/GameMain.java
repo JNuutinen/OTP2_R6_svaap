@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
+import model.db.Database;
 import model.weapons.Blaster;
 import model.weapons.LaserGun;
 import model.weapons.RocketShotgun;
@@ -199,6 +200,9 @@ public class GameMain extends Application implements View {
     private Pane uiPane;
 
     public static void main(String[] args) {
+        Database database = new Database();
+        database.dbTest();
+        //database.purgeSaves();
         launch(args);
     }
 

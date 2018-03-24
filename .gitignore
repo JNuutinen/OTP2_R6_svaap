@@ -1,4 +1,10 @@
-# Templatet otettu: https://github.com/github/gitignore
+# Templatet otettu Mavenille ja Javalle: https://github.com/github/gitignore
+
+##
+# Muut:
+#
+
+config.properties
 
 ##
 # Maven:
