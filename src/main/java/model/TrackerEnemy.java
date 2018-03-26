@@ -170,12 +170,14 @@ public class TrackerEnemy extends Unit implements Updateable {
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
-                || getXPosition() > WINDOW_WIDTH+200
-                || getYPosition() < -100
-                || getYPosition() > WINDOW_HEIGHT+100) {
+                || getXPosition() > WINDOW_WIDTH+200) {
             destroyThis();
         } else {
-            //setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
+            setPosition(getXPosition(), getYPosition()+ yVelocity * deltaTime + (((Math.sin(getXPosition() / 70) * 60)) * movementPattern));
+
+
+            //setPosition(getXPosition(), getYPosition() + yVelocity * deltaTime + (((Math.sin(getXPosition() / 70) * 60)) * movementPattern));
+
             moveStep(deltaTime);
         }
 

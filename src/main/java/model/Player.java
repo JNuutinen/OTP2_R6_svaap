@@ -115,6 +115,7 @@ public class Player extends Unit {
         setHitbox(60);
     }
 
+boolean move = false;
 
     @Override
     public void update(double deltaTime){
@@ -153,20 +154,23 @@ public class Player extends Unit {
         if (input.contains("W")) {
             // TODO: 50px kovakoodattu
             if (getYPosition() > 50) {
-                //addVelocity(0, -1);
 
-                controller.moveWorld(-1);
-
+                if (move) {
+                    addVelocity(0, -1);
+                } else {
+                    controller.moveWorld(-1);
+                }
             } else {
                 decelerateY();
                 controller.decelerateWorld();
             }
         } else if (input.contains("S")) {
             if (getYPosition() < WINDOW_HEIGHT - getHitboxRadius()) {
-                //addVelocity(0, 1);
-
-                controller.moveWorld(1);
-
+                if (move) {
+                    addVelocity(0, 1);
+                } else {
+                    controller.moveWorld(1);
+                }
             } else {
                 decelerateY();
                 controller.decelerateWorld();

@@ -238,16 +238,14 @@ public class GameController implements Controller {
     @Override
     public void moveWorld(double y) {
         for (Updateable u : getUpdateables()) {
-
             Sprite s = (Sprite)u;
-            s.addVelocity(0, -y/2,gameLoop.getDeltaTime());
+            s.addVelocity(0, -y,gameLoop.getDeltaTime());
         }
     }
     
     @Override
     public void decelerateWorld() {
         for (Updateable u : getUpdateables()) {
-
             Sprite s = (Sprite)u;
             s.decelerateY(gameLoop.getDeltaTime());
         }
