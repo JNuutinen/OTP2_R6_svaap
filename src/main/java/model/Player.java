@@ -152,7 +152,7 @@ public class Player extends Unit {
         } else if(xVelocity != 0) {
             decelerateX();
         }
-
+ 
         if (input.contains("W")) {
             // TODO: 50px kovakoodattu
             if (getYPosition() > 50) {
