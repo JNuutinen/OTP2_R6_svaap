@@ -24,7 +24,4 @@ public interface Level {
      * Käynnistää tason.
      */
     void startLevel();
-
-    /** palauttaa tason vihujen elämäkertoimen */
-    double getEnemyHealthModifier();
 }

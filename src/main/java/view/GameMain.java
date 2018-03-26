@@ -8,7 +8,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -345,14 +344,13 @@ public class GameMain extends Application implements View {
         // Luodaan gameRoot jo tässä, koska pelaaja luodaan ja sen Sprite lisätään siihen
         gameRoot = new BorderPane();
 
-        // Valittavat aselistat
-        ArrayList<Weapon> secondaries = createPlayerSecondaries();
-        ArrayList<Weapon> primaries = createPlayerPrimaries1();
-
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
-        Player player = new Player(controller, Color.LIME, primaries);
+        Player player = new Player(controller, Color.LIME);
 
 
+        // Valittavat aselistat
+        ArrayList<Weapon> primaries = createPlayerPrimaries1(player);
+        ArrayList<Weapon> secondaries = createPlayerSecondaries(player);
 
         // Main menu
         MainMenu mainMenu = new MainMenu();
@@ -445,9 +443,8 @@ public class GameMain extends Application implements View {
      * @param secondary Pelaajan sivuase.
      */
     private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
-        player.addPrimaryWeapon(primary);
+        player.addToPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
-        secondary.setShooter(player); // TODO tän parantaminen, primaryaseet ei tarvi tätä.
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
         Image uiIMG = new Image("/images/PlayerUi.png");
@@ -487,8 +484,25 @@ public class GameMain extends Application implements View {
             uiPane.getChildren().add(debugger_currentFps);*/
         }
 
+        // Aseiden lisäys komponentteihin, jotta aseet näkyvissä
+        ArrayList<Component> components = new ArrayList<>();
+        components.add((Component)primary);
+        components.add((Component)secondary);
 
-        // Pelaaja                                                                                         PELAAJA
+        Component b = new Component("circle", 10, 0, Color.RED, 0,0);
+        components.add(b);
+
+        /*
+        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0,0);
+        components.add(c);
+
+        Component d = new Component("triangle", 6, 0, Color.BLUE, 0,0);
+        components.add(d);
+
+        */
+        //player.equipComponents();
+
+
         player.setPosition(100, 300);
 
         // tieto controllerille pelaajasta
@@ -514,24 +528,28 @@ public class GameMain extends Application implements View {
         primaryStage.setScene(scene);
 
         controller.startLoop();
+        System.out.println(playMenu.getSelectedLevel());
         controller.startLevel(playMenu.getSelectedLevel());
     }
 
     /**
      * Luo listan valittavissa olevista pääaseista
+     * @param player Pelaaja
      * @return Lista, joka sisältää aseita
      */
-    private ArrayList<Weapon> createPlayerPrimaries1() {
+    private ArrayList<Weapon> createPlayerPrimaries1(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon blaster = new Blaster(controller, 0, 45,  new Point2D(-15, 0), new Point2D(100, 0));
+        Weapon blaster = new Blaster(controller, player, 0, -15, 0, Color.LIME,
+                45, 100, 0);
         ((Component) blaster).setName("Blaster");
 
-        Weapon rocketShotgun = new RocketShotgun(controller, 0, new Point2D(-15, 0), 0, 20,
-                false);
+        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, -15, 0, 3,
+                20, false);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, 5, new Point2D(-15, 0), new Point2D(80, 0), 0.5);
+        Weapon laserGun = new LaserGun(controller, player, 0, -15, 5,
+                80, 0, 0.5);
         ((Component) laserGun).setName("Laser Gun");
 
         weapons.add(blaster);
@@ -543,17 +561,18 @@ public class GameMain extends Application implements View {
 
     /**
      * Luo listan valittavissa olevista sivuaseista
+     * @param player Pelaaja
      * @return Lista, joka sisältää aseita
      */
-    private ArrayList<Weapon> createPlayerSecondaries() {
+    private ArrayList<Weapon> createPlayerSecondaries(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon rocketShotgun = new RocketShotgun(controller, 1, new Point2D(10, 0), 3, 20,
-                false);
+        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, 10, 0, 3,
+                20, false);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, 0, new Point2D(10, 0), new Point2D(80, 0),
-                0.5);
+        Weapon laserGun = new LaserGun(controller, player, 0, 10, 50,
+                80, 0, 0.5);
         ((Component) laserGun).setName("Laser Gun");
 
         weapons.add(rocketShotgun);

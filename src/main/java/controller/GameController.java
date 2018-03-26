@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.application.Platform;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import model.*;
@@ -54,10 +53,6 @@ public class GameController implements Controller {
     @Override
     public void addPlayer(Player player) {
         this.player = player;
-    }
-
-    public Level getLevel(){
-        return level;
     }
 
 
@@ -115,73 +110,73 @@ public class GameController implements Controller {
         switch (levelNumber) {
             default:
                 // Luodaan enemy tyypit listaan, mikä annetaan levelille parametrina
-                //enemies = createEnemyTypes();
+                enemies = createEnemyTypes();
                 int numberOfEnemies = 0;
                 double spawnFrequencyModifier = 1;
                 double enemyHealthModifier = 1;
                 double enemyDamageModifier = 1;
 
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 1:
-                //enemies = createEnemyTypes();
+                enemies = createEnemyTypes();
                 numberOfEnemies = 3;
                 spawnFrequencyModifier = 0.9;
                 enemyHealthModifier = 1.0;
                 enemyDamageModifier = 1.5;
 
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 2:
-                //enemies = createEnemyTypes();
+                enemies = createEnemyTypes();
                 numberOfEnemies = 20;
                 spawnFrequencyModifier = 0.8;
                 enemyHealthModifier = 1.1;
                 enemyDamageModifier = 2;
 
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 3:
-                //enemies = createEnemyTypes();
+                enemies = createEnemyTypes();
                 numberOfEnemies = 1;
                 spawnFrequencyModifier = 0.7;
                 enemyHealthModifier = 1.2;
                 enemyDamageModifier = 2;
 
-                level = new Level3(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level3(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 4:
-                //enemies = createEnemyTypes();
+                enemies = createEnemyTypes();
                 numberOfEnemies = 30;
                 spawnFrequencyModifier = 0.2;
-                enemyHealthModifier = 1.3;
+                enemyHealthModifier = 2.0;
                 enemyDamageModifier = 2;
 
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 5:
-                //enemies = createEnemyTypes();
+                enemies = createEnemyTypes();
                 numberOfEnemies = 30;
                 spawnFrequencyModifier = 0.05;
-                enemyHealthModifier = 1.4;
+                enemyHealthModifier = 0.1;
                 enemyDamageModifier = 2;
 
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 6:
-                //enemies = createEnemyTypes();
+                enemies = createEnemyTypes();
                 numberOfEnemies = 1000;
                 spawnFrequencyModifier = 0.1;
-                enemyHealthModifier = 1.5;
+                enemyHealthModifier = 1;
                 enemyDamageModifier = 0;
 
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
         }
@@ -223,9 +218,9 @@ public class GameController implements Controller {
      */
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this, Color.GRAY, null, MOVE_STRAIGHT, new Point2D(0, 0));
+        Enemy enemy1 = new Enemy(this, Color.GRAY, MOVE_STRAIGHT, 0, 0, ENEMY_SHIP_TAG);
         enemy1.setImage(enemyImage, 1, 1);// width aj height arvoilla ei ole merkitysta koska vihu piirretty vektoreilla
-        Enemy enemy2 = new Enemy(this, Color.PALEGOLDENROD, null,  MOVE_SINE, new Point2D(0 ,0));
+        Enemy enemy2 = new Enemy(this, Color.PALEGOLDENROD, MOVE_SINE, 0, 0, ENEMY_SHIP_TAG);
         enemy2.setImage(enemyImage, 1, 1);
         ArrayList<Enemy> enemies = new ArrayList<>();
         enemies.add(enemy1);

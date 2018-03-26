@@ -1,6 +1,5 @@
 package model;
 
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
@@ -16,28 +15,52 @@ import static view.GameMain.SPRITE_NAME_UNDEFINED;
  */
 public class Component extends Sprite {
 
-    /** Komponentin poikkeama aluksesta. x=eteenpäin, y=vasempaan päin,
-     * verrattuna aluksen suuntaan. */
-    private Point2D offset;
+    /**
+     * Komponentin x-offset Spritesta, johon se kiinnitetään.
+     */
+    private double xOffset;
 
+    /**
+     * Komponentin y-offset Spritesta, johon se kiinnitetään.
+     */
+    private double yOffset;
 
-    /** Komponentista lähtevän ammuksen aloituspaikan poikkeama aluksesta. x=eteenpäin, y=vasempaan päin,
-     * verrattuna aluksen suuntaan. */
-    private Point2D projectileOffset = new Point2D(0, 0);
+    /**
+     * Komponentista lähtevän ammuksen aloituspaikan poikkeama aluksen etusuuntaan
+     */
+    private double projectileFrontOffset = 0;
 
+    /**
+     * Komponentista lähtevän ammuksen aloituspaikan poikkeama aluksen vasempaan suuntaan
+     */
+    private double projectileLeftOffset = 0;
 
-    /** Komponentin nimi. */
+    /**
+     * Komponentin nimi.
+     */
     private String name = SPRITE_NAME_UNDEFINED;
 
-    /** Konstruktori ilman projectilen offsettejä.
+    /**
+     *
+     * @param shape parametreina "triangle", "rectangle" ja "circle"
+     * @param size
+     * @param orientation
+     * @param color
+     * @param xOffset
+     * @param yOffset
+     */
+    /**
+     * Konstruktori ilman projectilen offsettejä.
      * @param shape Komponentin kuvio merkkijonona: "triangle", "rectangle", ja "circle".
      * @param size Komponentin koko.
      * @param orientation Komponentin orientaatio.
      * @param color Komponentin väri.
-     * @param offset Komponentin poikkeama aluksesta. x = etusuuntaan, y = vasempaan suuntaan.
+     * @param xOffset Komponentin x-offset.
+     * @param yOffset Komponentin y-offset.
      */
-    public Component(String shape, int size, int orientation, Color color, Point2D offset) {
-        this.offset = offset;
+    public Component(String shape, int size, int orientation, Color color, double xOffset, double yOffset) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
 
         if (shape.equals("triangle")) {
             setShape(triangle(size, orientation, color));
@@ -54,25 +77,30 @@ public class Component extends Sprite {
      * @param size Komponentin koko.
      * @param orientation Komponentin orientaatio.
      * @param color Komponentin väri.
-     * @param offset TODO.
-     * @param projectileOffset TODO
+     * @param xOffset Komponentin x-offset.
+     * @param yOffset Komponentin y-offset.
+     * @param projectileFrontOffset ammuksen aloituspaikan poikkeama aluksen etusuuntaan
+     * @param projectileLeftOffset ammuksen aloituspaikan poikkeama aluksen vasempaan suuntaan
      */
-    public Component(String shape, int size, int orientation, Color color, Point2D offset,
-                     Point2D projectileOffset) {
-        this(shape, size, orientation, color, offset);
-        this.projectileOffset = projectileOffset;
+    public Component(String shape, int size, int orientation, Color color, double xOffset, double yOffset,
+                     double projectileFrontOffset, double projectileLeftOffset) {
+        this(shape, size, orientation, color, xOffset, yOffset);
+        this.projectileFrontOffset = projectileFrontOffset;
+        this.projectileLeftOffset = projectileLeftOffset;
     }
 
-
-
-    /** Palauttaa komponentin nimen.
-     * @return Komponentin nimi. */
+    /**
+     * Palauttaa komponentin nimen.
+     * @return Komponentin nimi.
+     */
     public String getName() {
         return name;
     }
 
-    /** Asettaa komponentin nimen.
-     * @param name Komponentin nimi. */
+    /**
+     * Asettaa komponentin nimen.
+     * @param name Komponentin nimi.
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -137,16 +165,28 @@ public class Component extends Sprite {
      * Palauttaa komponentin x-offsetin.
      * @return Komponentin x-offset.
      */
-    public Point2D getOffset(){
-        return offset;
+    public double getxOffset(){
+        return xOffset;
     }
 
+    /**
+     * Palauttaa komponentin y-offsetin.
+     * @return Komponentin y-offset.
+     */
+    public double getyOffset(){
+        return yOffset;
+    }
 
     /**
      * Palauttaa komponentista lähtevän ammuksen aloituspaikan poikkeama aluksen etusuuntaan
      * @return ammuksen aloituspaikan poikkeama aluksen etusuuntaan
      */
-    public Point2D getProjectileOffset() { return projectileOffset;}
+    public double getProjectileFrontOffset() { return projectileFrontOffset;}
 
+    /**
+     * Palauttaa komponentista lähtevän ammuksen aloituspaikan poikkeama aluksen vasempaan suuntaan
+     * @return ammuksen aloituspaikan poikkeama aluksen vasempaan suuntaan
+     */
+    public double getProjectileLeftOffset() { return projectileLeftOffset;}
 
 }

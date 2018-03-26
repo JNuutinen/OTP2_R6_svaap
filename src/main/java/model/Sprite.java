@@ -1,6 +1,5 @@
 package model;
 
-import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,39 +16,58 @@ import static view.GameMain.UNDEFINED_TAG;
  */
 public class Sprite extends Pane {
 
-    /** Spriten suunta (kulma). */
+    /**
+     * Spriten suunta (kulma).
+     */
     private double direction;
 
-    /** Spriten nopeus. */
+    /**
+     * Spriten nopeus.
+     */
     private double velocity = 200;
 
-    /** Ympyrähitboxin halkaisija. */
+    /**
+     * Ympyrähitboxin halkaisija.
+     */
     private double hitboxRadius = 0;
 
-    /** Spriten kuvan säiliö. */
+    /**
+     * Spriten kuvan säiliö.
+     */
     private ImageView imageView = new ImageView();
 
-    /** Kertoo onko spriten tarkoitus liikkua tällä hetkellä. */
+    /**
+     * Kertoo onko spriten tarkoitus liikkua tällä hetkellä.
+     */
     private boolean isMoving = false;
 
-    /** Spriten muoto. */
+    /**
+     * Spriten muoto.
+     */
     private Shape shape;
 
-    /** Debuggaustyökalujen toggle. */
+    /**
+     * Debuggaustyökalujen toggle.
+     */
     private boolean debuggerToolsEnabled = true;
 
-    /** Toggle lockedDirectionille. */
+    /**
+     * Toggle lockedDirectionille.
+     */
     private boolean movingDirectionLocked = false;
 
-    /** Voi laittaa spriten menee tiettyyn suuntaan vaikka sita kaantelisi samalla ks. lockDirection(). */
+    /**
+     * Voi laittaa spriten menee tiettyyn suuntaan vaikka sita kaantelisi samalla ks. lockDirection().
+     */
     private double lockedDirection = 0;
 
-    /** Spriten tunnistetagi. */
+    /**
+     * Spriten tunnistetagi.
+     */
     private int tag = UNDEFINED_TAG;
 
-
     /**
-     *  Toteuttaa Updateable-rajapinnan getHitboxRadius() metodin Unit-luokan kautta.
+     * Toteuttaa Updateable-rajapinnan getHitboxRadius() metodin Unit-luokan kautta.
      * @return Spriten ymnpyrähitboxin säteen desimaalilukuna.
      */
     public double getHitboxRadius(){
@@ -57,15 +75,17 @@ public class Sprite extends Pane {
     }
 
     /**
-     *  Toteuttaa Updateable-rajapinnan getPosition() metodin Unit-luokan kautta.
+     * Toteuttaa Updateable-rajapinnan getPosition() metodin Unit-luokan kautta.
      * @return Spriten nykyinen sijainti Point2D-oliona.
-     * */
+     */
     public Point2D getPosition(){
         return new Point2D(this.getLayoutX(), this.getLayoutY());
     }
 
-    /** Toteuttaa Updateable-rajapinnan getTag() metodin Unit-luokan kautta.
-     * @return Spriten tunnistetagi. */
+    /**
+     * Toteuttaa Updateable-rajapinnan getTag() metodin Unit-luokan kautta.
+     * @return Spriten tunnistetagi.
+     */
     public int getTag() {
         return tag;
     }
@@ -136,7 +156,9 @@ public class Sprite extends Pane {
      * Palauttaa Spriten nopeuden.
      * @return Spriten nopeus.
      */
-    protected double getVelocity(){ return velocity; }
+    protected double getVelocity(){
+        return velocity;
+    }
 
     /**
      * Asettaa Spriten nopeuden.
@@ -155,7 +177,7 @@ public class Sprite extends Pane {
         shape = new Circle(0, 0, circleHitboxDiameter/2);
         shape.setFill(Color.TRANSPARENT);
         if(debuggerToolsEnabled) {
-            shape.setStroke(Color.LIGHTGREY);
+            //shape.setStroke(Color.LIGHTGREY);
         }
         shape.setStrokeWidth(0.4);
         this.getChildren().add(shape);
@@ -205,6 +227,19 @@ public class Sprite extends Pane {
     void lockDirection(double angle){
         movingDirectionLocked = true;
         lockedDirection = angle;
+    }
+
+    /**
+     * Liikuttaa bossia.
+     * @param deltaTime Kulunut aika viime päivityksestä.
+     */
+    void moveBoss(double deltaTime){
+        if (isMoving) {
+            Point2D directionInVector = degreesToVector(direction);
+            Point2D currentPosition = getPosition();
+            this.setPosition(currentPosition.getX(),
+                    currentPosition.getY() + (directionInVector.getY()));
+        }
     }
 
     /**

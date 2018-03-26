@@ -219,9 +219,9 @@ implements <a href="../../model/weapons/Weapon.html" title="interface in model.w
 <td class="colOne"><code><span class="memberNameLink"><a href="../../model/weapons/LaserGun.html#LaserGun-controller.Controller-model.Unit-int-double-double-double-double-">LaserGun</a></span>(<a href="../../controller/Controller.html" title="interface in controller">Controller</a>&nbsp;controller,
         <a href="../../model/Unit.html" title="class in model">Unit</a>&nbsp;shooter,
         int&nbsp;orientation,
-        double&nbsp;offset,
-        double&nbsp;leftOffset,
-        double&nbsp;projectileOffset,
+        double&nbsp;xOffset,
+        double&nbsp;yOffset,
+        double&nbsp;projectileFrontOffset,
         double&nbsp;projectileLeftOffset)</code>
 <div class="block">Konstruktori.</div>
 </td>
@@ -230,9 +230,9 @@ implements <a href="../../model/weapons/Weapon.html" title="interface in model.w
 <td class="colOne"><code><span class="memberNameLink"><a href="../../model/weapons/LaserGun.html#LaserGun-controller.Controller-model.Unit-int-double-double-double-double-double-">LaserGun</a></span>(<a href="../../controller/Controller.html" title="interface in controller">Controller</a>&nbsp;controller,
         <a href="../../model/Unit.html" title="class in model">Unit</a>&nbsp;shooter,
         int&nbsp;orientation,
-        double&nbsp;offset,
-        double&nbsp;leftOffset,
-        double&nbsp;projectileOffset,
+        double&nbsp;xOffset,
+        double&nbsp;yOffset,
+        double&nbsp;projectileFrontOffset,
         double&nbsp;projectileLeftOffset,
         double&nbsp;shootingDelay)</code>
 <div class="block">Konstruktori ampumisviiveen kanssa.</div>
@@ -363,9 +363,9 @@ implements <a href="../../model/weapons/Weapon.html" title="interface in model.w
 <pre>public&nbsp;LaserGun(<a href="../../controller/Controller.html" title="interface in controller">Controller</a>&nbsp;controller,
                 <a href="../../model/Unit.html" title="class in model">Unit</a>&nbsp;shooter,
                 int&nbsp;orientation,
-                double&nbsp;offset,
-                double&nbsp;leftOffset,
-                double&nbsp;projectileOffset,
+                double&nbsp;xOffset,
+                double&nbsp;yOffset,
+                double&nbsp;projectileFrontOffset,
                 double&nbsp;projectileLeftOffset)</pre>
 <div class="block">Konstruktori.</div>
 <dl>
@@ -373,9 +373,9 @@ implements <a href="../../model/weapons/Weapon.html" title="interface in model.w
 <dd><code>controller</code> - Pelin kontrolleri.</dd>
 <dd><code>shooter</code> - Ammuksen ampuja.</dd>
 <dd><code>orientation</code> - Aseen orientation.</dd>
-<dd><code>offset</code> - Aseen x-offset.</dd>
-<dd><code>leftOffset</code> - Aseen y-offset.</dd>
-<dd><code>projectileOffset</code> - Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.</dd>
+<dd><code>xOffset</code> - Aseen x-offset.</dd>
+<dd><code>yOffset</code> - Aseen y-offset.</dd>
+<dd><code>projectileFrontOffset</code> - Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.</dd>
 <dd><code>projectileLeftOffset</code> - Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.</dd>
 </dl>
 </li>
@@ -389,9 +389,9 @@ implements <a href="../../model/weapons/Weapon.html" title="interface in model.w
 <pre>public&nbsp;LaserGun(<a href="../../controller/Controller.html" title="interface in controller">Controller</a>&nbsp;controller,
                 <a href="../../model/Unit.html" title="class in model">Unit</a>&nbsp;shooter,
                 int&nbsp;orientation,
-                double&nbsp;offset,
-                double&nbsp;leftOffset,
-                double&nbsp;projectileOffset,
+                double&nbsp;xOffset,
+                double&nbsp;yOffset,
+                double&nbsp;projectileFrontOffset,
                 double&nbsp;projectileLeftOffset,
                 double&nbsp;shootingDelay)</pre>
 <div class="block">Konstruktori ampumisviiveen kanssa.</div>
@@ -400,9 +400,9 @@ implements <a href="../../model/weapons/Weapon.html" title="interface in model.w
 <dd><code>controller</code> - Pelin kontrolleri.</dd>
 <dd><code>shooter</code> - Ammuksen ampuja.</dd>
 <dd><code>orientation</code> - Aseen orientation.</dd>
-<dd><code>offset</code> - Aseen x-offset.</dd>
-<dd><code>leftOffset</code> - Aseen y-offset.</dd>
-<dd><code>projectileOffset</code> - Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.</dd>
+<dd><code>xOffset</code> - Aseen x-offset.</dd>
+<dd><code>yOffset</code> - Aseen y-offset.</dd>
+<dd><code>projectileFrontOffset</code> - Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.</dd>
 <dd><code>projectileLeftOffset</code> - Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.</dd>
 <dd><code>shootingDelay</code> - Ampumisen viive.</dd>
 </dl>

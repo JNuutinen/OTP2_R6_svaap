@@ -3,7 +3,6 @@ package controller;
 import model.Player;
 import model.Unit;
 import model.Updateable;
-import model.level.Level;
 
 import java.util.ArrayList;
 
@@ -37,8 +36,6 @@ public interface Controller {
      * @param unit Unit, joka lisätään.
      */
     void addUnitToCollisionList(Unit unit);
-
-    Level getLevel();
 
     /**
      * Poistaa Unitin collision listasta.

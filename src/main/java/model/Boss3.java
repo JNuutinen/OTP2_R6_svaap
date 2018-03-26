@@ -1,7 +1,6 @@
 package model;
 
 import controller.Controller;
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.weapons.BlasterSprinkler;
@@ -16,46 +15,47 @@ import static view.GameMain.*;
  */
 public class Boss3 extends Unit implements Updateable {
 
-    /** Pelin kontrolleri */
+    /**
+     * Pelin kontrolleri
+     */
     private Controller controller;
 
-    /** Apumuuttuja pomon alkuperäisestä hp:stä */
+    /**
+     * Apumuuttuja pomon alkuperäisestä hp:stä
+     */
     private int originalHp;
 
-    /** Apumuuttuja pomon alkuperäisestä hp:stä */
+    /**
+     * Apumuuttuja pomon alkuperäisestä hp:stä
+     */
     private int originalhp;
 
-    /** tulinopeus */
+    /**
+     * tulinopeus
+     */
     private double fireRate = 0.7;
 
-    /**  ampumisen ajanlaskuri */
+    /**
+     *  ampumisen ajanlaskuri
+     */
     private double fireRateCounter = 0;
 
-    /** apumuuttuja ampumistilan ajanlaskun yhteydessä */
+
     private double stageTimeCounter = 0;
 
-    /** liikkuuko alaspäin hyökkaystilassa */
     private boolean movingDown = true;
 
-    /** apumuuttuja ammuttavien laserien muistamiseksi */
     private int currentLaser = 0;
 
-    /** apumuuttuja laserien ampumisjärjestyksen hallitsemiseksi */
     private boolean lasersTopToDown = true;
 
-    /** apumuuttuja vahinkoefektin ajanlaskun yhteydessä */
     private double damagedTimeCounter = 0;
-
     private boolean tookDamage2 = false;
-
-    /** apumuuttuja tilan yhteydessä*/
     private boolean inFightingStage = false;
 
+    public Boss3(Controller controller, double initialX, double initialY){
 
-
-    public Boss3(Controller controller, Point2D initialPosition){
-
-        super(controller, Color.ORANGE, null);
+        super(controller, Color.ORANGE);
 
         Polygon shape = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         shape.getPoints().addAll(300.0, 25.0,
@@ -95,17 +95,23 @@ public class Boss3 extends Unit implements Updateable {
                 300.0, -25.0);
         drawShip(shape);
 
+
         this.controller = controller;
-        this.setPosition(initialPosition.getX(), initialPosition.getY());
+        this.setPosition(initialX, initialY);
         this.setTag(BOSS_SHIP_TAG);
         this.setVelocity(30);
         this.controller = controller;
         controller.addUnitToCollisionList(this);
         rotate(180);
         setIsMoving(true);
+
         setHp(1000);
         originalHp = getHp();
         this.setHitbox(450);
+
+        Component c3 = new Component("triangle", 3, 0, Color.PURPLE, 20, 10);
+        addComponent(c3);
+
         armShip();
 
     }
@@ -223,32 +229,35 @@ public class Boss3 extends Unit implements Updateable {
         }
     }
 
-    /** varustaa aluksen aseilla */
+    /**
+     * varustaa aluksen aseilla
+     */
     public void armShip(){
         //Platform.runLater(() ->
-        Weapon laserGun = new LaserGun(controller, 0, new Point2D(0, -240), new Point2D(0, -240),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, 0, new Point2D(200, -70), new Point2D(200, -70),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, 0, new Point2D(200, 70), new Point2D(200, 70),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, 0, new Point2D(0, 240), new Point2D(0, 240),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
+        Weapon laserGun = new LaserGun(controller, this, 0, 0, -240,
+                0, -240, 0.6);
+        this.addToPrimaryWeapon(laserGun);
+        laserGun = new LaserGun(controller, this, 0,  200, -70,
+                200, -70, 0.6);
+        this.addToPrimaryWeapon(laserGun);
+        laserGun = new LaserGun(controller, this, 0, 200, 70,
+                200, 70, 0.6);
+        this.addToPrimaryWeapon(laserGun);
+        laserGun = new LaserGun(controller, this, 0, 0, 240,
+                0, 240, 0.6);
+        this.addToPrimaryWeapon(laserGun);
 
 
-        Weapon blasterSprinkler = new BlasterSprinkler(controller, 2, 26, new Point2D(-20, -110),
-                new Point2D(-20, -110), 5);
-        this.addPrimaryWeapon(blasterSprinkler);
-        blasterSprinkler = new BlasterSprinkler(controller, 2, 26, new Point2D(-20, 110),
-                new Point2D(-20, 110), 5);
-        this.addPrimaryWeapon(blasterSprinkler);
+        Weapon blasterSprinkler = new BlasterSprinkler(controller, this, 2, -20, -110, Color.ORANGE,
+                26, -20, -110, 5);
+        this.addToPrimaryWeapon(blasterSprinkler);
+        blasterSprinkler = new BlasterSprinkler(controller, this, 2, -20, 110, Color.ORANGE,
+                26, -20, 110, 5);
+        this.addToPrimaryWeapon(blasterSprinkler);
 
 
-        Weapon rocketLauncher = new RocketLauncher(controller, 2, new Point2D(-15, 0), 4.8);
+        Weapon rocketLauncher = new RocketLauncher(controller, this, 2, -15, 0,
+                4.8);
         this.setSecondaryWeapon(rocketLauncher);
     }
 }
