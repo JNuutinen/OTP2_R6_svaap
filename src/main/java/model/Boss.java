@@ -100,7 +100,7 @@ public class Boss extends Unit implements Updateable {
         this.initialY = initialY;
     }
 
-    /**
+    /** 
      * Päivittää pomon liikkumisen, ampumisen ja healthbarin. Kutsu VAIN gameloopista!
      * @param deltaTime Kulunut aika viime päivityksestä.
      */
