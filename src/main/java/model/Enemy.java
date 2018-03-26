@@ -1,70 +1,181 @@
 package model;
 
-import javafx.application.Platform;
-import javafx.scene.image.Image;
-import javafx.scene.shape.Shape;
-import view.GameMain;
+import controller.Controller;
+import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import model.level.Level;
+import model.weapons.Weapon;
 
+import java.util.ArrayList;
+
+import static view.GameMain.ENEMY_SHIP_TAG;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
+/**
+ * Vihollisen pääluokka. Perii unitin ja implementoi Updateable rajapinnan.
+ */
 public class Enemy extends Unit implements Updateable {
+
+    /**
+     * Jos vihollinen ei liiku, se saa arvon -1
+     */
     public static final int MOVE_NONE = -1;
+
+    /**
+     * Jos vihollinen liikkuu suoraan -x suunnassa, se saa 0.
+     */
     public static final int MOVE_STRAIGHT = 0;
+
+    /**
+     * Jos vihollinen liikkuu siniaallon tavoin, se saa arvon 1.
+     */
     public static final int MOVE_SINE = 1;
 
+    /**
+     * Pelin kontrolleri
+     */
+    private Controller controller;
+
+    /**
+     * Vihollisen aloituspaikan x-koordinaatti.
+     */
     private double initialX;
+
+    /**
+     * Vihollisen aloituspaikan y-koordinaatti.
+     */
     private double initialY;
+
+    /**
+     * Vihollisen liikkumatapa, ei liiku, suoraan ja siniaalto.
+     */
     private int movementPattern;
-    private double direction = 180;
-    private Weapon weapon1;
-    private Weapon weapon2;
 
-    // Ampumisen kovakoodit
-    private int fireRate = 100;
-    private int fireRateCounter = 100;
+    /**
+     * Suunta johon vihollinen liikkuu.
+     */
+    private double direction = 0;
 
-    public Enemy() {
-        GameMain.units.add(this);
-        setDirection(180);
-        this.setTag("enemy");
-    }
 
-    public Enemy(Image image, int movementPattern, double initialX, double initialY, String tag) {
-        this.setTag(tag);
-        GameMain.units.add(this);
+    /**
+     * Tulinopeus
+     */
+    private double fireRate = 3;
+
+    /**
+     * Tulinopeuden laskuri, tätä kasvatetaan kunnes se saavuttaa tulinopeuden, jolloin ammutaan.
+     * Tämän jälkeen laskuri nollataan.
+     */
+    private double fireRateCounter = 2;
+
+    /**
+     * Laskuri, joka kertoo kuinka kauan osuman graafinen efekti kestää.
+     */
+    private double damagedTimeCounter = 0;
+
+    /**
+     * Osuma-efektin boolean arvo.
+     */
+    private boolean tookDamage2 = false;
+
+    /**
+     * Vihollisen konstruktori. Luo vihollisen graafisen esityksen, eli kolmion, jonka värin voi valita. Lisää vihollisen CollisionListiin, asettaa
+     * tagin, asettaa alkuposition x- ja y-koordinaatit ja liikkumatavan.
+     * @param controller Pelin kontrolleri
+     * @param shipColor Vihollisaluksen väri
+     * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 = MOVE_SINE.
+     * @param initialPosition Aloitussijainti.
+     */
+    public Enemy(Controller controller, Color shipColor, ArrayList<Weapon> primaries, int movementPattern, Point2D initialPosition) {
+        super(controller, shipColor, primaries);
+        this.controller = controller;
+        setTag(ENEMY_SHIP_TAG);
+        controller.addUnitToCollisionList(this);
+        this.initialX = initialPosition.getX();
+        this.initialY = initialPosition.getY();
         setPosition(initialX, initialY);
-        setDirection(180);
-        setImage(image);
+        rotate(180);
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
-        this.initialX = initialX;
-        this.initialY = initialY;
+
+        this.setHitbox(80);
+        setHp((int) (30 * controller.getLevel().getEnemyHealthModifier()));
+
+        Polygon shape = new Polygon();
+        // aluksen muoto
+        shape.getPoints().addAll(50.0, 0.0,
+                30.0, -20.0,
+                10.0, -20.0,
+                -10.0, -40.0,
+                -30.0, -40.0,
+                -20.0, -20.0,
+                -50.0, 00.0,
+                -20.0, 20.0,
+                -30.0, 40.0,
+                -10.0, 40.0,
+                10.0, 20.0,
+                30.0, 20.0);
+        drawShip(shape);
     }
 
-
-    public Updateable getUpdateable(){
-        return this;
-    }
-
+    /**
+     * Asettaa vihollisen liikkumatyylin.
+     * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 MOVE_SINE.
+     */
     public void setMovementPattern(int movementPattern) {
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
     }
 
+    /**
+     * Palauttaa vihollisen liikkumatyylin
+     * @return Arvo -1, 0 tai 1.
+     */
+    public int getMovementPattern() {
+        return movementPattern;
+    }
+
+    /**
+     * Asettaa alkuposition
+     * @param initialX Alkuposition x-koordinaatti.
+     * @param initialY Alkuposition y-koordinaatti.
+     */
     public void setInitPosition(double initialX, double initialY) {
         this.initialX = initialX;
         this.initialY = initialY;
     }
 
+
+    /**
+     * Vihollisen päivitys-funktio, kutsutaan gameLoopista jokaisella iteraatiolla.
+     * @param deltaTime Kulunut aika viime päivityksestä.
+     */
     @Override
     public void update(double deltaTime){
-        if (fireRateCounter <= fireRate) fireRateCounter++;
+        if(getTookDamage()){
+            tookDamage2 = true;
+            damagedTimeCounter = 0;
+            setTookDamage(false);
+        }
+        if(tookDamage2 && damagedTimeCounter > 0.1){
+            tookDamage2 = false;
+            setOriginalColor();
+            damagedTimeCounter = 0;
+        }
+        else if(tookDamage2){
+            damagedTimeCounter += deltaTime;
+        }
+
+        if (fireRateCounter <= fireRate) {
+            fireRateCounter += deltaTime;
+        }
         if (fireRateCounter >= fireRate) {
             fireRateCounter = 0;
-            spawnProjectile();
+            shootPrimary();
         }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
@@ -76,20 +187,5 @@ public class Enemy extends Unit implements Updateable {
             setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
         }
-    }
-
-    public void collides(Updateable collidingUpdateable){
-        // tagin saa: collidingUpdateable.getTag()
-    }
-
-    public void spawnProjectile(){
-        Projectile projectile = new Projectile(this.getPosition(), 180, 10,  "projectile_enemy");
-        GameLoop.queueUpdateable(projectile);
-        GameMain.pane.getChildren().add(projectile);
-    }
-
-    public void destroyThis(){
-        GameLoop.removeUpdateable(this);
-        GameMain.removeSprite(this);
     }
 }

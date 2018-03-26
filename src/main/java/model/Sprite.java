@@ -1,146 +1,245 @@
 package model;
 
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 
-import java.awt.geom.Ellipse2D;
+import static view.GameMain.UNDEFINED_TAG;
 
-import java.util.ArrayList;
-
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
-
-/*
-    Ylaluokka kaytetaan mm. aluksille ja ammuksille.
-    unitin ylaluokka.
+/**
+ * Perusluokka kaikille spriteille.
  */
 public class Sprite extends Pane {
-    protected Point2D direction;
+
+    /** Spriten suunta (kulma). */
+    private double direction;
+
+    /** Spriten nopeus. */
     private double velocity = 200;
+
+    /** Ympyrähitboxin halkaisija. */
+    private double hitboxRadius = 0;
+
+    /** Spriten kuvan säiliö. */
     private ImageView imageView = new ImageView();
+
+    /** Kertoo onko spriten tarkoitus liikkua tällä hetkellä. */
     private boolean isMoving = false;
 
+    /** Spriten muoto. */
     private Shape shape;
-    private int hitboxShapeType;
-    private final int rectangle = 1;
-    private final int circle = 2;
-    private double hitboxShapeMultiplier = 1;
 
-    private String tag = "undefined";
+    /** Debuggaustyökalujen toggle. */
+    private boolean debuggerToolsEnabled = true;
+
+    /** Toggle lockedDirectionille. */
+    private boolean movingDirectionLocked = false;
+
+    /** Voi laittaa spriten menee tiettyyn suuntaan vaikka sita kaantelisi samalla ks. lockDirection(). */
+    private double lockedDirection = 0;
+
+    /** Spriten tunnistetagi. */
+    private int tag = UNDEFINED_TAG;
 
 
-    /*  konstruktori.
-        @param int hitboxShapeType: kertoo hitboxin muodon.
-        @param float hitboxShapeMultiplier: kertoo hitboxin suuruuden kertomalla hitboxin leveyden ja pituuden parametrin arvolla. (0.0-1.0)
-
+    /**
+     *  Toteuttaa Updateable-rajapinnan getHitboxRadius() metodin Unit-luokan kautta.
+     * @return Spriten ymnpyrähitboxin säteen desimaalilukuna.
      */
-    public Sprite(int hitboxShapeType, float hitboxShapeMultiplier){
-        this.hitboxShapeType = hitboxShapeType;
-        this.hitboxShapeMultiplier = hitboxShapeMultiplier;
+    public double getHitboxRadius(){
+        return hitboxRadius;
     }
 
-
-    public Sprite(){
-        this(1, 1);
-        direction = degreesToDirection(0);
+    /**
+     *  Toteuttaa Updateable-rajapinnan getPosition() metodin Unit-luokan kautta.
+     * @return Spriten nykyinen sijainti Point2D-oliona.
+     * */
+    public Point2D getPosition(){
+        return new Point2D(this.getLayoutX(), this.getLayoutY());
     }
 
-    //kutsutut metodit löytyy Pane-ylaluokasta
+    /** Toteuttaa Updateable-rajapinnan getTag() metodin Unit-luokan kautta.
+     * @return Spriten tunnistetagi. */
+    public int getTag() {
+        return tag;
+    }
+
+    /**
+     * Toteuttaa Updateable-rajapinnan setTag() metodin Unit-luokan kautta.
+     * @param tag Spriten tunnistetagi.
+     */
+    public void setTag(int tag) {
+        this.tag = tag;
+    }
+
+    /**
+     * Palauttaa Spriten suunnan (kulma asteina).
+     * @return Spriten suunta.
+     */
+    public double getDirection(){ return direction;
+    }
+
+    /**
+     * Asettaa Spriten kuvan niin että kuvalla ja spritellä on sama keskipiste
+     * @param newImage Spritelle asetettava uusi kuva.
+     * @param height kuvan korkeus
+     * @param width kuvan levesys
+     */
+    public void setImage(Image newImage, double width, double height){
+        imageView.setImage(newImage);
+        imageView.setX(-width/2);
+        imageView.setY(-height/2);
+        this.getChildren().add(imageView);
+    }
+
+    /**
+     * Asettaa isMoving parametring osoittamaan, että Sprite on/ei ole liikkeessä.
+     * @param isMoving Liikkuuko Sprite.
+     */
+    protected void setIsMoving(boolean isMoving){
+        this.isMoving = isMoving;
+    }
+
+    /**
+     * Asettaa Spriten sijainnin.
+     * @param newX Uusi x-koordinaatti.
+     * @param newY Uusi y-koordinaatti.
+     */
     public void setPosition(double newX, double newY){
         this.setLayoutX(newX);
         this.setLayoutY(newY);
     }
 
-    // 0=oikealle, 90 on ylös...
-    public void setDirection(double degrees){
-        this.direction = degreesToDirection(degrees);
-    }
-
-    public void setIsMoving(boolean isMoving){
-        this.isMoving = isMoving;
-    }
-
-    public Point2D getPosition(){
-        return new Point2D(this.getLayoutX(), this.getLayoutY());
-    }
-
-    public double getXPosition(){
+    /**
+     * Palauttaa Spriten x-koordinaatin.
+     * @return X-koordinaatti.
+     */
+    protected double getXPosition(){
         return this.getLayoutX();
     }
 
-    public double getYPosition(){
+    /**
+     * Palauttaa Spriten y-koordinaatin.
+     * @return Y-koordinaatti.
+     */
+    protected double getYPosition(){
         return this.getLayoutY();
     }
 
-    public void setVelocity(double velocity){
+    /**
+     * Palauttaa Spriten nopeuden.
+     * @return Spriten nopeus.
+     */
+    protected double getVelocity(){ return velocity; }
+
+    /**
+     * Asettaa Spriten nopeuden.
+     * @param velocity Spriten uusi nopeus.
+     */
+    protected void setVelocity(double velocity){
         this.velocity = velocity;
     }
 
-    public double getVelocity(){
-        return velocity;
+    /**
+     * Asettaa Spriten ympyränmuotoisen hitboxin.
+     * @param circleHitboxDiameter Hitboxin halkaisija.
+     */
+    protected void setHitbox(double circleHitboxDiameter){
+        hitboxRadius = circleHitboxDiameter/2;
+        shape = new Circle(0, 0, circleHitboxDiameter/2);
+        shape.setFill(Color.TRANSPARENT);
+        if(debuggerToolsEnabled) {
+            shape.setStroke(Color.LIGHTGREY);
+        }
+        shape.setStrokeWidth(0.4);
+        this.getChildren().add(shape);
     }
 
+    /**
+     * Asettaa Spriten koon.
+     * @param newSize Spriten uusi koko Point2D-oliona.
+     */
     public void setSize(Point2D newSize){//TODO ei kaytos atm
         this.resize(newSize.getX(), newSize.getY());
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public String getTag(){
-        return this.tag;
-    }
-
-    //liikkuu yhden askeleen direction-suuntaan kerrottuuna velocity-muuttujalla.
-    //kaytetään peliloopin yhteydessa
-    public void moveStep(double deltaTime) {
-        if (isMoving) {
-            Point2D currentPosition = getPosition();
-            this.setPosition(currentPosition.getX() + (direction.getX() * velocity * deltaTime),
-                    currentPosition.getY() + (direction.getY() * velocity * deltaTime));
-        }
-    }
-
-    public Point2D degreesToDirection(double degrees){
+    /**
+     * Muuttaa astekulman vektoriksi.
+     * @param degrees Kulma, joka pitää muuntaa.
+     * @return Kulma vektorina esitettynä (Point2D).
+     */
+    public Point2D degreesToVector(double degrees){
         double sin = Math.sin(Math.toRadians(degrees) * -1);
         double cos = Math.cos(Math.toRadians(degrees));
         return new Point2D(cos, sin);
     }
 
-    public void setImage(Image newImage){
-        imageView.setImage(newImage);
-        this.getChildren().add(imageView);
+    /**
+     * Laskee kulman itsensa ja kohteen valilla yksikkoympyran mukaisesti (esim. jos kohde suoraan ylapuolella, kulma on 90)
+     * @param target Kohteen sijainti Point2D oliona.
+     * @return Kulma Spriten ja kohteen välillä.
+     */
+    protected double getAngleFromTarget(Point2D target){
+        return Math.toDegrees(Math.atan2(getYPosition() - target.getY(), getXPosition() * -1 - target.getX() * -1));
     }
 
-
-    public void setImages(Image newImage) {
-        ImageView imageView = new ImageView();
-        imageView.setImage(newImage);
-        this.getChildren().add(imageView);
+    /**
+     * Laskee itsensa ja kohteen valisen etaisyyden.
+     * @param target Kohteen sijainti Point2D oliona.
+     * @return Etäisyys Spriten ja kohteen välillä.
+     */
+    public double getDistanceFromTarget(Point2D target){
+        return Math.sqrt(Math.pow(target.getX() - this.getXPosition(), 2) + Math.pow(target.getY() - this.getYPosition(), 2));
     }
 
-    public void printSize(){//TODO poista lopuks
-        System.out.println(this.getLayoutBounds().getWidth() + ", " + this.getLayoutBounds().getHeight());
+    /**
+     * lukitsee suunnan niin etta jatkaa tiettyyn suuntaan menemista vaikka spritea kaantelisi samalla.
+     * @param angle lukittu suunta.
+     */
+    void lockDirection(double angle){
+        movingDirectionLocked = true;
+        lockedDirection = angle;
     }
 
+    /**
+     * Liikuttaa Spritea askeleen direction-suuntaan kerrottuuna velocity-muuttujalla. Käytetään GameLoopissa.
+     * @param deltaTime Kulunut aika viime päivityksestä.
+     */
+    protected void moveStep(double deltaTime) {
+        if (isMoving) {
+            if(movingDirectionLocked) {
+                Point2D directionInVector = degreesToVector(lockedDirection);
+                Point2D currentPosition = getPosition();
+                this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
+                        currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
+            }
+            else{
+                Point2D directionInVector = degreesToVector(direction);
+                Point2D currentPosition = getPosition();
+                this.setPosition(currentPosition.getX() + (directionInVector.getX() * velocity * deltaTime),
+                        currentPosition.getY() + (directionInVector.getY() * velocity * deltaTime));
+            }
+        }
+    }
 
-    public Shape getSpriteShape(){
-        switch(hitboxShapeType){
-            case rectangle:
-                return new Rectangle(getXPosition(), getYPosition(),
-                        getWidth() * hitboxShapeMultiplier, getHeight() * hitboxShapeMultiplier);
-            case circle:
-                return (Shape) new Circle(getXPosition() - getWidth()/2, getYPosition() - getHeight()/2,
-                        getWidth() * hitboxShapeMultiplier);
-            default:
-                return null;
+    /**
+     * Kääntää Spriteä.
+     * @param degrees Kulma asteina, jonka verran spriteä käännetään.
+     */
+    protected void rotate(double degrees){
+        this.getTransforms().add(new Rotate(degrees * -1, Rotate.Z_AXIS));
+        this.direction += degrees;
+        while(direction >= 180.0){
+            direction -= 360.0;
+        }
+        while(direction < -180){
+            direction += 360.0;
         }
     }
 }

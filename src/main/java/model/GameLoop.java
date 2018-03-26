@@ -1,48 +1,134 @@
 package model;
 
-import javafx.application.Platform;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Shape;
-import view.GameMain;
+import controller.Controller;
+import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class GameLoop{
+import static view.GameMain.*;
 
-    private volatile static Queue<Updateable> updateableQueue = new LinkedList<>();
+/**
+ * Pelin game loop. Päivittää liikuteltavien spritejen sijainnin ja tarkastelee osumia.
+ */
+public class GameLoop {
 
-    private volatile static Queue<Updateable> removeUpdateableQueue = new LinkedList<>();
+    /**
+     * Pelin kontrolleri.
+     */
+    private Controller controller;
 
-    private static ArrayList<Updateable> updateables = new ArrayList<>();
+    /**
+     * Jono olioista, jotka lisätään Updateable listaan seuraavan loopin alussa.
+     */
+    private volatile Queue<Updateable> updateableQueue;
 
-    private Timer timer;
+    /**
+     * Jono olioista, jotka poistetaan Updateable listasta seuraavan loopin alussa.
+     */
+    private volatile Queue<Updateable> removeUpdateableQueue;
+
+    /**
+     * Lista pelissä olevista päivitettävistä olioista, jonka looppi käy läpi.
+     */
+    private ArrayList<Updateable> updateables;
+
+    /**
+     * Spritejen liikuttelusta vastaava AnimationTimer looppi.
+     */
+    private AnimationTimer mainLoop;
+
+    /**
+     * Osumatarkastelujen AnimationTimer looppi.
+     */
+    private AnimationTimer collisionLoop;
+
+    /**
+     * Kerroin, jolla delta timen voi muuttaa nollaksi = peli on pausella. Jos ei pausella, tää saa
+     * arvon 1 = ei vaikuta deltatimeen
+     */
+    private int pauseModifier = 1;
 
 
-    public GameLoop(GameMain gameMain){
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     */
+    public GameLoop(Controller controller) {
+        this.controller = controller;
+        updateableQueue = new LinkedList<>();
+        removeUpdateableQueue = new LinkedList<>();
+        updateables = new ArrayList<>();
     }
 
-    synchronized public static void queueUpdateable(Updateable updateable) {
+    /**
+     * Lisää olion jonoon, odottamaan lisäystä Updateable listaan.
+     * @param updateable Updateable olio, joka lisätään listaan.
+     */
+    synchronized public void queueUpdateable(Updateable updateable) {
         updateableQueue.add(updateable);
     }
 
-    synchronized public static void removeUpdateable(Updateable updateable) {
+    /**
+     * Lisää olion jonoon, odottamaan poistoa Updateable listasta.
+     * @param updateable Updateable olio, joka poistetaan listasta.
+     */
+    synchronized public void removeUpdateable(Updateable updateable) {
         removeUpdateableQueue.add(updateable);
     }
 
+    /**
+     * Palauttaa Updateable listan.
+     * @return ArrayList, joka sisältää Updateable olioita.
+     */
+    public ArrayList<Updateable> getUpdateables(){
+        return updateables;
+    }
+
+    /**
+     * Asettaa GameLoopissa kuluneen ajan nollaksi, eli pysäyttää kaikkien Spritejen liikkeet.
+     */
+    public void pauseGame() {
+        pauseModifier = 0;
+    }
+
+    /**
+     * Poistaa nollauksen GameLoopissa kuluneesta ajasta, Spritet jatkavat liikkeitään.
+     */
+    public void continueGame() {
+        pauseModifier = 1;
+    }
+
+    /**
+     * Pysäyttää pääloopin ja osumatarkasteluloopin.
+     */
+    public void stopLoops(){
+        mainLoop.stop();
+        collisionLoop.stop();
+    }
+
+
+    /**
+     * Alustaa ja käynnistää pääloopin ja osumatarkasteluloopin.
+     */
     public void startLoop(){
 
-        TimerTask timerTask = new TimerTask() {
+        // -------- main looppi
+        mainLoop = new AnimationTimer(){
 
-            long previousTime = System.nanoTime();
-            public void run() {
+            private long lastUpdate = 0 ;
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        // TODO: alkaa pätkimään ja glitchailee rajusti jos nostaa fps. Pitäs selvittää mist johtuu
-                        long currentTime = System.nanoTime();
-                        double deltaTime = (currentTime - previousTime) / 1_000_000_000.0;
+            double debugger_toSecondCounter = 0;
+            int debugger_frameCounter = 0;
 
+            @Override
+            public void handle(long now) {
+                    double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
+                    // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
+                    if ((double) (now - lastUpdate) / 1_000_000_000.0 >= 1.0 / 250.0) {
+                        // controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
                         // Tarkista updateable -jono
                         if (!updateableQueue.isEmpty()) {
                             updateables.addAll(updateableQueue);
@@ -61,80 +147,121 @@ public class GameLoop{
 
                         // Gameloopin taika
                         for (Updateable updateable : updateables) {
-                            if (updateable != null){
-
-                                //osumistarkastelu
-                                //TODO taa on KOVAKOODATTU >:(
-                                if(updateable.getTag().equals("projectile_enemy")) {
-                                    for (Updateable updateable2 : updateables) {
-                                        if (updateable != updateable2 && updateable2 != null) {
-                                            if (updateable2.getTag().equals("player")) {
-                                                if (((Path) Shape.intersect(updateable.getSpriteShape(), updateable2.getSpriteShape())).getElements().size() > 0) {
-                                                    updateable.collides(updateable2.getUpdateable());
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-                                if(updateable.getTag().equals("projectile_player")) {
-                                    for (Updateable updateable2 : updateables) {
-                                        if (updateable != updateable2 && updateable2 != null) {
-                                            if (updateable2.getTag().equals("enemy")) {
-                                                if (((Path) Shape.intersect(updateable.getSpriteShape(), updateable2.getSpriteShape())).getElements().size() > 0) {
-                                                    updateable.collides(updateable2.getUpdateable());
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                                //looppaa rajapintaoliot
+                            if (updateable != null) {
+                                //paivita rajapintaoliot
                                 updateable.update(deltaTime);
                             }
                         }
 
-                        previousTime = currentTime;
-
-
-                        /* -----------HEGE POISTAA TAN
-                        while (isLooping)
-
-                        {
-                            long currentTime = System.nanoTime();
-                            double deltaTime = (currentTime - previousTime) / 1_000_000_000.0;
-
-
-
-
-                            previousTime = currentTime;
-                            double frameTime = (System.nanoTime() - currentTime) / 1_000_000_000.0;
-
-                            if (frameTime < targetDelta) {
-
-                                //TODO debuggeri. printtaa nykyisen fps 2 sekunnin valein
-                                debugger_secondCounter = debugger_secondCounter + (long) ((targetDelta - frameTime) * 1000);
-                                if (debugger_secondCounter > 2000) {
-                                    System.out.println("fps: " + (long) (1 / (targetDelta - frameTime))); //talla voi katsoa viime framen fps-nopeus
-                                    debugger_secondCounter = debugger_secondCounter - 1000;
-                                }
-
-                                try {
-
-                                    Thread.sleep((long) ((targetDelta - frameTime) * 1000));
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }*/
+                        debugger_toSecondCounter += deltaTime;
+                        debugger_frameCounter++;
+                        if (debugger_toSecondCounter > 1) {
+                            controller.setFps(debugger_frameCounter);
+                            debugger_toSecondCounter = 0;
+                            debugger_frameCounter = 0;
+                        }
+                        lastUpdate = now;
                     }
-                });
-            }
+                }
         };
 
-        long frameTimeInMilliseconds = (long)(1000.0 / 60);
-        this.timer = new java.util.Timer();
-        this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
+        // ------ osumatarkastelun looppi
+        collisionLoop = new AnimationTimer(){
+
+            private long lastUpdate = 0 ;
+
+            @Override
+            public void handle(long now) {
+                    if ((double) (now - lastUpdate) / 1_000_000_000.0 >= 1.0 / 150.0) {
+                        // Gameloopin taika
+                        for (Updateable updateable : updateables) {
+                            if (updateable != null) {
+                                //osumistarkastelu
+                                //TODO taa on KOVAKOODATTU >:(
+                                if (updateable.getTag() == ENEMY_PROJECTILE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == PLAYER_SHIP_TAG) {
+                                                // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
+                                                if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                        (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
+                                                    // kutsu objektin collides-metodia
+                                                    updateable.collides(updateable2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (updateable.getTag() == PLAYER_PROJECTILE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
+                                                if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                        (updateable.getHitboxRadius() + updateable2.getHitboxRadius())) {
+                                                    updateable.collides(updateable2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (updateable.getTag() == PLAYER_TRACE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == ENEMY_SHIP_TAG || updateable2.getTag() == BOSS_SHIP_TAG) {
+                                                // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
+                                                if (updateable.getPosition().getX() > updateable2.getPosition().getX()) {
+                                                    // jos vihun hitboxin säde yltää laseriin
+                                                    if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                            (updateable.getHitboxRadius())) {
+                                                        updateable.collides(updateable2);
+                                                    }
+                                                } else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
+                                                        new Point2D(0, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
+                                                    updateable.collides(updateable2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
+                                    updateable.setTag(UNDEFINED_TAG);
+                                }
+                                if (updateable.getTag() == ENEMY_TRACE_TAG) {
+                                    for (Updateable updateable2 : updateables) {
+                                        if (updateable != updateable2 && updateable2 != null) {
+                                            if (updateable2.getTag() == PLAYER_SHIP_TAG) {
+                                                // jos laser on vihun oikealla puolella (pelaaja ampuu laserin aina oikealle päin)
+                                                if (updateable.getPosition().getX() < updateable2.getPosition().getX()) {
+                                                    // jos vihun hitboxin säde yltää laseriin
+                                                    if (getDistanceFromTarget(updateable.getPosition(), updateable2.getPosition()) <
+                                                            (updateable.getHitboxRadius())) {
+                                                        updateable.collides(updateable2);
+                                                    }
+                                                } else if (getDistanceFromTarget(new Point2D(0, updateable.getPosition().getY()),
+                                                        new Point2D(0, updateable2.getPosition().getY())) < updateable2.getHitboxRadius()) {
+                                                    updateable.collides(updateable2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
+                                    updateable.setTag(UNDEFINED_TAG);
+                                }
+                            }
+                        }
+                    }
+                }
+        };
+        mainLoop.start();
+        collisionLoop.start();
+    }
+
+    /**
+     * Apumetodi joka palauttaa kahden pisteen etäisyyden toisistaan.
+     * @param source Piste 1.
+     * @param target Piste 2.
+     * @return Pisteiden etäisyys toisistaan.
+     */
+    private double getDistanceFromTarget(Point2D source, Point2D target){
+        return Math.sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
     }
 }

@@ -1,17 +1,52 @@
 package model;
 
-import javafx.scene.shape.Shape;
+import javafx.geometry.Point2D;
 
+/**
+ * Rajapinta Pelin loopissa päivitettävillä olioille.
+ */
 public interface Updateable {
-    public void update(double deltaTime);
 
-    public Shape getSpriteShape();
+    /**
+     * Päivittää olion tilan kuluneen ajan mukaisesti.
+     * @param deltaTime Kulunut aika viime päivityksestä.
+     */
+    void update(double deltaTime);
 
-    public void collides(Updateable collidingUpdateable);
+    /**
+     * Kutsutaan, kun osuma on tapahtunut parametrinä annetun updateablen kanssa.
+     * Hoitaa osuman seurausten käsittelyn. Olettaa, että törmäys olioiden kanssa on mahdollinen.
+     * @param collidingUpdateable Updateable-rajapinnan toteuttava olio, johon törmätty.
+     */
+    void collides(Updateable collidingUpdateable);
 
-    public Updateable getUpdateable();
+    /**
+     * Poistaa tämän olion pelistä.
+     */
+    void destroyThis();
 
-    public String getTag();
+    /**
+     * Palauttaa ympyränmuotoisen hitboxin halkaisijan.
+     * @return Hitboxin halkaisija.
+     */
+    double getHitboxRadius();
 
-    public void setTag(String tag);
+
+    /**
+     * Palauttaa olion sijainnin.
+     * @return Olion sijainti Point2D-oliona.
+     */
+    Point2D getPosition();
+
+    /**
+     * Palauttaa olion tunnistetagin.
+     * @return Olion taginumero.
+     */
+    int getTag();
+
+    /**
+     * Asettaa olion tunnistetagin.
+     * @param tag Olion tagi kokonaisnumerona.
+     */
+    void setTag(int tag);
 }
