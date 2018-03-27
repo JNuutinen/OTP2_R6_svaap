@@ -119,6 +119,8 @@ public class Enemy extends Unit implements Updateable {
                 10.0, 20.0,
                 30.0, 20.0);
         drawShip(shape);
+
+        controller.addUpdateable(this);
     }
 
     /**

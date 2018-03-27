@@ -108,6 +108,8 @@ public class Boss3 extends Unit implements Updateable {
         this.setHitbox(450);
         armShip();
 
+        controller.addUpdateable(this);
+
     }
 
 
@@ -204,7 +206,6 @@ public class Boss3 extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         }
-
         controller.setHealthbar(hpPercentage(), 0);
     }
 

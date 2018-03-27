@@ -148,6 +148,8 @@ public class Level3 extends Thread implements Level {
         try {
             ArrayList<Weapon> blaster = new ArrayList<>();
             blaster.add(new Blaster(controller, 2, 20, new Point2D(0, 0), new Point2D(20, 0)));
+            blaster.add(new Blaster(controller, 2, 20, new Point2D(0, 0), new Point2D(20, 0)));
+
 
 
             Thread.sleep(1000);
@@ -157,11 +159,10 @@ public class Level3 extends Thread implements Level {
 
             Enemy testerivihu = new Enemy(controller, Color.YELLOW, null, 0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200));
             testerivihu.addPrimaryWeapon(blaster.get(0));
-            controller.addUpdateable(testerivihu);
+
 
             Enemy testerivihu2 = new Enemy(controller, Color.YELLOW, null, 0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
-            testerivihu2.addPrimaryWeapon(blaster.get(0));
-            controller.addUpdateable(testerivihu2);
+            testerivihu2.addPrimaryWeapon(blaster.get(1));
 
             Thread.sleep(4000);
 

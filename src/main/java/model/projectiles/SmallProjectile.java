@@ -24,7 +24,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     /**
      * Ammuksen vakioväri
      */
-    private static final Color COLOR = Color.LIGHTSALMON;
+    private static final Color COLOR = Color.WHITE;
     private Controller controller;
     private int damage;
 

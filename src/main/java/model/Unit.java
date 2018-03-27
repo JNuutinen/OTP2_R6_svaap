@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -211,7 +212,7 @@ public class Unit extends Sprite implements Updateable {
         Shape shape = component.getShape();
         shape.setLayoutX(component.getOffset().getX());
         shape.setLayoutY(component.getOffset().getY());
-        this.getChildren().add(shape); //addComponent((Component)primaryWeapon);
+        Platform.runLater(()->this.getChildren().add(shape)); //addComponent((Component)primaryWeapon);
         setTag(getTag());
     }
 
