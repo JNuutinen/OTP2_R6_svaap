@@ -57,8 +57,8 @@ public class GameController implements Controller {
     @Override
     public void addPlayer(Player player) {
         this.player = player;
+        gameLoop.setPlayer(player);
     }
-
 
     @Override
     public void addScore(int score) {
@@ -236,7 +236,7 @@ public class GameController implements Controller {
     public void returnToMain(){
         Platform.runLater(()->view.returnToMain());
         level.destroyLevel();
-        gameLoop.stopLoops();
+        gameLoop.stopLoop();
 
     }
 }

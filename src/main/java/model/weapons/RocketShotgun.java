@@ -32,7 +32,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon tulinopeus.
      */
-    private static final double FIRE_RATE = 4;
+    private static final double FIRE_RATE = 0.25;
 
     /**
      * Ammusten käääntymisnopeus aluksi.
