@@ -15,6 +15,10 @@ import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Pieni perusammus
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class SmallProjectile extends BaseProjectile implements Updateable {
 

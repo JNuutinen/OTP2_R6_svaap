@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 /**
  * Viewin interface.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public interface View {
 

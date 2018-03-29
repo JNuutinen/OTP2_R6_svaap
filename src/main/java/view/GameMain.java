@@ -34,6 +34,10 @@ import java.util.ArrayList;
 
 /**
  * Pelin View. JavaFX Application.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class GameMain extends Application implements View {
 
@@ -195,6 +199,9 @@ public class GameMain extends Application implements View {
     private Pane uiPane;
 
     public static void main(String[] args) {
+        //Database database = new Database();
+        //database.dbTest();
+        //database.purgeSaves();
         launch(args);
     }
 
@@ -567,6 +574,10 @@ public class GameMain extends Application implements View {
     private ArrayList<Weapon> createPlayerSecondaries(Player player) {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
+        Weapon blaster = new Blaster(controller, player, 0, -15, 0, Color.LIME,
+                45, 100, 0);
+        ((Component) blaster).setName("Blaster");
+
         Weapon rocketShotgun = new RocketShotgun(controller, player, 1, 10, 0, 3,
                 20, false);
         ((Component) rocketShotgun).setName("Rocket Shotgun");
@@ -575,6 +586,7 @@ public class GameMain extends Application implements View {
                 80, 0, 0.5);
         ((Component) laserGun).setName("Laser Gun");
 
+        weapons.add(blaster);
         weapons.add(rocketShotgun);
         weapons.add(laserGun);
         return weapons;

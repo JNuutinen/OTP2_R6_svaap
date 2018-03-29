@@ -17,6 +17,10 @@ import static view.GameMain.*;
 
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class LevelN extends Thread implements Level {
 

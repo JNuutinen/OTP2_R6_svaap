@@ -13,6 +13,10 @@ import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Blasterruiskuttelija.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class BlasterSprinkler extends Component implements Weapon, Updateable {
 

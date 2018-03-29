@@ -11,6 +11,10 @@ import static view.GameMain.*;
 
 /**
  * TrackerEnemy vihollinen seuraa "katsellaan" ja ampuu pelaajaa kohti.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class TrackerEnemy extends Unit implements Updateable {
 

@@ -12,6 +12,10 @@ import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Blaster pyssy.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Blaster extends Component implements Weapon {
 

@@ -9,9 +9,13 @@ import model.weapons.RocketLauncher;
 import model.weapons.Weapon;
 
 import static view.GameMain.*;
-//TODO: javadoc
+
 /**
  * Tason loppupomo 3
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Boss3 extends Unit implements Updateable {
 

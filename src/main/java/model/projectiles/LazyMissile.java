@@ -6,6 +6,10 @@ import model.Unit;
 
 /**
  * Viiveellä hakeutuva ohjusammus.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 
 public class LazyMissile extends Missile {

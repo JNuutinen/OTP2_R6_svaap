@@ -19,6 +19,10 @@ import static view.GameMain.*;
 
 /**
  * Laserpyssy.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class LaserGun extends Component implements Weapon, Updateable {
 

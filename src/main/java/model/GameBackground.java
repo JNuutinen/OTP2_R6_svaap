@@ -7,6 +7,10 @@ import view.GameMain;
 
 /**
  * Pelin liikkuva tausta. Sprite ei itsessään liiku, vaan se liikuttelee kuvia itsensä sisällä.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class GameBackground extends Sprite implements Updateable  {
 

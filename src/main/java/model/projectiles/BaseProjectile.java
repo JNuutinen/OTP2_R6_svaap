@@ -12,6 +12,10 @@ import model.Unit;
  * Jos update metodia haluaa muuttaa, tai tarvitsee muuten kutsua kontrolleria
  * perivässä luokassa, sen voi ottaa talteen instanssimuuttujaksi perivässä luokassa.
  * Projectilen kuvan, damagen, nopeuden yms. asetus perivässä luokassa.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 class BaseProjectile extends Sprite {
 

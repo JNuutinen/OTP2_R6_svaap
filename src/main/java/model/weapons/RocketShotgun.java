@@ -12,6 +12,10 @@ import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Raketinheitin. Paitsi ampuu ohjuksia.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class RocketShotgun extends Component implements Weapon {
 
@@ -28,7 +32,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon tulinopeus.
      */
-    private static final double FIRE_RATE = 4;
+    private static final double FIRE_RATE = 0.25;
 
     /**
      * Ammusten käääntymisnopeus aluksi.

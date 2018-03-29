@@ -17,6 +17,10 @@ import static view.GameMain.*;
 
 /**
  * Luo aluksen muokkausvalikon.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class CustomizeMenu {
 

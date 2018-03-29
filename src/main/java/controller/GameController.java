@@ -18,6 +18,10 @@ import static view.GameMain.ENEMY_SHIP_TAG;
 
 /**
  * Pelin kontrolleri.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class GameController implements Controller {
 
@@ -53,8 +57,8 @@ public class GameController implements Controller {
     @Override
     public void addPlayer(Player player) {
         this.player = player;
+        gameLoop.setPlayer(player);
     }
-
 
     @Override
     public void addScore(int score) {
@@ -232,7 +236,7 @@ public class GameController implements Controller {
     public void returnToMain(){
         Platform.runLater(()->view.returnToMain());
         level.destroyLevel();
-        gameLoop.stopLoops();
+        gameLoop.stopLoop();
 
     }
 }

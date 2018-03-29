@@ -14,6 +14,10 @@ import java.util.List;
 
 /**
  * Räjähdysefekti Spriteille.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Explosion extends Sprite implements Updateable{
 
