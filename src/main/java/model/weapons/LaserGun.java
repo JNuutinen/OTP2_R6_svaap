@@ -155,7 +155,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
             // jos aikaa on kulunut enemmän kuin ampumisviiveessä, niin luo LaserBeam peliin.
             if(timeCounter > shootingDelay){
-                controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, Color.WHITE, tag,
+                controller.addUpdateableAndSetToScene(new LaserBeam(controller, shooter, SPEED, DAMAGE, Color.WHITE, tag,
                         getProjectileOffset()));
                 triggeredShoot = false;
                 timeCounter = 0;

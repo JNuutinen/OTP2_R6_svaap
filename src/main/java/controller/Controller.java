@@ -28,6 +28,8 @@ public interface Controller {
      * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
      * @param updateable Updateable, joka lisätään.
      */
+    void addUpdateableAndSetToScene(Updateable updateable);
+
     void addUpdateable(Updateable updateable);
 
     // TODO: collision listan refaktorointi pois

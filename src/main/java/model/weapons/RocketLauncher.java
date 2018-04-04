@@ -106,7 +106,7 @@ public class RocketLauncher extends Component implements Weapon {
     @Override
     public void shoot() {
         if (shooter != null) {
-            controller.addUpdateable(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag, missileCanLoseTarget));
+            controller.addUpdateableAndSetToScene(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag, missileCanLoseTarget));
         }
     }
 }

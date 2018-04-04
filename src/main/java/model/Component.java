@@ -95,7 +95,7 @@ public class Component extends Sprite {
         triangle.setFill(Color.BLACK);
         triangle.setStroke(color);
         triangle.setStrokeWidth(4.0);
-        triangle.getTransforms().add(new Rotate(90 * orientation, 50, 30));
+        //triangle.getTransforms().add(new Rotate(90 * orientation, 50, 30)); TODO
         return triangle;
     }
 

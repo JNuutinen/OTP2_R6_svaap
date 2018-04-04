@@ -85,7 +85,7 @@ public class Explosion extends Sprite implements Updateable{
         }
 
         getChildren().addAll(lines);
-        controller.addUpdateable(this);
+        controller.addUpdateableAndSetToScene(this);
 
         destroyThis();
 

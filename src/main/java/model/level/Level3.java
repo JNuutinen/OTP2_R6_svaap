@@ -149,6 +149,11 @@ public class Level3 extends Thread implements Level {
             ArrayList<Weapon> blaster = new ArrayList<>();
             blaster.add(new Blaster(controller, 2, 20, new Point2D(0, 0), new Point2D(20, 0)));
             blaster.add(new Blaster(controller, 2, 20, new Point2D(0, 0), new Point2D(20, 0)));
+            blaster.add(new LaserGun(controller, 2, new Point2D(0, 0), new Point2D(20, 0), 1));
+            blaster.add(new LaserGun(controller, 2, new Point2D(30, 0), new Point2D(20, 0), 1));
+            blaster.add(new BlasterSprinkler(controller, 2, 20, new Point2D(30, 0), new Point2D(20, 0),
+                    4));
+
 
 
 
@@ -157,12 +162,14 @@ public class Level3 extends Thread implements Level {
             // arvotaan spawnauspaikka
             //double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT 5 100);
 
+
             Enemy testerivihu = new Enemy(controller, Color.YELLOW, null, 0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200));
-            testerivihu.addPrimaryWeapon(blaster.get(0));
+            testerivihu.addPrimaryWeapon(blaster.get(4));
 
 
             Enemy testerivihu2 = new Enemy(controller, Color.YELLOW, null, 0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
-            testerivihu2.addPrimaryWeapon(blaster.get(1));
+            Thread.sleep(100);
+            testerivihu2.addPrimaryWeapon(blaster.get(3));
 
             Thread.sleep(4000);
 

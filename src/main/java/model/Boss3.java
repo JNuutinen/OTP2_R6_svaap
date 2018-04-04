@@ -108,7 +108,7 @@ public class Boss3 extends Unit implements Updateable {
         this.setHitbox(450);
         armShip();
 
-        controller.addUpdateable(this);
+        controller.addUpdateableAndSetToScene(this);
 
     }
 

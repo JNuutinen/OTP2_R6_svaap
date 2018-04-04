@@ -493,7 +493,7 @@ public class GameMain extends Application implements View {
 
         // tieto controllerille pelaajasta
         controller.addPlayer(player);
-        controller.addUpdateable(player);
+        controller.addUpdateableAndSetToScene(player);
 
 
 

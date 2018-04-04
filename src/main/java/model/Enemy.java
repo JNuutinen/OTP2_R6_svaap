@@ -4,7 +4,6 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.level.Level;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
@@ -120,7 +119,7 @@ public class Enemy extends Unit implements Updateable {
                 30.0, 20.0);
         drawShip(shape);
 
-        controller.addUpdateable(this);
+        controller.addUpdateableAndSetToScene(this);
     }
 
     /**

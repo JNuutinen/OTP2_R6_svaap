@@ -6,7 +6,7 @@ import model.Unit;
 import java.util.ArrayList;
 
 /**
- * Viewin interface.
+ * Viewin interface.addUpda
  */
 public interface View {
 

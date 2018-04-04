@@ -92,7 +92,7 @@ public class BlasterShotgun extends Component implements Weapon {
     public void shoot() {
         if(shooter != null) {
             for (int i = -1; i < 2; i++) {
-                controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE,
+                controller.addUpdateableAndSetToScene(new SmallProjectile(controller, shooter, SPEED, DAMAGE,
                         getProjectileOffset(), projectileColor, i * 7, tag));
             }
         }

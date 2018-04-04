@@ -159,6 +159,7 @@ public class Unit extends Sprite implements Updateable {
      * @param secondaryWeapon Weapon-rajapinnan toteuttava ase.
      */
     public void setSecondaryWeapon(Weapon secondaryWeapon) {
+        secondaryWeapon.setShooter(this);
         addComponent((Component)secondaryWeapon);
         this.secondaryWeapon = secondaryWeapon;
     }
