@@ -15,9 +15,14 @@ import view.GameMain;
 public class GameBackground extends Sprite implements Updateable  {
 
     /**
-     * Taustan vierimisnopeus.
+     * Taustan vakiovierimisnopeus.
      */
-    private double scrollSpeed = 30;
+    private static final double NORMAL_SCROLL_SPEED = 30;
+
+    /**
+     * Taustan nykyinen vierimisnopeus.
+     */
+    private double scrollSpeed = NORMAL_SCROLL_SPEED;
 
     /**
      * Kuva1
@@ -52,6 +57,21 @@ public class GameBackground extends Sprite implements Updateable  {
 
         this.getChildren().add(centerImage);
         this.getChildren().add(nextHorizontalImage);
+    }
+
+    /**
+     * Vaihtaa taustan vierimisnopeutta.
+     * @param scrollSpeed Taustan vierimisnopeus.
+     */
+    public void changeBackgroundScrollSpeed(double scrollSpeed) {
+        this.scrollSpeed = scrollSpeed;
+    }
+
+    /**
+     * Alustaa taustan vierimisnopeuden vakioarvoon.
+     */
+    public void resetBackgroundScrollSpeed() {
+        scrollSpeed = NORMAL_SCROLL_SPEED;
     }
 
     @Override
