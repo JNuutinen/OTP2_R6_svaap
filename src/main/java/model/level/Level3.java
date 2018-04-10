@@ -158,26 +158,36 @@ public class Level3 extends Thread implements Level {
 
             System.out.println("-------");
 
-            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SHOTGUN, WEAPON_LASER_GUN)),
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER, WEAPON_LASER_GUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
+
+
 
 
             new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
                     0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
             Thread.sleep(100);
 
-            Thread.sleep(8_000);
+            Thread.sleep(4_000);
 
-            /*Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,200),
+
+
+
+            Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,200),
                     new Point2D(WINDOW_WIDTH * 0.9, 100),
                     new Point2D(WINDOW_WIDTH * 0.9, 700)};
             Point2D[] path2 = {new Point2D(WINDOW_WIDTH * 0.7,WINDOW_HEIGHT - 200),
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 200),
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 700)};
-            Thread.sleep(4_000);
-            // 1-2
-            enemyUnit = new TrackerEnemy(controller, Color.DEEPSKYBLUE, blaster, new Point2D(WINDOW_WIDTH / 2, -50), path);
-            enemyUnit.setHp((int)(enemyUnit.getHp() * enemyHealthModifier));*/
+
+            new TrackerEnemy(controller, Color.DEEPSKYBLUE, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SHOTGUN, WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
+                    path);
+
+
+            Thread.sleep(16_000);
+
+
+
 
             finalBoss = new Boss3(controller, new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
 

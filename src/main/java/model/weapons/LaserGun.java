@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
@@ -28,40 +29,54 @@ public class LaserGun extends Component implements Weapon, Updateable {
      */
     private static final int SPEED = 30;
 
-    /** Aseen ammuksien vahinko. */
+    /**
+     * Aseen ammuksien vahinko.
+     */
     private static final int DAMAGE = 15;
 
-    /** Aseen tulinopeus. */
+    /**
+     *  Aseen tulinopeus.
+     */
     private static final double FIRE_RATE = 1.0;
 
-    /** Aseen väri. */
+    /**
+     * Aseen väri.
+     */
     private static final Color COLOR = Color.LIME;
 
-    /** Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen. */
+    /**
+     * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
+     */
     private Controller controller;
 
-    /** Unit, jolla ase on käytössä. */
-    private Unit shooter;
-
-    /** Ammuksen tagi. */
-    private int tag;
-
-    /** Ampumisen viive. */
+    /**
+     * Ampumisen viive.
+     */
     private double shootingDelay = 0;
 
-    /** Ampumisen aikalaskuri. */
+    /**
+     * Ampumisen aikalaskuri.
+     */
     private double timeCounter = 0;
 
-    /** Apumuuttuja */
+    /**
+     * Apumuuttuja
+     */
     private boolean triggeredShoot = false;
 
-    /** Aseen latausefekti. */
+    /**
+     * Aseen latausefekti.
+     */
     private Circle chargingEffect;
 
-    /** Aseen osoitinefekti. */
+    /**
+     * Aseen osoitinefekti.
+     */
     private Line pointerEffect;
 
-    /** Ammuksen värinmuutos stopit */
+    /**
+     * Ammuksen värinmuutos stopit
+     */
     private Stop[] stops1;
 
     /**
@@ -92,17 +107,6 @@ public class LaserGun extends Component implements Weapon, Updateable {
         controller.addUpdateable(this);
     }
 
-    public void setShooter(Unit shooter){
-        /*this.shooter = shooter;
-        if (shooter instanceof Player){
-            this.tag = PLAYER_TRACE_TAG;
-        }
-        else{
-            this.tag = ENEMY_TRACE_TAG;
-        }*/
-        System.out.println("hmm " + this);
-    }
-
     @Override
     public double getFireRate() {
         return FIRE_RATE;
@@ -110,28 +114,26 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
     @Override
     public void shoot() {
-        if(!triggeredShoot && shooter != null) {
-
+        if(!triggeredShoot && getParentUnit() != null) {
 
             chargingEffect = buildChargingEffect(Color.WHITE);
-            shooter.getChildren().add(chargingEffect);
+            Platform.runLater(()->getParentUnit().getChildren().add(chargingEffect));
             pointerEffect = buildPointerEffect(Color.WHITE);
-            shooter.getChildren().add(pointerEffect);
+            Platform.runLater(()->getParentUnit().getChildren().add(pointerEffect));
 
-            // en oo iha varma miten tää toimii mut toimii kuitenkin TODO poista kommentti
-            if (shooter instanceof Player) {
-                chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileOffset().getX());
-                chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileOffset().getY());
+            if (getParentUnit() instanceof Player) {
+                chargingEffect.setCenterX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX());
+                chargingEffect.setCenterY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY());
 
-                pointerEffect.setStartX(degreesToVector(shooter.getDirection()).getX() * getProjectileOffset().getX());
-                pointerEffect.setStartY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileOffset().getY());
+                pointerEffect.setStartX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX());
+                pointerEffect.setStartY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY());
 
             } else {
-                chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileOffset().getX() * -1);
-                chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileOffset().getY() * -1);
+                chargingEffect.setCenterX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX() * -1);
+                chargingEffect.setCenterY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY() * -1);
 
-                pointerEffect.setStartX(degreesToVector(shooter.getDirection()).getX() * getProjectileOffset().getX() * -1);
-                pointerEffect.setStartY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileOffset().getY() * -1);
+                pointerEffect.setStartX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX() * -1);
+                pointerEffect.setStartY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY() * -1);
             }
             pointerEffect.setEndX(pointerEffect.getStartX() + (WINDOW_WIDTH));
             pointerEffect.setEndY(pointerEffect.getStartY());
@@ -158,12 +160,12 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
             // jos aikaa on kulunut enemmän kuin ampumisviiveessä, niin luo LaserBeam peliin.
             if(timeCounter > shootingDelay){
-                controller.addUpdateableAndSetToScene(new LaserBeam(controller, shooter, SPEED, DAMAGE, Color.WHITE, tag,
+                controller.addUpdateableAndSetToScene(new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, Color.WHITE, getTag(),
                         getProjectileOffset()));
                 triggeredShoot = false;
                 timeCounter = 0;
-                shooter.getChildren().remove(chargingEffect);
-                shooter.getChildren().remove(pointerEffect);
+                Platform.runLater(()->getParentUnit().getChildren().remove(chargingEffect));
+                Platform.runLater(()->getParentUnit().getChildren().remove(pointerEffect));
             }
         }
     }

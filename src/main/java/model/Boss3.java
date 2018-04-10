@@ -56,7 +56,7 @@ public class Boss3 extends Unit implements Updateable {
     public Boss3(Controller controller, Point2D initialPosition){
 
         // alus varustetaan erikseen armShip(), niin sitä ei tehdä tässä.
-        super(controller, Color.ORANGE, null, 0, 0);
+        super(controller, Color.ORANGE, 0, 0);
 
         Polygon shape = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         shape.getPoints().addAll(300.0, 25.0,
@@ -96,11 +96,12 @@ public class Boss3 extends Unit implements Updateable {
                 300.0, -25.0);
         drawShip(shape);
 
+
+
         this.controller = controller;
         this.setPosition(initialPosition.getX(), initialPosition.getY());
         this.setTag(BOSS_SHIP_TAG);
         this.setVelocity(30);
-        this.controller = controller;
         controller.addUnitToCollisionList(this);
         rotate(180);
         setIsMoving(true);
@@ -227,30 +228,26 @@ public class Boss3 extends Unit implements Updateable {
 
     /** varustaa aluksen aseilla */
     public void armShip(){
-        /*
-        Weapon laserGun = new LaserGun(controller, 0, new Point2D(0, -240), new Point2D(0, -240),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, 0, new Point2D(200, -70), new Point2D(200, -70),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, 0, new Point2D(200, 70), new Point2D(200, 70),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
-        laserGun = new LaserGun(controller, 0, new Point2D(0, 240), new Point2D(0, 240),
-                0.6);
-        this.addPrimaryWeapon(laserGun);
+
+        Weapon laserGun = new LaserGun(controller, 0, 0.6, new Point2D(0, -240), new Point2D(0, -240));
+        this.addPrimaryWeaponWithCustomOffsets(laserGun);
+        laserGun = new LaserGun(controller, 0, 0.6, new Point2D(200, -70), new Point2D(200, -70));
+        this.addPrimaryWeaponWithCustomOffsets(laserGun);
+        laserGun = new LaserGun(controller, 0, 0.6, new Point2D(200, 70), new Point2D(200, 70));
+        this.addPrimaryWeaponWithCustomOffsets(laserGun);
+        laserGun = new LaserGun(controller, 0, 0.6, new Point2D(0, 240), new Point2D(0, 240));
+        this.addPrimaryWeaponWithCustomOffsets(laserGun);
 
 
-        Weapon blasterSprinkler = new BlasterSprinkler(controller, 2, 26, new Point2D(-20, -110),
-                new Point2D(-20, -110), 5);
-        this.addPrimaryWeapon(blasterSprinkler);
-        blasterSprinkler = new BlasterSprinkler(controller, 2, 26, new Point2D(-20, 110),
-                new Point2D(-20, 110), 5);
-        this.addPrimaryWeapon(blasterSprinkler);
+        Weapon blasterSprinkler = new BlasterSprinkler(controller, 2, 26, 5, new Point2D(-20, -110),
+                new Point2D(-20, -110));
+        this.addPrimaryWeaponWithCustomOffsets(blasterSprinkler);
+        blasterSprinkler = new BlasterSprinkler(controller, 2, 26, 5, new Point2D(-20, 110),
+                new Point2D(-20, 110));
+        this.addPrimaryWeaponWithCustomOffsets(blasterSprinkler);
 
 
-        Weapon rocketLauncher = new RocketLauncher(controller, 2, new Point2D(-15, 0), 4.8);
-        this.setSecondaryWeapon(rocketLauncher); */
+        Weapon rocketLauncher = new RocketLauncher(controller, 2, 4.8, true, new Point2D(-15, 0), new Point2D(-15, 0));
+        this.setSecondaryWeaponWithCustomOffsets(rocketLauncher);
     }
 }

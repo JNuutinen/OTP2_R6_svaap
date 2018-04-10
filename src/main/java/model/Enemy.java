@@ -4,7 +4,6 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.weapons.Weapon;
 
 import java.util.ArrayList;
 
@@ -88,25 +87,20 @@ public class Enemy extends Unit implements Updateable {
      * @param initialPosition Aloitussijainti.
      */
     public Enemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, int movementPattern, Point2D initialPosition) {
-        super(controller, shipColor, primaries, 5, 20);
-
-        addWeaponsTags(primaries);
+        super(controller, shipColor, 5, 20);
 
         this.controller = controller;
         setTag(ENEMY_SHIP_TAG);
         controller.addUnitToCollisionList(this);
         this.initialX = initialPosition.getX();
         this.initialY = initialPosition.getY();
-
         setPosition(initialX, initialY);
         rotate(180);
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
-
         this.setHitbox(80);
         setHp((int) (30 * controller.getLevel().getEnemyHealthModifier()));
-
         Polygon shape = new Polygon();
         // aluksen muoto
         shape.getPoints().addAll(50.0, 0.0,
@@ -123,11 +117,8 @@ public class Enemy extends Unit implements Updateable {
                 30.0, 20.0);
         drawShip(shape);
 
-
-
+        makePrimaryWeapons(primaries);
         controller.addUpdateableAndSetToScene(this);
-
-
     }
 
     /**

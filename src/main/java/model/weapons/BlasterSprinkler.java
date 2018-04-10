@@ -44,11 +44,6 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     private double projectileSpeed;
 
     /**
-     * Ammuksen tagi.
-     */
-    private int tag;
-
-    /**
      * Tieto siitä, ammutaanko parhaillaan.
      */
     private boolean isShooting = false;
@@ -73,11 +68,6 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      * Pelin kontrolleri.
      */
     private Controller controller;
-
-    /**
-     * Unit, jolla ase on käytössä.
-     */
-    private Unit shooter;
 
     /**
      * Konstruktori.
@@ -122,13 +112,13 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     @Override
     public void update(double deltaTime) {
-        if(shooter != null) {
+        if(getParentUnit() != null) {
             if (isShooting) {
                 firerateCounter += deltaTime;
                 shootingTimeCounter += deltaTime;
                 if (firerateCounter >= firerate) {
-                    controller.addUpdateableAndSetToScene(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE,
-                            getProjectileOffset(), projectileColor, Math.random() * 140 - 70, tag));
+                    controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+                            getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag()));
                     firerateCounter = 0;
                     if (shootingTimeCounter > shootingTime) {
                         isShooting = false;

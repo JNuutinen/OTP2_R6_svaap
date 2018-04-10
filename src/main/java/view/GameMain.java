@@ -380,7 +380,7 @@ public class GameMain extends Application implements View {
         ArrayList<Weapon> primaries = createPlayerPrimaries1();
 
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
-        Player player = new Player(controller, Color.LIME, primaries);
+        Player player = new Player(controller, Color.LIME);
 
 
 
@@ -475,8 +475,7 @@ public class GameMain extends Application implements View {
      * @param secondary Pelaajan sivuase.
      */
     private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
-        player.addPrimaryWeapon(primary);
-        player.setSecondaryWeapon(secondary);
+
         //((Component)secondary).setParentUnit(player); // TODO tän parantaminen, primaryaseet ei tarvi tätä.
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
@@ -518,25 +517,27 @@ public class GameMain extends Application implements View {
         }
 
 
-        // Pelaaja                                                                                         PELAAJA
+        //      Pelaaja
         player.setPosition(100, 300);
 
-        // tieto controllerille pelaajasta
+        //      tieto controllerille pelaajasta
         controller.addPlayer(player);
         controller.addUpdateableAndSetToScene(player);
 
+        //      pelaajalle pyssyt
+        player.addPrimaryWeapon(primary);
+        player.setSecondaryWeapon(secondary);
 
-
-        // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
+        //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
-        // Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
+        //      Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
             if (!input.contains(code)) input.add(code);
         });
 
-        // Kun näppäintä ei enää paineta, poista se arraylististä
+        //      Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
             String code = keyEvent.getCode().toString();
             input.remove(code);

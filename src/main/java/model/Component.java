@@ -61,7 +61,6 @@ public abstract class Component extends Sprite {
     }
 
     public void setParentUnit(Unit unit){
-        System.out.println("setParentUnit : unit = " + unit);
         this.parentUnit = unit;
         if (unit instanceof Player){
             this.tag = PLAYER_PROJECTILE_TAG;
@@ -89,7 +88,7 @@ public abstract class Component extends Sprite {
      * @param projectileOffset
      */
     public void setComponentOffset(Point2D projectileOffset){
-        this.offset = offset;
+        this.offset = projectileOffset;
     }
 
     /**

@@ -74,7 +74,7 @@ public class Boss extends Unit implements Updateable {
      * @param initialY Y-koordinaatti johon pomo ilmestyy.
      */
     public Boss(Controller controller, int hp, double initialX, double initialY) {
-        super(controller, null, null, 0, 0);
+        super(controller, null, 0, 0);
         this.controller = controller;
         setIsMoving(true);
         controller.addUnitToCollisionList(this);
@@ -88,6 +88,8 @@ public class Boss extends Unit implements Updateable {
         this.setHitbox(256);
 
         armBoss(controller);
+
+        controller.addUpdateableAndSetToScene(this);
     }
 
     /**

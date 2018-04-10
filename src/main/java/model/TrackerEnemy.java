@@ -4,8 +4,6 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.weapons.Blaster;
-import model.weapons.Weapon;
 
 import java.util.ArrayList;
 
@@ -83,6 +81,8 @@ public class TrackerEnemy extends Unit implements Updateable {
     private boolean tookDamage2 = false;
 
 
+
+
     /**
      * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
      * @param controller Pelin kontrolleri
@@ -91,19 +91,19 @@ public class TrackerEnemy extends Unit implements Updateable {
      * @param path Aluksen reitti
      */
     public TrackerEnemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, Point2D initialPosition, Point2D[] path) {
-        super(controller, shipColor, primaries, 5, 20);
+        super(controller, shipColor, 5, 20);
         this.path = path;
         this.controller = controller;
         setTag(ENEMY_SHIP_TAG);
         lastDestinationIndex = path.length-1;
         controller.addUnitToCollisionList(this);
+        this.initialX = initialPosition.getX();
+        this.initialY = initialPosition.getY();
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
         findAndSetTarget();
-        rotate(-160);
+        rotate(180);
         setIsMoving(true);
-        this.initialX = initialPosition.getX();
-        this.initialY = initialPosition.getY();
         setHitbox(80);
         setHp((int) (40 * controller.getLevel().getEnemyHealthModifier()));
 
@@ -128,6 +128,9 @@ public class TrackerEnemy extends Unit implements Updateable {
                 60.0, -10.0,
                 30.0, -10.0);
         drawShip(shape);
+        makePrimaryWeapons(primaries);
+
+        controller.addUpdateableAndSetToScene(this);
     }
 
     /**

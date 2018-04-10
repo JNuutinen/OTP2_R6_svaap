@@ -82,21 +82,69 @@ public class Unit extends Sprite implements Updateable {
      * Konstruktori Unitin shapen värin valinnalla.
      * @param controller Pelin kontrolleri.
      * @param color Unitin shapen väri.
-     * @param weaponSideGaps TODO
-     * @param weaponsFronOffset TODO
+     * @param componentSideGaps Visuaalinen väli komponenteilla toisiinsa kun ne kasataan alukseen.
+     * @param projectilesFrontOffset Alukseen kasattavien aseiden ammusten poikkeama aluksen keskeltä sen etusuuntaan. Sivusuunnassa ammuksen syntyvät komponenttien kohdasta.
      */
-    public Unit(Controller controller, Color color, ArrayList<Integer> primariesTags, double weaponSideGaps, double weaponsFronOffset){
+    public Unit(Controller controller, Color color, double componentSideGaps, double projectilesFrontOffset){
         this.controller = controller;
         this.color = color;
-        //addWeaponsTags(primariesTags);
+        //makePrimaryWeapons(primariesTags);
 
     }
 
-    public void addWeaponsTags(ArrayList<Integer> primariesTags){
+    /**
+     * Asettaa yksikön hitpointsit.
+     * @param hp Hitpointsien määrä.
+     */
+    public void setHp(int hp){
+        this.hp = hp;
+        originalHp = hp;
+    }
+
+    /**
+     * Lisää Unitin hitpointseja.
+     * @param hp Määrä, jolla hitpointseja lisätään.
+     */
+    public void addHP(int hp){
+        this.hp += hp;
+    }
+
+    /**
+     * Palauttaa yksikön hitpointsit.
+     * @return Hitpointsien määrä.
+     */
+    public int getHp(){
+        return hp;
+    }
+
+    /**
+     * Palauttaa yksikön alkuperäiset hitpointit
+     * @return Alkuperäiset hitpointit.
+     */
+    public int getOriginalHp(){
+        return originalHp;
+    }
+
+    @Override
+    public void collides(Updateable collidingUpdateable) {
+        // Alusten törmäily ei tee mitään
+    }
+
+    @Override
+    public void update(double deltaTime) {
+        // Overridetaan perivissä luokissa.
+    }
+
+    /**
+     * Luodaan aseet int-listasta.
+     * Aseet on luotava sen jälkeen kun aluksen muoto on laitettu (tai ollaan laittamassa) spriten lapseksi.
+     * @param primaries primary-aseet tägeinä eli int muodossa.
+     */
+    public void makePrimaryWeapons(ArrayList<Integer> primaries){
         List<Weapon> initialPrimaryWeapons = new ArrayList<>();
 
-        if(primariesTags != null && controller != null) {
-            for (int primaryWeaponTag : primariesTags) {
+        if(primaries != null && controller != null) {
+            for (int primaryWeaponTag : primaries) {
                 switch (primaryWeaponTag){
                     default:
                         break;
@@ -123,53 +171,11 @@ public class Unit extends Sprite implements Updateable {
         }
 
         for(Weapon weapon : initialPrimaryWeapons){
-            //((Component)weapon).setParentUnit(this);
             addPrimaryWeapon(weapon);
         }
     }
 
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-        // Alusten törmäily ei tee mitään
-    }
-
-    @Override
-    public void destroyThis() {
-        new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
-        new Explosion(controller, color, getPosition(), 1);
-        controller.removeUpdateable(this);
-        controller.removeFromCollisionList(this);
-    }
-
-    @Override
-    public void update(double deltaTime) {
-        // Overridetaan perivissä luokissa.
-    }
-
-    /**
-     * Palauttaa yksikön hitpointsit.
-     * @return Hitpointsien määrä.
-     */
-    public int getHp(){
-        return hp;
-    }
-
-    /**
-     * Asettaa yksikön hitpointsit.
-     * @param hp Hitpointsien määrä.
-     */
-    public void setHp(int hp){
-        this.hp = hp;
-        originalHp = hp;
-    }
-
-    /**
-     * Palauttaa yksikön alkuperäiset hitpointit
-     * @return Alkuperäiset hitpointit.
-     */
-    public int getOriginalHp(){
-        return originalHp;
-    }
+    //      Primary
 
     /**
      * Palauttaa Unitin pääaseen.
@@ -180,26 +186,50 @@ public class Unit extends Sprite implements Updateable {
     }
 
     /**
-     * Asettaa Unitin pääaseen.
+     * Lisää pääaseen unittiin. Ei oteta huomioon aseen kompontin poikkeamia. Jos halutaan ottaa huomioon niin ks. addPrimaryWeaponWithCustomOffsets().
      * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
     public void addPrimaryWeapon(Weapon primaryWeapon) {
         ((Component)primaryWeapon).setParentUnit(this);
         this.primaryWeapons.add(primaryWeapon);
+        Platform.runLater(()-> this.getChildren().add(((Component) primaryWeapon).getShape()));
 
-
-        Platform.runLater(()-> {
-            //System.out.println(" lisää pyssy: " + primaryWeapon + ", jonka isäntäalus: " + ((Component) primaryWeapon).getParentUnit());
-
-            ObservableList ye = this.getChildren();
-            ye.add(((Component) primaryWeapon).getShape());
-            //this.getChildren().add(((Component) primaryWeapon).getShape());
-        });
-
-
-
-        //sortComponents();
+        //sortComponents(); TODO
     }
+
+    /**
+     * Lisätään pääase unittiin. Asetta ei laiteta koottavien komponenttien joukkoon, sen sijaan ase sijoitetaan sen komponentin poikkeaman perusteella.
+     * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
+     */
+    public void addPrimaryWeaponWithCustomOffsets(Weapon primaryWeapon) {
+        Component component = (Component)primaryWeapon;
+        ((Component)primaryWeapon).setParentUnit(this);
+
+        // asetetaan komponentin poikkeama
+        Shape componentShape = component.getShape();
+        componentShape.setLayoutX(component.getOffset().getX());
+        componentShape.setLayoutY(component.getOffset().getY());
+
+        this.primaryWeapons.add(primaryWeapon);
+        Platform.runLater(()-> this.getChildren().add(((Component) primaryWeapon).getShape()));
+        // tästä metodista ei mene koottavien komponenttien joukkoon
+    }
+
+    /**
+     * Ampuu yksikön pääaseella.
+     */
+    void shootPrimary() {
+        if (primaryWeapons != null) {
+            for(Weapon primaryWeapon : primaryWeapons) {
+                primaryWeapon.shoot();
+            }
+        } else {
+            System.out.println(getTag() + ": No primary weapon set.");
+        }
+    }
+
+    //      /Primary
+    //      Secondary
 
     /**
      * Palauttaa Unitin sivuaseen.
@@ -210,7 +240,7 @@ public class Unit extends Sprite implements Updateable {
     }
 
     /**
-     * Asettaa Unitin sivuaseen.
+     * Asettaa sekundaarisen aseen unittiin. Ei oteta huomioon aseen kompontin poikkeamia. Jos halutaan ottaa huomioon niin ks. setSecondaryWeaponWithCustomOffsets().
      * @param secondaryWeapon Weapon-rajapinnan toteuttava ase.
      */
     public void setSecondaryWeapon(Weapon secondaryWeapon) {
@@ -218,8 +248,39 @@ public class Unit extends Sprite implements Updateable {
         Platform.runLater(()->this.getChildren().add(((Component)secondaryWeapon).getShape()));
         this.secondaryWeapon = secondaryWeapon;
 
-        sortComponents();
+        //sortComponents(); TODO
     }
+
+    /**
+     * Asetetaan sekundaarinen ase unittiin. Asetta ei laiteta koottavien komponenttien joukkoon, sen sijaan ase sijoitetaan sen komponentin poikkeaman perusteella.
+     * @param secondaryWeapon Weapon-rajapinnan toteuttava olio.
+     */
+    public void setSecondaryWeaponWithCustomOffsets(Weapon secondaryWeapon) {
+        Component component = (Component)secondaryWeapon;
+        ((Component)secondaryWeapon).setParentUnit(this);
+
+        // asetetaan komponentin poikkeama
+        Shape componentShape = component.getShape();
+        componentShape.setLayoutX(component.getOffset().getX());
+        componentShape.setLayoutY(component.getOffset().getY());
+
+        this.secondaryWeapon = secondaryWeapon;
+        Platform.runLater(()-> this.getChildren().add(((Component) secondaryWeapon).getShape()));
+        // tästä metodista ei mene koottavien komponenttien joukkoon
+    }
+
+    /**
+     * Ampuu yksikön sivuaseella.
+     */
+    void shootSecondary() {
+        if (secondaryWeapon != null) {
+            secondaryWeapon.shoot();
+        } else {
+            System.out.println(getTag() + ": No secondary weapon set.");
+        }
+    }
+
+    //      /Secondary
 
     /**
      * Lajittelee komponenttilistan komoponenttien koon mukaan suurimmasta pienimpään. Apumetodi equipComponents():lle.
@@ -251,16 +312,19 @@ public class Unit extends Sprite implements Updateable {
         }*/
     }
 
-    /**
-     * Lisää Unitin hitpointseja.
-     * @param hp Määrä, jolla hitpointseja lisätään.
-     */
-    public void addHP(int hp){
-        this.hp += hp;
+
+    @Override
+    public void destroyThis() {
+        new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        new Explosion(controller, color, getPosition(), 1);
+        controller.removeUpdateable(this);
+        controller.removeFromCollisionList(this);
     }
 
+
     /**
-     * Asettaa Unitin aluksen visuaalisia piirteitä sen mukaan, onko alus pelaaja vai vihollinen.
+     * Asettaa Unitin aluksen visuaalisia piirteitä.
+     * Käyttää Plarform.runLater kuvion asettamiseksi.
      * @param shape Aluksen Shape-olio.
      */
     void drawShip(Shape shape) {
@@ -268,33 +332,11 @@ public class Unit extends Sprite implements Updateable {
         this.shape.setEffect(new GaussianBlur(2.0));
         this.shape.setFill(Color.BLACK);
         this.shape.setStrokeWidth(5.0);
-        getChildren().add(this.shape);
+        Platform.runLater(()->getChildren().add(this.shape));
         this.shape.setStroke(color);
     }
 
-    /**
-     * Ampuu yksikön pääaseella.
-     */
-    void shootPrimary() {
-        if (primaryWeapons != null) {
-            for(Weapon primaryWeapon : primaryWeapons) {
-                primaryWeapon.shoot();
-            }
-        } else {
-            System.out.println(getTag() + ": No primary weapon set.");
-        }
-    }
 
-    /**
-     * Ampuu yksikön sivuaseella.
-     */
-    void shootSecondary() {
-        if (secondaryWeapon != null) {
-            secondaryWeapon.shoot();
-        } else {
-            System.out.println(getTag() + ": No secondary weapon set.");
-        }
-    }
 
 
 
