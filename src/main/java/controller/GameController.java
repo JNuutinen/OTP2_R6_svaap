@@ -85,7 +85,6 @@ public class GameController implements Controller {
     public void addUpdateableAndSetToScene(Updateable updateable) {
 
         Platform.runLater(() -> {
-            //System.out.println(" lisätään sprite " + updateable);
             view.addSprite((Sprite) updateable);
 
         });

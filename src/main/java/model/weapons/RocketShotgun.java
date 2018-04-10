@@ -60,16 +60,6 @@ public class RocketShotgun extends Component implements Weapon {
     private Controller controller;
 
     /**
-     * Unit, jolla ase on käytössä.
-     */
-    private Unit shooter;
-
-    /**
-     * Ammuksen tagi.
-     */
-    private int tag;
-
-    /**
      * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
      */
     private boolean missileCanLoseTarget = true;
@@ -132,10 +122,10 @@ public class RocketShotgun extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        if(shooter != null) {
+        if(getParentUnit() != null) {
             for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-                controller.addUpdateableAndSetToScene(new LazyMissile(controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
-                        initialMissileRotatingSpeed, latterMissileRotatingSpeed, tag, missileCanLoseTarget));
+                controller.addUpdateableAndSetToScene(new LazyMissile(controller, getParentUnit(), SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
+                        initialMissileRotatingSpeed, latterMissileRotatingSpeed, getTag(), missileCanLoseTarget));
             }
         }
     }

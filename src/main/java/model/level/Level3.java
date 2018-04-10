@@ -156,7 +156,7 @@ public class Level3 extends Thread implements Level {
             // arvotaan spawnauspaikka
             //double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT 5 100);
 
-            System.out.println("-------");
+            System.out.println("----LEVEL 3 KÄYNTIIN----");
 
             new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER, WEAPON_LASER_GUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));

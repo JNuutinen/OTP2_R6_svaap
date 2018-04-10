@@ -475,8 +475,6 @@ public class GameMain extends Application implements View {
      * @param secondary Pelaajan sivuase.
      */
     private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
-
-        //((Component)secondary).setParentUnit(player); // TODO tän parantaminen, primaryaseet ei tarvi tätä.
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
         Image uiIMG = new Image("/images/PlayerUi.png");
