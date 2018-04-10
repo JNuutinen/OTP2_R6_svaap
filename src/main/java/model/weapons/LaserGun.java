@@ -68,36 +68,39 @@ public class LaserGun extends Component implements Weapon, Updateable {
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
-     * @param componentOffset Aseen x-offset.
-     * @param projectileOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
+     * @param shootingDelay Ampumisen viive.
      */
-    public LaserGun(Controller controller, int orientation, Point2D componentOffset, Point2D projectileOffset) {
-        super("triangle", 4, orientation, COLOR, componentOffset, projectileOffset);
+    public LaserGun(Controller controller, int orientation, double shootingDelay) {
+        super("triangle", 4, orientation, COLOR);
+        this.shootingDelay = shootingDelay;
         this.controller = controller;
         controller.addUpdateable(this);
     }
 
     /**
-     * Konstruktori ampumisviiveen kanssa.
+     * Konstruktori ampumisviiveen kanssa. TODO param järjestys
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param componentOffset Aseen x-offset.
      * @param projectileOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      * @param shootingDelay Ampumisen viive.
      */
-    public LaserGun(Controller controller, int orientation, Point2D componentOffset, Point2D projectileOffset, double shootingDelay) {
-        this(controller, orientation, componentOffset, projectileOffset);
-        this.shootingDelay = shootingDelay;
+    public LaserGun(Controller controller, int orientation, double shootingDelay, Point2D componentOffset, Point2D projectileOffset) {
+        this(controller, orientation, shootingDelay);
+        setProjectileOffset(projectileOffset);
+        setComponentOffset(componentOffset);
+        controller.addUpdateable(this);
     }
 
     public void setShooter(Unit shooter){
-        this.shooter = shooter;
+        /*this.shooter = shooter;
         if (shooter instanceof Player){
             this.tag = PLAYER_TRACE_TAG;
         }
         else{
             this.tag = ENEMY_TRACE_TAG;
-        }
+        }*/
+        System.out.println("hmm " + this);
     }
 
     @Override

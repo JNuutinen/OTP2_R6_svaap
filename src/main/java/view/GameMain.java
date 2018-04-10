@@ -99,6 +99,36 @@ public class GameMain extends Application implements View {
     public static final int ENEMY_TRACE_TAG = 7;
 
     /**
+     * Aseen Blaster tägi
+     */
+    public static final int WEAPON_BLASTER = 8;
+
+    /**
+     * Aseen BlasterShotgun tägi
+     */
+    public static final int WEAPON_BLASTER_SHOTGUN = 9;
+
+    /**
+     * Aseen BlasterSprinkler tägi
+     */
+    public static final int WEAPON_BLASTER_SPRINKLER = 10;
+
+    /**
+     * Aseen RcketLaucher tägi
+     */
+    public static final int WEAPON_ROCKET_LAUNCHER = 11;
+
+    /**
+     * Aseen RocketShotugun tägi
+     */
+    public static final int WEAPON_ROCKET_SHOTGUN = 12;
+
+    /**
+     * Aseen LaserGun tägi
+     */
+    public static final int WEAPON_LASER_GUN = 13;
+
+    /**
      * Spriten määrittämätön nimitagi.
      */
     public static final String SPRITE_NAME_UNDEFINED = "undefined";
@@ -447,7 +477,7 @@ public class GameMain extends Application implements View {
     private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
-        secondary.setShooter(player); // TODO tän parantaminen, primaryaseet ei tarvi tätä.
+        //((Component)secondary).setParentUnit(player); // TODO tän parantaminen, primaryaseet ei tarvi tätä.
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
         Image uiIMG = new Image("/images/PlayerUi.png");
@@ -527,11 +557,11 @@ public class GameMain extends Application implements View {
         Weapon blaster = new Blaster(controller, 0, 45,  new Point2D(-15, 0), new Point2D(100, 0));
         ((Component) blaster).setName("Blaster");
 
-        Weapon rocketShotgun = new RocketShotgun(controller, 0, new Point2D(-15, 0), 0, 20,
-                false);
+        Weapon rocketShotgun = new RocketShotgun(controller, 0, 0, 20,
+                false, new Point2D(-15, 0), new Point2D(-15, 0));
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, 5, new Point2D(-15, 0), new Point2D(80, 0), 0.5);
+        Weapon laserGun = new LaserGun(controller, 5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
         ((Component) laserGun).setName("Laser Gun");
 
         weapons.add(blaster);
@@ -548,12 +578,11 @@ public class GameMain extends Application implements View {
     private ArrayList<Weapon> createPlayerSecondaries() {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon rocketShotgun = new RocketShotgun(controller, 1, new Point2D(10, 0), 3, 20,
-                false);
+        Weapon rocketShotgun = new RocketShotgun(controller, 0, 0, 20,
+                false, new Point2D(-15, 0), new Point2D(-15, 0));
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, 0, new Point2D(10, 0), new Point2D(80, 0),
-                0.5);
+        Weapon laserGun = new LaserGun(controller, 5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
         ((Component) laserGun).setName("Laser Gun");
 
         weapons.add(rocketShotgun);

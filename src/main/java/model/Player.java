@@ -86,7 +86,7 @@ public class Player extends Unit {
      * @param shipColor Aluksen väri.
      */
     public Player(Controller controller, Color shipColor, ArrayList<Weapon> primaries) {
-        super(controller, shipColor, null);
+        super(controller, shipColor, null, 0, 0);
         setTag(PLAYER_SHIP_TAG);
         this.controller = controller;
         setHp(MAX_HP );

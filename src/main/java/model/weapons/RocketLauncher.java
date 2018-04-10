@@ -46,16 +46,6 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private Controller controller;
 
-    /**
-     * Unit, jolla ase on käytössä.
-     */
-    private Unit shooter;
-
-    /**
-     * Ammuksen tagi.
-     */
-    private int tag;
-
 
     /**
      * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
@@ -66,36 +56,29 @@ public class RocketLauncher extends Component implements Weapon {
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
-     * @param componentOffset Aseen x-offset.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param missileCanLoseTarget TODO
      */
-    public RocketLauncher(Controller controller, int orientation, Point2D componentOffset, double rotatingSpeed) {
-        super("circle", 4, orientation, COLOR, componentOffset);
+    public RocketLauncher(Controller controller, int orientation, double rotatingSpeed, boolean missileCanLoseTarget) {
+        super("circle", 4, orientation, COLOR);
         this.controller = controller;
         this.rotatingSpeed = rotatingSpeed;
-    }
-
-    /**
-     * Konstruktori.
-     * @param controller Pelin kontrolleri.
-     * @param orientation Aseen orientation.
-     * @param componentOffset TODO
-     * @param rotatingSpeed Ammuksen kääntymisnopeus.
-     * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
-     */
-    public RocketLauncher(Controller controller, int orientation, Point2D componentOffset, double rotatingSpeed, boolean missileCanLoseTarget) {
-        this(controller, orientation, componentOffset, rotatingSpeed);
         this.missileCanLoseTarget = missileCanLoseTarget;
     }
 
-    public void setShooter(Unit shooter){
-        this.shooter = shooter;
-        if (shooter instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
-        }
+    /**
+     * TODO
+     * @param controller Pelin kontrolleri.
+     * @param orientation Aseen orientation.
+     * @param componentOffset Aseen x-offset.
+     * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param missileCanLoseTarget TODO
+     */
+    public RocketLauncher(Controller controller, int orientation, double rotatingSpeed, boolean missileCanLoseTarget,
+                          Point2D componentOffset, Point2D prjoectileOffset) {
+        this(controller, orientation, rotatingSpeed, missileCanLoseTarget);
+        setComponentOffset(componentOffset);
+        setProjectileOffset(prjoectileOffset);
     }
 
     @Override
@@ -105,8 +88,8 @@ public class RocketLauncher extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        if (shooter != null) {
-            controller.addUpdateableAndSetToScene(new Missile(controller, shooter, SPEED, DAMAGE, rotatingSpeed, tag, missileCanLoseTarget));
+        if (getParentUnit() != null) {
+            controller.addUpdateableAndSetToScene(new Missile(controller, getParentUnit(), SPEED, DAMAGE, rotatingSpeed, getTag(), missileCanLoseTarget));
         }
     }
 }

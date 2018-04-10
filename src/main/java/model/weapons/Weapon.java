@@ -12,9 +12,6 @@ public interface Weapon {
      */
     void shoot();
 
-    /** asettaa ampujan */
-    void setShooter(Unit shooter);
-
     /**
      * Palauttaa aseen tulinopeuden.
      * @return Aseen tulinopeus.

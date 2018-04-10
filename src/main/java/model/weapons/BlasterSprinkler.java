@@ -84,13 +84,10 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
-     * @param componentOffset TODO
-     * @param projectileOffset TODO
      * @param shootingTime Ampumisen kesto.
      */
-    public BlasterSprinkler(Controller controller, int orientation, double projectileSpeed,
-                            Point2D componentOffset, Point2D projectileOffset, double shootingTime) {
-        super("rectangle", 4, orientation, COLOR, componentOffset, projectileOffset);
+    public BlasterSprinkler(Controller controller, int orientation, double projectileSpeed, double shootingTime) {
+        super("rectangle", 4, orientation, COLOR);
         this.shootingTime = shootingTime;
         this.controller = controller;
         controller.addUpdateable(this);
@@ -98,15 +95,19 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     }
 
-    public void setShooter(Unit shooter){
-        this.shooter = shooter;
-        if (shooter instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
-        }
-        this.projectileColor = shooter.getUnitColor();
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param orientation Aseen orientation.
+     * @param projectileSpeed Ammuksen nopeus.
+     * @param componentOffset TODO
+     * @param projectileOffset TODO
+     * @param shootingTime Ampumisen kesto.
+     */
+    public BlasterSprinkler(Controller controller, int orientation, double projectileSpeed, double shootingTime, Point2D componentOffset, Point2D projectileOffset) {
+        this(controller, orientation, projectileSpeed, shootingTime);
+        setProjectileOffset(projectileOffset);
+        setComponentOffset(componentOffset);
     }
 
     @Override

@@ -28,60 +28,39 @@ public class Blaster extends Component implements Weapon {
     /** Blasterin komponentin väri. */
     private static final Color COLOR = Color.WHITE;
 
-    /** Ammuksien väri. */
-    private Color projectileColor = Color.WHITE;
-
     /** Ammuksien nopeus. */
     private double projectileSpeed = SPEED;
 
-    /** Ammuksien tagi. */
-    private int tag;
 
     /** Pelin kontrolleri. */
     private Controller controller;
 
-    /** Unit, jolla ase on käytössä. */
-    private Unit shooter;
-
     /**
-     * Konstruktori ammuksen ampuvan aluksen värillä.
+     * TODO
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
-     * @param componentOffset TODO.
-     * @param projectileOffset TODO
      */
-    public Blaster(Controller controller, int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
-        super("rectangle", 4, orientation, COLOR, componentOffset, projectileOffset);
+    public Blaster(Controller controller, int orientation, double projectileSpeed) {
+        super("rectangle", 4, orientation, COLOR);
         this.controller = controller;
         this.projectileSpeed = projectileSpeed;
     }
 
     /**
-     * Konstruktori valittavalla ammuksen värillä.
+     * TODO
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
-     * @param projectileColor Ammuksen väri.
      * @param projectileSpeed Ammuksen nopeus.
      * @param componentOffset TODO
      * @param projectileOffset TODO
      */
-    public Blaster(Controller controller, int orientation, Color projectileColor, double projectileSpeed,
-                   Point2D componentOffset, Point2D projectileOffset) {
-        this(controller, orientation, projectileSpeed, componentOffset, projectileOffset);
-        this.projectileColor = projectileColor;
+    public Blaster(Controller controller, int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
+        this(controller, orientation, projectileSpeed);
+        this.setProjectileOffset(projectileOffset);
+        this.setComponentOffset(componentOffset);
     }
 
-    public void setShooter(Unit shooter){
-        this.shooter = shooter;
-        if (shooter instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
-        }
-        this.projectileColor = shooter.getUnitColor();
-    }
 
     @Override
     public double getFireRate() {
@@ -90,9 +69,9 @@ public class Blaster extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        if(shooter != null){
-            controller.addUpdateableAndSetToScene(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE,
-                    getProjectileOffset(), projectileColor, tag));
+        if(getParentUnit() != null){
+            controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+                    getProjectileOffset(), getParentUnitColor(), getTag()));
         }
     }
 }

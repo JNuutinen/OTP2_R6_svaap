@@ -87,13 +87,17 @@ public class Enemy extends Unit implements Updateable {
      * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 = MOVE_SINE.
      * @param initialPosition Aloitussijainti.
      */
-    public Enemy(Controller controller, Color shipColor, ArrayList<Weapon> primaries, int movementPattern, Point2D initialPosition) {
-        super(controller, shipColor, primaries);
+    public Enemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, int movementPattern, Point2D initialPosition) {
+        super(controller, shipColor, primaries, 5, 20);
+
+        addWeaponsTags(primaries);
+
         this.controller = controller;
         setTag(ENEMY_SHIP_TAG);
         controller.addUnitToCollisionList(this);
         this.initialX = initialPosition.getX();
         this.initialY = initialPosition.getY();
+
         setPosition(initialX, initialY);
         rotate(180);
         this.movementPattern = movementPattern;
@@ -119,7 +123,11 @@ public class Enemy extends Unit implements Updateable {
                 30.0, 20.0);
         drawShip(shape);
 
+
+
         controller.addUpdateableAndSetToScene(this);
+
+
     }
 
     /**
@@ -138,16 +146,6 @@ public class Enemy extends Unit implements Updateable {
      */
     public int getMovementPattern() {
         return movementPattern;
-    }
-
-    /**
-     * Asettaa alkuposition
-     * @param initialX Alkuposition x-koordinaatti.
-     * @param initialY Alkuposition y-koordinaatti.
-     */
-    public void setInitPosition(double initialX, double initialY) {
-        this.initialX = initialX;
-        this.initialY = initialY;
     }
 
 

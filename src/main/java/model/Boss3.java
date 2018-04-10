@@ -55,7 +55,8 @@ public class Boss3 extends Unit implements Updateable {
 
     public Boss3(Controller controller, Point2D initialPosition){
 
-        super(controller, Color.ORANGE, null);
+        // alus varustetaan erikseen armShip(), niin sitä ei tehdä tässä.
+        super(controller, Color.ORANGE, null, 0, 0);
 
         Polygon shape = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         shape.getPoints().addAll(300.0, 25.0,
@@ -226,7 +227,7 @@ public class Boss3 extends Unit implements Updateable {
 
     /** varustaa aluksen aseilla */
     public void armShip(){
-        //Platform.runLater(() ->
+        /*
         Weapon laserGun = new LaserGun(controller, 0, new Point2D(0, -240), new Point2D(0, -240),
                 0.6);
         this.addPrimaryWeapon(laserGun);
@@ -250,6 +251,6 @@ public class Boss3 extends Unit implements Updateable {
 
 
         Weapon rocketLauncher = new RocketLauncher(controller, 2, new Point2D(-15, 0), 4.8);
-        this.setSecondaryWeapon(rocketLauncher);
+        this.setSecondaryWeapon(rocketLauncher); */
     }
 }

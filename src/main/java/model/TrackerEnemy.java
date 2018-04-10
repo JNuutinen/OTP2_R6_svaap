@@ -90,8 +90,8 @@ public class TrackerEnemy extends Unit implements Updateable {
      * @param initialPosition Aloitussijainti
      * @param path Aluksen reitti
      */
-    public TrackerEnemy(Controller controller, Color shipColor, ArrayList<Weapon> primaries, Point2D initialPosition, Point2D[] path) {
-        super(controller, shipColor, primaries);
+    public TrackerEnemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, Point2D initialPosition, Point2D[] path) {
+        super(controller, shipColor, primaries, 5, 20);
         this.path = path;
         this.controller = controller;
         setTag(ENEMY_SHIP_TAG);
@@ -106,9 +106,6 @@ public class TrackerEnemy extends Unit implements Updateable {
         this.initialY = initialPosition.getY();
         setHitbox(80);
         setHp((int) (40 * controller.getLevel().getEnemyHealthModifier()));
-
-        Component c = new Component("triangle", 3, 0, Color.YELLOW, new Point2D(50, 0));
-        components.add(c);
 
         Polygon shape = new Polygon();
         // aluksen muoto

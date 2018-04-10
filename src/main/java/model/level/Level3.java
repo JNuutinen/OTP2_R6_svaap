@@ -8,6 +8,7 @@ import model.*;
 import model.weapons.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static view.GameMain.*;
 
@@ -146,13 +147,6 @@ public class Level3 extends Thread implements Level {
 
         // LevelN thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
-            ArrayList<Weapon> blaster = new ArrayList<>();
-            blaster.add(new Blaster(controller, 2, 20, new Point2D(0, 0), new Point2D(20, 0)));
-            blaster.add(new Blaster(controller, 2, 20, new Point2D(0, 0), new Point2D(20, 0)));
-            blaster.add(new LaserGun(controller, 2, new Point2D(0, 0), new Point2D(20, 0), 1));
-            blaster.add(new LaserGun(controller, 2, new Point2D(30, 0), new Point2D(20, 0), 1));
-            blaster.add(new BlasterSprinkler(controller, 2, 20, new Point2D(30, 0), new Point2D(20, 0),
-                    4));
 
 
 
@@ -162,16 +156,17 @@ public class Level3 extends Thread implements Level {
             // arvotaan spawnauspaikka
             //double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT 5 100);
 
+            System.out.println("-------");
 
-            Enemy testerivihu = new Enemy(controller, Color.YELLOW, null, 0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200));
-            testerivihu.addPrimaryWeapon(blaster.get(4));
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SHOTGUN, WEAPON_LASER_GUN)),
+                    0, new Point2D(WINDOW_WIDTH + 50, 200));
 
 
-            Enemy testerivihu2 = new Enemy(controller, Color.YELLOW, null, 0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
+                    0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
             Thread.sleep(100);
-            testerivihu2.addPrimaryWeapon(blaster.get(3));
 
-            Thread.sleep(4000);
+            Thread.sleep(8_000);
 
             /*Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,200),
                     new Point2D(WINDOW_WIDTH * 0.9, 100),

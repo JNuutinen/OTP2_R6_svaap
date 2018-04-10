@@ -41,15 +41,11 @@ public class BlasterShotgun extends Component implements Weapon {
      */
     private Controller controller;
 
-    /**
-     * Unit, jolla ase on käytössä.
-     */
-    private Unit shooter;
 
     /**
-     * Ammuksen väri.
+     * ammuksen nopeus
      */
-    private Color projectileColor;
+    private double projectileSpeed = 0;
 
     /**
      * Ammuksen tagi.
@@ -60,24 +56,28 @@ public class BlasterShotgun extends Component implements Weapon {
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
-     * @param componentOffset TODO
-     * @param projectileOffset TODO
+     * @param projectileSpeed TODO
      */
-    public BlasterShotgun(Controller controller, int orientation, Point2D componentOffset,
-                          Point2D projectileOffset) {
-        super("rectangle", 4, orientation, COLOR, componentOffset, projectileOffset);
+    public BlasterShotgun(Controller controller, int orientation, double projectileSpeed) {
+        super("rectangle", 4, orientation, COLOR);
+        this.projectileSpeed = projectileSpeed;
         this.controller = controller;
     }
 
-    public void setShooter(Unit shooter){
-        this.shooter = shooter;
-        if (shooter instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
-        }
-        this.projectileColor = shooter.getUnitColor();
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param orientation Aseen orientation.
+     * @param projectileSpeed TODO
+     * @param componentOffset TODO
+     * @param projectileOffset TODO
+     */
+    public BlasterShotgun(Controller controller, int orientation, double projectileSpeed, Point2D componentOffset,
+                          Point2D projectileOffset) {
+        this(controller, orientation, projectileSpeed);
+        this.controller = controller;
+        setProjectileOffset(projectileOffset);
+        setComponentOffset(componentOffset);
     }
 
     /**
@@ -90,10 +90,11 @@ public class BlasterShotgun extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        if(shooter != null) {
+        if(getParentUnit() != null) {
             for (int i = -1; i < 2; i++) {
-                controller.addUpdateableAndSetToScene(new SmallProjectile(controller, shooter, SPEED, DAMAGE,
-                        getProjectileOffset(), projectileColor, i * 7, tag));
+                // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
+                controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), SPEED, DAMAGE,
+                        getProjectileOffset(), getParentUnitColor(), i * 7, tag));
             }
         }
     }
