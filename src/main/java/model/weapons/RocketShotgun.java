@@ -4,12 +4,7 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
-import model.Player;
-import model.Unit;
 import model.projectiles.LazyMissile;
-
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Raketinheitin. Paitsi ampuu ohjuksia.
@@ -33,7 +28,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon tulinopeus.
      */
-    private static final double FIRE_RATE = 0.25;
+    private static final double FIRE_RATE = 0;
 
     /**
      * Ammusten käääntymisnopeus aluksi.

@@ -25,6 +25,16 @@ public class GameBackground extends Sprite implements Updateable  {
     private double scrollSpeed = NORMAL_SCROLL_SPEED;
 
     /**
+     * Kertoo ajan sekunteina, kuinka pitkään tausta liikkuu eri vauhtia kuin vakio.
+     */
+    private double tempScrollSpeedDuration;
+
+    /**
+     * Kertoo, että tällä hetkellä on käytössä väliaikainen vierimisnopeus.
+     */
+    private boolean tempScrollFlag = false;
+
+    /**
      * Kuva1
      */
     private ImageView centerImage;
@@ -44,15 +54,15 @@ public class GameBackground extends Sprite implements Updateable  {
 
         String imagePath = "images/darkSpace.jpg";
 
-        centerImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
+        centerImage = new ImageView(new Image(imagePath,
                 GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
 
-        nextHorizontalImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
+        nextHorizontalImage = new ImageView(new Image(imagePath,
                 GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
 
-        centerImage.setY(centerImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
+        centerImage.setY(centerImage.getY());
 
-        nextHorizontalImage.setY(nextHorizontalImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
+        nextHorizontalImage.setY(nextHorizontalImage.getY());
         nextHorizontalImage.setX(centerImage.getX() + centerImage.getImage().getWidth());
 
         this.getChildren().add(centerImage);
@@ -65,6 +75,18 @@ public class GameBackground extends Sprite implements Updateable  {
      */
     public void changeBackgroundScrollSpeed(double scrollSpeed) {
         this.scrollSpeed = scrollSpeed;
+        tempScrollFlag = false;
+    }
+
+    /**
+     * Vaihtaa taustan vierimisnopeutta tietyksi ajaksi, jonka jälkeen vierimisnopeus palaa vakioarvoon.
+     * @param scrollSpeed Taustan vierimisnopeus.
+     * @param duration Uuden vierimisnopeuden kesto sekunteina.
+     */
+    public void changeBackgroundScrollSpeed(double scrollSpeed, double duration) {
+        this.scrollSpeed = scrollSpeed;
+        tempScrollSpeedDuration = duration;
+        tempScrollFlag = true;
     }
 
     /**
@@ -72,11 +94,23 @@ public class GameBackground extends Sprite implements Updateable  {
      */
     public void resetBackgroundScrollSpeed() {
         scrollSpeed = NORMAL_SCROLL_SPEED;
+        tempScrollFlag = false;
     }
 
     @Override
     public void update(double deltaTime) {
-        if(deltaTime < 100){ // fiksaa oudon bugin tason alussa
+
+        // Väliaikaisen vierimisnopeuden hoitaminen
+        if (tempScrollFlag) {
+            if (tempScrollSpeedDuration < 0) {
+                scrollSpeed = NORMAL_SCROLL_SPEED;
+                tempScrollFlag = false;
+            } else {
+                tempScrollSpeedDuration -= deltaTime;
+            }
+        }
+
+        if(deltaTime < 100) { // fiksaa oudon bugin tason alussa
             centerImage.setX(centerImage.getX() - (scrollSpeed * deltaTime));
             nextHorizontalImage.setX(nextHorizontalImage.getX() - (scrollSpeed * deltaTime));
         }

@@ -38,22 +38,22 @@ public class GameLoop {
     /**
      * Lista pelissä olevista päivitettävistä olioista, jonka looppi käy läpi.
      */
-    private ArrayList<Updateable> updateables;
+    private volatile ArrayList<Updateable> updateables;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<Updateable> enemies;
+    private volatile ArrayList<Updateable> enemies;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<Updateable> enemyProjectiles;
+    private volatile ArrayList<Updateable> enemyProjectiles;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista pelaajan ammuksista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<Updateable> playerProjectiles;
+    private volatile ArrayList<Updateable> playerProjectiles;
 
     /**
      * Pelaaja, käytetään osumien tarkasteluun.
@@ -197,6 +197,9 @@ public class GameLoop {
                                     updateables.remove(toBeRemoved);
                                     switch (toBeRemoved.getTag()) {
                                         case GameMain.ENEMY_SHIP_TAG:
+                                            enemies.remove(toBeRemoved);
+                                            break;
+                                        case GameMain.BOSS_SHIP_TAG:
                                             enemies.remove(toBeRemoved);
                                             break;
                                         case GameMain.ENEMY_PROJECTILE_TAG:

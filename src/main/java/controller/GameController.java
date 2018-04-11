@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import static model.Enemy.MOVE_SINE;
 import static model.Enemy.MOVE_STRAIGHT;
-import static view.GameMain.ENEMY_SHIP_TAG;
 
 /**
  * Pelin kontrolleri.
@@ -114,8 +113,7 @@ public class GameController implements Controller {
 
     @Override
     public synchronized void removeUpdateable(Updateable updateable) {
-        // TODO: hitboxi jää viel?
-        //((Sprite) updateable).setPosition(-50, -50);
+        // TODO: bossin hitboxi jää viel?
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
     }
@@ -214,6 +212,11 @@ public class GameController implements Controller {
     public void continueGame() {
         gameLoop.continueGame();
         level.continueLevel();
+    }
+
+    @Override
+    public void changeBackgroundScrollSpeed(double speed, double duration) {
+        view.changeBackgroundScrollSpeed(speed, duration);
     }
 
     @Override
