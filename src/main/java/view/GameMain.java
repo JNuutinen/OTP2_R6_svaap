@@ -591,7 +591,6 @@ public class GameMain extends Application implements View {
         Weapon laserGun = new LaserGun(controller, 5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
         ((Component) laserGun).setName("Laser Gun");
 
-        weapons.add(blaster);
         weapons.add(rocketShotgun);
         weapons.add(laserGun);
         return weapons;
