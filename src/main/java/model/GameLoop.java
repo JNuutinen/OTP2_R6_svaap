@@ -38,7 +38,7 @@ public class GameLoop {
     /**
      * Lista pelissä olevista päivitettävistä olioista, jonka looppi käy läpi.
      */
-    private ArrayList<Updateable> updateables;
+    private volatile ArrayList<Updateable> updateables;
 
     /**
      * TODO
@@ -57,32 +57,32 @@ public class GameLoop {
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<HitboxObject> enemies;
+    private volatile ArrayList<HitboxObject> enemies;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<HitboxObject> enemyProjectiles;
+    private volatile ArrayList<HitboxObject> enemyProjectiles;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista pelaajan ammuksista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<HitboxObject> playerProjectiles;
+    private volatile ArrayList<HitboxObject> playerProjectiles;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<HitboxObject> powerups;
+    private volatile ArrayList<HitboxObject> powerups;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<Trace> enemyTraces;
+    private volatile ArrayList<Trace> enemyTraces;
 
     /**
      * Lista pelissä tiettynä hetkenä olevista pelaajan ammuksista, käytetään osumien tarkasteluun.
      */
-    private ArrayList<Trace> playerTraces;
+    private volatile ArrayList<Trace> playerTraces;
 
     /**
      * Pelaaja, käytetään osumien tarkasteluun.

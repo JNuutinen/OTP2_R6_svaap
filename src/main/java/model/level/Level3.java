@@ -4,7 +4,10 @@ import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.*;
+import model.Boss3;
+import model.Enemy;
+import model.TrackerEnemy;
+import model.Updateable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -188,10 +191,7 @@ public class Level3 extends Thread implements Level {
                     path);
 
 
-            Thread.sleep(16_000);
-
-
-
+            Thread.sleep(5_000);
 
             finalBoss = new Boss3(controller, new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
 
@@ -199,15 +199,18 @@ public class Level3 extends Thread implements Level {
             while(controller.getCollisionList().contains(finalBoss)){
                 Thread.sleep(1_000);
             }
-
             System.out.println("Voitit tason " + (levelNumber) +"!");
-            Thread.sleep(2_000);
 
+            // Hyperdrive
+            controller.changeBackgroundScrollSpeed(1000, 5);
+            Thread.sleep(6_000);
 
             Platform.runLater(() -> controller.addScore(500));
 
+            controller.startLevel(3);
+
             // Ilmoita levelin loppumisesta
-            Platform.runLater(() -> controller.returnToMain());
+            //Platform.runLater(() -> controller.returnToMain());
 
         } catch (InterruptedException e) {
             e.printStackTrace();

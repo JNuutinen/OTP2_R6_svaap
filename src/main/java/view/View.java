@@ -78,4 +78,6 @@ public interface View {
      * Asettaa pelin taukotilaan.
      */
     void pause();
+
+    void changeBackgroundScrollSpeed(double speed, double duration);
 }

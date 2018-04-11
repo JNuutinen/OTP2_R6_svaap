@@ -219,6 +219,11 @@ public class GameMain extends Application implements View {
      */
     private Pane uiPane;
 
+    /**
+     * Pelin tausta.
+     */
+    private GameBackground gameBg;
+
     public static void main(String[] args) {
         //Database database = new Database();
         //database.dbTest();
@@ -464,6 +469,11 @@ public class GameMain extends Application implements View {
         gameRoot.setCenter(pauseMenuGroup);
     }
 
+    @Override
+    public void changeBackgroundScrollSpeed(double speed, double duration) {
+        gameBg.changeBackgroundScrollSpeed(speed, duration);
+    }
+
     /**
      * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
      * @param primaryStage Ohjelman Primary Stage.
@@ -490,7 +500,7 @@ public class GameMain extends Application implements View {
         score.setLayoutY(51);
         score.setFont(new Font("Cambria", 32));
 
-        GameBackground gmg = new GameBackground(controller);
+        gameBg = new GameBackground(controller);
 
         uiPane.getChildren().add(score);
         uiPane.getChildren().add(playerHealth);

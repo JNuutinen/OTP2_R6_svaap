@@ -148,4 +148,6 @@ public interface Controller {
      * Jatkaa peliä taukotilasta.
      */
     void continueGame();
+
+    void changeBackgroundScrollSpeed(double speed, double duration);
 }
