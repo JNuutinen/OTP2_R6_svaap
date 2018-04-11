@@ -95,8 +95,7 @@ public class Explosion extends Sprite implements Updateable{
 
     }
 
-    @Override
-    public void destroyThis(){
+    private void destroyThis(){
         Explosion toBeRemved = this;
         Thread thread = new Thread(new Runnable() {
             public void run() {
@@ -138,7 +137,4 @@ public class Explosion extends Sprite implements Updateable{
             }
         }
     }
-
-    @Override
-    public void collides(Updateable collidingUpdateable) { }
 }

@@ -19,7 +19,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Missile extends BaseProjectile implements Updateable {
+public class Missile extends BaseProjectile implements Updateable, HitboxObject {
 
     /**
      * Ohjuksen perusväri.
@@ -50,7 +50,7 @@ public class Missile extends BaseProjectile implements Updateable {
     /**
      * Ammuksen kohde.
      */
-    private Updateable target;
+    private HitboxObject target;
 
     /**
      * Ammuksen visuaalinen häntä.
@@ -115,17 +115,18 @@ public class Missile extends BaseProjectile implements Updateable {
     }
 
     @Override
-    public void destroyThis(){
-        trail.destroyThis();
-        new Explosion(controller, Color.WHITE, getPosition(), 0.2);
-        controller.removeUpdateable(this);
+    public void collides(Object collidingTarget) {
+        if(collidingTarget instanceof Unit){
+            ((Unit) collidingTarget).takeDamage(damage);
+        }
+        destroyThis();
     }
 
     @Override
-    //Optimoidumpi versio collidesta (?)
-    public void collides(Updateable collidingUpdateable){
-        destroyThis();
-        ((Unit)collidingUpdateable).takeDamage(damage);
+    public void destroyThis(){
+        trail.destroyThis();
+        new Explosion(controller, Color.WHITE, getPosition(), 0.2);
+        controller.removeUpdateable(this, this);
     }
 
     @Override
@@ -205,31 +206,26 @@ public class Missile extends BaseProjectile implements Updateable {
      */
     private void findAndSetTarget() {
         double shortestDistance = Double.MAX_VALUE;
-        Updateable closestEnemy = null;
+        HitboxObject closestEnemy = null;
         if (getShooter().getTag() == PLAYER_SHIP_TAG){
-            for (Updateable updateable : controller.getUpdateables()) {
-                if (updateable.getTag() == ENEMY_SHIP_TAG || updateable.getTag() == BOSS_SHIP_TAG) {
-                    double distance = getShooter().getDistanceFromTarget(updateable.getPosition());
+            for (HitboxObject hitboxObject : controller.getHitboxObjects()) {
+                if (hitboxObject.getTag() == ENEMY_SHIP_TAG || hitboxObject.getTag() == BOSS_SHIP_TAG) {
+                    double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
-                        closestEnemy = updateable;
+                        closestEnemy = hitboxObject;
                     }
                 }
             }
         }
         else if(getShooter().getTag() == ENEMY_SHIP_TAG || getShooter().getTag() == BOSS_SHIP_TAG){
-            for (Updateable updateable : controller.getUpdateables()) {
-                if (updateable.getTag() == PLAYER_SHIP_TAG) {
-                    double distance = getShooter().getDistanceFromTarget(updateable.getPosition());
-                    if (distance < shortestDistance) {
-                        shortestDistance = distance;
-                        closestEnemy = updateable;
-                    }
-                }
+            HitboxObject player = controller.getPlayerHitboxObject();
+            if (player != null) {
+                closestEnemy = player;
             }
         }
         target = closestEnemy;
-        closestDistance = Double.MAX_VALUE; // asettaa lähimmän etäisyyden kohteesta maksimiin koska kohde vaihtui
+        closestDistance = Double.MAX_VALUE; // asettaa lähimmän kohteen etäisyyden maksimiin koska kohde vaihtui
     }
 
     /**

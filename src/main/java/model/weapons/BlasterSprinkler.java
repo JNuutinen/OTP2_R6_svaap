@@ -4,14 +4,8 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
-import model.Player;
-import model.Unit;
 import model.Updateable;
 import model.projectiles.SmallProjectile;
-
-
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Blasterruiskuttelija.
@@ -116,13 +110,14 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     @Override
     public void update(double deltaTime) {
-        if(getParentUnit() != null) {
+        if (getParentUnit() != null) {
             if (isShooting) {
                 firerateCounter += deltaTime;
                 shootingTimeCounter += deltaTime;
                 if (firerateCounter >= firerate) {
-                    controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
-                            getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag()));
+                    SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+                            getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag());
+                    controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
                     firerateCounter = 0;
                     if (shootingTimeCounter > shootingTime) {
                         isShooting = false;
@@ -131,15 +126,5 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
                 }
             }
         }
-    }
-
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-
-    }
-
-    @Override
-    public void destroyThis() {
-
     }
 }

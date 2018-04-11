@@ -18,7 +18,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Boss3 extends Unit implements Updateable {
+public class Boss3 extends Unit {
 
     /** Pelin kontrolleri */
     private Controller controller;
@@ -104,7 +104,7 @@ public class Boss3 extends Unit implements Updateable {
 
         this.controller = controller;
         this.setPosition(initialPosition.getX(), initialPosition.getY());
-        this.setTag(BOSS_SHIP_TAG);
+        this.setTag(ENEMY_SHIP_TAG);
         this.setVelocity(30);
         controller.addUnitToCollisionList(this);
         rotate(180);
@@ -114,7 +114,7 @@ public class Boss3 extends Unit implements Updateable {
         this.setHitbox(450);
         armShip();
 
-        controller.addUpdateableAndSetToScene(this);
+        controller.addUpdateableAndSetToScene(this, this);
 
     }
 

@@ -13,7 +13,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import model.Component;
 import model.Player;
-import model.Unit;
 import model.Updateable;
 import model.projectiles.LaserBeam;
 
@@ -164,8 +163,8 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
             // jos aikaa on kulunut enemmän kuin ampumisviiveessä, niin luo LaserBeam peliin.
             if(timeCounter > shootingDelay){
-                controller.addUpdateableAndSetToScene(new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, Color.WHITE, getTag(),
-                        getProjectileOffset()));
+                LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, Color.WHITE, getTag(), getProjectileOffset());
+                controller.addUpdateableAndSetToScene(laserBeam, laserBeam);
                 triggeredShoot = false;
                 timeCounter = 0;
                 Platform.runLater(()->getParentUnit().getChildren().remove(chargingEffect));
@@ -204,16 +203,6 @@ public class LaserGun extends Component implements Weapon, Updateable {
         Line line = new Line(); //koordinaatit määritellään shoot()-metodissa
         line.setStroke(lg);
         return line;
-    }
-
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-
-    }
-
-    @Override
-    public void destroyThis() {
-
     }
 }
 

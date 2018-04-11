@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.*;
-import model.weapons.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

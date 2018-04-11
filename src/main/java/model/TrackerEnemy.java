@@ -16,7 +16,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class TrackerEnemy extends Unit implements Updateable {
+public class TrackerEnemy extends Unit {
 
     /**
      * Jos vihollinen ei liiku, se saa arvon -1
@@ -61,7 +61,7 @@ public class TrackerEnemy extends Unit implements Updateable {
      */
     private double rotatingSpeed = 4;
     private boolean shootingTarget = false;
-    private Updateable target = null;
+    private HitboxObject target = null;
     private final double initialVelocity = 300;
 
     /**
@@ -134,7 +134,7 @@ public class TrackerEnemy extends Unit implements Updateable {
         drawShip(shape);
         makePrimaryWeapons(primaries);
 
-        controller.addUpdateableAndSetToScene(this);
+        controller.addUpdateableAndSetToScene(this, this);
     }
 
     /**
@@ -221,10 +221,6 @@ public class TrackerEnemy extends Unit implements Updateable {
      * Etsii pelaajan updateable listasta ja asettaa sen kohteeksi
      */
     public void findAndSetTarget(){
-        for(Updateable updateable : controller.getUpdateables()){
-            if(updateable.getTag() == PLAYER_SHIP_TAG) {
-                target = updateable;
-            }
-        }
+        target = controller.getPlayerHitboxObject();
     }
 }

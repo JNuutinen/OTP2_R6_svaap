@@ -128,8 +128,9 @@ public class RocketShotgun extends Component implements Weapon {
     public void shoot() {
         if(getParentUnit() != null) {
             for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-                controller.addUpdateableAndSetToScene(new LazyMissile(controller, getParentUnit(), SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
-                        initialMissileRotatingSpeed, latterMissileRotatingSpeed, getTag(), missileCanLoseTarget));
+                LazyMissile lazyMissile = new LazyMissile(controller, getParentUnit(), SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
+                        initialMissileRotatingSpeed, latterMissileRotatingSpeed, getTag(), missileCanLoseTarget);
+                controller.addUpdateableAndSetToScene(lazyMissile, lazyMissile);
             }
         }
     }

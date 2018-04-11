@@ -1,10 +1,7 @@
 package model;
 
 import controller.Controller;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import model.weapons.BlasterShotgun;
-import model.weapons.Weapon;
 
 import static view.GameMain.*;
 
@@ -15,7 +12,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Boss extends Unit implements Updateable {
+public class Boss extends Unit {
 
     /**
      * Pelin kontrolleri
@@ -84,7 +81,7 @@ public class Boss extends Unit implements Updateable {
         controller.addUnitToCollisionList(this);
         setHp(hp);
         originalHp = hp;
-        setTag(BOSS_SHIP_TAG);
+        setTag(ENEMY_SHIP_TAG);
         setPosition(initialX, initialY);
         rotate(180);
         setImage(new Image("/images/bossPlaceholder.png"), 128, 256);
@@ -93,7 +90,7 @@ public class Boss extends Unit implements Updateable {
 
         armBoss(controller);
 
-        controller.addUpdateableAndSetToScene(this);
+        controller.addUpdateableAndSetToScene(this, this);
     }
 
     /**

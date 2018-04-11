@@ -1,8 +1,6 @@
 package controller;
 
-import model.Player;
-import model.Unit;
-import model.Updateable;
+import model.*;
 import model.level.Level;
 
 import java.util.ArrayList;
@@ -28,12 +26,24 @@ public interface Controller {
      */
     void addScore(int score);
 
+    /** TODO
+     * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
+     * @param updateable Updateable, joka lisätään.
+     */
+    void addUpdateableAndSetToScene(Updateable updateable, HitboxObject hitboxObject);
     /**
      * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
      * @param updateable Updateable, joka lisätään.
      */
+    void addUpdateableAndSetToScene(Updateable updateable, Trace trace);
+
+    // TODO
     void addUpdateableAndSetToScene(Updateable updateable);
 
+    /**
+     * TODO
+     * @param updateable
+     */
     void addUpdateable(Updateable updateable);
 
     // TODO: collision listan refaktorointi pois
@@ -71,6 +81,14 @@ public interface Controller {
     ArrayList<Updateable> getUpdateables();
 
     /**
+     * TODO
+     * @return
+     */
+    HitboxObject getPlayerHitboxObject();
+
+    ArrayList<HitboxObject> getHitboxObjects();
+
+    /**
      * Käynnistää tasosäikeen.
      * @param levelNumber Tason numero.
      */
@@ -96,6 +114,16 @@ public interface Controller {
     /**
      * Poistaa GameLoopin käsittelystä Updateable olion.
      * @param updateable Olio, joka poistetaan.
+     */
+    void removeUpdateable(Updateable updateable, HitboxObject hitboxObject);
+
+    /**
+     * TODO
+     */
+    void removeUpdateable(Updateable updateable, Trace trace);
+
+    /**
+     * TODO
      */
     void removeUpdateable(Updateable updateable);
 

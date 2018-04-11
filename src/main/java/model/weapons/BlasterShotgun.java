@@ -97,8 +97,9 @@ public class BlasterShotgun extends Component implements Weapon {
         if(getParentUnit() != null) {
             for (int i = -1; i < 2; i++) {
                 // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
-                controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), SPEED, DAMAGE,
-                        getProjectileOffset(), getParentUnitColor(), i * 7, tag));
+                SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), SPEED, DAMAGE,
+                        getProjectileOffset(), getParentUnitColor(), i * 7, tag);
+                controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
             }
         }
     }

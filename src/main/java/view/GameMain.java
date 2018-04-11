@@ -78,11 +78,6 @@ public class GameMain extends Application implements View {
     public static final int ENEMY_SHIP_TAG = 2;
 
     /**
-     * Bossien tagi.
-     */
-    public static final int BOSS_SHIP_TAG = 3;
-
-    /**
      * Pelaajan ammuksien tagi.
      */
     public static final int PLAYER_PROJECTILE_TAG = 4;
@@ -93,14 +88,9 @@ public class GameMain extends Application implements View {
     public static final int ENEMY_PROJECTILE_TAG = 5;
 
     /**
-     * Pelaajan trace tag.
+     * Poweruping tägi.
      */
-    public static final int PLAYER_TRACE_TAG = 6;
-
-    /**
-     * Vihollisten trace tag.
-     */
-    public static final int ENEMY_TRACE_TAG = 7;
+    public static final int POWERUP_TAG = 6;
 
     /**
      * Aseen Blaster tägi
@@ -527,7 +517,7 @@ public class GameMain extends Application implements View {
 
         //      tieto controllerille pelaajasta
         controller.addPlayer(player);
-        controller.addUpdateableAndSetToScene(player);
+        controller.addUpdateableAndSetToScene(player, player);
 
         //      pelaajalle pyssyt
         player.addPrimaryWeapon(primary);

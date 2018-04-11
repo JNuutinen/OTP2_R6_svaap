@@ -18,7 +18,7 @@ import static view.GameMain.WINDOW_WIDTH;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Enemy extends Unit implements Updateable {
+public class Enemy extends Unit {
 
     /**
      * Jos vihollinen ei liiku, se saa arvon -1
@@ -122,7 +122,7 @@ public class Enemy extends Unit implements Updateable {
         drawShip(shape);
 
         makePrimaryWeapons(primaries);
-        controller.addUpdateableAndSetToScene(this);
+        controller.addUpdateableAndSetToScene(this, this);
     }
 
     /**

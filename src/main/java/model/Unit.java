@@ -1,11 +1,7 @@
 package model;
 
 import controller.Controller;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.geometry.Point2D;
-import javafx.scene.Parent;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -13,7 +9,6 @@ import model.weapons.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import static view.GameMain.*;
 
@@ -24,7 +19,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Unit extends Sprite implements Updateable {
+public class Unit extends Sprite implements Updateable, HitboxObject {
 
     /**
      * Kontrolleri.
@@ -129,10 +124,6 @@ public class Unit extends Sprite implements Updateable {
         return originalHp;
     }
 
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-        // Alusten törmäily ei tee mitään
-    }
 
     @Override
     public void update(double deltaTime) {
@@ -318,10 +309,15 @@ public class Unit extends Sprite implements Updateable {
 
 
     @Override
+    public void collides(Object obj) {
+
+    }
+
+    @Override
     public void destroyThis() {
         new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         new Explosion(controller, color, getPosition(), 1);
-        controller.removeUpdateable(this);
+        controller.removeUpdateable(this, this);
         controller.removeFromCollisionList(this);
     }
 

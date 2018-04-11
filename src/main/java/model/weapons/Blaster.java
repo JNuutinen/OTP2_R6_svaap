@@ -74,8 +74,9 @@ public class Blaster extends Component implements Weapon {
     @Override
     public void shoot() {
         if(getParentUnit() != null){
-            controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
-                    getProjectileOffset(), getParentUnitColor(), getTag()));
+            SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+                    getProjectileOffset(), getParentUnitColor(), getTag());
+            controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
         }
     }
 }

@@ -88,14 +88,4 @@ public class GameBackground extends Sprite implements Updateable  {
             nextHorizontalImage.setX(centerImage.getX() + centerImage.getImage().getWidth());
         }
     }
-
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-
-    }
-
-    @Override
-    public void destroyThis() {
-
-    }
 }

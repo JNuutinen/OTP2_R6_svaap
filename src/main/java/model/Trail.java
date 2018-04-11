@@ -24,7 +24,7 @@ public class Trail extends Sprite implements Updateable{
     /**
      * Updateable, josta häntä lähtee.
      */
-    private Updateable target;
+    private HitboxObject target;
 
     /**
      * Lista, jossa trailin muodostavat viivat.
@@ -51,7 +51,7 @@ public class Trail extends Sprite implements Updateable{
      * @param controller Pelin kontrolleri.
      * @param target Updateable, josta trail lähtee.
      */
-    public Trail(Controller controller, Updateable target){
+    public Trail(Controller controller, HitboxObject target){
         this.controller = controller;
         this.target = target;
         this.setPosition(0, 0);
@@ -73,7 +73,6 @@ public class Trail extends Sprite implements Updateable{
 
     }
 
-    @Override
     public void destroyThis(){
         Thread thread = new Thread(() -> {
             try {
@@ -151,7 +150,4 @@ public class Trail extends Sprite implements Updateable{
         return Math.sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
     }
 
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-    }
 }

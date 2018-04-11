@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import static model.Enemy.MOVE_SINE;
 import static model.Enemy.MOVE_STRAIGHT;
-import static view.GameMain.ENEMY_SHIP_TAG;
 
 /**
  * Pelin kontrolleri.
@@ -87,11 +86,27 @@ public class GameController implements Controller {
     }
 
     @Override
-    public void addUpdateableAndSetToScene(Updateable updateable) {
-
+    public void addUpdateableAndSetToScene(Updateable updateable, HitboxObject hitboxObject) {
         Platform.runLater(() -> {
             view.addSprite((Sprite) updateable);
+        });
+        gameLoop.queueHitboxObject(hitboxObject);
+        gameLoop.queueUpdateable(updateable);
+    }
 
+    @Override
+    public void addUpdateableAndSetToScene(Updateable updateable, Trace trace) {
+        Platform.runLater(() -> {
+            view.addSprite((Sprite) updateable);
+        });
+        gameLoop.queueTrace(trace);
+        gameLoop.queueUpdateable(updateable);
+    }
+
+    @Override
+    public void addUpdateableAndSetToScene(Updateable updateable) {
+        Platform.runLater(() -> {
+            view.addSprite((Sprite) updateable);
         });
         gameLoop.queueUpdateable(updateable);
     }
@@ -113,6 +128,24 @@ public class GameController implements Controller {
     }
 
     @Override
+    public synchronized void removeUpdateable(Updateable updateable, HitboxObject hitboxObject) {
+        // TODO: hitboxi jää viel?
+        //((Sprite) updateable).setPosition(-50, -50);
+        view.removeSprite((Sprite)updateable);
+        gameLoop.removeUpdateable(updateable);
+        gameLoop.removeHitboxObject(hitboxObject);
+    }
+
+    @Override
+    public synchronized void removeUpdateable(Updateable updateable, Trace trace) {
+        // TODO: hitboxi jää viel?
+        //((Sprite) updateable).setPosition(-50, -50);
+        view.removeSprite((Sprite)updateable);
+        gameLoop.removeUpdateable(updateable);
+        gameLoop.removeTrace(trace);
+    }
+
+    @Override
     public synchronized void removeUpdateable(Updateable updateable) {
         // TODO: hitboxi jää viel?
         //((Sprite) updateable).setPosition(-50, -50);
@@ -122,6 +155,12 @@ public class GameController implements Controller {
 
     @Override
     public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
+
+    public synchronized HitboxObject getPlayerHitboxObject(){ return gameLoop.getPlayerHitboxObject(); }
+
+    public synchronized ArrayList<HitboxObject> getHitboxObjects(){
+        return gameLoop.getHitboxObjects();
+    }
 
     @Override
     public void startLevel(int levelNumber) {
