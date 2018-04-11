@@ -32,6 +32,8 @@ import view.menus.PauseMenu;
 import view.menus.PlayMenu;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Pelin View. JavaFX Application.
@@ -141,6 +143,10 @@ public class GameMain extends Application implements View {
      */
     public static ArrayList<String> input;
 
+    /**
+     * Pitää sisällään lokalisoidut tekstit.
+     */
+    public static ResourceBundle messages;
 
     /**
      * Pelaa -valikko.
@@ -236,6 +242,12 @@ public class GameMain extends Application implements View {
 
     @Override
     public void start(Stage primaryStage){
+        // lokalisointi
+        String language = "en";
+        String country = "NZ";
+        Locale locale = new Locale(language, country);
+        messages = ResourceBundle.getBundle("MessagesBundle", locale);
+
         this.primaryStage = primaryStage;
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
         primaryStage.setResizable(false);
@@ -487,7 +499,7 @@ public class GameMain extends Application implements View {
     private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
-        Image uiIMG = new Image("/images/PlayerUi.png");
+        Image uiIMG = new Image("/images/PlayerUi_i18n.png");
         uiIV.setImage(uiIMG);
         uiPane.getChildren().add(uiIV);
         pane.setCenter(gameRoot);
@@ -497,17 +509,40 @@ public class GameMain extends Application implements View {
         ft.setToValue(1.0);
         ft.play();
 
+        Font uiFont = new Font("Cambria", 32);
+        Label playerHpText = new Label(messages.getString("player_hp"));
+        playerHpText.setTextFill(Color.WHITE);
+        playerHpText.setLayoutX(20);
+        playerHpText.setLayoutY(8);
+        playerHpText.setFont(uiFont);
+
+        Label scoreText = new Label(messages.getString("score"));
+        scoreText.setTextFill(Color.WHITE);
+        scoreText.setLayoutX(20);
+        scoreText.setLayoutY(51);
+        scoreText.setFont(uiFont);
+
+        Label bossHpText = new Label(messages.getString("boss_hp"));
+        bossHpText.setTextFill(Color.WHITE);
+        bossHpText.setLayoutX(1085);
+        bossHpText.setLayoutY(8);
+        bossHpText.setFont(uiFont);
+
+        Label fpsText = new Label(messages.getString("fps"));
+        fpsText.setTextFill(Color.WHITE);
+        fpsText.setLayoutX(1085);
+        fpsText.setLayoutY(51);
+        fpsText.setFont(uiFont);
+
         score = new Label(String.valueOf(controller.getScore()));
         score.setTextFill(Color.WHITE);
         score.setLayoutX(210);
         score.setLayoutY(51);
-        score.setFont(new Font("Cambria", 32));
+        score.setFont(uiFont);
 
         gameBg = new GameBackground(controller);
 
-        uiPane.getChildren().add(score);
-        uiPane.getChildren().add(playerHealth);
-        uiPane.getChildren().add(bossHealth);
+        uiPane.getChildren().addAll(playerHpText, scoreText, score, playerHealth, bossHpText, bossHealth, fpsText);
 
         //---------------- debugger
         if(debuggerToolsEnabled) {

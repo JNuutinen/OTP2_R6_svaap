@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import view.GameMain;
 
 import static view.GameMain.*;
 
@@ -33,11 +34,6 @@ public class MainMenu {
     private Button exit;
 
     /**
-     * Asetukset -painike.
-     */
-    private Button settings;
-
-    /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      */
     public MainMenu(){
@@ -63,9 +59,8 @@ public class MainMenu {
      * Alustaa painikkeet.
      */
     private void build() {
-        play = new Button("Play");
-        exit = new Button("Exit");
-        settings = new Button("Settings");
+        play = new Button(GameMain.messages.getString("play"));
+        exit = new Button(GameMain.messages.getString("exit"));
     }
 
     /**
@@ -77,10 +72,9 @@ public class MainMenu {
         vbox.setSpacing(8);
 
         play.setPrefWidth(Double.MAX_VALUE);
-        settings.setPrefWidth(Double.MAX_VALUE);
         exit.setPrefWidth(Double.MAX_VALUE);
         vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.setMaxWidth(100);
+        vbox.setMaxWidth(150);
         // TODO: settings
         vbox.getChildren().addAll(play, exit);
         return vbox;

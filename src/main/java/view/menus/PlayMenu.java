@@ -4,11 +4,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import view.GameMain;
 
 import static view.GameMain.*;
 
@@ -56,23 +55,24 @@ public class PlayMenu {
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
 
-        startButton = new Button();
-        backButton = new Button("Main menu");
+        startButton = new Button(GameMain.messages.getString("start_game"));
+        startButton.setPrefWidth(Double.MAX_VALUE);
+        backButton = new Button(GameMain.messages.getString("back"));
         backButton.setPrefWidth(Double.MAX_VALUE);
-        startButton.setGraphic(new ImageView(new Image("/images/Start.png")));
-        startButton.setStyle("-fx-background-color: transparent");
-        Text levelSelectText = new Text("Select level:");
+        //startButton.setGraphic(new ImageView(new Image("/images/Start.png")));
+        //startButton.setStyle("-fx-background-color: transparent");
+        Text levelSelectText = new Text(GameMain.messages.getString("select_level"));
         levelSelectText.setStyle("-fx-fill: white");
         levelSpinner = new Spinner<>(1, levels, 1);
         levelSpinner.setPrefWidth(Double.MAX_VALUE);
 
-        customizeButton = new Button("Select weapons");
+        customizeButton = new Button(GameMain.messages.getString("select_weapons"));
         customizeButton.setPrefWidth(Double.MAX_VALUE);
 
         VBox vBox = new VBox();
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setMaxWidth(100);
+        vBox.setMaxWidth(150);
         vBox.getChildren().addAll(startButton, levelSelectText, levelSpinner, customizeButton, backButton);
 
         borderPane.setCenter(vBox);

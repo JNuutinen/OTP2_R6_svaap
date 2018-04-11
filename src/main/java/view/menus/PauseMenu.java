@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import view.GameMain;
 
 import static view.GameMain.*;
 
@@ -37,11 +38,11 @@ public class PauseMenu {
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      */
     public PauseMenu() {
-        continueButton = new Button("Continue");
+        continueButton = new Button(GameMain.messages.getString("continue"));
         continueButton.setMinWidth(100);
         continueButton.setPrefWidth(Double.MAX_VALUE);
 
-        quitButton = new Button("Quit");
+        quitButton = new Button(GameMain.messages.getString("quit"));
         quitButton.setMinWidth(100);
         quitButton.setPrefWidth(Double.MAX_VALUE);
 
