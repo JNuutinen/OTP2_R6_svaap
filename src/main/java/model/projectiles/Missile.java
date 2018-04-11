@@ -112,8 +112,6 @@ public class Missile extends BaseProjectile implements Updateable {
     public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean canLoseTarget) {
         this(controller, shooter, speed, damage, rotatingSpeed, tag);
         this.canLoseTarget = canLoseTarget;
-
-
     }
 
     @Override

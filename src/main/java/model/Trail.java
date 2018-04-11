@@ -68,21 +68,20 @@ public class Trail extends Sprite implements Updateable{
         lines = new ArrayList<Line>();
         lines.add(new Line(target.getPosition().getX(), target.getPosition().getY(), target.getPosition().getX(), target.getPosition().getY()));
 
-        this.getChildren().addAll(lines);
-        controller.addUpdateable(this);
+        Platform.runLater(()->this.getChildren().addAll(lines));
+        controller.addUpdateableAndSetToScene(this);
 
     }
 
     @Override
     public void destroyThis(){
-        Trail toBeRemved = this;
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Platform.runLater(() -> toBeRemved.destroyCompletely());
+            Platform.runLater(() -> destroyCompletely());
         });
         thread.start();
     }

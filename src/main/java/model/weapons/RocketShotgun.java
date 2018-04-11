@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
 import model.Player;
@@ -63,16 +64,6 @@ public class RocketShotgun extends Component implements Weapon {
     private Controller controller;
 
     /**
-     * Unit, jolla ase on käytössä.
-     */
-    private Unit shooter;
-
-    /**
-     * Ammuksen tagi.
-     */
-    private int tag;
-
-    /**
      * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
      */
     private boolean missileCanLoseTarget = true;
@@ -80,45 +71,52 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Ammuksen ampuja.
      * @param orientation Aseen orientation.
-     * @param xOffset Aseen x-offset.
-     * @param yOffset Aseen y-offset.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      */
-    public RocketShotgun(Controller controller, Unit shooter, int orientation, double xOffset,
-                          double yOffset, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
-        super("circle", 4, orientation, COLOR, xOffset, yOffset);
+    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
+        super("circle", 4, orientation, COLOR);
         this.controller = controller;
-        this.shooter = shooter;
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;
         this.latterMissileRotatingSpeed = latterMissileRotatingSpeed;
-        if (shooter instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
-        }
     }
 
     /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Ammuksen ampuja.
      * @param orientation Aseen orientation.
-     * @param xOffset Aseen x-offset.
-     * @param yOffset Aseen y-offset.
+     * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
+     * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
+     */
+    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed,
+                         Point2D componentOffset, Point2D projectileOffset) {
+        this(controller, orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
+        setComponentOffset(componentOffset);
+        setProjectileOffset(projectileOffset);
+    }
+
+    /**
+     * TODO TODO
+     * @param controller Pelin kontrolleri.
+     * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
      */
 
-    public RocketShotgun(Controller controller, Unit shooter, int orientation, double xOffset, double yOffset,
-                         double initialMissileRotatingSpeed, double latterMissileRotatingSpeed, boolean missileCanLoseTarget) {
-        this(controller, shooter, orientation, xOffset, yOffset, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
+    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed,
+                         double latterMissileRotatingSpeed, boolean missileCanLoseTarget) {
+        this(controller, orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
         this.missileCanLoseTarget = missileCanLoseTarget;
+    }
 
+
+    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed,
+                         double latterMissileRotatingSpeed, boolean missileCanLoseTarget, Point2D componentOffset, Point2D projectileOffset) {
+        this(controller, orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed, missileCanLoseTarget);
+        setComponentOffset(componentOffset);
+        setProjectileOffset(projectileOffset);
     }
 
     @Override
@@ -128,9 +126,11 @@ public class RocketShotgun extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-            controller.addUpdateable(new LazyMissile(controller, shooter, SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
-                    initialMissileRotatingSpeed, latterMissileRotatingSpeed, tag, missileCanLoseTarget));
+        if(getParentUnit() != null) {
+            for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
+                controller.addUpdateableAndSetToScene(new LazyMissile(controller, getParentUnit(), SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
+                        initialMissileRotatingSpeed, latterMissileRotatingSpeed, getTag(), missileCanLoseTarget));
+            }
         }
     }
 }

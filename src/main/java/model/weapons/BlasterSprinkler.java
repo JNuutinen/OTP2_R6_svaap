@@ -1,12 +1,14 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
 import model.Player;
 import model.Unit;
 import model.Updateable;
 import model.projectiles.SmallProjectile;
+
 
 import static view.GameMain.ENEMY_PROJECTILE_TAG;
 import static view.GameMain.PLAYER_PROJECTILE_TAG;
@@ -46,11 +48,6 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     private double projectileSpeed;
 
     /**
-     * Ammuksen tagi.
-     */
-    private int tag;
-
-    /**
      * Tieto siitä, ammutaanko parhaillaan.
      */
     private boolean isShooting = false;
@@ -63,7 +60,7 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     /**
      * Ampumisen pituus.
      */
-    private double shootingTime = 0;
+    private double shootingTime;
 
     /**
      * Ampumisajan laskuri.
@@ -77,39 +74,34 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     private Controller controller;
 
     /**
-     * Unit, jolla ase on käytössä.
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param orientation Aseen orientation.
+     * @param projectileSpeed Ammuksen nopeus.
+     * @param shootingTime Ampumisen kesto.
      */
-    private Unit shooter;
+    public BlasterSprinkler(Controller controller, int orientation, double projectileSpeed, double shootingTime) {
+        super("rectangle", 4, orientation, COLOR);
+        this.shootingTime = shootingTime;
+        this.controller = controller;
+        controller.addUpdateable(this);
+        this.projectileSpeed = projectileSpeed;
+
+    }
 
     /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Ammuksen ampuja.
      * @param orientation Aseen orientation.
-     * @param xOffset Aseen x-offset.
-     * @param yOffset Aseen y-offset.
-     * @param projectileColor Ammuksen väri.
      * @param projectileSpeed Ammuksen nopeus.
-     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param componentOffset TODO
+     * @param projectileOffset TODO
      * @param shootingTime Ampumisen kesto.
      */
-    public BlasterSprinkler(Controller controller, Unit shooter, int orientation, double xOffset, double yOffset,
-                            Color projectileColor, double projectileSpeed, double projectileFrontOffset, double projectileLeftOffset, double shootingTime) {
-        super("rectangle", 4, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
-        this.shootingTime = shootingTime;
-        this.controller = controller;
-        controller.addUpdateable(this);
-        if (shooter instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
-        }
-        this.shooter = shooter;
-        this.projectileColor = projectileColor;
-        this.projectileSpeed = projectileSpeed;
-
+    public BlasterSprinkler(Controller controller, int orientation, double projectileSpeed, double shootingTime, Point2D componentOffset, Point2D projectileOffset) {
+        this(controller, orientation, projectileSpeed, shootingTime);
+        setProjectileOffset(projectileOffset);
+        setComponentOffset(componentOffset);
     }
 
     @Override
@@ -124,16 +116,18 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     @Override
     public void update(double deltaTime) {
-        if(isShooting){
-            firerateCounter += deltaTime;
-            shootingTimeCounter += deltaTime;
-            if(firerateCounter >= firerate){
-                controller.addUpdateable(new SmallProjectile(controller, shooter, projectileSpeed, DAMAGE, this,
-                        getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, Math.random()*140-70, tag));
-                firerateCounter = 0;
-                if(shootingTimeCounter > shootingTime){
-                    isShooting = false;
-                    shootingTimeCounter = 0;
+        if(getParentUnit() != null) {
+            if (isShooting) {
+                firerateCounter += deltaTime;
+                shootingTimeCounter += deltaTime;
+                if (firerateCounter >= firerate) {
+                    controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+                            getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag()));
+                    firerateCounter = 0;
+                    if (shootingTimeCounter > shootingTime) {
+                        isShooting = false;
+                        shootingTimeCounter = 0;
+                    }
                 }
             }
         }

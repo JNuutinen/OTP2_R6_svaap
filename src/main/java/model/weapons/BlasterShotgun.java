@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
 import model.Player;
@@ -44,15 +45,11 @@ public class BlasterShotgun extends Component implements Weapon {
      */
     private Controller controller;
 
-    /**
-     * Unit, jolla ase on käytössä.
-     */
-    private Unit shooter;
 
     /**
-     * Ammuksen väri.
+     * ammuksen nopeus
      */
-    private Color projectileColor;
+    private double projectileSpeed = 0;
 
     /**
      * Ammuksen tagi.
@@ -62,26 +59,29 @@ public class BlasterShotgun extends Component implements Weapon {
     /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Ammuksen ampuja.
      * @param orientation Aseen orientation.
-     * @param projectileColor Ammuksen väri.
-     * @param xOffset Aseen x-offset.
-     * @param yOffset Aseen y-offset.
-     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param projectileSpeed TODO
      */
-    public BlasterShotgun(Controller controller, Unit shooter, int orientation, Color projectileColor, double xOffset,
-                   double yOffset, double projectileFrontOffset, double projectileLeftOffset) {
-        super("rectangle", 4, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+    public BlasterShotgun(Controller controller, int orientation, double projectileSpeed) {
+        super("rectangle", 4, orientation, COLOR);
+        this.projectileSpeed = projectileSpeed;
         this.controller = controller;
-        this.shooter = shooter;
-        this.projectileColor = projectileColor;
-        if (shooter instanceof Player){
-            tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            tag = ENEMY_PROJECTILE_TAG;
-        }
+    }
+
+    /**
+     * Konstruktori.
+     * @param controller Pelin kontrolleri.
+     * @param orientation Aseen orientation.
+     * @param projectileSpeed TODO
+     * @param componentOffset TODO
+     * @param projectileOffset TODO
+     */
+    public BlasterShotgun(Controller controller, int orientation, double projectileSpeed, Point2D componentOffset,
+                          Point2D projectileOffset) {
+        this(controller, orientation, projectileSpeed);
+        this.controller = controller;
+        setProjectileOffset(projectileOffset);
+        setComponentOffset(componentOffset);
     }
 
     /**
@@ -94,9 +94,12 @@ public class BlasterShotgun extends Component implements Weapon {
 
     @Override
     public void shoot() {
-        for(int i = -1; i < 2; i++) {
-            controller.addUpdateable(new SmallProjectile(controller, shooter, SPEED, DAMAGE, this,
-                    getProjectileFrontOffset(), getProjectileLeftOffset(), projectileColor, i * 7, tag));
+        if(getParentUnit() != null) {
+            for (int i = -1; i < 2; i++) {
+                // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
+                controller.addUpdateableAndSetToScene(new SmallProjectile(controller, getParentUnit(), SPEED, DAMAGE,
+                        getProjectileOffset(), getParentUnitColor(), i * 7, tag));
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 package model;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import model.weapons.BlasterShotgun;
 import model.weapons.Weapon;
 
@@ -78,7 +78,7 @@ public class Boss extends Unit implements Updateable {
      * @param initialY Y-koordinaatti johon pomo ilmestyy.
      */
     public Boss(Controller controller, int hp, double initialX, double initialY) {
-        super(controller);
+        super(controller, null, 0, 0);
         this.controller = controller;
         setIsMoving(true);
         controller.addUnitToCollisionList(this);
@@ -92,6 +92,8 @@ public class Boss extends Unit implements Updateable {
         this.setHitbox(256);
 
         armBoss(controller);
+
+        controller.addUpdateableAndSetToScene(this);
     }
 
     /**
@@ -104,7 +106,7 @@ public class Boss extends Unit implements Updateable {
         this.initialY = initialY;
     }
 
-    /**
+    /** 
      * Päivittää pomon liikkumisen, ampumisen ja healthbarin. Kutsu VAIN gameloopista!
      * @param deltaTime Kulunut aika viime päivityksestä.
      */
@@ -168,11 +170,10 @@ public class Boss extends Unit implements Updateable {
      * @param controller Pelin kontrolleri.
      */
     public void armBoss(Controller controller){
-        Component blaster1 = new BlasterShotgun(controller, this, 2,
-                Color.CYAN, 2, -92, 80, -92);
-        Component blaster2 = new BlasterShotgun(controller, this, 2,
-                Color.CYAN, 2, 92, 80, 92);
-        addToPrimaryWeapon((Weapon) blaster1);
-        setSecondaryWeapon((Weapon) blaster2);
+        /*
+        Weapon blaster1 = new BlasterShotgun(controller, 2, new Point2D(2, -92), new Point2D(80, -92));
+        Weapon blaster2 = new BlasterShotgun(controller, 2, new Point2D(2, 92), new Point2D(80, 92));
+        addPrimaryWeapon((Weapon) blaster1);
+        setSecondaryWeapon((Weapon) blaster2);*/
     }
 }

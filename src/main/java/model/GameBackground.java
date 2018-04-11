@@ -40,7 +40,7 @@ public class GameBackground extends Sprite implements Updateable  {
      */
     public GameBackground(Controller controller) {
 
-        controller.addUpdateable(this);
+        controller.addUpdateableAndSetToScene(this);
 
         String imagePath = "images/darkSpace.jpg";
 

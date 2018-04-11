@@ -1,9 +1,13 @@
 package model;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
+import java.util.ArrayList;
+
+import static view.GameMain.ENEMY_SHIP_TAG;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
@@ -84,26 +88,23 @@ public class Enemy extends Unit implements Updateable {
      * @param controller Pelin kontrolleri
      * @param shipColor Vihollisaluksen väri
      * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 = MOVE_SINE.
-     * @param initialX Aloituspaikan x-koordinaatti.
-     * @param initialY Aloituspaikan y-koordinaatti.
-     * @param tag Vihollisen tunniste. Käytä "enemy" perusviholliselle.
+     * @param initialPosition Aloitussijainti.
      */
-    public Enemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, int tag) {
-        super(controller, shipColor);
+    public Enemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, int movementPattern, Point2D initialPosition) {
+        super(controller, shipColor, 5, 20);
+
         this.controller = controller;
-        setTag(tag);
+        setTag(ENEMY_SHIP_TAG);
         controller.addUnitToCollisionList(this);
+        this.initialX = initialPosition.getX();
+        this.initialY = initialPosition.getY();
         setPosition(initialX, initialY);
         rotate(180);
         this.movementPattern = movementPattern;
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
-        this.initialX = initialX;
-        this.initialY = initialY;
-
-
         this.setHitbox(80);
-
+        setHp((int) (30 * controller.getLevel().getEnemyHealthModifier()));
         Polygon shape = new Polygon();
         // aluksen muoto
         shape.getPoints().addAll(50.0, 0.0,
@@ -119,6 +120,9 @@ public class Enemy extends Unit implements Updateable {
                 10.0, 20.0,
                 30.0, 20.0);
         drawShip(shape);
+
+        makePrimaryWeapons(primaries);
+        controller.addUpdateableAndSetToScene(this);
     }
 
     /**
@@ -137,16 +141,6 @@ public class Enemy extends Unit implements Updateable {
      */
     public int getMovementPattern() {
         return movementPattern;
-    }
-
-    /**
-     * Asettaa alkuposition
-     * @param initialX Alkuposition x-koordinaatti.
-     * @param initialY Alkuposition y-koordinaatti.
-     */
-    public void setInitPosition(double initialX, double initialY) {
-        this.initialX = initialX;
-        this.initialY = initialY;
     }
 
 

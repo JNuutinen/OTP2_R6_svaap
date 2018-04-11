@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -9,6 +10,8 @@ import javafx.scene.transform.Rotate;
 import model.Component;
 import model.Unit;
 import model.Updateable;
+
+import java.awt.*;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -25,7 +28,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     /**
      * Ammuksen vakioväri
      */
-    private static final Color COLOR = Color.LIGHTSALMON;
+    private static final Color COLOR = Color.WHITE;
     private Controller controller;
     private int damage;
 
@@ -35,15 +38,12 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
-     * @param component TODO: refaktoroi pois.
-     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param offset TODO
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component, double frontOffset, double leftOffset,
-                           int tag) {
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Point2D offset, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, frontOffset, leftOffset, tag);
+        super(controller, shooter, speed, offset, tag);
 
         this.controller = controller;
         this.damage = damage;
@@ -58,15 +58,13 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
-     * @param component TODO: refaktoroi pois
-     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param offset TODO
      * @param color Ammuksen väri.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
-                           double frontOffset, double leftOffset, Color color, int tag) {
-        this(controller, shooter, speed, damage, component, frontOffset, leftOffset, tag);
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage,
+                           Point2D offset, Color color, int tag) {
+        this(controller, shooter, speed, damage, offset, tag);
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
     }
@@ -77,16 +75,14 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
-     * @param component TODO: refaktoroi poiis
-     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param offset TODO
      * @param color Ammuksen väri.
      * @param direction Ammuksen suunta.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Component component,
-                           double frontOffset, double leftOffset, Color color, double direction, int tag) {
-        this(controller, shooter, speed, damage, component, frontOffset, leftOffset, color, tag);
+    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage,
+                           Point2D offset, Color color, double direction, int tag) {
+        this(controller, shooter, speed, damage, offset, color, tag);
         rotate(direction);
     }
 

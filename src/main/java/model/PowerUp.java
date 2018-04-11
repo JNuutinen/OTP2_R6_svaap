@@ -2,14 +2,9 @@ package model;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 
 import static view.GameMain.ENEMY_PROJECTILE_TAG;
 
@@ -87,7 +82,7 @@ public class PowerUp extends Sprite implements Updateable{
         }
         this.controller = controller;
         setTag(ENEMY_PROJECTILE_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
-        controller.addUpdateable(this);
+        controller.addUpdateableAndSetToScene(this);
         this.value = value;
         type = powerUpType;
         double xOffset = degreesToVector(deadUnit.getDirection()).getX();

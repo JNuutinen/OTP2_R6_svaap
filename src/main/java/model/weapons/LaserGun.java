@@ -1,6 +1,8 @@
 package model.weapons;
 
 import controller.Controller;
+import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -37,7 +39,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
     private static final int DAMAGE = 15;
 
     /**
-     * Aseen tulinopeus.
+     *  Aseen tulinopeus.
      */
     private static final double FIRE_RATE = 1.0;
 
@@ -50,16 +52,6 @@ public class LaserGun extends Component implements Weapon, Updateable {
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
      */
     private Controller controller;
-
-    /**
-     * Unit, jolla ase on käytössä.
-     */
-    private Unit shooter;
-
-    /**
-     * Ammuksen tagi.
-     */
-    private int tag;
 
     /**
      * Ampumisen viive.
@@ -94,42 +86,29 @@ public class LaserGun extends Component implements Weapon, Updateable {
     /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param shooter Ammuksen ampuja.
      * @param orientation Aseen orientation.
-     * @param xOffset Aseen x-offset.
-     * @param yOffset Aseen y-offset.
-     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param shootingDelay Ampumisen viive.
      */
-    public LaserGun(Controller controller, Unit shooter, int orientation, double xOffset,
-                    double yOffset, double projectileFrontOffset, double projectileLeftOffset) {
-        super("triangle", 4, orientation, COLOR, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
+    public LaserGun(Controller controller, int orientation, double shootingDelay) {
+        super("triangle", 4, orientation, COLOR);
+        this.shootingDelay = shootingDelay;
         this.controller = controller;
-        this.shooter = shooter;
         controller.addUpdateable(this);
-        if (shooter instanceof Player){
-            this.tag = PLAYER_TRACE_TAG;
-        }
-        else{
-            this.tag = ENEMY_TRACE_TAG;
-        }
     }
 
     /**
-     * Konstruktori ampumisviiveen kanssa.
+     * Konstruktori ampumisviiveen kanssa. TODO param järjestys
      * @param controller Pelin kontrolleri.
-     * @param shooter Ammuksen ampuja.
      * @param orientation Aseen orientation.
-     * @param xOffset Aseen x-offset.
-     * @param yOffset Aseen y-offset.
-     * @param projectileFrontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param projectileLeftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param componentOffset Aseen x-offset.
+     * @param projectileOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      * @param shootingDelay Ampumisen viive.
      */
-    public LaserGun(Controller controller, Unit shooter, int orientation, double xOffset,
-                    double yOffset, double projectileFrontOffset, double projectileLeftOffset, double shootingDelay) {
-        this(controller, shooter, orientation, xOffset, yOffset, projectileFrontOffset, projectileLeftOffset);
-        this.shootingDelay = shootingDelay;
+    public LaserGun(Controller controller, int orientation, double shootingDelay, Point2D componentOffset, Point2D projectileOffset) {
+        this(controller, orientation, shootingDelay);
+        setProjectileOffset(projectileOffset);
+        setComponentOffset(componentOffset);
+        controller.addUpdateable(this);
     }
 
     @Override
@@ -139,28 +118,26 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
     @Override
     public void shoot() {
-        if(!triggeredShoot) {
-
+        if(!triggeredShoot && getParentUnit() != null) {
 
             chargingEffect = buildChargingEffect(Color.WHITE);
-            shooter.getChildren().add(chargingEffect);
+            Platform.runLater(()->getParentUnit().getChildren().add(chargingEffect));
             pointerEffect = buildPointerEffect(Color.WHITE);
-            shooter.getChildren().add(pointerEffect);
+            Platform.runLater(()->getParentUnit().getChildren().add(pointerEffect));
 
-            // en oo iha varma miten tää toimii mut toimii kuitenkin TODO poista kommentti
-            if (shooter instanceof Player) {
-                chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset());
-                chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset());
+            if (getParentUnit() instanceof Player) {
+                chargingEffect.setCenterX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX());
+                chargingEffect.setCenterY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY());
 
-                pointerEffect.setStartX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset());
-                pointerEffect.setStartY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset());
+                pointerEffect.setStartX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX());
+                pointerEffect.setStartY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY());
 
             } else {
-                chargingEffect.setCenterX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset() * -1);
-                chargingEffect.setCenterY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset() * -1);
+                chargingEffect.setCenterX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX() * -1);
+                chargingEffect.setCenterY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY() * -1);
 
-                pointerEffect.setStartX(degreesToVector(shooter.getDirection()).getX() * getProjectileFrontOffset() * -1);
-                pointerEffect.setStartY(degreesToVector(shooter.getDirection() + 90).getY() * getProjectileLeftOffset() * -1);
+                pointerEffect.setStartX(degreesToVector(getParentUnit().getDirection()).getX() * getProjectileOffset().getX() * -1);
+                pointerEffect.setStartY(degreesToVector(getParentUnit().getDirection() + 90).getY() * getProjectileOffset().getY() * -1);
             }
             pointerEffect.setEndX(pointerEffect.getStartX() + (WINDOW_WIDTH));
             pointerEffect.setEndY(pointerEffect.getStartY());
@@ -169,6 +146,8 @@ public class LaserGun extends Component implements Weapon, Updateable {
         }
 
     }
+
+
 
     @Override
     public void update(double deltaTime) {
@@ -185,13 +164,12 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
             // jos aikaa on kulunut enemmän kuin ampumisviiveessä, niin luo LaserBeam peliin.
             if(timeCounter > shootingDelay){
-
-                controller.addUpdateable(new LaserBeam(controller, shooter, SPEED, DAMAGE, Color.WHITE, tag,
-                        getProjectileFrontOffset(), getProjectileLeftOffset()));
+                controller.addUpdateableAndSetToScene(new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, Color.WHITE, getTag(),
+                        getProjectileOffset()));
                 triggeredShoot = false;
                 timeCounter = 0;
-                shooter.getChildren().remove(chargingEffect);
-                shooter.getChildren().remove(pointerEffect);
+                Platform.runLater(()->getParentUnit().getChildren().remove(chargingEffect));
+                Platform.runLater(()->getParentUnit().getChildren().remove(pointerEffect));
             }
         }
     }
