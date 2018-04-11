@@ -209,7 +209,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
         HitboxObject closestEnemy = null;
         if (getShooter().getTag() == PLAYER_SHIP_TAG){
             for (HitboxObject hitboxObject : controller.getHitboxObjects()) {
-                if (hitboxObject.getTag() == ENEMY_SHIP_TAG || hitboxObject.getTag() == BOSS_SHIP_TAG) {
+                if (hitboxObject.getTag() == ENEMY_SHIP_TAG) {
                     double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
@@ -218,7 +218,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                 }
             }
         }
-        else if(getShooter().getTag() == ENEMY_SHIP_TAG || getShooter().getTag() == BOSS_SHIP_TAG){
+        else if(getShooter().getTag() == ENEMY_SHIP_TAG){
             HitboxObject player = controller.getPlayerHitboxObject();
             if (player != null) {
                 closestEnemy = player;

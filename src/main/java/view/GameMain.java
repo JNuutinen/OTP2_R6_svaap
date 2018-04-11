@@ -77,6 +77,9 @@ public class GameMain extends Application implements View {
      */
     public static final int ENEMY_SHIP_TAG = 2;
 
+    //TODO
+    public static final int BOSS_SHIP_TAG = 3;
+
     /**
      * Pelaajan ammuksien tagi.
      */

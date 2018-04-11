@@ -104,7 +104,7 @@ public class Boss3 extends Unit {
 
         this.controller = controller;
         this.setPosition(initialPosition.getX(), initialPosition.getY());
-        this.setTag(ENEMY_SHIP_TAG);
+        this.setTag(BOSS_SHIP_TAG);
         this.setVelocity(30);
         controller.addUnitToCollisionList(this);
         rotate(180);
