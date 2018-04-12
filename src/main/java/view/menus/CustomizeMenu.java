@@ -9,9 +9,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.weapons.*;
-import view.GameMain;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import static view.GameMain.*;
 
@@ -54,7 +54,7 @@ public class CustomizeMenu {
      * @param primaryWeapons Lista valittavista pääaseista.
      * @param secondaryWeapons Lista valittavista sivuaseista.
      */
-    public CustomizeMenu(ArrayList<Weapon> primaryWeapons, ArrayList<Weapon> secondaryWeapons) {
+    public CustomizeMenu(ResourceBundle messages, ArrayList<Weapon> primaryWeapons, ArrayList<Weapon> secondaryWeapons) {
         this.primaryWeapon = primaryWeapons;
         this.secondaryWeapon = secondaryWeapons;
 
@@ -63,30 +63,30 @@ public class CustomizeMenu {
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
 
-        Text primary1Text = new Text(GameMain.messages.getString("primary_weapon"));
+        Text primary1Text = new Text(messages.getString("primary_weapon"));
         primary1Text.setStyle("-fx-fill: white");
 
-        Text secondaryText = new Text(GameMain.messages.getString("secondary_weapon"));
+        Text secondaryText = new Text(messages.getString("secondary_weapon"));
         secondaryText.setStyle("-fx-fill: white");
 
         ArrayList<String>primaryWeaponNames = new ArrayList<>(primaryWeapons.size());
         for (Weapon w : primaryWeapons) {
-            if (w instanceof Blaster) primaryWeaponNames.add(GameMain.messages.getString("weapon_blaster"));
-            else if (w instanceof BlasterShotgun) primaryWeaponNames.add(GameMain.messages.getString("weapon_blaster_shotgun"));
-            else if (w instanceof BlasterSprinkler) primaryWeaponNames.add(GameMain.messages.getString("weapon_blaster_sprinkler"));
-            else if (w instanceof LaserGun) primaryWeaponNames.add(GameMain.messages.getString("weapon_laser_gun"));
-            else if (w instanceof RocketLauncher) primaryWeaponNames.add(GameMain.messages.getString("weapon_rocket_launcher"));
-            else if (w instanceof RocketShotgun) primaryWeaponNames.add(GameMain.messages.getString("weapon_rocket_shotgun"));
+            if (w instanceof Blaster) primaryWeaponNames.add(messages.getString("weapon_blaster"));
+            else if (w instanceof BlasterShotgun) primaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
+            else if (w instanceof BlasterSprinkler) primaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
+            else if (w instanceof LaserGun) primaryWeaponNames.add(messages.getString("weapon_laser_gun"));
+            else if (w instanceof RocketLauncher) primaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
+            else if (w instanceof RocketShotgun) primaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
         }
 
         ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
         for (Weapon w : secondaryWeapons) {
-            if (w instanceof Blaster) secondaryWeaponNames.add(GameMain.messages.getString("weapon_blaster"));
-            else if (w instanceof BlasterShotgun) secondaryWeaponNames.add(GameMain.messages.getString("weapon_blaster_shotgun"));
-            else if (w instanceof BlasterSprinkler) secondaryWeaponNames.add(GameMain.messages.getString("weapon_blaster_sprinkler"));
-            else if (w instanceof LaserGun) secondaryWeaponNames.add(GameMain.messages.getString("weapon_laser_gun"));
-            else if (w instanceof RocketLauncher) secondaryWeaponNames.add(GameMain.messages.getString("weapon_rocket_launcher"));
-            else if (w instanceof RocketShotgun) secondaryWeaponNames.add(GameMain.messages.getString("weapon_rocket_shotgun"));
+            if (w instanceof Blaster) secondaryWeaponNames.add(messages.getString("weapon_blaster"));
+            else if (w instanceof BlasterShotgun) secondaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
+            else if (w instanceof BlasterSprinkler) secondaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
+            else if (w instanceof LaserGun) secondaryWeaponNames.add(messages.getString("weapon_laser_gun"));
+            else if (w instanceof RocketLauncher) secondaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
+            else if (w instanceof RocketShotgun) secondaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
         }
 
         primaryComboBox = new ComboBox<>();
@@ -101,7 +101,7 @@ public class CustomizeMenu {
         primaryComboBox.setPrefWidth(Double.MAX_VALUE);
         secondaryComboBox.setPrefWidth(Double.MAX_VALUE);
 
-        backButton = new Button(GameMain.messages.getString("back"));
+        backButton = new Button(messages.getString("back"));
         backButton.setPrefWidth(Double.MAX_VALUE);
 
         VBox vBox = new VBox();

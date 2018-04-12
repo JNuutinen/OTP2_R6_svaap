@@ -146,7 +146,7 @@ public class GameMain extends Application implements View {
     /**
      * Pitää sisällään lokalisoidut tekstit.
      */
-    public static ResourceBundle messages;
+    private ResourceBundle messages;
 
     /**
      * Pelaa -valikko.
@@ -402,18 +402,18 @@ public class GameMain extends Application implements View {
 
 
         // Main menu
-        MainMenu mainMenu = new MainMenu();
+        MainMenu mainMenu = new MainMenu(messages);
         Group mainMenuGroup = mainMenu.getGroup();
 
         // Play menu
-        playMenu = new PlayMenu(NUMBER_OF_LEVELS);
+        playMenu = new PlayMenu(messages, NUMBER_OF_LEVELS);
         Group playMenuGroup = playMenu.getGroup();
 
         // Pane kaikille menuille
         StackPane menuSpace = new StackPane(mainMenuGroup);
 
         // Customize menu
-        CustomizeMenu customizeMenu = new CustomizeMenu(primaries, secondaries);
+        CustomizeMenu customizeMenu = new CustomizeMenu(messages, primaries, secondaries);
         Group customizeMenuGroup = customizeMenu.getGroup();
         customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenuGroup, playMenuGroup, menuSpace));
 
@@ -469,7 +469,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
-        PauseMenu pauseMenu = new PauseMenu();
+        PauseMenu pauseMenu = new PauseMenu(messages);
         Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {

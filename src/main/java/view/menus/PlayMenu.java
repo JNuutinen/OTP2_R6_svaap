@@ -7,7 +7,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import view.GameMain;
+
+import java.util.ResourceBundle;
 
 import static view.GameMain.*;
 
@@ -49,24 +50,24 @@ public class PlayMenu {
      * Konstruktori, joka luo komponentit ja lisää Groupiin.
      * @param levels Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      */
-    public PlayMenu(int levels) {
+    public PlayMenu(ResourceBundle messages, int levels) {
         playMenuGroup = new Group();
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
 
-        startButton = new Button(GameMain.messages.getString("start_game"));
+        startButton = new Button(messages.getString("start_game"));
         startButton.setPrefWidth(Double.MAX_VALUE);
-        backButton = new Button(GameMain.messages.getString("back"));
+        backButton = new Button(messages.getString("back"));
         backButton.setPrefWidth(Double.MAX_VALUE);
         //startButton.setGraphic(new ImageView(new Image("/images/Start.png")));
         //startButton.setStyle("-fx-background-color: transparent");
-        Text levelSelectText = new Text(GameMain.messages.getString("select_level"));
+        Text levelSelectText = new Text(messages.getString("select_level"));
         levelSelectText.setStyle("-fx-fill: white");
         levelSpinner = new Spinner<>(1, levels, 1);
         levelSpinner.setPrefWidth(Double.MAX_VALUE);
 
-        customizeButton = new Button(GameMain.messages.getString("select_weapons"));
+        customizeButton = new Button(messages.getString("select_weapons"));
         customizeButton.setPrefWidth(Double.MAX_VALUE);
 
         VBox vBox = new VBox();
