@@ -25,6 +25,11 @@ public class GameBackground extends Sprite implements Updateable  {
     private double scrollSpeed = NORMAL_SCROLL_SPEED;
 
     /**
+     * Nopeus, johon taustan vierimisnopeus kiihtyy.
+     */
+    private double targetScrollSpeed;
+
+    /**
      * Kertoo ajan sekunteina, kuinka pitkään tausta liikkuu eri vauhtia kuin vakio.
      */
     private double tempScrollSpeedDuration;
@@ -43,6 +48,8 @@ public class GameBackground extends Sprite implements Updateable  {
      * Seuraava kuva
      */
     private ImageView nextHorizontalImage;
+
+    private boolean decelerate = false;
 
     /**
      * Konstruktori, luo kuvat ja lisää ne tämän Spriten Paneen.
@@ -74,7 +81,7 @@ public class GameBackground extends Sprite implements Updateable  {
      * @param scrollSpeed Taustan vierimisnopeus.
      */
     public void changeBackgroundScrollSpeed(double scrollSpeed) {
-        this.scrollSpeed = scrollSpeed;
+        targetScrollSpeed = scrollSpeed;
         tempScrollFlag = false;
     }
 
@@ -84,7 +91,7 @@ public class GameBackground extends Sprite implements Updateable  {
      * @param duration Uuden vierimisnopeuden kesto sekunteina.
      */
     public void changeBackgroundScrollSpeed(double scrollSpeed, double duration) {
-        this.scrollSpeed = scrollSpeed;
+        targetScrollSpeed = scrollSpeed;
         tempScrollSpeedDuration = duration;
         tempScrollFlag = true;
     }
@@ -102,14 +109,36 @@ public class GameBackground extends Sprite implements Updateable  {
 
         // Väliaikaisen vierimisnopeuden hoitaminen
         if (tempScrollFlag) {
+
+            // Ollaan menty väliaikaista nopeutta asetetun ajan verran, aloitetaan hidastus
             if (tempScrollSpeedDuration < 0) {
-                scrollSpeed = NORMAL_SCROLL_SPEED;
                 tempScrollFlag = false;
+                targetScrollSpeed = NORMAL_SCROLL_SPEED;
+                decelerate = true;
             } else {
+                // Jos nykyinen nopeus ei vielä tavoitteessa, kasvatetaan nopeutta
+                if (scrollSpeed < targetScrollSpeed) {
+                    scrollSpeed += 20;
+                } else {
+                    // Ollaan nopeustavoitteessa (tai menty yli), asetetaan tavoite vierimisnopeudeksi
+                    scrollSpeed = targetScrollSpeed;
+                }
+                // väliaikaisen nopeuden ajan kirjaus
                 tempScrollSpeedDuration -= deltaTime;
             }
         }
 
+        // Jos pitää hidastaa...
+        if (decelerate) {
+            // Ei olla vielä tavoitenopeudessa, hidastetaan lisää
+            if (scrollSpeed > targetScrollSpeed) {
+                scrollSpeed -= 20;
+            } else {
+                // ollaan tavoitteessa
+                scrollSpeed = targetScrollSpeed;
+                decelerate = false;
+            }
+        }
         if(deltaTime < 100) { // fiksaa oudon bugin tason alussa
             centerImage.setX(centerImage.getX() - (scrollSpeed * deltaTime));
             nextHorizontalImage.setX(nextHorizontalImage.getX() - (scrollSpeed * deltaTime));
