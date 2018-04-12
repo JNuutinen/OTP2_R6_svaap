@@ -4,16 +4,17 @@ import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.*;
+import model.Boss;
+import model.Enemy;
+import model.Updateable;
 import model.weapons.Blaster;
-import model.weapons.LaserGun;
-import model.weapons.RocketLauncher;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
@@ -24,32 +25,22 @@ import static view.GameMain.*;
  */
 public class LevelN extends Thread implements Level {
 
-    /**
-     * Millisekunteina spawnausajan lyhyin aika, pohjalukema johon vaikuttaa konstruktorin
-     * parametrina annettu spawnFrequencyModifier.
-     */
+    /** Millisekunteina spawnausajan lyhyin aika, pohjalukema johon vaikuttaa konstruktorin
+     * parametrina annettu spawnFrequencyModifier. */
     private final int BASE_SPAWN_FREQ_LOW = 3000;
 
-    /**
-     * Millisekunteina spawnausajan pisin aika, pohjalukema johon vaikuttaa konstruktorin
-     * parametrina annettu spawnFrequencyModifier.
-     */
+    /** Millisekunteina spawnausajan pisin aika, pohjalukema johon vaikuttaa konstruktorin
+     * parametrina annettu spawnFrequencyModifier. */
     private final int BASE_SPAWN_FREQ_HIGH = 6000;
 
-    /**
-     * Jos true, thread on käynnissä, muuten false
-     */
+    /** Jos true, thread on käynnissä, muuten false */
     private volatile boolean isRunning = true;
 
-    /**
-     * Jos true, thread on käynnissä tai tauolla. Jos false,
-     * thread lakkaa olemasta.
-     */
+    /** Jos true, thread on käynnissä tai tauolla. Jos false,
+     * thread lakkaa olemasta. */
     private volatile boolean isAlive = true;
 
-    /**
-     * Viittaus pelin kontrolleriin, mahdollistaa vihollisolioiden lisäämisen peliin.
-     */
+    /** Viittaus pelin kontrolleriin, mahdollistaa vihollisolioiden lisäämisen peliin. */
     private Controller controller;
 
     /**
@@ -61,6 +52,11 @@ public class LevelN extends Thread implements Level {
      * Vihollisten nykyinen jäljellä oleva lukumäärä.
      */
     private int numberOfEnemies;
+
+    /** TODO */
+    public double getEnemyHealthModifier(){
+        return enemyHealthModifier;
+    }
 
     /**
      * Kerroin, joka vaikuttaa vihollisten spawnauksen aikahaarukkaan.
@@ -84,10 +80,8 @@ public class LevelN extends Thread implements Level {
      */
     private double enemyDamageModifier;
 
-    /**
-     * Nykyisen tason numero.
-     * TODO: voidaan käyttää tasokohtaisen bossin määrittämiseen.
-     */
+    /** Nykyisen tason numero.
+     * TODO: voidaan käyttää tasokohtaisen bossin määrittämiseen. */
     private int levelNumber;
 
     /**
@@ -146,6 +140,11 @@ public class LevelN extends Thread implements Level {
                 if (!isAlive) {
                     break;
                 } else if (isRunning) {
+                    // luodaan laster jonka voi asettaa myöhemmin aseeksi vihollisille
+                    ArrayList blaster = new ArrayList<Weapon>();
+                    blaster.add(new Blaster(controller, 2, 100, new Point2D(0, 0), new Point2D(20, 0)));
+
+
                     // paussi vihollisten välillä
                     // TODO: Monen vihollisen yhtäaikainen spawnaus
                     if (numberOfEnemies > 0) {
@@ -159,12 +158,9 @@ public class LevelN extends Thread implements Level {
 
                         // arvotaan vihollinen tyyppilistasta
                         Enemy enemyType = enemyTypes.get(ThreadLocalRandom.current().nextInt(enemyTypes.size()));
-                        Enemy enemy = new Enemy(controller, Color.YELLOW, enemyType.getMovementPattern(), WINDOW_WIDTH + 50, randomYPos, ENEMY_SHIP_TAG);
+                        Enemy enemy = new Enemy(controller, Color.YELLOW, blaster, enemyType.getMovementPattern(), new Point2D(WINDOW_WIDTH + 50,
+                                randomYPos));
                         enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                        Component blaster = new Blaster(controller, enemy, 2, 0, 0, Color.YELLOW,
-                                20, 100, 0);
-                        controller.addUpdateable(enemy);
-                        enemy.addToPrimaryWeapon((Weapon) blaster);
 
 
 

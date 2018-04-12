@@ -51,20 +51,19 @@ class BaseProjectile extends Sprite {
     }
 
     /**
-     * Konstruktori aloitussijainnin siirtymillä.
+     * Konstruktori aloitussijainnin poikkeamalla.
      * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
-     * @param frontOffset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
-     * @param leftOffset Ammuksen aloituspaikan poikkeus aluksen vasempaan suuntaan.
+     * @param offset TODO
      * @param tag Ammuksen tagi.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, double frontOffset, double leftOffset, int tag) {
+    BaseProjectile(Controller controller, Unit shooter, double speed, Point2D offset, int tag) {
         this(controller, shooter, speed, tag);
-        double xOffset = degreesToVector(shooter.getDirection()).getX() * frontOffset;
-        double yOffset = degreesToVector(shooter.getDirection()).getY() * frontOffset;
-        xOffset = xOffset + degreesToVector(shooter.getDirection() + 90).getX() * leftOffset;
-        yOffset = yOffset + degreesToVector(shooter.getDirection() + 90).getY() * leftOffset;
+        double xOffset = degreesToVector(shooter.getDirection()).getX() * offset.getX();
+        double yOffset = degreesToVector(shooter.getDirection()).getY() * offset.getX();
+        xOffset = xOffset + degreesToVector(shooter.getDirection() + 90).getX() * offset.getY();
+        yOffset = yOffset + degreesToVector(shooter.getDirection() + 90).getY() * offset.getY();
         Point2D startingLocation = new Point2D(shooter.getPosition().getX() + xOffset, shooter.getPosition().getY() + yOffset);
         this.setPosition(startingLocation.getX(), startingLocation.getY());
     }
