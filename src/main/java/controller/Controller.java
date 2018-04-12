@@ -1,8 +1,7 @@
 package controller;
 
-import model.Player;
-import model.Unit;
-import model.Updateable;
+import model.*;
+import model.level.Level;
 
 import java.util.ArrayList;
 
@@ -16,10 +15,10 @@ import java.util.ArrayList;
 public interface Controller {
 
     /**
-     * Lisää peliin pelaajan.
-     * @param player Pelaaja.
+     * Lisää pelaajat peliin.
+     * @param players Pelaajat
      */
-    void addPlayer(Player player);
+    void addPlayers(ArrayList<Player> players);
 
     /**
      * Lisää pelaajan pistemäärää.
@@ -27,9 +26,23 @@ public interface Controller {
      */
     void addScore(int score);
 
+    /** TODO
+     * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
+     * @param updateable Updateable, joka lisätään.
+     */
+    void addUpdateableAndSetToScene(Updateable updateable, HitboxObject hitboxObject);
     /**
      * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
      * @param updateable Updateable, joka lisätään.
+     */
+    void addUpdateableAndSetToScene(Updateable updateable, Trace trace);
+
+    // TODO
+    void addUpdateableAndSetToScene(Updateable updateable);
+
+    /**
+     * TODO
+     * @param updateable
      */
     void addUpdateable(Updateable updateable);
 
@@ -40,6 +53,8 @@ public interface Controller {
      * @param unit Unit, joka lisätään.
      */
     void addUnitToCollisionList(Unit unit);
+
+    Level getLevel();
 
     /**
      * Poistaa Unitin collision listasta.
@@ -64,6 +79,14 @@ public interface Controller {
      * @return Updateable lista.
      */
     ArrayList<Updateable> getUpdateables();
+
+    /**
+     * TODO
+     * @return
+     */
+    ArrayList<HitboxObject> getPlayerHitboxObjects();
+
+    ArrayList<HitboxObject> getHitboxObjects();
 
     /**
      * Käynnistää tasosäikeen.
@@ -92,6 +115,16 @@ public interface Controller {
      * Poistaa GameLoopin käsittelystä Updateable olion.
      * @param updateable Olio, joka poistetaan.
      */
+    void removeUpdateable(Updateable updateable, HitboxObject hitboxObject);
+
+    /**
+     * TODO
+     */
+    void removeUpdateable(Updateable updateable, Trace trace);
+
+    /**
+     * TODO
+     */
     void removeUpdateable(Updateable updateable);
 
     /**
@@ -115,4 +148,6 @@ public interface Controller {
      * Jatkaa peliä taukotilasta.
      */
     void continueGame();
+
+    void changeBackgroundScrollSpeed(double speed, double duration);
 }

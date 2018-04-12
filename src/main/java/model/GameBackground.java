@@ -15,9 +15,29 @@ import view.GameMain;
 public class GameBackground extends Sprite implements Updateable  {
 
     /**
-     * Taustan vierimisnopeus.
+     * Taustan vakiovierimisnopeus.
      */
-    private double scrollSpeed = 30;
+    private static final double NORMAL_SCROLL_SPEED = 30;
+
+    /**
+     * Taustan nykyinen vierimisnopeus.
+     */
+    private double scrollSpeed = NORMAL_SCROLL_SPEED;
+
+    /**
+     * Nopeus, johon taustan vierimisnopeus kiihtyy.
+     */
+    private double targetScrollSpeed;
+
+    /**
+     * Kertoo ajan sekunteina, kuinka pitkään tausta liikkuu eri vauhtia kuin vakio.
+     */
+    private double tempScrollSpeedDuration;
+
+    /**
+     * Kertoo, että tällä hetkellä on käytössä väliaikainen vierimisnopeus.
+     */
+    private boolean tempScrollFlag = false;
 
     /**
      * Kuva1
@@ -29,34 +49,97 @@ public class GameBackground extends Sprite implements Updateable  {
      */
     private ImageView nextHorizontalImage;
 
+    private boolean decelerate = false;
+
     /**
      * Konstruktori, luo kuvat ja lisää ne tämän Spriten Paneen.
      * @param controller Pelin kontrolleri.
      */
     public GameBackground(Controller controller) {
 
-        controller.addUpdateable(this);
+        controller.addUpdateableAndSetToScene(this);
 
         String imagePath = "images/darkSpace.jpg";
 
-        centerImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
+        centerImage = new ImageView(new Image(imagePath,
                 GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
 
-        nextHorizontalImage = new ImageView(new Image(imagePath, //Kuvaa on nyt vain levitetty havainnollistamisen vuoksi
+        nextHorizontalImage = new ImageView(new Image(imagePath,
                 GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
 
-        centerImage.setY(centerImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
+        centerImage.setY(centerImage.getY());
 
-        nextHorizontalImage.setY(nextHorizontalImage.getY()); //siirretään backgroundia alemmas, jotta fps näkyy
+        nextHorizontalImage.setY(nextHorizontalImage.getY());
         nextHorizontalImage.setX(centerImage.getX() + centerImage.getImage().getWidth());
 
         this.getChildren().add(centerImage);
         this.getChildren().add(nextHorizontalImage);
     }
 
+    /**
+     * Vaihtaa taustan vierimisnopeutta.
+     * @param scrollSpeed Taustan vierimisnopeus.
+     */
+    public void changeBackgroundScrollSpeed(double scrollSpeed) {
+        targetScrollSpeed = scrollSpeed;
+        tempScrollFlag = false;
+    }
+
+    /**
+     * Vaihtaa taustan vierimisnopeutta tietyksi ajaksi, jonka jälkeen vierimisnopeus palaa vakioarvoon.
+     * @param scrollSpeed Taustan vierimisnopeus.
+     * @param duration Uuden vierimisnopeuden kesto sekunteina.
+     */
+    public void changeBackgroundScrollSpeed(double scrollSpeed, double duration) {
+        targetScrollSpeed = scrollSpeed;
+        tempScrollSpeedDuration = duration;
+        tempScrollFlag = true;
+    }
+
+    /**
+     * Alustaa taustan vierimisnopeuden vakioarvoon.
+     */
+    public void resetBackgroundScrollSpeed() {
+        scrollSpeed = NORMAL_SCROLL_SPEED;
+        tempScrollFlag = false;
+    }
+
     @Override
     public void update(double deltaTime) {
-        if(deltaTime < 100){ // fiksaa oudon bugin tason alussa
+
+        // Väliaikaisen vierimisnopeuden hoitaminen
+        if (tempScrollFlag) {
+
+            // Ollaan menty väliaikaista nopeutta asetetun ajan verran, aloitetaan hidastus
+            if (tempScrollSpeedDuration < 0) {
+                tempScrollFlag = false;
+                targetScrollSpeed = NORMAL_SCROLL_SPEED;
+                decelerate = true;
+            } else {
+                // Jos nykyinen nopeus ei vielä tavoitteessa, kasvatetaan nopeutta
+                if (scrollSpeed < targetScrollSpeed) {
+                    scrollSpeed += 20;
+                } else {
+                    // Ollaan nopeustavoitteessa (tai menty yli), asetetaan tavoite vierimisnopeudeksi
+                    scrollSpeed = targetScrollSpeed;
+                }
+                // väliaikaisen nopeuden ajan kirjaus
+                tempScrollSpeedDuration -= deltaTime;
+            }
+        }
+
+        // Jos pitää hidastaa...
+        if (decelerate) {
+            // Ei olla vielä tavoitenopeudessa, hidastetaan lisää
+            if (scrollSpeed > targetScrollSpeed) {
+                scrollSpeed -= 20;
+            } else {
+                // ollaan tavoitteessa
+                scrollSpeed = targetScrollSpeed;
+                decelerate = false;
+            }
+        }
+        if(deltaTime < 100) { // fiksaa oudon bugin tason alussa
             centerImage.setX(centerImage.getX() - (scrollSpeed * deltaTime));
             nextHorizontalImage.setX(nextHorizontalImage.getX() - (scrollSpeed * deltaTime));
         }
@@ -67,15 +150,5 @@ public class GameBackground extends Sprite implements Updateable  {
             nextHorizontalImage = iv;
             nextHorizontalImage.setX(centerImage.getX() + centerImage.getImage().getWidth());
         }
-    }
-
-    @Override
-    public void collides(Updateable collidingUpdateable) {
-
-    }
-
-    @Override
-    public void destroyThis() {
-
     }
 }

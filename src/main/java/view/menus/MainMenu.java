@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import java.util.ResourceBundle;
+
 import static view.GameMain.*;
 
 /**
@@ -33,16 +35,12 @@ public class MainMenu {
     private Button exit;
 
     /**
-     * Asetukset -painike.
-     */
-    private Button settings;
-
-    /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      */
-    public MainMenu(){
+    public MainMenu(ResourceBundle messages){
         mainMenuGroup = new Group();
-        build();
+        play = new Button(messages.getString("play"));
+        exit = new Button(messages.getString("exit"));
         BorderPane bpane = new BorderPane();
         bpane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         bpane.setCenter(vbox());
@@ -60,15 +58,6 @@ public class MainMenu {
     }
 
     /**
-     * Alustaa painikkeet.
-     */
-    private void build() {
-        play = new Button("Play");
-        exit = new Button("Exit");
-        settings = new Button("Settings");
-    }
-
-    /**
      * Luo VBoxin, johon lisätään komponentit. VBox lisätään Groupiin.
      * @return Luotu VBox.
      */
@@ -77,11 +66,9 @@ public class MainMenu {
         vbox.setSpacing(8);
 
         play.setPrefWidth(Double.MAX_VALUE);
-        settings.setPrefWidth(Double.MAX_VALUE);
         exit.setPrefWidth(Double.MAX_VALUE);
         vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.setMaxWidth(100);
-        // TODO: settings
+        vbox.setMaxWidth(150);
         vbox.getChildren().addAll(play, exit);
         return vbox;
     }

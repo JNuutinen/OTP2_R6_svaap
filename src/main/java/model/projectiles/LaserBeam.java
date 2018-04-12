@@ -5,8 +5,11 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
+import model.Trace;
 import model.Unit;
 import model.Updateable;
+
+import java.util.List;
 
 import static view.GameMain.WINDOW_WIDTH;
 
@@ -17,7 +20,7 @@ import static view.GameMain.WINDOW_WIDTH;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class LaserBeam extends BaseProjectile implements Updateable {
+public class LaserBeam extends BaseProjectile implements Updateable, Trace {
 
     /**
      * Pelin kontrolleri.
@@ -68,14 +71,20 @@ public class LaserBeam extends BaseProjectile implements Updateable {
     }
 
     @Override
-    public void destroyThis() {
-        controller.removeUpdateable(this);
+    public List<Point2D> getTraceCoordinates() {
+        return null;
     }
 
     @Override
-    //Optimoidumpi versio collidesta (?)
-    public void collides(Updateable collidingUpdateable){
-        ((Unit)collidingUpdateable).takeDamage(damage);
+    public void collides(Object obj) {
+        if(obj instanceof Unit){
+            ((Unit)obj).takeDamage(damage);
+        }
+    }
+
+    @Override
+    public void destroyThis() {
+        controller.removeUpdateable(this, this);
     }
 
 

@@ -89,14 +89,13 @@ public class Explosion extends Sprite implements Updateable{
         }
 
         getChildren().addAll(lines);
-        controller.addUpdateable(this);
+        controller.addUpdateableAndSetToScene(this);
 
         destroyThis();
 
     }
 
-    @Override
-    public void destroyThis(){
+    private void destroyThis(){
         Explosion toBeRemved = this;
         Thread thread = new Thread(new Runnable() {
             public void run() {
@@ -127,6 +126,7 @@ public class Explosion extends Sprite implements Updateable{
     public void update(double deltaTime) {
         double deltaTimeMultiplier = 0.4;
 
+        // lisää läpinäkyvyyttä kunnes läpinäkyvyys on niin pieni että koko efektin voi poistaa.
         for(int i = 0; i < linesAmount; i++){
             if(colors[0].getColor().getOpacity() > deltaTime * deltaTimeMultiplier) {
                 colors[0] = new Stop(0, new Color(colors[0].getColor().getRed(), colors[0].getColor().getGreen(), colors[0].getColor().getBlue(),
@@ -137,7 +137,4 @@ public class Explosion extends Sprite implements Updateable{
             }
         }
     }
-
-    @Override
-    public void collides(Updateable collidingUpdateable) { }
 }

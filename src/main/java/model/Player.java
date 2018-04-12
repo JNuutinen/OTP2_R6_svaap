@@ -88,10 +88,11 @@ public class Player extends Unit {
      * @param shipColor Aluksen väri.
      */
     public Player(Controller controller, Color shipColor) {
-        super(controller, shipColor);
+        super(controller, shipColor, 0, 0);
         setTag(PLAYER_SHIP_TAG);
         this.controller = controller;
         setHp(MAX_HP );
+        setHitbox(60);
         controller.addUnitToCollisionList(this);
 
         Polygon shape = new Polygon();
@@ -115,8 +116,7 @@ public class Player extends Unit {
                 60.0, -1.0);
 
         drawShip(shape);
-
-        setHitbox(60);
+        //controller.addUpdateableAndSetToScene(this);
     }
 
 
@@ -153,7 +153,7 @@ public class Player extends Unit {
         } else if(xVelocity != 0) {
             decelerateX();
         }
- 
+
         if (input.contains("W")) {
             // TODO: 50px kovakoodattu
             if (getYPosition() > 50) {

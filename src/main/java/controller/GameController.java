@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import model.*;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 
 import static model.Enemy.MOVE_SINE;
 import static model.Enemy.MOVE_STRAIGHT;
-import static view.GameMain.ENEMY_SHIP_TAG;
 
 /**
  * Pelin kontrolleri.
@@ -36,9 +36,9 @@ public class GameController implements Controller {
     private GameLoop gameLoop;
 
     /**
-     * Pelaajaolio.
+     * Pelaajaoliot.
      */
-    private Player player;
+    private ArrayList<Player> players;
 
     /**
      * Nykyinen taso.
@@ -55,15 +55,22 @@ public class GameController implements Controller {
     }
 
     @Override
-    public void addPlayer(Player player) {
-        this.player = player;
-        gameLoop.setPlayer(player);
+    public void addPlayers(ArrayList<Player> players) {
+        this.players = players;
+        gameLoop.setPlayers(players);
     }
+
+    public Level getLevel(){
+        return level;
+    }
+
 
     @Override
     public void addScore(int score) {
-        player.addScore(score);
-        view.setScore(player.getScore());
+        for(Player player : players) {
+            player.addScore(score);
+        }
+        view.setScore(players.get(0).getScore());
     }
 
     public void setHealthbar(int hp, int selector){
@@ -81,14 +88,39 @@ public class GameController implements Controller {
     }
 
     @Override
+    public void addUpdateableAndSetToScene(Updateable updateable, HitboxObject hitboxObject) {
+        Platform.runLater(() -> {
+            view.addSprite((Sprite) updateable);
+        });
+        gameLoop.queueHitboxObject(hitboxObject);
+        gameLoop.queueUpdateable(updateable);
+    }
+
+    @Override
+    public void addUpdateableAndSetToScene(Updateable updateable, Trace trace) {
+        Platform.runLater(() -> {
+            view.addSprite((Sprite) updateable);
+        });
+        gameLoop.queueTrace(trace);
+        gameLoop.queueUpdateable(updateable);
+    }
+
+    @Override
+    public void addUpdateableAndSetToScene(Updateable updateable) {
+        Platform.runLater(() -> {
+            view.addSprite((Sprite) updateable);
+        });
+        gameLoop.queueUpdateable(updateable);
+    }
+
+    @Override
     public void addUpdateable(Updateable updateable) {
-        Platform.runLater(() -> view.addSprite((Sprite)updateable));
         gameLoop.queueUpdateable(updateable);
     }
 
     @Override
     public int getScore() {
-        if (player != null) return player.getScore();
+        if (players != null) return players.get(0).getScore();
         return 0;
     }
 
@@ -98,9 +130,26 @@ public class GameController implements Controller {
     }
 
     @Override
-    public synchronized void removeUpdateable(Updateable updateable) {
+    public synchronized void removeUpdateable(Updateable updateable, HitboxObject hitboxObject) {
         // TODO: hitboxi jää viel?
         //((Sprite) updateable).setPosition(-50, -50);
+        view.removeSprite((Sprite)updateable);
+        gameLoop.removeUpdateable(updateable);
+        gameLoop.removeHitboxObject(hitboxObject);
+    }
+
+    @Override
+    public synchronized void removeUpdateable(Updateable updateable, Trace trace) {
+        // TODO: hitboxi jää viel?
+        //((Sprite) updateable).setPosition(-50, -50);
+        view.removeSprite((Sprite)updateable);
+        gameLoop.removeUpdateable(updateable);
+        gameLoop.removeTrace(trace);
+    }
+
+    @Override
+    public synchronized void removeUpdateable(Updateable updateable) {
+        // TODO: bossin hitboxi jää viel?
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
     }
@@ -108,79 +157,87 @@ public class GameController implements Controller {
     @Override
     public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
+    public synchronized ArrayList<HitboxObject> getPlayerHitboxObjects(){
+        return gameLoop.getPlayerHitboxObjects();
+    }
+
+    public synchronized ArrayList<HitboxObject> getHitboxObjects(){
+        return gameLoop.getHitboxObjects();
+    }
+
     @Override
     public void startLevel(int levelNumber) {
         ArrayList<Enemy> enemies;
         switch (levelNumber) {
             default:
                 // Luodaan enemy tyypit listaan, mikä annetaan levelille parametrina
-                enemies = createEnemyTypes();
+                //enemies = createEnemyTypes();
                 int numberOfEnemies = 0;
                 double spawnFrequencyModifier = 1;
                 double enemyHealthModifier = 1;
                 double enemyDamageModifier = 1;
 
-                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 1:
-                enemies = createEnemyTypes();
+                //enemies = createEnemyTypes();
                 numberOfEnemies = 3;
                 spawnFrequencyModifier = 0.9;
                 enemyHealthModifier = 1.0;
                 enemyDamageModifier = 1.5;
 
-                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 2:
-                enemies = createEnemyTypes();
+                //enemies = createEnemyTypes();
                 numberOfEnemies = 20;
                 spawnFrequencyModifier = 0.8;
                 enemyHealthModifier = 1.1;
                 enemyDamageModifier = 2;
 
-                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 3:
-                enemies = createEnemyTypes();
+                //enemies = createEnemyTypes();
                 numberOfEnemies = 1;
                 spawnFrequencyModifier = 0.7;
                 enemyHealthModifier = 1.2;
                 enemyDamageModifier = 2;
 
-                level = new Level3(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new Level3(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 4:
-                enemies = createEnemyTypes();
+                //enemies = createEnemyTypes();
                 numberOfEnemies = 30;
                 spawnFrequencyModifier = 0.2;
-                enemyHealthModifier = 2.0;
+                enemyHealthModifier = 1.3;
                 enemyDamageModifier = 2;
 
-                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 5:
-                enemies = createEnemyTypes();
+                //enemies = createEnemyTypes();
                 numberOfEnemies = 30;
                 spawnFrequencyModifier = 0.05;
-                enemyHealthModifier = 0.1;
+                enemyHealthModifier = 1.4;
                 enemyDamageModifier = 2;
 
-                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
             case 6:
-                enemies = createEnemyTypes();
+                //enemies = createEnemyTypes();
                 numberOfEnemies = 1000;
                 spawnFrequencyModifier = 0.1;
-                enemyHealthModifier = 1;
+                enemyHealthModifier = 1.5;
                 enemyDamageModifier = 0;
 
-                level = new LevelN(this, enemies, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
+                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
                         enemyDamageModifier, levelNumber);
                 break;
         }
@@ -199,6 +256,11 @@ public class GameController implements Controller {
     public void continueGame() {
         gameLoop.continueGame();
         level.continueLevel();
+    }
+
+    @Override
+    public void changeBackgroundScrollSpeed(double speed, double duration) {
+        view.changeBackgroundScrollSpeed(speed, duration);
     }
 
     @Override
@@ -222,9 +284,9 @@ public class GameController implements Controller {
      */
     private ArrayList<Enemy> createEnemyTypes() {
         Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this, Color.GRAY, MOVE_STRAIGHT, 0, 0, ENEMY_SHIP_TAG);
+        Enemy enemy1 = new Enemy(this, Color.GRAY, null, MOVE_STRAIGHT, new Point2D(0, 0));
         enemy1.setImage(enemyImage, 1, 1);// width aj height arvoilla ei ole merkitysta koska vihu piirretty vektoreilla
-        Enemy enemy2 = new Enemy(this, Color.PALEGOLDENROD, MOVE_SINE, 0, 0, ENEMY_SHIP_TAG);
+        Enemy enemy2 = new Enemy(this, Color.PALEGOLDENROD, null,  MOVE_SINE, new Point2D(0 ,0));
         enemy2.setImage(enemyImage, 1, 1);
         ArrayList<Enemy> enemies = new ArrayList<>();
         enemies.add(enemy1);

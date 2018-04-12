@@ -4,11 +4,13 @@ import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.*;
-import model.weapons.*;
+import model.Boss3;
+import model.Enemy;
+import model.TrackerEnemy;
+import model.Updateable;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Arrays;
 
 import static view.GameMain.*;
 
@@ -137,59 +139,48 @@ public class Level3 extends Thread implements Level {
     }
 
     @Override
+    public double getEnemyHealthModifier(){
+        return enemyHealthModifier;
+    }
+
+
+
+    @Override
     public void run() {
+
+
 
 
         // LevelN thread pyörii niin kauan, kunnes kaikki viholliset on spawnattu.
         try {
-            Enemy enemy;
-            Component weapon;
-            TrackerEnemy trackerEnemy;
 
-            Point2D[] path3 = {new Point2D(100,200),
-                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 200),
-                    new Point2D(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT - 170),
-                    new Point2D(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT - 600),
-                    new Point2D(WINDOW_WIDTH * 0.97, WINDOW_HEIGHT - 300),
-                    new Point2D(WINDOW_WIDTH * 0.8, WINDOW_HEIGHT - 200)};
 
-            Point2D[] path5 = {
-                    new Point2D(WINDOW_WIDTH * 0.25,WINDOW_HEIGHT - 200),
-                    new Point2D(WINDOW_WIDTH * 0.80, WINDOW_HEIGHT - 170),
-                    new Point2D(WINDOW_WIDTH * 0.87, WINDOW_HEIGHT - 450)};
 
-            Point2D[] path4 = {
-                    new Point2D(WINDOW_WIDTH * 0.5,WINDOW_HEIGHT - 200),
-                    new Point2D(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT - 170),
-                    new Point2D(WINDOW_WIDTH * 0.86, WINDOW_HEIGHT - 700)};
 
             Thread.sleep(1000);
 
             // arvotaan spawnauspaikka
             //double randomYPos = ThreadLocalRandom.current().nextDouble(50, WINDOW_HEIGHT 5 100);
 
-            for(int i = 0; i < 3; i++){
+            System.out.println("----LEVEL 3 KÄYNTIIN----");
+
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER, WEAPON_LASER_GUN)),
+                    0, new Point2D(WINDOW_WIDTH + 50, 200));
 
 
-                enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200, ENEMY_SHIP_TAG);
-                enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                weapon = new Blaster(controller, enemy, 2, 0, 0, Color.YELLOW,
-                        20, 100, 0);
-                enemy.addToPrimaryWeapon((Weapon) weapon);
-                controller.addUpdateable(enemy);
-
-                enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, 100, ENEMY_SHIP_TAG);
-                enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                weapon = new Blaster(controller, enemy, 2, 0, 0, Color.YELLOW,
-                        20, 100, 0);
-                enemy.addToPrimaryWeapon((Weapon) weapon);
-                controller.addUpdateable(enemy);
 
 
-                Thread.sleep(2000);
-            }
+            //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
+            //        0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
+            Thread.sleep(1500);
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
+                    0, new Point2D(WINDOW_WIDTH + 50, 500));
+            Thread.sleep(100);
 
-            Thread.sleep(1000);
+            Thread.sleep(4_000);
+
+
+
 
             Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,200),
                     new Point2D(WINDOW_WIDTH * 0.9, 100),
@@ -198,123 +189,31 @@ public class Level3 extends Thread implements Level {
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 200),
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 700)};
 
-            // 1-1
-            trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH / 2, -50, path, ENEMY_SHIP_TAG);
-            trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                    20, 100, 0);
-            trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-            controller.addUpdateable(trackerEnemy);
-
-            // 2-1
-            trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  ENEMY_SHIP_TAG);
-            trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                    20, 100, 0);
-            trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-            controller.addUpdateable(trackerEnemy);
-
-            Thread.sleep(4_000);
-
-            // 1-2
-            trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH / 2, -50, path, ENEMY_SHIP_TAG);
-            trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                    20, 100, 0);
-            trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-            controller.addUpdateable(trackerEnemy);
-
-            // 2-2
-            trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH  * 0.5, WINDOW_HEIGHT + 50, path2,  ENEMY_SHIP_TAG);
-            trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new LaserGun(controller, trackerEnemy, 0, 0, 0,
-                    20, 0, 1.2d);
-            trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-            controller.addUpdateable(trackerEnemy);
-
-            Thread.sleep(11_000);
-
-            for(int i = 0; i < 2; i++){
-                enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, WINDOW_HEIGHT - 200, ENEMY_SHIP_TAG);
-                enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                weapon = new RocketLauncher(controller, enemy, 2, -5, 0,
-                        4);
-                enemy.addToPrimaryWeapon((Weapon) weapon);
-                controller.addUpdateable(enemy);
-                if(i == 1) {
-                    trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                            WINDOW_WIDTH * 0.1, WINDOW_HEIGHT + 50, path4, ENEMY_SHIP_TAG);
-                    trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-                    weapon = new BlasterShotgun(controller, trackerEnemy, 2,
-                            Color.DEEPSKYBLUE, 0, 0, 50, 0);
-                    trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-                    controller.addUpdateable(trackerEnemy);
-
-                    enemy = new Enemy(controller, Color.YELLOW, 0, WINDOW_WIDTH + 50, 150, ENEMY_SHIP_TAG);
-                    enemy.setHp((int) (enemy.getHp() * enemyHealthModifier));
-                    weapon = new LaserGun(controller, enemy, 0, 0, 0,
-                            20, 0, 1.4d);
-                    enemy.addToPrimaryWeapon((Weapon) weapon);
-                    controller.addUpdateable(enemy);
-                }
-                Thread.sleep(2800);
-            }
-
-            trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH / 2, -50, path3, ENEMY_SHIP_TAG);
-            trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                    20, 100, 0);
-            trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-            controller.addUpdateable(trackerEnemy);
-
-            Thread.sleep(3700);
-
-            trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH * 0.1, WINDOW_HEIGHT + 50, path4, ENEMY_SHIP_TAG);
-            trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new RocketLauncher(controller, trackerEnemy, 2, -5, 0,
-                    4);
-            trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-            controller.addUpdateable(trackerEnemy);
-
-            Thread.sleep(1_000);
-
-            trackerEnemy = new TrackerEnemy(controller, Color.DEEPSKYBLUE, 0,
-                    WINDOW_WIDTH * 0.1, WINDOW_HEIGHT + 50, path5, ENEMY_SHIP_TAG);
-            trackerEnemy.setHp((int)(trackerEnemy.getHp() * enemyHealthModifier));
-            weapon = new Blaster(controller, trackerEnemy, 2, 0, 0, Color.DEEPSKYBLUE,
-                    20, 100, 0);
-            trackerEnemy.addToPrimaryWeapon((Weapon) weapon);
-            controller.addUpdateable(trackerEnemy);
+            new TrackerEnemy(controller, Color.DEEPSKYBLUE, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SHOTGUN, WEAPON_LASER_GUN, WEAPON_BLASTER_SPRINKLER,
+                    WEAPON_ROCKET_LAUNCHER, WEAPON_BLASTER_SHOTGUN)), new Point2D(WINDOW_WIDTH + 50, 300),
+                    path);
 
 
+            Thread.sleep(5_000);
 
+            finalBoss = new Boss3(controller, new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
 
-
-
-            Thread.sleep(16_000);
-
-
-            finalBoss = new Boss3(controller, WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5);
-            controller.addUpdateable(finalBoss);
-
+            // pyöri silmukas 1 sec välein niin kauan kuin bossi on olemassa
             while(controller.getCollisionList().contains(finalBoss)){
-                //bossi on olemas
                 Thread.sleep(1_000);
             }
             System.out.println("Voitit tason " + (levelNumber) +"!");
-            Thread.sleep(2_000);
 
+            // Hyperdrive
+            controller.changeBackgroundScrollSpeed(2000, 5);
+            Thread.sleep(6_000);
 
             Platform.runLater(() -> controller.addScore(500));
 
+            controller.startLevel(3);
+
             // Ilmoita levelin loppumisesta
-            Platform.runLater(() -> controller.returnToMain());
+            //Platform.runLater(() -> controller.returnToMain());
 
         } catch (InterruptedException e) {
             e.printStackTrace();

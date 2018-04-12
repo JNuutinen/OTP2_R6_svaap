@@ -2,16 +2,12 @@ package model;
 
 import controller.Controller;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 
 import static view.GameMain.ENEMY_PROJECTILE_TAG;
+import static view.GameMain.POWERUP_TAG;
 
 /**
  * Power uppien luokka.
@@ -20,7 +16,7 @@ import static view.GameMain.ENEMY_PROJECTILE_TAG;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PowerUp extends Sprite implements Updateable{
+public class PowerUp extends Sprite implements Updateable, HitboxObject{
 
     /**
      * Powerupin arvo.
@@ -86,8 +82,8 @@ public class PowerUp extends Sprite implements Updateable{
                 return; //Jos vihollinen ei droppaa mitään
         }
         this.controller = controller;
-        setTag(ENEMY_PROJECTILE_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
-        controller.addUpdateable(this);
+        setTag(POWERUP_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
+        controller.addUpdateableAndSetToScene(this, this);
         this.value = value;
         type = powerUpType;
         double xOffset = degreesToVector(deadUnit.getDirection()).getX();
@@ -191,22 +187,26 @@ public class PowerUp extends Sprite implements Updateable{
     }
 
     /**
+     * TODO
      * Tarkistaa osuuko pelaaja PowerUppiin, antaa sen pelaajalle jos osuu, jonka jälkeen
      * PowerUp poistetaan.
-     * @param collidingUpdateable Updateable-rajapinnan toteuttava olio, johon törmätty.
+     * @param collidingTarget Updateable-rajapinnan toteuttava olio, johon törmätty.
      */
     @Override
-    public void collides(Updateable collidingUpdateable){
-        givePowerUp((Player)collidingUpdateable);
+    public void collides(Object collidingTarget){
+        if(collidingTarget instanceof Player){
+            givePowerUp((Player)collidingTarget);
+        }
         destroyThis();
     }
+
 
     /**
      * Poistaa objektin pelimaailmasta.
      */
     @Override
     public void destroyThis() {
-        controller.removeUpdateable(this);
+        controller.removeUpdateable(this, this);
 
     }
 }

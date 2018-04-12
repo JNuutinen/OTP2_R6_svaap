@@ -8,6 +8,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -31,6 +32,9 @@ import view.menus.PauseMenu;
 import view.menus.PlayMenu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Pelin View. JavaFX Application.
@@ -76,9 +80,7 @@ public class GameMain extends Application implements View {
      */
     public static final int ENEMY_SHIP_TAG = 2;
 
-    /**
-     * Bossien tagi.
-     */
+    //TODO
     public static final int BOSS_SHIP_TAG = 3;
 
     /**
@@ -92,14 +94,39 @@ public class GameMain extends Application implements View {
     public static final int ENEMY_PROJECTILE_TAG = 5;
 
     /**
-     * Pelaajan trace tag.
+     * Poweruping tägi.
      */
-    public static final int PLAYER_TRACE_TAG = 6;
+    public static final int POWERUP_TAG = 6;
 
     /**
-     * Vihollisten trace tag.
+     * Aseen Blaster tägi
      */
-    public static final int ENEMY_TRACE_TAG = 7;
+    public static final int WEAPON_BLASTER = 8;
+
+    /**
+     * Aseen BlasterShotgun tägi
+     */
+    public static final int WEAPON_BLASTER_SHOTGUN = 9;
+
+    /**
+     * Aseen BlasterSprinkler tägi
+     */
+    public static final int WEAPON_BLASTER_SPRINKLER = 10;
+
+    /**
+     * Aseen RcketLaucher tägi
+     */
+    public static final int WEAPON_ROCKET_LAUNCHER = 11;
+
+    /**
+     * Aseen RocketShotugun tägi
+     */
+    public static final int WEAPON_ROCKET_SHOTGUN = 12;
+
+    /**
+     * Aseen LaserGun tägi
+     */
+    public static final int WEAPON_LASER_GUN = 13;
 
     /**
      * Spriten määrittämätön nimitagi.
@@ -117,6 +144,10 @@ public class GameMain extends Application implements View {
      */
     public static ArrayList<String> input;
 
+    /**
+     * Pitää sisällään lokalisoidut tekstit.
+     */
+    private ResourceBundle messages;
 
     /**
      * Pelaa -valikko.
@@ -198,6 +229,11 @@ public class GameMain extends Application implements View {
      */
     private Pane uiPane;
 
+    /**
+     * Pelin tausta.
+     */
+    private GameBackground gameBg;
+
     public static void main(String[] args) {
         //Database database = new Database();
         //database.dbTest();
@@ -207,6 +243,12 @@ public class GameMain extends Application implements View {
 
     @Override
     public void start(Stage primaryStage){
+        // lokalisointi
+        String language = "en";
+        String country = "NZ";
+        Locale locale = new Locale(language, country);
+        messages = ResourceBundle.getBundle("MessagesBundle", locale);
+
         this.primaryStage = primaryStage;
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
         primaryStage.setResizable(false);
@@ -351,27 +393,28 @@ public class GameMain extends Application implements View {
         // Luodaan gameRoot jo tässä, koska pelaaja luodaan ja sen Sprite lisätään siihen
         gameRoot = new BorderPane();
 
+        // Valittavat aselistat
+        ArrayList<Weapon> secondaries = createPlayerSecondaries();
+        ArrayList<Weapon> primaries = createPlayerPrimaries1();
+
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
         Player player = new Player(controller, Color.LIME);
 
 
-        // Valittavat aselistat
-        ArrayList<Weapon> primaries = createPlayerPrimaries1(player);
-        ArrayList<Weapon> secondaries = createPlayerSecondaries(player);
 
         // Main menu
-        MainMenu mainMenu = new MainMenu();
+        MainMenu mainMenu = new MainMenu(messages);
         Group mainMenuGroup = mainMenu.getGroup();
 
         // Play menu
-        playMenu = new PlayMenu(NUMBER_OF_LEVELS);
+        playMenu = new PlayMenu(messages, NUMBER_OF_LEVELS);
         Group playMenuGroup = playMenu.getGroup();
 
         // Pane kaikille menuille
         StackPane menuSpace = new StackPane(mainMenuGroup);
 
         // Customize menu
-        CustomizeMenu customizeMenu = new CustomizeMenu(primaries, secondaries);
+        CustomizeMenu customizeMenu = new CustomizeMenu(messages, primaries, secondaries);
         Group customizeMenuGroup = customizeMenu.getGroup();
         customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenuGroup, playMenuGroup, menuSpace));
 
@@ -427,7 +470,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
-        PauseMenu pauseMenu = new PauseMenu();
+        PauseMenu pauseMenu = new PauseMenu(messages);
         Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {
@@ -442,6 +485,11 @@ public class GameMain extends Application implements View {
         gameRoot.setCenter(pauseMenuGroup);
     }
 
+    @Override
+    public void changeBackgroundScrollSpeed(double speed, double duration) {
+        gameBg.changeBackgroundScrollSpeed(speed, duration);
+    }
+
     /**
      * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
      * @param primaryStage Ohjelman Primary Stage.
@@ -450,11 +498,9 @@ public class GameMain extends Application implements View {
      * @param secondary Pelaajan sivuase.
      */
     private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
-        player.addToPrimaryWeapon(primary);
-        player.setSecondaryWeapon(secondary);
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
-        Image uiIMG = new Image("/images/PlayerUi.png");
+        Image uiIMG = new Image("/images/PlayerUi_i18n.png");
         uiIV.setImage(uiIMG);
         uiPane.getChildren().add(uiIV);
         pane.setCenter(gameRoot);
@@ -464,17 +510,40 @@ public class GameMain extends Application implements View {
         ft.setToValue(1.0);
         ft.play();
 
+        Font uiFont = new Font("Cambria", 32);
+        Label playerHpText = new Label(messages.getString("player_hp"));
+        playerHpText.setTextFill(Color.WHITE);
+        playerHpText.setLayoutX(20);
+        playerHpText.setLayoutY(8);
+        playerHpText.setFont(uiFont);
+
+        Label scoreText = new Label(messages.getString("score"));
+        scoreText.setTextFill(Color.WHITE);
+        scoreText.setLayoutX(20);
+        scoreText.setLayoutY(51);
+        scoreText.setFont(uiFont);
+
+        Label bossHpText = new Label(messages.getString("boss_hp"));
+        bossHpText.setTextFill(Color.WHITE);
+        bossHpText.setLayoutX(1085);
+        bossHpText.setLayoutY(8);
+        bossHpText.setFont(uiFont);
+
+        Label fpsText = new Label(messages.getString("fps"));
+        fpsText.setTextFill(Color.WHITE);
+        fpsText.setLayoutX(1085);
+        fpsText.setLayoutY(51);
+        fpsText.setFont(uiFont);
+
         score = new Label(String.valueOf(controller.getScore()));
         score.setTextFill(Color.WHITE);
         score.setLayoutX(210);
         score.setLayoutY(51);
-        score.setFont(new Font("Cambria", 32));
+        score.setFont(uiFont);
 
-        GameBackground gmg = new GameBackground(controller);
+        gameBg = new GameBackground(controller);
 
-        uiPane.getChildren().add(score);
-        uiPane.getChildren().add(playerHealth);
-        uiPane.getChildren().add(bossHealth);
+        uiPane.getChildren().addAll(playerHpText, scoreText, score, playerHealth, bossHpText, bossHealth, fpsText);
 
         //---------------- debugger
         if(debuggerToolsEnabled) {
@@ -491,43 +560,28 @@ public class GameMain extends Application implements View {
             uiPane.getChildren().add(debugger_currentFps);*/
         }
 
-        // Aseiden lisäys komponentteihin, jotta aseet näkyvissä
-        ArrayList<Component> components = new ArrayList<>();
-        components.add((Component)primary);
-        components.add((Component)secondary);
 
-        Component b = new Component("circle", 10, 0, Color.RED, 0,0);
-        components.add(b);
-
-        /*
-        Component c = new Component("rectangle", 10 , 0, Color.WHITE, 0,0);
-        components.add(c);
-
-        Component d = new Component("triangle", 6, 0, Color.BLUE, 0,0);
-        components.add(d);
-
-        */
-        //player.equipComponents();
-
-
+        //      Pelaaja
         player.setPosition(100, 300);
 
-        // tieto controllerille pelaajasta
-        controller.addPlayer(player);
-        controller.addUpdateable(player);
+        //      tieto controllerille pelaajasta
+        controller.addPlayers(new ArrayList<Player>(Arrays.asList(player)));
+        controller.addUpdateableAndSetToScene(player, player);
 
+        //      pelaajalle pyssyt
+        player.addPrimaryWeapon(primary);
+        player.setSecondaryWeapon(secondary);
 
-
-        // ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
+        //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
-        // Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
+        //      Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
             if (!input.contains(code)) input.add(code);
         });
 
-        // Kun näppäintä ei enää paineta, poista se arraylististä
+        //      Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
             String code = keyEvent.getCode().toString();
             input.remove(code);
@@ -535,28 +589,24 @@ public class GameMain extends Application implements View {
         primaryStage.setScene(scene);
 
         controller.startLoop();
-        System.out.println(playMenu.getSelectedLevel());
         controller.startLevel(playMenu.getSelectedLevel());
     }
 
     /**
      * Luo listan valittavissa olevista pääaseista
-     * @param player Pelaaja
      * @return Lista, joka sisältää aseita
      */
-    private ArrayList<Weapon> createPlayerPrimaries1(Player player) {
+    private ArrayList<Weapon> createPlayerPrimaries1() {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon blaster = new Blaster(controller, player, 0, -15, 0, Color.LIME,
-                45, 100, 0);
+        Weapon blaster = new Blaster(controller, 0, 45,  new Point2D(-15, 0), new Point2D(100, 0));
         ((Component) blaster).setName("Blaster");
 
-        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, -15, 0, 3,
-                20, false);
+        Weapon rocketShotgun = new RocketShotgun(controller, 0, 0, 20,
+                false, new Point2D(-15, 0), new Point2D(-15, 0));
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, player, 0, -15, 5,
-                80, 0, 0.5);
+        Weapon laserGun = new LaserGun(controller, 5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
         ((Component) laserGun).setName("Laser Gun");
 
         weapons.add(blaster);
@@ -568,25 +618,18 @@ public class GameMain extends Application implements View {
 
     /**
      * Luo listan valittavissa olevista sivuaseista
-     * @param player Pelaaja
      * @return Lista, joka sisältää aseita
      */
-    private ArrayList<Weapon> createPlayerSecondaries(Player player) {
+    private ArrayList<Weapon> createPlayerSecondaries() {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon blaster = new Blaster(controller, player, 0, -15, 0, Color.LIME,
-                45, 100, 0);
-        ((Component) blaster).setName("Blaster");
-
-        Weapon rocketShotgun = new RocketShotgun(controller, player, 1, 10, 0, 3,
-                20, false);
+        Weapon rocketShotgun = new RocketShotgun(controller, 0, 0, 20,
+                false, new Point2D(-15, 0), new Point2D(-15, 0));
         ((Component) rocketShotgun).setName("Rocket Shotgun");
 
-        Weapon laserGun = new LaserGun(controller, player, 0, 10, 50,
-                80, 0, 0.5);
+        Weapon laserGun = new LaserGun(controller, 5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
         ((Component) laserGun).setName("Laser Gun");
 
-        weapons.add(blaster);
         weapons.add(rocketShotgun);
         weapons.add(laserGun);
         return weapons;

@@ -6,7 +6,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.Component;
+import model.HitboxObject;
 import model.Unit;
 import model.Updateable;
 
@@ -20,12 +20,12 @@ import static view.GameMain.WINDOW_WIDTH;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class SmallProjectile extends BaseProjectile implements Updateable {
+public class SmallProjectile extends BaseProjectile implements Updateable, HitboxObject {
 
     /**
      * Ammuksen vakioväri
      */
-    private static final Color COLOR = Color.LIGHTSALMON;
+    private static final Color COLOR = Color.WHITE;
     private Controller controller;
     private int damage;
 
@@ -91,17 +91,18 @@ public class SmallProjectile extends BaseProjectile implements Updateable {
     }
 
     @Override
-    public void destroyThis(){
-        controller.removeUpdateable(this);
+    public void collides(Object collidingTarget) {
+        if(collidingTarget instanceof Unit){
+            ((Unit) collidingTarget).takeDamage(damage);
+        }
+        destroyThis();
     }
-
 
     @Override
-    //Optimoidumpi versio collidesta (?)
-    public void collides(Updateable collidingUpdateable){
-        destroyThis();
-        ((Unit)collidingUpdateable).takeDamage(damage);
+    public void destroyThis(){
+        controller.removeUpdateable(this, this);
     }
+
 
     @Override
     public void update(double deltaTime){

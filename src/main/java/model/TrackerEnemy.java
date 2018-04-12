@@ -4,8 +4,8 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import model.weapons.Blaster;
-import model.weapons.Weapon;
+
+import java.util.ArrayList;
 
 import static view.GameMain.*;
 
@@ -16,7 +16,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class TrackerEnemy extends Unit implements Updateable {
+public class TrackerEnemy extends Unit {
 
     /**
      * Jos vihollinen ei liiku, se saa arvon -1
@@ -61,7 +61,7 @@ public class TrackerEnemy extends Unit implements Updateable {
      */
     private double rotatingSpeed = 4;
     private boolean shootingTarget = false;
-    private Updateable target = null;
+    private HitboxObject target = null;
     private final double initialVelocity = 300;
 
     /**
@@ -85,41 +85,31 @@ public class TrackerEnemy extends Unit implements Updateable {
     private boolean tookDamage2 = false;
 
 
+
+
     /**
      * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
      * @param controller Pelin kontrolleri
      * @param shipColor Aluksen väri
-     * @param movementPattern Aluksen liikkumatyyli
-     * @param initialX Alkuposition x-koordinaatti
-     * @param initialY Alkuposition y-koordinaatti
+     * @param initialPosition Aloitussijainti
      * @param path Aluksen reitti
-     * @param tag Vihollisen tunniste. Käytä tagia "enemy" jos kyseessä perusvihollinen.
      */
-    public TrackerEnemy(Controller controller, Color shipColor, int movementPattern, double initialX, double initialY, Point2D[] path,
-                        int tag) {
-        super(controller, shipColor);
+    public TrackerEnemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, Point2D initialPosition, Point2D[] path) {
+        super(controller, shipColor, 5, 20);
         this.path = path;
         this.controller = controller;
-        setTag(tag);
+        setTag(ENEMY_SHIP_TAG);
         lastDestinationIndex = path.length-1;
         controller.addUnitToCollisionList(this);
+        this.initialX = initialPosition.getX();
+        this.initialY = initialPosition.getY();
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
         findAndSetTarget();
-
-
-
-        rotate(-160);
-        this.movementPattern = movementPattern;
-        if (movementPattern == MOVE_NONE) setIsMoving(false);
-        else setIsMoving(true);
-        this.initialX = initialX;
-        this.initialY = initialY;
-
-        Component c = new Component("triangle", 3, 0, Color.YELLOW, 50, 0);
-        components.add(c);
-        //equipComponents();
+        rotate(180);
+        setIsMoving(true);
         setHitbox(80);
+        setHp((int) (40 * controller.getLevel().getEnemyHealthModifier()));
 
         Polygon shape = new Polygon();
         // aluksen muoto
@@ -142,7 +132,9 @@ public class TrackerEnemy extends Unit implements Updateable {
                 60.0, -10.0,
                 30.0, -10.0);
         drawShip(shape);
+        makePrimaryWeapons(primaries);
 
+        controller.addUpdateableAndSetToScene(this, this);
     }
 
     /**
@@ -179,12 +171,8 @@ public class TrackerEnemy extends Unit implements Updateable {
                 || getYPosition() > WINDOW_HEIGHT+100) {
             destroyThis();
         } else {
-            //setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
         }
-
-
-        //laskee oman kulman ja kohteeseen katsottavan kulman erotuksen ja pitaa asteet -180 ja 180 valilla
 
         double angleToTarget;
         if(!shootingTarget) {
@@ -210,13 +198,7 @@ public class TrackerEnemy extends Unit implements Updateable {
             while (angleToTarget < -180) {
                 angleToTarget += 360.0;
             }
-
-            /*if (angleToTarget < rotatingSpeed - 3) {     // TODO HEGE POISTAA
-                rotate(angleToTarget * 0.05);
-            } else if (angleToTarget > rotatingSpeed + 3) {*/
             rotate(angleToTarget * rotatingSpeed * deltaTime);
-            //}
-
         }
         else{
             if(target != null) {
@@ -236,13 +218,18 @@ public class TrackerEnemy extends Unit implements Updateable {
     }
 
     /**
-     * Etsii pelaajan updateable listasta ja asettaa sen kohteeksi
+     * Etsii lähimmän pelaajan playerHitboxObjects listasta ja asettaa sen kohteeksi
      */
     public void findAndSetTarget(){
-        for(Updateable updateable : controller.getUpdateables()){
-            if(updateable.getTag() == PLAYER_SHIP_TAG) {
-                target = updateable;
+        double shortestDistance = Double.MAX_VALUE;
+        HitboxObject closestPlayer = null;
+        for (HitboxObject hitboxObject : controller.getPlayerHitboxObjects()) {
+            double distance = getDistanceFromTarget(hitboxObject.getPosition());
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                closestPlayer = hitboxObject;
             }
         }
+        target = closestPlayer;
     }
 }

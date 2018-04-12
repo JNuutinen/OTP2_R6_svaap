@@ -184,7 +184,7 @@ public class Sprite extends Pane {
             //shape.setStroke(Color.LIGHTGREY);
         }
         shape.setStrokeWidth(0.4);
-        this.getChildren().add(shape);
+        Platform.runLater(()->this.getChildren().add(shape));
     }
 
     /**
