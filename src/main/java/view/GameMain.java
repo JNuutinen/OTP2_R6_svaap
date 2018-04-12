@@ -32,6 +32,7 @@ import view.menus.PauseMenu;
 import view.menus.PlayMenu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -564,7 +565,7 @@ public class GameMain extends Application implements View {
         player.setPosition(100, 300);
 
         //      tieto controllerille pelaajasta
-        controller.addPlayer(player);
+        controller.addPlayers(new ArrayList<Player>(Arrays.asList(player)));
         controller.addUpdateableAndSetToScene(player, player);
 
         //      pelaajalle pyssyt

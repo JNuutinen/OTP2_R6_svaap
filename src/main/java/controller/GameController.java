@@ -36,9 +36,9 @@ public class GameController implements Controller {
     private GameLoop gameLoop;
 
     /**
-     * Pelaajaolio.
+     * Pelaajaoliot.
      */
-    private Player player;
+    private ArrayList<Player> players;
 
     /**
      * Nykyinen taso.
@@ -55,9 +55,9 @@ public class GameController implements Controller {
     }
 
     @Override
-    public void addPlayer(Player player) {
-        this.player = player;
-        gameLoop.setPlayer(player);
+    public void addPlayers(ArrayList<Player> players) {
+        this.players = players;
+        gameLoop.setPlayers(players);
     }
 
     public Level getLevel(){
@@ -67,8 +67,10 @@ public class GameController implements Controller {
 
     @Override
     public void addScore(int score) {
-        player.addScore(score);
-        view.setScore(player.getScore());
+        for(Player player : players) {
+            player.addScore(score);
+        }
+        view.setScore(players.get(0).getScore());
     }
 
     public void setHealthbar(int hp, int selector){
@@ -118,7 +120,7 @@ public class GameController implements Controller {
 
     @Override
     public int getScore() {
-        if (player != null) return player.getScore();
+        if (players != null) return players.get(0).getScore();
         return 0;
     }
 
@@ -155,7 +157,9 @@ public class GameController implements Controller {
     @Override
     public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
-    public synchronized HitboxObject getPlayerHitboxObject(){ return gameLoop.getPlayerHitboxObject(); }
+    public synchronized ArrayList<HitboxObject> getPlayerHitboxObjects(){
+        return gameLoop.getPlayerHitboxObjects();
+    }
 
     public synchronized ArrayList<HitboxObject> getHitboxObjects(){
         return gameLoop.getHitboxObjects();

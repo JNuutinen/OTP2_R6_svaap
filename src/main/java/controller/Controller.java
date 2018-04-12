@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public interface Controller {
 
     /**
-     * Lisää peliin pelaajan.
-     * @param player Pelaaja.
+     * Lisää pelaajat peliin.
+     * @param players Pelaajat
      */
-    void addPlayer(Player player);
+    void addPlayers(ArrayList<Player> players);
 
     /**
      * Lisää pelaajan pistemäärää.
@@ -84,7 +84,7 @@ public interface Controller {
      * TODO
      * @return
      */
-    HitboxObject getPlayerHitboxObject();
+    ArrayList<HitboxObject> getPlayerHitboxObjects();
 
     ArrayList<HitboxObject> getHitboxObjects();
 

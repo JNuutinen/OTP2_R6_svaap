@@ -218,9 +218,18 @@ public class TrackerEnemy extends Unit {
     }
 
     /**
-     * Etsii pelaajan updateable listasta ja asettaa sen kohteeksi
+     * Etsii lähimmän pelaajan playerHitboxObjects listasta ja asettaa sen kohteeksi
      */
     public void findAndSetTarget(){
-        target = controller.getPlayerHitboxObject();
+        double shortestDistance = Double.MAX_VALUE;
+        HitboxObject closestPlayer = null;
+        for (HitboxObject hitboxObject : controller.getPlayerHitboxObjects()) {
+            double distance = getDistanceFromTarget(hitboxObject.getPosition());
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                closestPlayer = hitboxObject;
+            }
+        }
+        target = closestPlayer;
     }
 }

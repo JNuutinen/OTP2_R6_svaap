@@ -5,9 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 import view.GameMain;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 import static view.GameMain.UNDEFINED_TAG;
 
@@ -28,66 +26,66 @@ public class GameLoop {
     /**
      * Jono olioista, jotka lisätään pelistä seuraavan loopin alussa.
      */
-    private volatile Queue<Updateable> updateableQueue;
+    private volatile Queue<Updateable> updateableQueue = new LinkedList<>();
 
     /**
      * Jono olioista, jotka poistetaan pelistä seuraavan loopin alussa.
      */
-    private volatile Queue<Updateable> removeUpdateableQueue;
+    private volatile Queue<Updateable> removeUpdateableQueue = new LinkedList<>();
 
     /**
      * Lista pelissä olevista päivitettävistä olioista, jonka looppi käy läpi.
      */
-    private volatile ArrayList<Updateable> updateables;
+    private volatile ArrayList<Updateable> updateables = new ArrayList<>();
 
     /**
      * TODO
      */
-    private Queue<HitboxObject> hitboxObjectsQueue;
+    private Queue<HitboxObject> hitboxObjectsQueue = new LinkedList<>();
 
-    private Queue<HitboxObject> removeHitboxObjectsQueue;
+    private Queue<HitboxObject> removeHitboxObjectsQueue = new LinkedList<>();
 
     /**
      * TODO
      */
-    private Queue<Trace> tracesQueue;
+    private Queue<Trace> tracesQueue = new LinkedList<>();
 
-    private Queue<Trace> removeTracesQueue;
+    private Queue<Trace> removeTracesQueue = new LinkedList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> enemies;
+    private volatile ArrayList<HitboxObject> enemies = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> enemyProjectiles;
+    private volatile ArrayList<HitboxObject> enemyProjectiles = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista pelaajan ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> playerProjectiles;
+    private volatile ArrayList<HitboxObject> playerProjectiles = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> powerups;
+    private volatile ArrayList<HitboxObject> powerups = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<Trace> enemyTraces;
+    private volatile ArrayList<Trace> enemyTraces = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista pelaajan ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<Trace> playerTraces;
+    private volatile ArrayList<Trace> playerTraces = new ArrayList<>();
 
     /**
      * Pelaaja, käytetään osumien tarkasteluun.
      */
-    private Player player;
+    private ArrayList<Player> players = new ArrayList<>();
 
     /**
      * Pelin looppi. Spritejen sijaintien päivitys sekä osumatarkastelut.
@@ -106,27 +104,14 @@ public class GameLoop {
      */
     public GameLoop(Controller controller) {
         this.controller = controller;
-        updateableQueue = new LinkedList<>();
-        hitboxObjectsQueue = new LinkedList<>();
-        tracesQueue = new LinkedList<>();
-        removeUpdateableQueue = new LinkedList<>();
-        removeHitboxObjectsQueue = new LinkedList<>();
-        removeTracesQueue = new LinkedList<>();
-        updateables = new ArrayList<>();
-        enemies = new ArrayList<>();
-        enemyProjectiles = new ArrayList<>();
-        enemyTraces = new ArrayList<>();
-        playerTraces = new ArrayList<>();
-        playerProjectiles = new ArrayList<>();
-        powerups = new ArrayList<>();
     }
 
     /**
-     * Asettaa viittauksen pelaajaan.
-     * @param player Pelin pelaaja.
+     * Asettaa viittauksen pelaajiin;
+     * @param players Pelaajat pelissä.
      */
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 
     /**
@@ -138,23 +123,23 @@ public class GameLoop {
     }
 
     /**
-     * TODO
-     * @param hitboxObject
+     * Lisää Hitbox-rajapintaolion jonoon, odottamaan lisäystä peliin.
+     * @param hitboxObject Hitbox-rajapintaolio
      */
     synchronized public void queueHitboxObject(HitboxObject hitboxObject) {
         hitboxObjectsQueue.add(hitboxObject);
     }
 
     /**
-     * TODO
-     * @param trace
+     * Lisää Trace-rajapintaolion jonoon, odottamaan lisäystä peliin.
+     * @param trace Trace-rajapintaolio.
      */
     synchronized public void queueTrace(Trace trace) {
         tracesQueue.add(trace);
     }
 
     /**
-     * Lisää olion jonoon, odottamaan poistoa Updateable listasta.
+     * Lisää Updateable-rajapintaolion jonoon, odottamaan poistoa Updateable listasta.
      * @param updateable Updateable olio, joka poistetaan listasta.
      */
     synchronized public void removeUpdateable(Updateable updateable) {
@@ -175,8 +160,10 @@ public class GameLoop {
      * TODO
      * @return
      */
-    public HitboxObject getPlayerHitboxObject(){
-        return player;
+    public ArrayList<HitboxObject> getPlayerHitboxObjects(){
+        ArrayList<HitboxObject> toHitboxlist = new ArrayList<>();
+        toHitboxlist.addAll(players);
+        return toHitboxlist;
     }
 
     public ArrayList<HitboxObject> getHitboxObjects(){
@@ -327,53 +314,55 @@ public class GameLoop {
                         //---------- Osumatarkastelu, käy läpi vain oleelliset Updateablet
 
                         // Vihollisten ammuksien vertailu Playeriin
-                        for (HitboxObject enemyProjectile : enemyProjectiles) {
-                            switch (enemyProjectile.getTag()) {
+                        for(Player player : players) {
+                            for (HitboxObject enemyProjectile : enemyProjectiles) {
+                                switch (enemyProjectile.getTag()) {
 
-                                // Vihollisien perusammus
-                                case GameMain.ENEMY_PROJECTILE_TAG:
-                                    // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
-                                    if (getDistanceFromTarget(enemyProjectile.getPosition(), player.getPosition()) <
-                                            (enemyProjectile.getHitboxRadius() + player.getHitboxRadius())) {
-                                        // kutsu objektin collides-metodia
-                                        enemyProjectile.collides(player);
-                                    }
-                                    break;
-                            }
-                        }
-                        //poweruppien vertailu playeriin
-                        for (HitboxObject powerup : powerups) {
-                            switch (powerup.getTag()) {
-
-                                // Vihollisien perusammus
-                                case GameMain.POWERUP_TAG:
-                                    // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
-                                    if (getDistanceFromTarget(powerup.getPosition(), player.getPosition()) <
-                                            (powerup.getHitboxRadius() + player.getHitboxRadius())) {
-                                        // kutsu objektin collides-metodia
-                                        powerup.collides(player);
-                                        //powerup.setTag(UNDEFINED_TAG);
-                                    }
-                                    break;
-                            }
-                        }
-
-                        for(Trace enemyTrace : enemyTraces){
-                            switch (enemyTrace.getTag()){
-                                // Vihollisien laserammus
-                                case GameMain.ENEMY_PROJECTILE_TAG:
-                                    if (enemyTrace.getPosition().getX() < player.getPosition().getX()) {
-                                        // jos playerin hitboxin säde yltää laseriin
-                                        if (getDistanceFromTarget(enemyTrace.getPosition(), player.getPosition()) < 0) {
-                                            enemyTrace.collides(player);
+                                    // Vihollisien perusammus
+                                    case GameMain.ENEMY_PROJECTILE_TAG:
+                                        // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
+                                        if (getDistanceFromTarget(enemyProjectile.getPosition(), player.getPosition()) <
+                                                (enemyProjectile.getHitboxRadius() + player.getHitboxRadius())) {
+                                            // kutsu objektin collides-metodia
+                                            enemyProjectile.collides(players);
                                         }
-                                    } else if (getDistanceFromTarget(new Point2D(0, enemyTrace.getPosition().getY()),
-                                            new Point2D(0, player.getPosition().getY())) < player.getHitboxRadius()) {
-                                        enemyTrace.collides(player);
-                                    }
-                                    // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
-                                    enemyTrace.setTag(UNDEFINED_TAG);
-                                    break;
+                                        break;
+                                }
+                            }
+                            //poweruppien vertailu playeriin
+                            for (HitboxObject powerup : powerups) {
+                                switch (powerup.getTag()) {
+
+                                    // Vihollisien perusammus
+                                    case GameMain.POWERUP_TAG:
+                                        // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
+                                        if (getDistanceFromTarget(powerup.getPosition(), player.getPosition()) <
+                                                (powerup.getHitboxRadius() + player.getHitboxRadius())) {
+                                            // kutsu objektin collides-metodia
+                                            powerup.collides(players);
+                                            //powerup.setTag(UNDEFINED_TAG);
+                                        }
+                                        break;
+                                }
+                            }
+
+                            for (Trace enemyTrace : enemyTraces) {
+                                switch (enemyTrace.getTag()) {
+                                    // Vihollisien laserammus
+                                    case GameMain.ENEMY_PROJECTILE_TAG:
+                                        if (enemyTrace.getPosition().getX() < player.getPosition().getX()) {
+                                            // jos playerin hitboxin säde yltää laseriin
+                                            if (getDistanceFromTarget(enemyTrace.getPosition(), player.getPosition()) < 0) {
+                                                enemyTrace.collides(players);
+                                            }
+                                        } else if (getDistanceFromTarget(new Point2D(0, enemyTrace.getPosition().getY()),
+                                                new Point2D(0, player.getPosition().getY())) < player.getHitboxRadius()) {
+                                            enemyTrace.collides(players);
+                                        }
+                                        // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
+                                        enemyTrace.setTag(UNDEFINED_TAG);
+                                        break;
+                                }
                             }
                         }
 
