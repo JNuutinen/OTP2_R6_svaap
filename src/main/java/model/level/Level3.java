@@ -202,7 +202,7 @@ public class Level3 extends Thread implements Level {
             System.out.println("Voitit tason " + (levelNumber) +"!");
 
             // Hyperdrive
-            controller.changeBackgroundScrollSpeed(1000, 5);
+            controller.changeBackgroundScrollSpeed(2000, 5);
             Thread.sleep(6_000);
 
             Platform.runLater(() -> controller.addScore(500));
