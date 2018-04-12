@@ -170,8 +170,11 @@ public class Level3 extends Thread implements Level {
 
 
 
+            //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
+            //        0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
+            Thread.sleep(1500);
             new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
-                    0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
+                    0, new Point2D(WINDOW_WIDTH + 50, 500));
             Thread.sleep(100);
 
             Thread.sleep(4_000);

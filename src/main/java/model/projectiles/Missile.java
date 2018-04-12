@@ -53,6 +53,16 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
     private HitboxObject target;
 
     /**
+     * Kertoo, onko ohjuksen kohde jo kerran haettu.
+     */
+    private boolean findTargerOnce = false;
+
+    /**
+     * Kertoo, onko ohjuksen kohde haettu kahdesti.
+     */
+    private boolean findTargetTwice = false;
+
+    /**
      * Ammuksen visuaalinen häntä.
      */
     private Trail trail;
@@ -170,10 +180,10 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                     }
                     rotate(angleToTarget * rotatingSpeed * deltaTime);
                 }
-            } else {
+            } else if (!findTargerOnce || !findTargetTwice) {
                 findAndSetTarget();
             }
-        } else {
+        } else if (!findTargerOnce || !findTargetTwice){
             findAndSetTarget();
         }
     }
@@ -209,21 +219,31 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
         HitboxObject closestEnemy = null;
         if (getShooter().getTag() == PLAYER_SHIP_TAG){
             for (HitboxObject hitboxObject : controller.getHitboxObjects()) {
-                if (hitboxObject.getTag() == ENEMY_SHIP_TAG) {
+                if (hitboxObject.getTag() == ENEMY_SHIP_TAG || hitboxObject.getTag() == BOSS_SHIP_TAG) {
                     double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
                         closestEnemy = hitboxObject;
+                        if (findTargerOnce) {
+                            findTargetTwice = true;
+                        } else {
+                            findTargerOnce = true;
+                        }
                     }
                 }
             }
         }
-        else if(getShooter().getTag() == ENEMY_SHIP_TAG){
+        else if(getShooter().getTag() == ENEMY_SHIP_TAG || getShooter().getTag() == BOSS_SHIP_TAG){
             for (HitboxObject hitboxObject : controller.getPlayerHitboxObjects()) {
                 double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
                 if (distance < shortestDistance) {
                     shortestDistance = distance;
                     closestEnemy = hitboxObject;
+                    if (findTargerOnce) {
+                        findTargetTwice = true;
+                    } else {
+                        findTargerOnce = true;
+                    }
                 }
             }
         }
