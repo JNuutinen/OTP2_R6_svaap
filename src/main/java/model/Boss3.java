@@ -107,12 +107,14 @@ public class Boss3 extends Unit {
         this.setTag(BOSS_SHIP_TAG);
         this.setVelocity(30);
         controller.addUnitToCollisionList(this);
+        armShip();
+
         rotate(180);
         setIsMoving(true);
         setHp(1000);
         originalHp = getHp();
         this.setHitbox(450);
-        armShip();
+
 
         controller.addUpdateableAndSetToScene(this, this);
 
@@ -140,8 +142,6 @@ public class Boss3 extends Unit {
         else if(tookDamage2){
             damagedTimeCounter += deltaTime;
         }
-
-
 
         if(stageTimeCounter > 14){
             getPrimaryWeapons().get(4).shoot();
@@ -233,13 +233,13 @@ public class Boss3 extends Unit {
     /** varustaa aluksen aseilla */
     public void armShip(){
 
-        Weapon laserGun = new LaserGun(controller, 0, 0.6, new Point2D(0, -240), new Point2D(0, -240));
+        Weapon laserGun = new LaserGun(controller, 0, 0.8, new Point2D(0, -240), new Point2D(0, -240));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
-        laserGun = new LaserGun(controller, 0, 0.6, new Point2D(200, -70), new Point2D(200, -70));
+        laserGun = new LaserGun(controller, 0, 0.8, new Point2D(200, -70), new Point2D(200, -70));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
-        laserGun = new LaserGun(controller, 0, 0.6, new Point2D(200, 70), new Point2D(200, 70));
+        laserGun = new LaserGun(controller, 0, 0.8, new Point2D(200, 70), new Point2D(200, 70));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
-        laserGun = new LaserGun(controller, 0, 0.6, new Point2D(0, 240), new Point2D(0, 240));
+        laserGun = new LaserGun(controller, 0, 0.8, new Point2D(0, 240), new Point2D(0, 240));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
 
 

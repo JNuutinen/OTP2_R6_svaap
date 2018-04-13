@@ -164,7 +164,7 @@ public class Level3 extends Thread implements Level {
 
             System.out.println("----LEVEL 3 KÄYNTIIN----");
 
-            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER, WEAPON_LASER_GUN)),
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER, WEAPON_LASER_GUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
 
 

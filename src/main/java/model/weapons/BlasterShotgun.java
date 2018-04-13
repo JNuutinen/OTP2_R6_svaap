@@ -38,7 +38,7 @@ public class BlasterShotgun extends Component implements Weapon {
     /**
      * Aseen väri.
      */
-    private static final Color COLOR = Color.YELLOW;
+    private static final Color COLOR = Color.ORANGERED;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.

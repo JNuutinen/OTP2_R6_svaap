@@ -47,17 +47,17 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     /**
      * nykyisestä laserista vähennettävä punainen arvo häivytyksen aikana.
      */
-    double redSbtraction = 0;
+    double redSubtraction = 0;
 
     /**
      * nykyisestä laserista vähennettävä vihreä arvo häivytyksen aikana.
      */
-    double greenSbtraction = 0;
+    double greenSubtraction = 0;
 
     /**
      * nykyisestä laserista vähennettävä sininen arvo häivytyksen aikana.
      */
-    double blueSbtraction = 0;
+    double blueSubtraction = 0;
 
     /**
      * nykyisestä laserista vähennettävä läpinäkyvyysarvo häivytyksen aikana.
@@ -87,6 +87,12 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(controller, shooter, speed, offset, tag);
+
+        redSubtraction = (1 - color.getRed());
+        greenSubtraction = (1 - color.getGreen());
+        blueSubtraction = (1 - color.getBlue());
+        opacitySubtraction = opacitySubtraction * 0.5;
+        //opacitySubtraction pitää muuttaa myös jos noita kaavoja muutetaan ^
 
         this.controller = controller;
         this.damage = damage;
@@ -118,27 +124,26 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     @Override
     public void update(double deltaTime) {
         timeSinceSpawn += deltaTime;
-        double deltaTimeMultiplied = deltaTime * 5;
+        double deltaTimeMultiplied = deltaTime * 7;
 
 
-
-        // laserin väri pysyy valkoisena 0.1 sec ajan ja sitten alkaa häipymään pois.
-        if(timeSinceSpawn > 0.1){
-            if(currentColor.getOpacity() * 0.1 < currentColor.getOpacity()) {
+        // laserin väri pysyy valkoisena 0.15 sec ajan ja sitten alkaa häipymään pois.
+        if(timeSinceSpawn > 0.15){
+            if(currentColor.getOpacity() * opacitySubtraction < currentColor.getOpacity()) {
                 double newRedValue = 0;
                 double newGreenValue = 0;
                 double newBlueValue = 0;
                 double newOpacity = 0;
 
 
-                if(currentColor.getRed() > (redSbtraction * deltaTimeMultiplied)){
-                    newRedValue = currentColor.getRed() - (redSbtraction * deltaTimeMultiplied);
+                if(currentColor.getRed() > (redSubtraction * deltaTimeMultiplied)){
+                    newRedValue = currentColor.getRed() - (redSubtraction * deltaTimeMultiplied);
                 }
-                if(currentColor.getGreen() > (greenSbtraction * deltaTimeMultiplied)){
-                    newGreenValue = currentColor.getGreen() - (greenSbtraction * deltaTimeMultiplied);
+                if(currentColor.getGreen() > (greenSubtraction * deltaTimeMultiplied)){
+                    newGreenValue = currentColor.getGreen() - (greenSubtraction * deltaTimeMultiplied);
                 }
-                if(currentColor.getBlue() > (blueSbtraction * deltaTimeMultiplied)){
-                    newBlueValue = currentColor.getBlue() - (blueSbtraction * deltaTimeMultiplied);
+                if(currentColor.getBlue() > (blueSubtraction * deltaTimeMultiplied)){
+                    newBlueValue = currentColor.getBlue() - (blueSubtraction * deltaTimeMultiplied);
                 }
                 if(currentColor.getOpacity() > (opacitySubtraction * deltaTimeMultiplied)){
                     newOpacity = currentColor.getOpacity() - (opacitySubtraction * deltaTimeMultiplied);

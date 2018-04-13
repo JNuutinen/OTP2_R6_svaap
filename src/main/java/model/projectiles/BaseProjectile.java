@@ -55,15 +55,15 @@ class BaseProjectile extends Sprite {
      * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
-     * @param offset TODO
+     * @param offset Ammuken alkusijainnin poikkeama aluksesta.
      * @param tag Ammuksen tagi.
      */
     BaseProjectile(Controller controller, Unit shooter, double speed, Point2D offset, int tag) {
         this(controller, shooter, speed, tag);
         double xOffset = degreesToVector(shooter.getDirection()).getX() * offset.getX();
         double yOffset = degreesToVector(shooter.getDirection()).getY() * offset.getX();
-        xOffset = xOffset + degreesToVector(shooter.getDirection() + 90).getX() * offset.getY();
-        yOffset = yOffset + degreesToVector(shooter.getDirection() + 90).getY() * offset.getY();
+        xOffset = xOffset + degreesToVector(shooter.getDirection() - 90).getX() * offset.getY();
+        yOffset = yOffset + degreesToVector(shooter.getDirection() - 90).getY() * offset.getY();
         Point2D startingLocation = new Point2D(shooter.getPosition().getX() + xOffset, shooter.getPosition().getY() + yOffset);
         this.setPosition(startingLocation.getX(), startingLocation.getY());
     }

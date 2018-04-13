@@ -7,6 +7,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -293,7 +294,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void removeSprite(Sprite sprite){
-        gameRoot.getChildren().remove(sprite);
+        Platform.runLater(()->gameRoot.getChildren().remove(sprite));
     }
 
     @Override

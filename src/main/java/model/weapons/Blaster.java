@@ -30,7 +30,7 @@ public class Blaster extends Component implements Weapon {
     private static final double FIRE_RATE = 0.2;
 
     /** Blasterin komponentin väri. */
-    private static final Color COLOR = Color.WHITE;
+    private static final Color COLOR = Color.ORANGE;
 
     /** Ammuksien nopeus. */
     private double projectileSpeed = SPEED;
