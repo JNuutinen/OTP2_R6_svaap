@@ -53,6 +53,16 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
     private HitboxObject target;
 
     /**
+     * Kertoo, onko ohjuksen kohde jo kerran haettu.
+     */
+    private boolean findTargerOnce = false;
+
+    /**
+     * Kertoo, onko ohjuksen kohde haettu kahdesti.
+     */
+    private boolean findTargetTwice = false;
+
+    /**
      * Ammuksen visuaalinen häntä.
      */
     private Trail trail;
@@ -170,10 +180,10 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                     }
                     rotate(angleToTarget * rotatingSpeed * deltaTime);
                 }
-            } else {
+            } else if (!findTargerOnce || !findTargetTwice) {
                 findAndSetTarget();
             }
-        } else {
+        } else if (!findTargerOnce || !findTargetTwice){
             findAndSetTarget();
         }
     }
@@ -214,6 +224,11 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
                         closestEnemy = hitboxObject;
+                        if (findTargerOnce) {
+                            findTargetTwice = true;
+                        } else {
+                            findTargerOnce = true;
+                        }
                     }
                 }
             }
@@ -224,6 +239,11 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                 if (distance < shortestDistance) {
                     shortestDistance = distance;
                     closestEnemy = hitboxObject;
+                    if (findTargerOnce) {
+                        findTargetTwice = true;
+                    } else {
+                        findTargerOnce = true;
+                    }
                 }
             }
         }

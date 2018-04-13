@@ -4,14 +4,17 @@ import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.*;
+import model.Boss;
+import model.Enemy;
+import model.Updateable;
 import model.weapons.Blaster;
 import model.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.

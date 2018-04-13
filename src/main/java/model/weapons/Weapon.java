@@ -1,7 +1,5 @@
 package model.weapons;
 
-import model.Unit;
-
 /**
  * Rajapinta aseille.
  * @author Ilari Anttila
