@@ -209,7 +209,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
         HitboxObject closestEnemy = null;
         if (getShooter().getTag() == PLAYER_SHIP_TAG){
             for (HitboxObject hitboxObject : controller.getHitboxObjects()) {
-                if (hitboxObject.getTag() == ENEMY_SHIP_TAG) {
+                if (hitboxObject.getTag() == ENEMY_SHIP_TAG || hitboxObject.getTag() == BOSS_SHIP_TAG) {
                     double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
@@ -218,7 +218,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                 }
             }
         }
-        else if(getShooter().getTag() == ENEMY_SHIP_TAG){
+        else if(getShooter().getTag() == ENEMY_SHIP_TAG || getShooter().getTag() == BOSS_SHIP_TAG){
             for (HitboxObject hitboxObject : controller.getPlayerHitboxObjects()) {
                 double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
                 if (distance < shortestDistance) {
@@ -233,7 +233,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
 
     /**
      * Asettaa missilen kääntymisnopeuden.
-     * @param rotatingSpeed Missilen kääntymisnopeus.
+     * @param rotatingSpeed Missilen kääntymisnopeus.+
      */
     public void setRotatingSpeed(double rotatingSpeed){
         this.rotatingSpeed = rotatingSpeed;

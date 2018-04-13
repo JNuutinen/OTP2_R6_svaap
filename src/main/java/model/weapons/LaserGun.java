@@ -48,6 +48,31 @@ public class LaserGun extends Component implements Weapon, Updateable {
     private static final Color COLOR = Color.LIME;
 
     /**
+     * Laserin aloitusväri joka on valkoinen ja jota häivytetään.
+     */
+    private Color chargingEffectCurrentColor = Color.WHITE;
+
+    /**
+     * nykyisestä laserista vähennettävä punainen arvo häivytyksen aikana.
+     */
+    double redSbtraction = 0;
+
+    /**
+     * nykyisestä laserista vähennettävä vihreä arvo häivytyksen aikana.
+     */
+    double greenSbtraction = 0;
+
+    /**
+     * nykyisestä laserista vähennettävä sininen arvo häivytyksen aikana.
+     */
+    double blueSbtraction = 0;
+
+    /**
+     * nykyisestä laserista vähennettävä läpinäkyvyysarvo häivytyksen aikana.
+     */
+    double opacitySubtraction = 1;
+
+    /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
      */
     private Controller controller;
@@ -93,6 +118,10 @@ public class LaserGun extends Component implements Weapon, Updateable {
         this.shootingDelay = shootingDelay;
         this.controller = controller;
         controller.addUpdateable(this);
+
+
+
+
     }
 
     /**
@@ -118,6 +147,11 @@ public class LaserGun extends Component implements Weapon, Updateable {
     @Override
     public void shoot() {
         if(!triggeredShoot && getParentUnit() != null) {
+
+            redSbtraction = (1 - getParentUnitColor().getRed());
+            greenSbtraction = (1 - getParentUnitColor().getGreen());
+            blueSbtraction = (1 - getParentUnitColor().getBlue());
+            //opacitySubtraction pitää muuttaa myös jos noita kaavoja muutetaan ^
 
             chargingEffect = buildChargingEffect(Color.WHITE);
             Platform.runLater(()->getParentUnit().getChildren().add(chargingEffect));
@@ -155,15 +189,41 @@ public class LaserGun extends Component implements Weapon, Updateable {
             chargingEffect.setRadius(chargingEffect.getRadius() + deltaTime * 17 / shootingDelay);
             chargingEffect.setStrokeWidth(chargingEffect.getStrokeWidth() + deltaTime * 4 / shootingDelay);
 
+            double deltaTimeMultiplied = deltaTime * 5;
+
+            if(chargingEffectCurrentColor.getOpacity() * 0.1 < chargingEffectCurrentColor.getOpacity()) {
+                double newRedValue = 0;
+                double newGreenValue = 0;
+                double newBlueValue = 0;
+                double newOpacity = 0;
+
+
+                if(chargingEffectCurrentColor.getRed() > (redSbtraction * deltaTimeMultiplied)){
+                    newRedValue = chargingEffectCurrentColor.getRed() - (redSbtraction * deltaTimeMultiplied);
+                }
+                if(chargingEffectCurrentColor.getGreen() > (greenSbtraction * deltaTimeMultiplied)){
+                    newGreenValue = chargingEffectCurrentColor.getGreen() - (greenSbtraction * deltaTimeMultiplied);
+                }
+                if(chargingEffectCurrentColor.getBlue() > (blueSbtraction * deltaTimeMultiplied)){
+                    newBlueValue = chargingEffectCurrentColor.getBlue() - (blueSbtraction * deltaTimeMultiplied);
+                }
+                if(chargingEffectCurrentColor.getOpacity() > (opacitySubtraction * deltaTimeMultiplied)){
+                    newOpacity = chargingEffectCurrentColor.getOpacity() - (opacitySubtraction * deltaTimeMultiplied);
+                }
+                chargingEffectCurrentColor = new Color(newRedValue, newGreenValue, newBlueValue, newOpacity);
+                pointerEffect.setStroke(chargingEffectCurrentColor);
+            }
+
+            /*
             // jos latausefektin läpinäkyvyysarvo on suurempi kuin lisättävä näkyvyysarvo, niin lisää näkyvyysarvo
             if(1 - stops1[0].getColor().getOpacity() > deltaTime * 1 / shootingDelay) {
                 stops1[0] = new Stop(0, Color.color(0, 1, 0, stops1[0].getColor().getOpacity() + deltaTime * 1 / shootingDelay));
                 pointerEffect.setStroke(new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops1));
-            }
+            }*/
 
             // jos aikaa on kulunut enemmän kuin ampumisviiveessä, niin luo LaserBeam peliin.
             if(timeCounter > shootingDelay){
-                LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, Color.WHITE, getTag(), getProjectileOffset());
+                LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, getParentUnitColor(), getTag(), getProjectileOffset());
                 controller.addUpdateableAndSetToScene(laserBeam, laserBeam);
                 triggeredShoot = false;
                 timeCounter = 0;

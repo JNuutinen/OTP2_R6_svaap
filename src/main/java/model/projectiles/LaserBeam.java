@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
@@ -39,9 +40,34 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     private Polyline shape;
 
     /**
-     * Ammuksen väri.
+     * Laserin aloitusväri joka on valkoinen ja jota häivytetään.
      */
-    private Color color = Color.WHITE;
+    private Color currentColor = Color.WHITE;
+
+    /**
+     * nykyisestä laserista vähennettävä punainen arvo häivytyksen aikana.
+     */
+    double redSbtraction = 0;
+
+    /**
+     * nykyisestä laserista vähennettävä vihreä arvo häivytyksen aikana.
+     */
+    double greenSbtraction = 0;
+
+    /**
+     * nykyisestä laserista vähennettävä sininen arvo häivytyksen aikana.
+     */
+    double blueSbtraction = 0;
+
+    /**
+     * nykyisestä laserista vähennettävä läpinäkyvyysarvo häivytyksen aikana.
+     */
+    double opacitySubtraction = 1;
+
+    /**
+     * Kulunut aika olion luomisesta.
+     */
+    private double timeSinceSpawn = 0;
 
     /**
      * Kertoo osuiko ammus.
@@ -65,9 +91,10 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
         this.controller = controller;
         this.damage = damage;
 
+        shape = buildLaser(currentColor);
+        Platform.runLater(()->getChildren().add(shape)); // TODO hidastaaks tää oikeesti
 
-        shape = buildLaser(color);
-        getChildren().add(shape);
+
     }
 
     @Override
@@ -90,18 +117,39 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
 
     @Override
     public void update(double deltaTime) {
+        timeSinceSpawn += deltaTime;
+        double deltaTimeMultiplied = deltaTime * 5;
 
-        double deltaTimeMultiplied = deltaTime * 3;
 
-        if(color.getRed() > deltaTimeMultiplied) {
-            color = new Color(color.getRed() - deltaTimeMultiplied,
-                    1, color.getBlue() - deltaTimeMultiplied, color.getOpacity() - deltaTimeMultiplied);
-            shape.setStroke(color);
+
+        // laserin väri pysyy valkoisena 0.1 sec ajan ja sitten alkaa häipymään pois.
+        if(timeSinceSpawn > 0.1){
+            if(currentColor.getOpacity() * 0.1 < currentColor.getOpacity()) {
+                double newRedValue = 0;
+                double newGreenValue = 0;
+                double newBlueValue = 0;
+                double newOpacity = 0;
+
+
+                if(currentColor.getRed() > (redSbtraction * deltaTimeMultiplied)){
+                    newRedValue = currentColor.getRed() - (redSbtraction * deltaTimeMultiplied);
+                }
+                if(currentColor.getGreen() > (greenSbtraction * deltaTimeMultiplied)){
+                    newGreenValue = currentColor.getGreen() - (greenSbtraction * deltaTimeMultiplied);
+                }
+                if(currentColor.getBlue() > (blueSbtraction * deltaTimeMultiplied)){
+                    newBlueValue = currentColor.getBlue() - (blueSbtraction * deltaTimeMultiplied);
+                }
+                if(currentColor.getOpacity() > (opacitySubtraction * deltaTimeMultiplied)){
+                    newOpacity = currentColor.getOpacity() - (opacitySubtraction * deltaTimeMultiplied);
+                }
+                currentColor = new Color(newRedValue, newGreenValue, newBlueValue, newOpacity);
+                shape.setStroke(currentColor);
+            }
+            else{
+                destroyThis();
+            }
         }
-        else{
-            destroyThis();
-        }
-
     }
 
     /**
