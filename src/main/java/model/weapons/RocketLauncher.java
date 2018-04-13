@@ -23,7 +23,7 @@ public class RocketLauncher extends Component implements Weapon {
     /**
      * Raketinheittimen ammuksien nopeus.
      */
-    private static final int SPEED = 35;
+    private static final int SPEED = 31;
 
     /**
      * Ammuksien kääntymisnopeus.
@@ -61,7 +61,7 @@ public class RocketLauncher extends Component implements Weapon {
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
-     * @param missileCanLoseTarget TODO
+     * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
     public RocketLauncher(Controller controller, int orientation, double rotatingSpeed, boolean missileCanLoseTarget) {
         super("circle", 4, orientation, COLOR);
@@ -76,7 +76,7 @@ public class RocketLauncher extends Component implements Weapon {
      * @param orientation Aseen orientation.
      * @param componentOffset Aseen x-offset.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
-     * @param missileCanLoseTarget TODO
+     * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
     public RocketLauncher(Controller controller, int orientation, double rotatingSpeed, boolean missileCanLoseTarget,
                           Point2D componentOffset, Point2D prjoectileOffset) {

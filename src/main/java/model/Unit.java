@@ -22,6 +22,11 @@ import static view.GameMain.*;
 public class Unit extends Sprite implements Updateable, HitboxObject {
 
     /**
+     * apumuuttuja jotta komponentit tietävät onko alus oikeasti null, koska aluksesta jää viittaus komponenttiin.
+     */
+    private boolean isNull = false;
+
+    /**
      * Kontrolleri.
      */
     private Controller controller;
@@ -223,9 +228,6 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
         }
     }
 
-    //      /Primary
-    //      Secondary
-
     /**
      * Palauttaa Unitin sivuaseen.
      * @return Unitin sivuase.
@@ -313,8 +315,17 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
 
     }
 
+    /**
+     * getteri onko alus null, koska aluksesta saattaa jäädä viittaus mm. komponenttiin.
+     * @return
+     */
+    public boolean isNull(){
+        return isNull;
+    }
+
     @Override
     public void destroyThis() {
+        isNull = true;
         new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         new Explosion(controller, color, getPosition(), 1);
         controller.removeUpdateable(this, this);
@@ -349,6 +360,7 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
         tookDamage = true; // efektiä varten
         if(shape != null){
             shape.setStroke(Color.WHITE);
+            shape.setStrokeWidth(7.0);
         }
 
         hp -= damage;
@@ -386,6 +398,7 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
      */
     public void setOriginalColor(){
         shape.setStroke(color);
+        shape.setStrokeWidth(5);
     }
 
     /**

@@ -76,7 +76,10 @@ public abstract class Component extends Sprite {
     }
 
     public Unit getParentUnit(){
-        return parentUnit;
+        if(parentUnit != null){
+            return parentUnit;
+        }
+        return null;
     }
 
     /**

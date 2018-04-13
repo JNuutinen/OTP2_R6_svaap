@@ -68,11 +68,6 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
     private Trail trail;
 
     /**
-     * Kertoo, osoittaako ammus spawnatessaan kohdettaansa kohti.
-     */
-    private boolean initialDirectionToTarget = false;
-
-    /**
      * Apumuuttuja, joka pitää kirjaa lähimmästä matkasta kohteeseensa sen elinkaaren aikana.
      * Käytetään sen määrittämisessä, menettääkö ohjust lukituksen kohteeseensa.
      */
@@ -82,6 +77,11 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
      * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
      */
     private boolean canLoseTarget = true;
+
+    /**
+     * apumuuttuja joka laskee aikaa viime kerrasta kun haki kohdetta. Nollaantuu haun jälkeen.
+     */
+    private double findTargetTimeCounter = 0;
 
     /**
      * Konstruktori.
@@ -104,8 +104,10 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
-        trail = new Trail(controller, this);
+        trail = new Trail(controller, this, shooter.getUnitColor());
         this.getChildren().addAll(trail);
+
+        findAndSetTarget();
     }
 
     /**
@@ -141,6 +143,8 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
 
     @Override
     public void update(double deltaTime) {
+
+        findTargetTimeCounter += deltaTime;
         // chekkaa menikö ulos ruudulta
         // Nää arvot vähän isompia kuin uniteilla, että ammukset voi kaartaa ruudun ulkopuolelta
         if (getXPosition() < -OUT_OF_AREA_TRESHOLD
@@ -152,6 +156,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
             moveStep(deltaTime * getVelocity());
         }
 
+
         double angleToTarget;
         if (target != null) {
             if (controller.getUpdateables().contains(target)) {
@@ -161,7 +166,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                 }
 
                 angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
-                if(distanceToTarget < closestDistance + 40 && canLoseTarget){
+                if(distanceToTarget < closestDistance + 30 && canLoseTarget){
                     // taa vaa pitaa asteet -180 & 180 valissa
                     while (angleToTarget >= 180.0) {
                         angleToTarget -= 360.0;
@@ -180,10 +185,12 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
                     }
                     rotate(angleToTarget * rotatingSpeed * deltaTime);
                 }
-            } else if (!findTargerOnce || !findTargetTwice) {
+            } else if ((!findTargerOnce || !findTargetTwice) && findTargetTimeCounter > 0.1) {
+                findTargetTimeCounter = 0;
                 findAndSetTarget();
             }
-        } else if (!findTargerOnce || !findTargetTwice){
+        } else if ((!findTargerOnce || !findTargetTwice) && findTargetTimeCounter > 0.1){
+            findTargetTimeCounter = 0;
             findAndSetTarget();
         }
     }

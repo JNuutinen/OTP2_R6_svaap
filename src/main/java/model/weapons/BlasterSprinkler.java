@@ -110,20 +110,24 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     @Override
     public void update(double deltaTime) {
-        if (getParentUnit() != null) {
-            if (isShooting) {
-                firerateCounter += deltaTime;
-                shootingTimeCounter += deltaTime;
-                if (firerateCounter >= firerate) {
-                    SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
-                            getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag());
-                    controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
-                    firerateCounter = 0;
-                    if (shootingTimeCounter > shootingTime) {
-                        isShooting = false;
-                        shootingTimeCounter = 0;
+        if(getParentUnit() != null) {
+            if (!getParentUnit().isNull()) {
+                if (isShooting) {
+                    firerateCounter += deltaTime;
+                    shootingTimeCounter += deltaTime;
+                    if (firerateCounter >= firerate) {
+                        SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+                                getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag());
+                        controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
+                        firerateCounter = 0;
+                        if (shootingTimeCounter > shootingTime) {
+                            isShooting = false;
+                            shootingTimeCounter = 0;
+                        }
                     }
                 }
+            } else {
+                controller.removeUpdateable(this);
             }
         }
     }

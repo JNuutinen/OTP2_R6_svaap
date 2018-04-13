@@ -40,29 +40,29 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     private Polyline shape;
 
     /**
-     * Laserin aloitusväri joka on valkoinen ja jota häivytetään.
+     * Laserin aloitusväri jota häivytetään.
      */
     private Color currentColor = Color.WHITE;
 
     /**
-     * nykyisestä laserista vähennettävä punainen arvo häivytyksen aikana.
+     * nykyisestä väristä vähennettävä punainen arvo häivytyksen aikana.
      */
-    double redSubtraction = 0;
+    private double redSubtraction = 0;
 
     /**
-     * nykyisestä laserista vähennettävä vihreä arvo häivytyksen aikana.
+     * nykyisestä väristä vähennettävä vihreä arvo häivytyksen aikana.
      */
-    double greenSubtraction = 0;
+    private double greenSubtraction = 0;
 
     /**
-     * nykyisestä laserista vähennettävä sininen arvo häivytyksen aikana.
+     * nykyisestä väristä vähennettävä sininen arvo häivytyksen aikana.
      */
-    double blueSubtraction = 0;
+    private double blueSubtraction = 0;
 
     /**
-     * nykyisestä laserista vähennettävä läpinäkyvyysarvo häivytyksen aikana.
+     * nykyisestä väristä vähennettävä läpinäkyvyysarvo häivytyksen aikana.
      */
-    double opacitySubtraction = 1;
+    private double opacitySubtraction = 1;
 
     /**
      * Kulunut aika olion luomisesta.

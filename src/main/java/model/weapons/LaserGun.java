@@ -160,42 +160,50 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
     @Override
     public void update(double deltaTime) {
-        if(triggeredShoot){ // jos ase on lataamassa laseria
-            readyToShoot = false;
-            timeCounter += deltaTime; // viime silmukasta kulunut aika lisätään aikalaskuriin
-            chargingEffect.setRadius(chargingEffect.getRadius() + deltaTime * 17 / shootingDelay);
-            chargingEffect.setStrokeWidth(chargingEffect.getStrokeWidth() + deltaTime * 4 / shootingDelay);
+        if(getParentUnit() != null) {
+            if (!getParentUnit().isNull()) {
+                if (triggeredShoot) { // jos ase on lataamassa laseria
+                    readyToShoot = false;
+                    timeCounter += deltaTime; // viime silmukasta kulunut aika lisätään aikalaskuriin
+                    chargingEffect.setRadius(chargingEffect.getRadius() + deltaTime * 17 / shootingDelay);
+                    chargingEffect.setStrokeWidth(chargingEffect.getStrokeWidth() + deltaTime * 4 / shootingDelay);
 
 
-            chargingEffect.setCenterX(getProjectileOffset().getX());
-            chargingEffect.setCenterY(getProjectileOffset().getY());
+                    chargingEffect.setCenterX(getProjectileOffset().getX());
+                    chargingEffect.setCenterY(getProjectileOffset().getY());
 
-            pointerEffect.setStartX(getProjectileOffset().getX());
-            pointerEffect.setStartY(getProjectileOffset().getY());
-            pointerEffect.setEndX(WINDOW_WIDTH);
-            pointerEffect.setEndY(getProjectileOffset().getY());
+                    pointerEffect.setStartX(getProjectileOffset().getX());
+                    pointerEffect.setStartY(getProjectileOffset().getY());
+                    pointerEffect.setEndX(WINDOW_WIDTH);
+                    pointerEffect.setEndY(getProjectileOffset().getY());
 
-            double deltaTimeMultiplied = deltaTime * 1;
+                    double deltaTimeMultiplied = deltaTime * 1;
 
-            if(1 - opacityAddition > (deltaTimeMultiplied)/shootingDelay) {
-                opacityAddition = opacityAddition + (deltaTimeMultiplied)/shootingDelay;
+                    if (1 - opacityAddition > (deltaTimeMultiplied) / shootingDelay) {
+                        opacityAddition = opacityAddition + (deltaTimeMultiplied) / shootingDelay;
 
 
-                effectsColor = new Color(effectsColor.getRed(), effectsColor.getGreen(), effectsColor.getBlue(), opacityAddition);
-                pointerEffect.setStroke(effectsColor);
-                chargingEffect.setStroke(effectsColor);
-            }
+                        effectsColor = new Color(effectsColor.getRed(), effectsColor.getGreen(), effectsColor.getBlue(), opacityAddition);
+                        pointerEffect.setStroke(effectsColor);
+                        chargingEffect.setStroke(effectsColor);
+                    }
 
-            // kun ase on lataus on täynnä, niin ammu.
-            if(timeCounter > shootingDelay){
-                LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, getParentUnitColor(), getTag(),
-                        new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
-                controller.addUpdateableAndSetToScene(laserBeam, laserBeam);
-                triggeredShoot = false;
-                readyToShoot = true;
-                timeCounter = 0;
-                Platform.runLater(()->getParentUnit().getChildren().remove(chargingEffect));
-                Platform.runLater(()->getParentUnit().getChildren().remove(pointerEffect));
+                    // kun ase on lataus on täynnä, niin ammu.
+                    if (timeCounter > shootingDelay) {
+                        LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, getParentUnitColor(), getTag(),
+                                new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
+                        controller.addUpdateableAndSetToScene(laserBeam, laserBeam);
+                        triggeredShoot = false;
+                        readyToShoot = true;
+                        timeCounter = 0;
+                        Platform.runLater(() -> getParentUnit().getChildren().remove(chargingEffect));
+                        Platform.runLater(() -> getParentUnit().getChildren().remove(pointerEffect));
+                    }
+                }
+            } else {
+                Platform.runLater(() -> getParentUnit().getChildren().remove(chargingEffect));
+                Platform.runLater(() -> getParentUnit().getChildren().remove(pointerEffect));
+                controller.removeUpdateable(this);
             }
         }
     }

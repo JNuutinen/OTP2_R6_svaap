@@ -164,7 +164,7 @@ public class Level3 extends Thread implements Level {
 
             System.out.println("----LEVEL 3 KÄYNTIIN----");
 
-            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER, WEAPON_LASER_GUN)),
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
 
 
@@ -189,8 +189,7 @@ public class Level3 extends Thread implements Level {
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 200),
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 700)};
 
-            new TrackerEnemy(controller, Color.DEEPSKYBLUE, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SHOTGUN, WEAPON_LASER_GUN, WEAPON_BLASTER_SPRINKLER,
-                    WEAPON_ROCKET_LAUNCHER, WEAPON_BLASTER_SHOTGUN)), new Point2D(WINDOW_WIDTH + 50, 300),
+            new TrackerEnemy(controller, Color.DEEPSKYBLUE, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
                     path);
 
 

@@ -120,16 +120,16 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
     private Polygon buildProjectile(double speed, Color color) {
         // Ammuksen muoto
         Polygon shape = new Polygon();
-        shape.getPoints().addAll(-10.0, 2.5,
-                -10.0, -2.5,
-                0.0, -8.0,
-                speed*0.4+10.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 1.0
-                0.0, 8.0);
+        shape.getPoints().addAll(-7.0, 2.5,
+                -7.0, -2.5,
+                0.0, -6.0,
+                speed*0.4+7.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 7.0
+                0.0, 6.0);
 
         Bloom bloom = new Bloom(0.0);
-        GaussianBlur blur = new GaussianBlur(3.0);
+        GaussianBlur blur = new GaussianBlur(1.0);
         blur.setInput(bloom);
-        //shape.setEffect(blur);
+        shape.setEffect(blur);
         shape.setFill(Color.WHITE);
         shape.setStroke(color);
         shape.setStrokeWidth(3.0);

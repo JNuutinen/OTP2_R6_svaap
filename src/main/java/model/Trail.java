@@ -37,6 +37,26 @@ public class Trail extends Sprite implements Updateable{
     private List<Stop[]> colors;
 
     /**
+     * nykyisestä väristä vähennettävä punainen arvo häivytyksen aikana.
+     */
+    private double redSubtraction = 0;
+
+    /**
+     * nykyisestä väristä vähennettävä vihreä arvo häivytyksen aikana.
+     */
+    private double greenSubtraction = 0;
+
+    /**
+     * nykyisestä väristä vähennettävä sininen arvo häivytyksen aikana.
+     */
+    private double blueSubtraction = 0;
+
+    /**
+     * nykyisestä väristä vähennettävä läpinäkyvyysarvo häivytyksen aikana.
+     */
+    private double opacitySubtraction = 1;
+
+    /**
      * Uusin piste trailille.
      */
     private Point2D newestTrailPoint;
@@ -51,10 +71,15 @@ public class Trail extends Sprite implements Updateable{
      * @param controller Pelin kontrolleri.
      * @param target Updateable, josta trail lähtee.
      */
-    public Trail(Controller controller, HitboxObject target){
+    public Trail(Controller controller, HitboxObject target, Color color){
         this.controller = controller;
         this.target = target;
         this.setPosition(0, 0);
+
+        redSubtraction = (1 - color.getRed());
+        greenSubtraction = (1 - color.getGreen());
+        blueSubtraction = (1 - color.getBlue());
+        opacitySubtraction = opacitySubtraction * 0.5;
 
         newestTrailPoint = new Point2D(target.getPosition().getX(), target.getPosition().getY());
 
@@ -100,7 +125,7 @@ public class Trail extends Sprite implements Updateable{
      */
     @Override
     public void update(double deltaTime) {
-        if(getDistanceFromBetweenPoints(newestTrailPoint, target.getPosition()) > 30.0){
+        if(getDistanceFromBetweenPoints(newestTrailPoint, target.getPosition()) > 20){
             Line newLine = new Line(newestTrailPoint.getX(), newestTrailPoint.getY(), target.getPosition().getX(), target.getPosition().getY());
             newLine.setStrokeWidth(1);
             lines.add(newLine);
@@ -119,13 +144,60 @@ public class Trail extends Sprite implements Updateable{
             this.getChildren().addAll(lines.get(lines.size()-1));
         }
 
-        for(Stop[] stops : colors){
-            if(stops[0].getColor().getRed() > deltaTime) {
-                stops[0] = new Stop(0, Color.color(stops[0].getColor().getRed() - deltaTime,
-                        stops[0].getColor().getGreen() - deltaTime, 1, stops[0].getColor().getOpacity() - deltaTime));
+        double deltaTimeMultiplied = deltaTime * 3;
 
+
+
+
+        for(Stop[] stops : colors){
+            if(stops[0].getColor().getOpacity() > opacitySubtraction * deltaTimeMultiplied) {
+
+                Color color1 = stops[0].getColor();
+                Color color2 = stops[0].getColor();
+
+                double newRedValue = 0;
+                double newGreenValue = 0;
+                double newBlueValue = 0;
+                double newOpacity = 0;
+
+                if(color1.getRed() > (redSubtraction * deltaTimeMultiplied)){
+                    newRedValue = color1.getRed() - (redSubtraction * deltaTimeMultiplied);
+                }
+                if(color1.getGreen() > (greenSubtraction * deltaTimeMultiplied)){
+                    newGreenValue = color1.getGreen() - (greenSubtraction * deltaTimeMultiplied);
+                }
+                if(color1.getBlue() > (blueSubtraction * deltaTimeMultiplied)){
+                    newBlueValue = color1.getBlue() - (blueSubtraction * deltaTimeMultiplied);
+                }
+                if(color1.getOpacity() > (opacitySubtraction * deltaTimeMultiplied)){
+                    newOpacity = color1.getOpacity() - (opacitySubtraction * deltaTimeMultiplied);
+                }
+                color1 = new Color(newRedValue, newGreenValue, newBlueValue, newOpacity);
+                stops[0] = new Stop(0, color1);
+
+                // --
+
+                if(color2.getRed() > (redSubtraction * deltaTimeMultiplied)){
+                    newRedValue = color2.getRed() - (redSubtraction * deltaTimeMultiplied);
+                }
+                if(color2.getGreen() > (greenSubtraction * deltaTimeMultiplied)){
+                    newGreenValue = color2.getGreen() - (greenSubtraction * deltaTimeMultiplied);
+                }
+                if(color2.getBlue() > (blueSubtraction * deltaTimeMultiplied)){
+                    newBlueValue = color2.getBlue() - (blueSubtraction * deltaTimeMultiplied);
+                }
+                if(color2.getOpacity() > (opacitySubtraction * deltaTimeMultiplied)){
+                    newOpacity = color2.getOpacity() - (opacitySubtraction * deltaTimeMultiplied);
+                }
+                color2 = new Color(newRedValue, newGreenValue, newBlueValue, newOpacity);
+                stops[1] = new Stop(0, color2);
+                /*
                 stops[1] = new Stop(0, Color.color(stops[1].getColor().getRed() - deltaTime,
-                                stops[1].getColor().getGreen() - deltaTime, 1, stops[1].getColor().getOpacity() - deltaTime));
+                                stops[1].getColor().getGreen() - deltaTime, 1, stops[1].getColor().getOpacity() - deltaTime));*/
+            }
+            else{
+                stops[0] = new Stop(0, Color.TRANSPARENT);
+                stops[1] = new Stop(0, Color.TRANSPARENT);
             }
         }
 

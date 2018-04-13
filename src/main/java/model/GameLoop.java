@@ -393,7 +393,7 @@ public class GameLoop {
                         debugger_frameCounter++;
                         if (debugger_toSecondCounter > 1) {
                             controller.setFps(debugger_frameCounter);
-                            debugger_toSecondCounter -= 1;
+                            debugger_toSecondCounter = 0;
                             debugger_frameCounter = 0;
                         }
 
