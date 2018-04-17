@@ -65,7 +65,7 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     /**
      * nykyisestä väristä vähennettävä läpinäkyvyysarvo häivytyksen aikana.
      */
-    private double opacitySubtraction;
+    private double opacitySubtraction = 1;
 
     /**
      * Kulunut aika olion luomisesta.
@@ -120,7 +120,6 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
 
     @Override
     public void destroyThis() {
-        System.out.println("LASER DESTROYTHIS");
         controller.removeUpdateable(this, this);
     }
 

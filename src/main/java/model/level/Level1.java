@@ -70,7 +70,7 @@ public class Level1 extends Thread implements Level {
             new TrackerEnemy(Color.DEEPSKYBLUE, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
                     path);
 
-            Thread.sleep(5_000);
+            Thread.sleep(4_000);
 
             //Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
             Updateable finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
