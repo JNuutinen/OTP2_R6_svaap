@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -68,13 +69,12 @@ public class Trail extends Sprite implements Updateable{
 
     /**
      * Konstruktori, luo trailin.
-     * @param controller Pelin kontrolleri.
      * @param target Updateable, josta trail lähtee.
      */
-    public Trail(Controller controller, HitboxObject target, Color color){
-        this.controller = controller;
+    public Trail(HitboxObject target, Color color){
+        controller = GameController.getInstance();
         this.target = target;
-        this.setPosition(0, 0);
+        setPosition(0, 0);
 
         redSubtraction = (1 - color.getRed());
         greenSubtraction = (1 - color.getGreen());
@@ -85,7 +85,7 @@ public class Trail extends Sprite implements Updateable{
 
         Stop[] stops = new Stop[] { new Stop(0, Color.GREEN), new Stop(1, Color.BLUE)};
         colors = new ArrayList<Stop[]>();
-        this.colors.add(stops);
+        colors.add(stops);
 
         LinearGradient lg = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, this.colors.get(0));
         //polyline.setStroke(lg);
@@ -105,7 +105,7 @@ public class Trail extends Sprite implements Updateable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Platform.runLater(() -> destroyCompletely());
+            destroyCompletely();
         });
         thread.start();
     }

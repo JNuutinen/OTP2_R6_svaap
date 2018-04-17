@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
@@ -32,18 +33,17 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
      * @param offset TODO
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Point2D offset, int tag) {
+    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, offset, tag);
+        super(shooter, speed, offset, tag);
 
-        this.controller = controller;
+        controller = GameController.getInstance();
         this.damage = damage;
         setHitbox(10);// TODO: hitboxin koko kovakoodattu | 16
         Polygon shape = buildProjectile(speed, COLOR);
@@ -52,7 +52,6 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
 
     /**
      * Konstruktori värin valinnalla.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
@@ -60,16 +59,15 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param color Ammuksen väri.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage,
+    public SmallProjectile(Unit shooter, double speed, int damage,
                            Point2D offset, Color color, int tag) {
-        this(controller, shooter, speed, damage, offset, tag);
+        this(shooter, speed, damage, offset, tag);
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
     }
 
     /**
      * Konstruktori suunnan ja värin valinnalla.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
@@ -78,9 +76,9 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param direction Ammuksen suunta.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Controller controller, Unit shooter, double speed, int damage,
+    public SmallProjectile(Unit shooter, double speed, int damage,
                            Point2D offset, Color color, double direction, int tag) {
-        this(controller, shooter, speed, damage, offset, color, tag);
+        this(shooter, speed, damage, offset, color, tag);
         rotate(direction);
     }
 

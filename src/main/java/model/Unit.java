@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.application.Platform;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -84,13 +85,12 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
 
     /**
      * Konstruktori Unitin shapen värin valinnalla.
-     * @param controller Pelin kontrolleri.
      * @param color Unitin shapen väri.
      * @param componentSideGaps Visuaalinen väli komponenteilla toisiinsa kun ne kasataan alukseen.
      * @param projectilesFrontOffset Alukseen kasattavien aseiden ammusten poikkeama aluksen keskeltä sen etusuuntaan. Sivusuunnassa ammuksen syntyvät komponenttien kohdasta.
      */
-    public Unit(Controller controller, Color color, double componentSideGaps, double projectilesFrontOffset){
-        this.controller = controller;
+    public Unit(Color color, double componentSideGaps, double projectilesFrontOffset){
+        controller = GameController.getInstance();
         this.color = color;
         //makePrimaryWeapons(primariesTags);
 
@@ -149,22 +149,22 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
                     default:
                         break;
                     case WEAPON_BLASTER:
-                        initialPrimaryWeapons.add(new Blaster(controller, 2, 20));
+                        initialPrimaryWeapons.add(new Blaster(2, 20));
                         break;
                     case WEAPON_BLASTER_SHOTGUN:
-                        initialPrimaryWeapons.add(new BlasterShotgun(controller, 2, 20));
+                        initialPrimaryWeapons.add(new BlasterShotgun(2, 20));
                         break;
                     case WEAPON_BLASTER_SPRINKLER:
-                        initialPrimaryWeapons.add(new BlasterSprinkler(controller, 2, 20, 2));
+                        initialPrimaryWeapons.add(new BlasterSprinkler(2, 20, 2));
                         break;
                     case WEAPON_ROCKET_LAUNCHER:
-                        initialPrimaryWeapons.add(new RocketLauncher(controller, 2, 4.8, true));
+                        initialPrimaryWeapons.add(new RocketLauncher(2, 4.8, true));
                         break;
                     case WEAPON_ROCKET_SHOTGUN:
-                        initialPrimaryWeapons.add(new RocketShotgun(controller, 2, 0, 4.8, true));
+                        initialPrimaryWeapons.add(new RocketShotgun(2, 0, 4.8, true));
                         break;
                     case WEAPON_LASER_GUN:
-                        initialPrimaryWeapons.add(new LaserGun(controller, 2, 1));
+                        initialPrimaryWeapons.add(new LaserGun(2, 1));
                         break;
                 }
             }
@@ -326,8 +326,8 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
     @Override
     public void destroyThis() {
         isNull = true;
-        new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
-        new Explosion(controller, color, getPosition(), 1);
+        new PowerUp(this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        new Explosion(color, getPosition(), 1);
         controller.removeUpdateable(this, this);
         controller.removeFromCollisionList(this);
     }

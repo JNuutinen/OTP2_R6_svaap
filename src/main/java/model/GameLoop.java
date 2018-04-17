@@ -1,11 +1,14 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
 import view.GameMain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import static view.GameMain.UNDEFINED_TAG;
 
@@ -97,14 +100,6 @@ public class GameLoop {
      * arvon 1 = ei vaikuta deltatimeen
      */
     private int pauseModifier = 1;
-
-    /**
-     * Konstruktori.
-     * @param controller Pelin kontrolleri.
-     */
-    public GameLoop(Controller controller) {
-        this.controller = controller;
-    }
 
     /**
      * Asettaa viittauksen pelaajiin;
@@ -200,7 +195,7 @@ public class GameLoop {
      * Alustaa ja käynnistää GameLoopin
      */
     public void startLoop() {
-
+        controller = GameController.getInstance();
         gameLoop = new AnimationTimer(){
 
             private long lastUpdate = 0 ;
@@ -263,9 +258,7 @@ public class GameLoop {
                             //updateables.removeAll(removeUpdateableQueue);
 
                             for (Updateable toBeRemoved : removeUpdateableQueue) {
-                                if (updateables.contains(toBeRemoved)) {
-                                    updateables.remove(toBeRemoved);
-                                }
+                                updateables.remove(toBeRemoved);
                             }
 
                             for (HitboxObject toBeRemoved : removeHitboxObjectsQueue) {
@@ -281,22 +274,18 @@ public class GameLoop {
                                 else if(enemyProjectiles.contains(toBeRemoved)) {
                                     enemyProjectiles.remove(toBeRemoved);
                                 }
-                                else if(powerups.contains(toBeRemoved)){
-                                    powerups.remove(toBeRemoved);
-                                }
+                                else powerups.remove(toBeRemoved);
                             }
 
                             for (Trace toBeRemoved : removeTracesQueue) {
                                 if (enemyTraces.contains(toBeRemoved)) {
                                     enemyTraces.remove(toBeRemoved);
                                 }
-                                else if (playerTraces.contains(toBeRemoved)) {
-                                    playerTraces.remove(toBeRemoved);
-                                }
+                                else playerTraces.remove(toBeRemoved);
                             }
                             // Poistojono tyhjätään, kun siinä olleet oliot on poistettu pelistä.
                             removeTracesQueue.clear();
-                            removeHitboxObjectsQueue.clear();;
+                            removeHitboxObjectsQueue.clear();
                             removeUpdateableQueue.clear();
                         }
 

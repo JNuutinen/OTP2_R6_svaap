@@ -1,6 +1,5 @@
 package model.projectiles;
 
-import controller.Controller;
 import javafx.geometry.Point2D;
 import model.Sprite;
 import model.Unit;
@@ -20,25 +19,17 @@ import model.Unit;
 class BaseProjectile extends Sprite {
 
     /**
-     * Viittaus kontrolleriin, käytetään osumien rekisteröintiin
-     * ja projectilen poistamiseen pelistä.
-     */
-    private Controller controller;
-
-    /**
      * Viittaus ammuksen ampuneeseen Unitiin.
      */
     private Unit shooter;
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param tag Ammuksen tagi.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, int tag) {
-        this.controller = controller;
+    BaseProjectile(Unit shooter, double speed, int tag) {
         setTag(tag);
         // Suunta ja aloituspiste otetaan ampujasta johon laskettu mukaan aloituspisteen poikkeama.
         this.shooter = shooter;
@@ -52,14 +43,13 @@ class BaseProjectile extends Sprite {
 
     /**
      * Konstruktori aloitussijainnin poikkeamalla.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param offset Ammuken alkusijainnin poikkeama aluksesta.
      * @param tag Ammuksen tagi.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, Point2D offset, int tag) {
-        this(controller, shooter, speed, tag);
+    BaseProjectile(Unit shooter, double speed, Point2D offset, int tag) {
+        this(shooter, speed, tag);
         double xOffset = degreesToVector(shooter.getDirection()).getX() * offset.getX();
         double yOffset = degreesToVector(shooter.getDirection()).getY() * offset.getX();
         xOffset = xOffset + degreesToVector(shooter.getDirection() - 90).getX() * offset.getY();

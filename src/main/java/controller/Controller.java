@@ -54,6 +54,10 @@ public interface Controller {
      */
     void addUnitToCollisionList(Unit unit);
 
+    /**
+     * Palauttaa nykyisen tason.
+     * @return Nykyinen, käynnissä oleva taso.
+     */
     Level getLevel();
 
     /**
@@ -149,5 +153,10 @@ public interface Controller {
      */
     void continueGame();
 
+    /**
+     * Muuttaa taustan vierimisnopeutta tietyksi ajaksi.
+     * @param speed Väliaikainen taustan vierimisnopeus.
+     * @param duration Väliaikaisen nopeuden kesto sekunteina.
+     */
     void changeBackgroundScrollSpeed(double speed, double duration);
 }

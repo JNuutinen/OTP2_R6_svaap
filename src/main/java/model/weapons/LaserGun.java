@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
@@ -15,7 +16,7 @@ import model.Component;
 import model.Updateable;
 import model.projectiles.LaserBeam;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Laserpyssy.
@@ -99,28 +100,26 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param shootingDelay Ampumisen viive.
      */
-    public LaserGun(Controller controller, int orientation, double shootingDelay) {
+    public LaserGun(int orientation, double shootingDelay) {
         super("triangle", 4, orientation, COLOR);
         this.shootingDelay = shootingDelay;
-        this.controller = controller;
+        controller = GameController.getInstance();
         controller.addUpdateable(this);
     }
 
     /**
      * Konstruktori ampumisviiveen kanssa.
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param shootingDelay Ampumisen viive
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta.
      * .
      */
-    public LaserGun(Controller controller, int orientation, double shootingDelay, Point2D componentOffset, Point2D projectileOffset) {
-        this(controller, orientation, shootingDelay);
+    public LaserGun(int orientation, double shootingDelay, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, shootingDelay);
         setProjectileOffset(projectileOffset);
         setComponentOffset(componentOffset);
         controller.addUpdateable(this);
@@ -190,7 +189,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
                     // kun ase on lataus on täynnä, niin ammu.
                     if (timeCounter > shootingDelay) {
-                        LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, getParentUnitColor(), getTag(),
+                        LaserBeam laserBeam = new LaserBeam(getParentUnit(), SPEED, DAMAGE, getParentUnitColor(), getTag(),
                                 new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
                         controller.addUpdateableAndSetToScene(laserBeam, laserBeam);
                         triggeredShoot = false;

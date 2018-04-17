@@ -44,10 +44,6 @@ public abstract class Component extends Sprite {
      * verrattuna aluksen suuntaan. */
     private Point2D projectileOffset = new Point2D(0, 0);
 
-
-    /** Komponentin nimi. */
-    private String name = SPRITE_NAME_UNDEFINED;
-
     /** Konstruktori ilman projectilen offsettejä.
      * @param shape Komponentin kuvio merkkijonona: "triangle", "rectangle", ja "circle".
      * @param size Komponentin koko.
@@ -104,19 +100,6 @@ public abstract class Component extends Sprite {
      */
     public void setProjectileOffset(Point2D projectileOffset){
         this.projectileOffset = projectileOffset;
-    }
-
-
-    /** Palauttaa komponentin nimen.
-     * @return Komponentin nimi. */
-    public String getName() {
-        return name;
-    }
-
-    /** Asettaa komponentin nimen.
-     * @param name Komponentin nimi. */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**

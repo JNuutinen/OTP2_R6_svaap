@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
@@ -47,22 +48,22 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     /**
      * nykyisestä väristä vähennettävä punainen arvo häivytyksen aikana.
      */
-    private double redSubtraction = 0;
+    private double redSubtraction;
 
     /**
      * nykyisestä väristä vähennettävä vihreä arvo häivytyksen aikana.
      */
-    private double greenSubtraction = 0;
+    private double greenSubtraction;
 
     /**
      * nykyisestä väristä vähennettävä sininen arvo häivytyksen aikana.
      */
-    private double blueSubtraction = 0;
+    private double blueSubtraction;
 
     /**
      * nykyisestä väristä vähennettävä läpinäkyvyysarvo häivytyksen aikana.
      */
-    private double opacitySubtraction = 1;
+    private double opacitySubtraction;
 
     /**
      * Kulunut aika olion luomisesta.
@@ -70,13 +71,7 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     private double timeSinceSpawn = 0;
 
     /**
-     * Kertoo osuiko ammus.
-     */
-    private boolean hitTarget = false;
-
-    /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
@@ -84,17 +79,15 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
      * @param tag Ammuksen tagi.
      * @param offset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      */
-    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
+    public LaserBeam(Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, offset, tag);
-
+        super(shooter, speed, offset, tag);
+        controller = GameController.getInstance();
         redSubtraction = (1 - color.getRed());
         greenSubtraction = (1 - color.getGreen());
         blueSubtraction = (1 - color.getBlue());
         opacitySubtraction = opacitySubtraction * 0.5;
         //opacitySubtraction pitää muuttaa myös jos noita kaavoja muutetaan ^
-
-        this.controller = controller;
         this.damage = damage;
 
         shape = buildLaser(currentColor);
@@ -117,6 +110,7 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
 
     @Override
     public void destroyThis() {
+        System.out.println("LASER DESTROYTHIS");
         controller.removeUpdateable(this, this);
     }
 

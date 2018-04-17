@@ -1,12 +1,12 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
 import static view.GameMain.POWERUP_TAG;
 
 /**
@@ -51,14 +51,13 @@ public class PowerUp extends Sprite implements Updateable, HitboxObject{
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param deadUnit Unit, joka pudottaa power up:in
      * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
      *                    HP lisää pelaajan elämäpisteitä
      *                    SCORE lisää pelaajan pisteitä
      * @param value Arvo, joka lisätään power up:in vaikuttamaan muutujaan
      */
-    public PowerUp(Controller controller, Unit deadUnit,  int powerUpType, int value){
+    public PowerUp(Unit deadUnit,  int powerUpType, int value){
         switch (powerUpType) {
             case HP:
                 type = HP;
@@ -81,7 +80,7 @@ public class PowerUp extends Sprite implements Updateable, HitboxObject{
             default:
                 return; //Jos vihollinen ei droppaa mitään
         }
-        this.controller = controller;
+        controller = GameController.getInstance();
         setTag(POWERUP_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
         controller.addUpdateableAndSetToScene(this, this);
         this.value = value;
@@ -142,7 +141,7 @@ public class PowerUp extends Sprite implements Updateable, HitboxObject{
         circle.setFill(Color.BLACK);
         circle.setStroke(color);
         circle.setStrokeWidth(3.0);
-        return (Shape)circle;
+        return circle;
     }
     
     /**

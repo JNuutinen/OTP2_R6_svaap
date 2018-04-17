@@ -1,15 +1,11 @@
 package model.weapons;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
-import model.Player;
-import model.Unit;
 import model.projectiles.SmallProjectile;
-
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Blaster pyssy.
@@ -41,26 +37,24 @@ public class Blaster extends Component implements Weapon {
 
     /**
      * TODO
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      */
-    public Blaster(Controller controller, int orientation, double projectileSpeed) {
+    public Blaster(int orientation, double projectileSpeed) {
         super("rectangle", 4, orientation, COLOR);
-        this.controller = controller;
+        this.controller = GameController.getInstance();
         this.projectileSpeed = projectileSpeed;
     }
 
     /**
      * TODO
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param componentOffset TODO
      * @param projectileOffset TODO
      */
-    public Blaster(Controller controller, int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
-        this(controller, orientation, projectileSpeed);
+    public Blaster(int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, projectileSpeed);
         this.setProjectileOffset(projectileOffset);
         this.setComponentOffset(componentOffset);
     }
@@ -74,7 +68,7 @@ public class Blaster extends Component implements Weapon {
     @Override
     public void shoot() {
         if(getParentUnit() != null){
-            SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+            SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, DAMAGE,
                     getProjectileOffset(), getParentUnitColor(), getTag());
             controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
         }

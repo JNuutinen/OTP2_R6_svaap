@@ -1,29 +1,26 @@
 package controller;
 
 import javafx.application.Platform;
-import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import model.*;
 import model.level.Level;
-import model.level.Level3;
-import model.level.LevelN;
-import view.GameMain;
+import model.level.Level1;
 import view.View;
 
 import java.util.ArrayList;
 
-import static model.Enemy.MOVE_SINE;
-import static model.Enemy.MOVE_STRAIGHT;
-
 /**
- * Pelin kontrolleri.
+ * Pelin kontrolleri, singleton.
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
 public class GameController implements Controller {
+
+    /**
+     * Kontrolleri-instanssi.
+     */
+    private static Controller INSTANCE = null;
 
     /**
      * Pelin view.
@@ -46,12 +43,40 @@ public class GameController implements Controller {
     private Level level;
 
     /**
-     * Konstruktori, luo GameLoopin.
+     * Konstruktori, luo GameLoopin. Private, koska singleton.
      * @param view Pelin view.
      */
-    public GameController(GameMain view) {
-        gameLoop = new GameLoop(this);
+    private GameController(View view) {
         this.view = view;
+        gameLoop = new GameLoop();
+    }
+
+    /**
+     * Palauttaa kontrollerin instanssin. Instanssi on null, ellei olla ennen tämän metodin kutsua
+     * kutsuttu getInstance(View view) -metodia, joka alustaaa instanssin.
+     * @return Controller instanssi.
+     */
+    public static Controller getInstance() {
+        if (INSTANCE == null) {
+            throw new UnsupportedOperationException("Kontrolleria ei vielä initalisoitu (getInstance(View view)).");
+        }
+        return INSTANCE;
+    }
+
+    /**
+     * Palauttaa kontrollerin instanssin. Alustaa instanssin view parametrillä.
+     * @param view Pelin view.
+     * @return Controller instanssi.
+     */
+    public static Controller getInstance(View view) {
+        if (INSTANCE == null) {
+            synchronized (GameController.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new GameController(view);
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     @Override
@@ -60,6 +85,7 @@ public class GameController implements Controller {
         gameLoop.setPlayers(players);
     }
 
+    @Override
     public Level getLevel(){
         return level;
     }
@@ -73,8 +99,9 @@ public class GameController implements Controller {
         view.setScore(players.get(0).getScore());
     }
 
+    @Override
     public void setHealthbar(int hp, int selector){
-       Platform.runLater(() -> view.setHealthbar(hp, selector));
+       view.setHealthbar(hp, selector);
     }
 
     @Override
@@ -84,32 +111,26 @@ public class GameController implements Controller {
 
     @Override
     public void removeFromCollisionList(Unit unit){
-        Platform.runLater(() ->view.removeFromCollisionList(unit));
+        view.removeFromCollisionList(unit);
     }
 
     @Override
     public void addUpdateableAndSetToScene(Updateable updateable, HitboxObject hitboxObject) {
-        Platform.runLater(() -> {
-            view.addSprite((Sprite) updateable);
-        });
+        Platform.runLater(() -> view.addSprite((Sprite) updateable));
         gameLoop.queueHitboxObject(hitboxObject);
         gameLoop.queueUpdateable(updateable);
     }
 
     @Override
     public void addUpdateableAndSetToScene(Updateable updateable, Trace trace) {
-        Platform.runLater(() -> {
-            view.addSprite((Sprite) updateable);
-        });
+        Platform.runLater(() -> view.addSprite((Sprite) updateable));
         gameLoop.queueTrace(trace);
         gameLoop.queueUpdateable(updateable);
     }
 
     @Override
     public void addUpdateableAndSetToScene(Updateable updateable) {
-        Platform.runLater(() -> {
-            view.addSprite((Sprite) updateable);
-        });
+        Platform.runLater(() -> view.addSprite((Sprite) updateable));
         gameLoop.queueUpdateable(updateable);
     }
 
@@ -131,8 +152,6 @@ public class GameController implements Controller {
 
     @Override
     public synchronized void removeUpdateable(Updateable updateable, HitboxObject hitboxObject) {
-        // TODO: hitboxi jää viel?
-        //((Sprite) updateable).setPosition(-50, -50);
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
         gameLoop.removeHitboxObject(hitboxObject);
@@ -140,8 +159,6 @@ public class GameController implements Controller {
 
     @Override
     public synchronized void removeUpdateable(Updateable updateable, Trace trace) {
-        // TODO: hitboxi jää viel?
-        //((Sprite) updateable).setPosition(-50, -50);
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
         gameLoop.removeTrace(trace);
@@ -149,7 +166,6 @@ public class GameController implements Controller {
 
     @Override
     public synchronized void removeUpdateable(Updateable updateable) {
-        // TODO: bossin hitboxi jää viel?
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
     }
@@ -157,88 +173,24 @@ public class GameController implements Controller {
     @Override
     public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
+    @Override
     public synchronized ArrayList<HitboxObject> getPlayerHitboxObjects(){
         return gameLoop.getPlayerHitboxObjects();
     }
 
+    @Override
     public synchronized ArrayList<HitboxObject> getHitboxObjects(){
         return gameLoop.getHitboxObjects();
     }
 
     @Override
     public void startLevel(int levelNumber) {
-        ArrayList<Enemy> enemies;
         switch (levelNumber) {
-            default:
-                // Luodaan enemy tyypit listaan, mikä annetaan levelille parametrina
-                //enemies = createEnemyTypes();
-                int numberOfEnemies = 0;
-                double spawnFrequencyModifier = 1;
-                double enemyHealthModifier = 1;
-                double enemyDamageModifier = 1;
-
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier, levelNumber);
-                break;
             case 1:
-                //enemies = createEnemyTypes();
-                numberOfEnemies = 3;
-                spawnFrequencyModifier = 0.9;
-                enemyHealthModifier = 1.0;
-                enemyDamageModifier = 1.5;
-
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier, levelNumber);
+                level = new Level1();
                 break;
-            case 2:
-                //enemies = createEnemyTypes();
-                numberOfEnemies = 20;
-                spawnFrequencyModifier = 0.8;
-                enemyHealthModifier = 1.1;
-                enemyDamageModifier = 2;
-
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier, levelNumber);
-                break;
-            case 3:
-                //enemies = createEnemyTypes();
-                numberOfEnemies = 1;
-                spawnFrequencyModifier = 0.7;
-                enemyHealthModifier = 1.2;
-                enemyDamageModifier = 2;
-
-                level = new Level3(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier, levelNumber);
-                break;
-            case 4:
-                //enemies = createEnemyTypes();
-                numberOfEnemies = 30;
-                spawnFrequencyModifier = 0.2;
-                enemyHealthModifier = 1.3;
-                enemyDamageModifier = 2;
-
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier, levelNumber);
-                break;
-            case 5:
-                //enemies = createEnemyTypes();
-                numberOfEnemies = 30;
-                spawnFrequencyModifier = 0.05;
-                enemyHealthModifier = 1.4;
-                enemyDamageModifier = 2;
-
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier, levelNumber);
-                break;
-            case 6:
-                //enemies = createEnemyTypes();
-                numberOfEnemies = 1000;
-                spawnFrequencyModifier = 0.1;
-                enemyHealthModifier = 1.5;
-                enemyDamageModifier = 0;
-
-                level = new LevelN(this, null, numberOfEnemies, spawnFrequencyModifier, enemyHealthModifier,
-                        enemyDamageModifier, levelNumber);
+            default:
+                level = new Level1();
                 break;
         }
         level.startLevel();
@@ -248,14 +200,12 @@ public class GameController implements Controller {
     @Override
     public void pauseGame() {
         gameLoop.pauseGame();
-        level.pauseLevel();
         view.pause();
     }
 
     @Override
     public void continueGame() {
         gameLoop.continueGame();
-        level.continueLevel();
     }
 
     @Override
@@ -278,27 +228,10 @@ public class GameController implements Controller {
         view.setCurrentFps(currentFps);
     }
 
-    /**
-     * Luo listan tasossa ilmenevistä vihollisista. Vihollistyypeissä erona esim. väri ja liikkumistyyli.
-     * @return ArrayList, joka sisältää eri vihollistyypit.
-     */
-    private ArrayList<Enemy> createEnemyTypes() {
-        Image enemyImage = new Image("/images/enemy_ship_9000.png");
-        Enemy enemy1 = new Enemy(this, Color.GRAY, null, MOVE_STRAIGHT, new Point2D(0, 0));
-        enemy1.setImage(enemyImage, 1, 1);// width aj height arvoilla ei ole merkitysta koska vihu piirretty vektoreilla
-        Enemy enemy2 = new Enemy(this, Color.PALEGOLDENROD, null,  MOVE_SINE, new Point2D(0 ,0));
-        enemy2.setImage(enemyImage, 1, 1);
-        ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(enemy1);
-        enemies.add(enemy2);
-        return enemies;
-    }
-
     @Override
     public void returnToMain(){
-        Platform.runLater(()->view.returnToMain());
-        level.destroyLevel();
-        gameLoop.stopLoop();
+        view.returnToMain();
+        gameLoop = new GameLoop();
 
     }
 }

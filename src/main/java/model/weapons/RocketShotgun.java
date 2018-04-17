@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
@@ -28,7 +29,7 @@ public class RocketShotgun extends Component implements Weapon {
     /**
      * Rakettihaulukon tulinopeus.
      */
-    private static final double FIRE_RATE = 0;
+    private static final double FIRE_RATE = 4;
 
     /**
      * Ammusten käääntymisnopeus aluksi.
@@ -65,51 +66,47 @@ public class RocketShotgun extends Component implements Weapon {
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      */
-    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
+    public RocketShotgun(int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
         super("circle", 4, orientation, COLOR);
-        this.controller = controller;
+        controller = GameController.getInstance();
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;
         this.latterMissileRotatingSpeed = latterMissileRotatingSpeed;
     }
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      */
-    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed,
+    public RocketShotgun(int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed,
                          Point2D componentOffset, Point2D projectileOffset) {
-        this(controller, orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
+        this(orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
         setComponentOffset(componentOffset);
         setProjectileOffset(projectileOffset);
     }
 
     /**
      * TODO TODO
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
      */
-
-    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed,
+    public RocketShotgun(int orientation, double initialMissileRotatingSpeed,
                          double latterMissileRotatingSpeed, boolean missileCanLoseTarget) {
-        this(controller, orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
+        this(orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
         this.missileCanLoseTarget = missileCanLoseTarget;
     }
 
 
-    public RocketShotgun(Controller controller, int orientation, double initialMissileRotatingSpeed,
+    public RocketShotgun(int orientation, double initialMissileRotatingSpeed,
                          double latterMissileRotatingSpeed, boolean missileCanLoseTarget, Point2D componentOffset, Point2D projectileOffset) {
-        this(controller, orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed, missileCanLoseTarget);
+        this(orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed, missileCanLoseTarget);
         setComponentOffset(componentOffset);
         setProjectileOffset(projectileOffset);
     }
@@ -123,7 +120,7 @@ public class RocketShotgun extends Component implements Weapon {
     public void shoot() {
         if(getParentUnit() != null) {
             for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-                LazyMissile lazyMissile = new LazyMissile(controller, getParentUnit(), SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
+                LazyMissile lazyMissile = new LazyMissile(getParentUnit(), SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
                         initialMissileRotatingSpeed, latterMissileRotatingSpeed, getTag(), missileCanLoseTarget);
                 controller.addUpdateableAndSetToScene(lazyMissile, lazyMissile);
             }
