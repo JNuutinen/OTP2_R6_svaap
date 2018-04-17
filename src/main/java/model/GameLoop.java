@@ -42,46 +42,46 @@ public class GameLoop {
     /**
      * TODO
      */
-    private Queue<HitboxObject> hitboxObjectsQueue = new LinkedList<>();
+    private Queue<HitboxCircle> hitboxObjectsQueue = new LinkedList<>();
 
-    private Queue<HitboxObject> removeHitboxObjectsQueue = new LinkedList<>();
+    private Queue<HitboxCircle> removeHitboxObjectsQueue = new LinkedList<>();
 
     /**
      * TODO
      */
-    private Queue<Trace> tracesQueue = new LinkedList<>();
+    private Queue<HitboxTrace> tracesQueue = new LinkedList<>();
 
-    private Queue<Trace> removeTracesQueue = new LinkedList<>();
+    private Queue<HitboxTrace> removeTracesQueue = new LinkedList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> enemies = new ArrayList<>();
+    private volatile ArrayList<HitboxCircle> enemies = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> enemyProjectiles = new ArrayList<>();
+    private volatile ArrayList<HitboxCircle> enemyProjectiles = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista pelaajan ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> playerProjectiles = new ArrayList<>();
+    private volatile ArrayList<HitboxCircle> playerProjectiles = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<HitboxObject> powerups = new ArrayList<>();
+    private volatile ArrayList<HitboxCircle> powerups = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista vihollisten ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<Trace> enemyTraces = new ArrayList<>();
+    private volatile ArrayList<HitboxTrace> enemyHitboxTraces = new ArrayList<>();
 
     /**
      * Lista pelissä tiettynä hetkenä olevista pelaajan ammuksista, käytetään osumien tarkasteluun.
      */
-    private volatile ArrayList<Trace> playerTraces = new ArrayList<>();
+    private volatile ArrayList<HitboxTrace> playerHitboxTraces = new ArrayList<>();
 
     /**
      * Pelaaja, käytetään osumien tarkasteluun.
@@ -125,18 +125,18 @@ public class GameLoop {
 
     /**
      * Lisää Hitbox-rajapintaolion jonoon, odottamaan lisäystä peliin.
-     * @param hitboxObject Hitbox-rajapintaolio
+     * @param hitboxCircle Hitbox-rajapintaolio
      */
-    synchronized public void queueHitboxObject(HitboxObject hitboxObject) {
-        hitboxObjectsQueue.add(hitboxObject);
+    synchronized public void queueHitboxObject(HitboxCircle hitboxCircle) {
+        hitboxObjectsQueue.add(hitboxCircle);
     }
 
     /**
-     * Lisää Trace-rajapintaolion jonoon, odottamaan lisäystä peliin.
-     * @param trace Trace-rajapintaolio.
+     * Lisää HitboxTrace-rajapintaolion jonoon, odottamaan lisäystä peliin.
+     * @param hitboxTrace HitboxTrace-rajapintaolio.
      */
-    synchronized public void queueTrace(Trace trace) {
-        tracesQueue.add(trace);
+    synchronized public void queueTrace(HitboxTrace hitboxTrace) {
+        tracesQueue.add(hitboxTrace);
     }
 
     /**
@@ -146,8 +146,8 @@ public class GameLoop {
     synchronized public void removeUpdateable(Updateable updateable) {
         removeUpdateableQueue.add(updateable);
     }
-    synchronized public void removeHitboxObject(HitboxObject hitboxObject) { removeHitboxObjectsQueue.add(hitboxObject);}
-    synchronized public void removeTrace(Trace trace) { removeTracesQueue.add(trace);}
+    synchronized public void removeHitboxObject(HitboxCircle hitboxCircle) { removeHitboxObjectsQueue.add(hitboxCircle);}
+    synchronized public void removeTrace(HitboxTrace hitboxTrace) { removeTracesQueue.add(hitboxTrace);}
 
     /**
      * Palauttaa Updateable listan.
@@ -158,22 +158,22 @@ public class GameLoop {
     }
 
     /**
-     * TODO
+     * palauttaa pelaajat hitBoxObjecteina
      * @return
      */
-    public ArrayList<HitboxObject> getPlayerHitboxObjects(){
-        ArrayList<HitboxObject> toHitboxlist = new ArrayList<>();
+    public ArrayList<HitboxCircle> getPlayerHitboxObjects(){
+        ArrayList<HitboxCircle> toHitboxlist = new ArrayList<>();
         toHitboxlist.addAll(players);
         return toHitboxlist;
     }
 
-    public ArrayList<HitboxObject> getHitboxObjects(){
-        ArrayList<HitboxObject> hitboxObjects = new ArrayList<>();
+    public ArrayList<HitboxCircle> getHitboxObjects(){
+        ArrayList<HitboxCircle> hitboxCircles = new ArrayList<>();
 
-        hitboxObjects.addAll(enemyProjectiles);
-        hitboxObjects.addAll(enemies);
-        hitboxObjects.addAll(playerProjectiles);
-        return hitboxObjects;
+        hitboxCircles.addAll(enemyProjectiles);
+        hitboxCircles.addAll(enemies);
+        hitboxCircles.addAll(playerProjectiles);
+        return hitboxCircles;
     }
 
     /**
@@ -223,32 +223,32 @@ public class GameLoop {
                         if (!updateableQueue.isEmpty()) {
                             updateables.addAll(updateableQueue);
 
-                            for(HitboxObject hitboxObject : hitboxObjectsQueue){
-                                switch (hitboxObject.getTag()) {
+                            for(HitboxCircle hitboxCircle : hitboxObjectsQueue){
+                                switch (hitboxCircle.getTag()) {
                                     case GameMain.ENEMY_SHIP_TAG:
-                                        enemies.add(hitboxObject);
+                                        enemies.add(hitboxCircle);
                                         break;
                                     case GameMain.BOSS_SHIP_TAG:
-                                        enemies.add(hitboxObject);
+                                        enemies.add(hitboxCircle);
                                         break;
                                     case GameMain.ENEMY_PROJECTILE_TAG:
-                                        enemyProjectiles.add(hitboxObject);
+                                        enemyProjectiles.add(hitboxCircle);
                                         break;
                                     case GameMain.PLAYER_PROJECTILE_TAG:
-                                        playerProjectiles.add(hitboxObject);
+                                        playerProjectiles.add(hitboxCircle);
                                         break;
                                     case GameMain.POWERUP_TAG:
-                                        powerups.add(hitboxObject);
+                                        powerups.add(hitboxCircle);
                                         break;
                                 }
                             }
-                            for (Trace trace : tracesQueue){
-                                switch (trace.getTag()) {
+                            for (HitboxTrace hitboxTrace : tracesQueue){
+                                switch (hitboxTrace.getTag()) {
                                     case GameMain.ENEMY_PROJECTILE_TAG:
-                                        enemyTraces.add(trace);
+                                        enemyHitboxTraces.add(hitboxTrace);
                                         break;
                                     case GameMain.PLAYER_PROJECTILE_TAG:
-                                        playerTraces.add(trace);
+                                        playerHitboxTraces.add(hitboxTrace);
                                         break;
                                 }
                             }
@@ -269,7 +269,7 @@ public class GameLoop {
                                 }
                             }
 
-                            for (HitboxObject toBeRemoved : removeHitboxObjectsQueue) {
+                            for (HitboxCircle toBeRemoved : removeHitboxObjectsQueue) {
                                 if (enemies.contains(toBeRemoved)) {
                                     enemies.remove(toBeRemoved);
                                 }
@@ -287,12 +287,12 @@ public class GameLoop {
                                 }
                             }
 
-                            for (Trace toBeRemoved : removeTracesQueue) {
-                                if (enemyTraces.contains(toBeRemoved)) {
-                                    enemyTraces.remove(toBeRemoved);
+                            for (HitboxTrace toBeRemoved : removeTracesQueue) {
+                                if (enemyHitboxTraces.contains(toBeRemoved)) {
+                                    enemyHitboxTraces.remove(toBeRemoved);
                                 }
-                                else if (playerTraces.contains(toBeRemoved)) {
-                                    playerTraces.remove(toBeRemoved);
+                                else if (playerHitboxTraces.contains(toBeRemoved)) {
+                                    playerHitboxTraces.remove(toBeRemoved);
                                 }
                             }
                             // Poistojono tyhjätään, kun siinä olleet oliot on poistettu pelistä.
@@ -316,7 +316,7 @@ public class GameLoop {
 
                         // Vihollisten ammuksien vertailu Playeriin
                         for(Player player : players) {
-                            for (HitboxObject enemyProjectile : enemyProjectiles) {
+                            for (HitboxCircle enemyProjectile : enemyProjectiles) {
                                 switch (enemyProjectile.getTag()) {
 
                                     // Vihollisien perusammus
@@ -331,7 +331,7 @@ public class GameLoop {
                                 }
                             }
                             //poweruppien vertailu playeriin
-                            for (HitboxObject powerup : powerups) {
+                            for (HitboxCircle powerup : powerups) {
                                 switch (powerup.getTag()) {
 
                                     // Vihollisien perusammus
@@ -346,21 +346,21 @@ public class GameLoop {
                                         break;
                                 }
                             }
-                            for(Trace enemyTrace : enemyTraces){
-                                switch (enemyTrace.getTag()) {
+                            for(HitboxTrace enemyHitboxTrace : enemyHitboxTraces){
+                                switch (enemyHitboxTrace.getTag()) {
                                     case GameMain.ENEMY_PROJECTILE_TAG:
-                                        if (traceIntersectsCircle(enemyTrace, player.getPosition(), player.getHitboxRadius())) {
-                                            enemyTrace.collides(player);
+                                        if (traceIntersectsCircle(enemyHitboxTrace, player.getPosition(), player.getHitboxRadius())) {
+                                            enemyHitboxTrace.collides(player);
                                         }
                                         break;
                                 }
-                                enemyTrace.setTag(UNDEFINED_TAG); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
+                                enemyHitboxTrace.setTag(UNDEFINED_TAG); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
                             }
                         }
 
                         // Playerin ammuksien vertailu kaikkiin vihollisiin
-                        for (HitboxObject playerProjectile : playerProjectiles) {
-                            for (HitboxObject enemy : enemies) {
+                        for (HitboxCircle playerProjectile : playerProjectiles) {
+                            for (HitboxCircle enemy : enemies) {
                                 switch (playerProjectile.getTag()) {
                                     // Playerin perusammus
                                     case GameMain.PLAYER_PROJECTILE_TAG:
@@ -372,18 +372,18 @@ public class GameLoop {
                                 }
                             }
                         }
-                        for(Trace playerTrace : playerTraces){
-                            for (HitboxObject enemy : enemies) {
-                                switch (playerTrace.getTag()) {
+                        for(HitboxTrace playerHitboxTrace : playerHitboxTraces){
+                            for (HitboxCircle enemy : enemies) {
+                                switch (playerHitboxTrace.getTag()) {
                                     // Playerin perusammus
                                     case GameMain.PLAYER_PROJECTILE_TAG:
-                                        if (traceIntersectsCircle(playerTrace, enemy.getPosition(), enemy.getHitboxRadius())) {
-                                            playerTrace.collides(enemy);
+                                        if (traceIntersectsCircle(playerHitboxTrace, enemy.getPosition(), enemy.getHitboxRadius())) {
+                                            playerHitboxTrace.collides(enemy);
                                         }
                                         break;
                                 }
                             }
-                            playerTrace.setTag(UNDEFINED_TAG);
+                            playerHitboxTrace.setTag(UNDEFINED_TAG);
                         }
 
                         // Fps päivitys
@@ -414,64 +414,50 @@ public class GameLoop {
         return sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
     }
 
-    private boolean traceIntersectsCircle(Trace trace, Point2D circleLocation, double radius){
-
-        Point2D E = trace.getTraceCoordinates().get(0);
-        Point2D L = trace.getTraceCoordinates().get(1);
+    /**
+     * Apumetodi tarkastelemaan janan ja ympyrän välistä osumaa
+     * @param hitboxTrace jana hitboxTrace oliona.
+     * @param circleLocation ympyrähitboxin sijainti.
+     * @param radius ympyrähitboxin säde
+     * @return osuiko jana ympyrään.
+     */
+    private boolean traceIntersectsCircle(HitboxTrace hitboxTrace, Point2D circleLocation, double radius){
+        Point2D E = hitboxTrace.getTraceCoordinates().get(0);
+        Point2D L = hitboxTrace.getTraceCoordinates().get(1);
         // tracen vektori, aloituspisteestä lopetuspisteeseen.
-        Point2D d = new Point2D(L.getX() - E.getX(), L.getY() - L.getY());
+        Point2D d = new Point2D(L.getX() - E.getX(), L.getY() - E.getY());
         // vektori ympyrän keskipisteestä tracen aloituspisteeseen
         Point2D f = new Point2D(E.getX() - circleLocation.getX(), E.getY() - circleLocation.getY());
 
         double a = vectorDotProduct(d, d);
         double b = 2 * vectorDotProduct(f, d);
         double c = vectorDotProduct(f, f) - radius * radius;
-
-        // TODO
         double discriminant = b * b - 4 * a * c;
+
         if( discriminant < 0 )
         {
             // ei osumaa
         }
         else
         {
-            // ray didn't totally miss sphere,
-            // so there is a solution to
-            // the equation.
+            // luultavasti osui mutta pitää tarkistaa kaikki tilanteet...
 
             discriminant = sqrt(discriminant);
+            double t1 = (-b - discriminant)/(2 * a);
+            double t2 = (-b + discriminant)/(2 * a);
 
-            // either solution may be on or off the ray so need to test both
-            // t1 is always the smaller value, because BOTH discriminant and
-            // a are nonnegative.
-            double t1 = (-b - discriminant)/(2*a);
-            double t2 = (-b + discriminant)/(2*a);
-
-            // 3x HIT cases:
-            //          -o->             --|-->  |            |  --|->
-            // Impale(t1 hit,t2 hit), Poke(t1 hit,t2>1), ExitWound(t1<0, t2 hit),
-
-            // 3x MISS cases:
-            //       ->  o                     o ->              | -> |
-            // FallShort (t1>1,t2>1), Past (t1<0,t2<0), CompletelyInside(t1<0, t2>1)
-
+            // jos lävistää ympyrän kahesti tai lävistää vain ulkoa päin
             if( t1 >= 0 && t1 <= 1 )
             {
-                // t1 is the intersection, and it's closer than t2
-                // (since t1 uses -b - discriminant)
-                // Impale, Poke
                 return true ;
             }
 
-            // here t1 didn't intersect so we are either started
-            // inside the sphere or completely past it
+            // jos lävistää vain ympyrän sisältä päin
             if( t2 >= 0 && t2 <= 1 )
             {
-                // ExitWound
                 return true ;
             }
-
-            // no intn: FallShort, Past, CompletelyInside
+            // muuten ei osunut
             return false ;
         }
         return false;

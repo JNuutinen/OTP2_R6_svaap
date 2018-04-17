@@ -164,16 +164,16 @@ public class Level3 extends Thread implements Level {
 
             System.out.println("----LEVEL 3 KÄYNTIIN----");
 
-            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER)),
+            /*new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
+*/
 
 
 
-
-            //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
-            //        0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER, WEAPON_ROCKET_SHOTGUN)),
+                    0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
             Thread.sleep(1500);
-            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
+            new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 500));
             Thread.sleep(100);
 
@@ -193,7 +193,7 @@ public class Level3 extends Thread implements Level {
                     path);
 
 
-            Thread.sleep(25_000);
+            Thread.sleep(5_000);
 
             finalBoss = new Boss3(controller, new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
 

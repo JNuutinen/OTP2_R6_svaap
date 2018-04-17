@@ -24,7 +24,7 @@ public class Trail extends Sprite implements Updateable{
     /**
      * Updateable, josta häntä lähtee.
      */
-    private HitboxObject target;
+    private HitboxCircle target;
 
     /**
      * Lista, jossa trailin muodostavat viivat.
@@ -71,7 +71,7 @@ public class Trail extends Sprite implements Updateable{
      * @param controller Pelin kontrolleri.
      * @param target Updateable, josta trail lähtee.
      */
-    public Trail(Controller controller, HitboxObject target, Color color){
+    public Trail(Controller controller, HitboxCircle target, Color color){
         this.controller = controller;
         this.target = target;
         this.setPosition(0, 0);

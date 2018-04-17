@@ -87,6 +87,7 @@ public class Boss extends Unit {
         setImage(new Image("/images/bossPlaceholder.png"), 128, 256);
         setVelocity(400);
         this.setHitbox(256);
+        setUnitSize(6);
 
         armBoss(controller);
 

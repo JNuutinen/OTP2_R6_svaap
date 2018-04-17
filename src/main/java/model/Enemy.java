@@ -56,12 +56,6 @@ public class Enemy extends Unit {
     private int movementPattern;
 
     /**
-     * Suunta johon vihollinen liikkuu.
-     */
-    private double direction = 0;
-
-
-    /**
      * Tulinopeus
      */
     private double fireRate = 3;

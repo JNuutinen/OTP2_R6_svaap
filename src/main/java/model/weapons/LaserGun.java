@@ -34,7 +34,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
     /**
      * Aseen ammuksien vahinko.
      */
-    private static final int DAMAGE = 15;
+    private static final int DAMAGE = 40;
 
     /**
      *  Aseen tulinopeus.
@@ -83,6 +83,11 @@ public class LaserGun extends Component implements Weapon, Updateable {
     private boolean readyToShoot = true;
 
     /**
+     * Ammusten vahinkomääräkerroin.
+     */
+    private double damageMultiplier = 1;
+
+    /**
      * Aseen latausefekti.
      */
     private Circle chargingEffect;
@@ -129,6 +134,11 @@ public class LaserGun extends Component implements Weapon, Updateable {
     @Override
     public double getFireRate() {
         return FIRE_RATE;
+    }
+
+    @Override
+    public void setDamageMultiplier(double damageMultiplier) {
+        this.damageMultiplier = damageMultiplier;
     }
 
     @Override
@@ -190,7 +200,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
                     // kun ase on lataus on täynnä, niin ammu.
                     if (timeCounter > shootingDelay) {
-                        LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, DAMAGE, getParentUnitColor(), getTag(),
+                        LaserBeam laserBeam = new LaserBeam(controller, getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier), getParentUnitColor(), getTag(),
                                 new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
                         controller.addUpdateableAndSetToScene(laserBeam);
                         controller.addTrace(laserBeam);

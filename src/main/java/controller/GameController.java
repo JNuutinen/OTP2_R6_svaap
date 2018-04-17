@@ -88,13 +88,13 @@ public class GameController implements Controller {
     }
 
     @Override
-    public void addHitboxObject(HitboxObject hitboxObject) {
-        gameLoop.queueHitboxObject(hitboxObject);
+    public void addHitboxObject(HitboxCircle hitboxCircle) {
+        gameLoop.queueHitboxObject(hitboxCircle);
     }
 
     @Override
-    public void addTrace(Trace trace) {
-        gameLoop.queueTrace(trace);
+    public void addTrace(HitboxTrace hitboxTrace) {
+        gameLoop.queueTrace(hitboxTrace);
     }
 
     @Override
@@ -122,21 +122,21 @@ public class GameController implements Controller {
     }
 
     @Override
-    public synchronized void removeUpdateable(Updateable updateable, HitboxObject hitboxObject) {
+    public synchronized void removeUpdateable(Updateable updateable, HitboxCircle hitboxCircle) {
         // TODO: hitboxi jää viel?
         //((Sprite) updateable).setPosition(-50, -50);
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
-        gameLoop.removeHitboxObject(hitboxObject);
+        gameLoop.removeHitboxObject(hitboxCircle);
     }
 
     @Override
-    public synchronized void removeUpdateable(Updateable updateable, Trace trace) {
+    public synchronized void removeUpdateable(Updateable updateable, HitboxTrace hitboxTrace) {
         // TODO: hitboxi jää viel?
         //((Sprite) updateable).setPosition(-50, -50);
         view.removeSprite((Sprite)updateable);
         gameLoop.removeUpdateable(updateable);
-        gameLoop.removeTrace(trace);
+        gameLoop.removeTrace(hitboxTrace);
     }
 
     @Override
@@ -149,11 +149,11 @@ public class GameController implements Controller {
     @Override
     public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
-    public synchronized ArrayList<HitboxObject> getPlayerHitboxObjects(){
+    public synchronized ArrayList<HitboxCircle> getPlayerHitboxObjects(){
         return gameLoop.getPlayerHitboxObjects();
     }
 
-    public synchronized ArrayList<HitboxObject> getHitboxObjects(){
+    public synchronized ArrayList<HitboxCircle> getHitboxObjects(){
         return gameLoop.getHitboxObjects();
     }
 

@@ -2,29 +2,26 @@ package model;
 
 import javafx.geometry.Point2D;
 
-import java.util.List;
-
-public interface Trace {
+public interface HitboxCircle {
 
     /**
-     * Palauttaa viivan aloitus- ja lopetuskoordinaatit.
-     * @return List jossa on indeksissä 0 ja 1 viivan aloitus- ja lopetuskoordinaatti.
+     * Palauttaa ympyränmuotoisen hitboxin halkaisijan.
+     * @return Hitboxin halkaisija.
      */
-    List<Point2D> getTraceCoordinates();
+    double getHitboxRadius();
 
     /**
-     * TODO
+     * Palauttaa olion sijainnin.
      * @return Olion sijainti Point2D-oliona.
      */
-    Point2D getStartCoordinate();
+    Point2D getPosition();
 
     /**
-     * TODO koko homma
-     * Kutsutaan, kun osuma on tapahtunut parametrinä annetun Hitboxin kanssa.
+     * Kutsutaan, kun osuma on tapahtunut parametrinä annetun Hitbox-olion kanssa.
      * Hoitaa osuman seurausten käsittelyn. Olettaa, että törmäys olioiden kanssa on mahdollinen.
-     * @param collidingHitbox Updateable-rajapinnan toteuttava olio, johon törmätty.
+     * @param collidingTarget olio johon osui, joka on Hitbox- -rajapintaolio.
      */
-    void collides(Object obj);
+    void collides(Object collidingTarget);
 
     /**
      * Poistaa tämän olion pelistä.

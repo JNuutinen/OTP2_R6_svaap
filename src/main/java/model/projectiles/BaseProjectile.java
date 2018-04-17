@@ -31,14 +31,20 @@ class BaseProjectile extends Sprite {
     private Unit shooter;
 
     /**
+     * ammuksen tekemä vahinko
+     */
+    private double damage = 0;
+
+    /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param tag Ammuksen tagi.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, int tag) {
+    BaseProjectile(Controller controller, Unit shooter, double speed, double damage, int tag) {
         this.controller = controller;
+        this.damage = damage;
         setTag(tag);
         // Suunta ja aloituspiste otetaan ampujasta johon laskettu mukaan aloituspisteen poikkeama.
         this.shooter = shooter;
@@ -58,8 +64,8 @@ class BaseProjectile extends Sprite {
      * @param offset Ammuken alkusijainnin poikkeama aluksesta.
      * @param tag Ammuksen tagi.
      */
-    BaseProjectile(Controller controller, Unit shooter, double speed, Point2D offset, int tag) {
-        this(controller, shooter, speed, tag);
+    BaseProjectile(Controller controller, Unit shooter, double speed, Point2D offset, double damage, int tag) {
+        this(controller, shooter, speed, damage, tag);
         double xOffset = degreesToVector(shooter.getDirection()).getX() * offset.getX();
         double yOffset = degreesToVector(shooter.getDirection()).getY() * offset.getX();
         xOffset = xOffset + degreesToVector(shooter.getDirection() - 90).getX() * offset.getY();
@@ -74,5 +80,13 @@ class BaseProjectile extends Sprite {
      */
     Unit getShooter() {
         return shooter;
+    }
+
+    /**
+     * ammuksen tekemä vahinko -getteri
+     * @return ammuksen tekemä vahinko
+     */
+    public double getDamage() {
+        return damage;
     }
 }

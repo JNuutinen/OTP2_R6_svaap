@@ -59,6 +59,11 @@ public class RocketShotgun extends Component implements Weapon {
     private Controller controller;
 
     /**
+     * Ammusten vahinkomääräkerroin.
+     */
+    private double damageMultiplier = 1;
+
+    /**
      * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
      */
     private boolean missileCanLoseTarget = true;
@@ -120,10 +125,15 @@ public class RocketShotgun extends Component implements Weapon {
     }
 
     @Override
+    public void setDamageMultiplier(double damageMultiplier) {
+        this.damageMultiplier = damageMultiplier;
+    }
+
+    @Override
     public void shoot() {
         if(getParentUnit() != null) {
             for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-                LazyMissile lazyMissile = new LazyMissile(controller, getParentUnit(), SPEED, DAMAGE, PROJECTILE_DIRECTIONS[i],
+                LazyMissile lazyMissile = new LazyMissile(controller, getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier), PROJECTILE_DIRECTIONS[i],
                         initialMissileRotatingSpeed, latterMissileRotatingSpeed, getTag(), missileCanLoseTarget);
                 controller.addUpdateableAndSetToScene(lazyMissile);
                 controller.addHitboxObject(lazyMissile);

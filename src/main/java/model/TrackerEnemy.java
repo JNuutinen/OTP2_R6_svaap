@@ -61,7 +61,7 @@ public class TrackerEnemy extends Unit {
      */
     private double rotatingSpeed = 4;
     private boolean shootingTarget = false;
-    private HitboxObject target = null;
+    private HitboxCircle target = null;
     private final double initialVelocity = 300;
 
     /**
@@ -223,12 +223,12 @@ public class TrackerEnemy extends Unit {
      */
     public void findAndSetTarget(){
         double shortestDistance = Double.MAX_VALUE;
-        HitboxObject closestPlayer = null;
-        for (HitboxObject hitboxObject : controller.getPlayerHitboxObjects()) {
-            double distance = getDistanceFromTarget(hitboxObject.getPosition());
+        HitboxCircle closestPlayer = null;
+        for (HitboxCircle hitboxCircle : controller.getPlayerHitboxObjects()) {
+            double distance = getDistanceFromTarget(hitboxCircle.getPosition());
             if (distance < shortestDistance) {
                 shortestDistance = distance;
-                closestPlayer = hitboxObject;
+                closestPlayer = hitboxCircle;
             }
         }
         target = closestPlayer;

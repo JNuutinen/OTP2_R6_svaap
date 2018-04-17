@@ -7,7 +7,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
-import model.HitboxObject;
+import model.HitboxCircle;
 import model.Unit;
 import model.Updateable;
 
@@ -21,14 +21,13 @@ import static view.GameMain.WINDOW_WIDTH;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class SmallProjectile extends BaseProjectile implements Updateable, HitboxObject {
+public class SmallProjectile extends BaseProjectile implements Updateable, HitboxCircle {
 
     /**
      * Ammuksen vakioväri
      */
     private static final Color COLOR = Color.WHITE;
     private Controller controller;
-    private int damage;
 
     /**
      * Konstruktori.
@@ -41,10 +40,9 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      */
     public SmallProjectile(Controller controller, Unit shooter, double speed, int damage, Point2D offset, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, offset, tag);
+        super(controller, shooter, speed, offset, damage, tag);
 
         this.controller = controller;
-        this.damage = damage;
         setHitbox(10);// TODO: hitboxin koko kovakoodattu | 16
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
@@ -88,7 +86,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
     @Override
     public void collides(Object collidingTarget) {
         if(collidingTarget instanceof Unit){
-            ((Unit) collidingTarget).takeDamage(damage);
+            ((Unit) collidingTarget).takeDamage((int)getDamage());
         }
         destroyThis();
     }

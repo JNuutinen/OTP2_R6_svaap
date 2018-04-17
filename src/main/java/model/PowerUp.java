@@ -15,7 +15,7 @@ import static view.GameMain.POWERUP_TAG;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PowerUp extends Sprite implements Updateable, HitboxObject{
+public class PowerUp extends Sprite implements Updateable, HitboxCircle {
 
     /**
      * Powerupin arvo.

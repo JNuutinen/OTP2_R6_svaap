@@ -7,14 +7,13 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
-import model.Trace;
+import model.HitboxTrace;
 import model.Unit;
 import model.Updateable;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 /**
@@ -24,17 +23,12 @@ import static view.GameMain.WINDOW_WIDTH;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class LaserBeam extends BaseProjectile implements Updateable, Trace {
+public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace {
 
     /**
      * Pelin kontrolleri.
      */
     private Controller controller;
-
-    /**
-     * Ammuksen tekemä vahinko.
-     */
-    private int damage;
 
     /**
      * Ammuksen shape (viiva).
@@ -72,11 +66,6 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
     private double timeSinceSpawn = 0;
 
     /**
-     * Kertoo osuiko ammus.
-     */
-    private boolean hitTarget = false;
-
-    /**
      * Konstruktori.
      * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
@@ -87,41 +76,35 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
      * @param offset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      */
     public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
-        // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, offset, tag);
+        super(controller, shooter, speed, offset, damage, tag);
 
         redSubtraction = (1 - color.getRed());
         greenSubtraction = (1 - color.getGreen());
         blueSubtraction = (1 - color.getBlue());
         opacitySubtraction = opacitySubtraction * 0.5;
-        //opacitySubtraction pitää muuttaa myös jos noita kaavoja muutetaan ^
+        // opacitySubtraction pitää muuttaa myös jos noita kaavoja muutetaan ^
 
         this.controller = controller;
-        this.damage = damage;
 
         shape = buildLaser(currentColor);
         Platform.runLater(()->getChildren().add(shape)); // TODO hidastaaks tää oikeesti
-
-
     }
 
     @Override
     public List<Point2D> getTraceCoordinates() {
+        // aloituspiste haetaan laserin sijainnista joka on sama kuin aloituspiste joka lähtee aseesta
         Point2D start = getPosition();
+        // lopetuspiste haetaan laserin sijainnista + (laserin suunta * nätyön leveys * 1.5). (1.5 kerroin koska laseri voi mennä viistoon ruudulla niin leveys ei riitä)
         Point2D end = degreesToVector(getDirection());
-        end = new Point2D(end.getX() * WINDOW_WIDTH, end.getY() * WINDOW_HEIGHT);
+
+        end = new Point2D(start.getX() + (end.getX() * WINDOW_WIDTH * 1.5), start.getY() + (end.getY() * WINDOW_WIDTH * 1.5));
         return Arrays.asList(start, end);
     }
 
     @Override
-    public Point2D getStartCoordinate() {
-        return getPosition();
-    }
-
-    @Override
-    public void collides(Object obj) {
-        if(obj instanceof Unit){
-            ((Unit)obj).takeDamage(damage);
+    public void collides(Object collidingTarget) {
+        if(collidingTarget instanceof Unit){
+            ((Unit) collidingTarget).takeDamage((int)getDamage());
         }
     }
 

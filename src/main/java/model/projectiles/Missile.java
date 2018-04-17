@@ -1,7 +1,6 @@
 package model.projectiles;
 
 import controller.Controller;
-import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -20,7 +19,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Missile extends BaseProjectile implements Updateable, HitboxObject {
+public class Missile extends BaseProjectile implements Updateable, HitboxCircle {
 
     /**
      * Ohjuksen perusväri.
@@ -32,11 +31,6 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
      * ennen kuin se poistetaan pelistä.
      */
     private static final double OUT_OF_AREA_TRESHOLD = 500;
-
-    /**
-     * Ohjuksen tekemä vahinko
-     */
-    private int damage;
 
     /**
      * Ammuksen kääntymisnopeus, vakioarvo 9.
@@ -51,7 +45,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
     /**
      * Ammuksen kohde.
      */
-    private HitboxObject target;
+    private HitboxCircle target;
 
     /**
      * Kertoo, onko ohjuksen kohde jo kerran haettu.
@@ -95,10 +89,9 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
      */
     public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, tag);
+        super(controller, shooter, speed, damage, tag);
         this.rotatingSpeed = rotatingSpeed;
         this.controller = controller;
-        this.damage = damage;
 
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
@@ -130,7 +123,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
     @Override
     public void collides(Object collidingTarget) {
         if(collidingTarget instanceof Unit){
-            ((Unit) collidingTarget).takeDamage(damage);
+            ((Unit) collidingTarget).takeDamage((int)getDamage());
         }
         destroyThis();
     }
@@ -138,7 +131,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
     @Override
     public void destroyThis(){
         trail.destroyThis();
-        new Explosion(controller, Color.WHITE, getPosition(), 0.2);
+        new Explosion(controller, getShooter().getUnitColor(), getPosition(), 0.1);
         controller.removeUpdateable(this, this);
     }
 
@@ -224,14 +217,14 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
      */
     private void findAndSetTarget() {
         double shortestDistance = Double.MAX_VALUE;
-        HitboxObject closestEnemy = null;
+        HitboxCircle closestEnemy = null;
         if (getShooter().getTag() == PLAYER_SHIP_TAG){
-            for (HitboxObject hitboxObject : controller.getHitboxObjects()) {
-                if (hitboxObject.getTag() == ENEMY_SHIP_TAG || hitboxObject.getTag() == BOSS_SHIP_TAG) {
-                    double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
+            for (HitboxCircle hitboxCircle : controller.getHitboxObjects()) {
+                if (hitboxCircle.getTag() == ENEMY_SHIP_TAG || hitboxCircle.getTag() == BOSS_SHIP_TAG) {
+                    double distance = getShooter().getDistanceFromTarget(hitboxCircle.getPosition());
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
-                        closestEnemy = hitboxObject;
+                        closestEnemy = hitboxCircle;
                         if (findTargerOnce) {
                             findTargetTwice = true;
                         } else {
@@ -242,11 +235,11 @@ public class Missile extends BaseProjectile implements Updateable, HitboxObject 
             }
         }
         else if(getShooter().getTag() == ENEMY_SHIP_TAG || getShooter().getTag() == BOSS_SHIP_TAG){
-            for (HitboxObject hitboxObject : controller.getPlayerHitboxObjects()) {
-                double distance = getShooter().getDistanceFromTarget(hitboxObject.getPosition());
+            for (HitboxCircle hitboxCircle : controller.getPlayerHitboxObjects()) {
+                double distance = getShooter().getDistanceFromTarget(hitboxCircle.getPosition());
                 if (distance < shortestDistance) {
                     shortestDistance = distance;
-                    closestEnemy = hitboxObject;
+                    closestEnemy = hitboxCircle;
                     if (findTargerOnce) {
                         findTargetTwice = true;
                     } else {

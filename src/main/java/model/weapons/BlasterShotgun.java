@@ -40,16 +40,16 @@ public class BlasterShotgun extends Component implements Weapon {
      */
     private Controller controller;
 
+    /**
+     * Ammusten vahinkomääräkerroin.
+     */
+    private double damageMultiplier = 1;
+
 
     /**
      * ammuksen nopeus
      */
     private double projectileSpeed = 0;
-
-    /**
-     * Ammuksen tagi.
-     */
-    private int tag;
 
     /**
      * Konstruktori.
@@ -88,12 +88,17 @@ public class BlasterShotgun extends Component implements Weapon {
     }
 
     @Override
+    public void setDamageMultiplier(double damageMultiplier) {
+        this.damageMultiplier = damageMultiplier;
+    }
+
+    @Override
     public void shoot() {
         if(getParentUnit() != null) {
             for (int i = -1; i < 2; i++) {
                 // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
-                SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), SPEED, DAMAGE,
-                        getProjectileOffset(), getParentUnitColor(), i * 7, tag);
+                SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier),
+                        getProjectileOffset(), getParentUnitColor(), i * 7, getTag());
                 controller.addUpdateableAndSetToScene(smallProjectile);
                 controller.addHitboxObject(smallProjectile);
             }

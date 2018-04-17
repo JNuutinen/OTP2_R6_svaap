@@ -28,7 +28,7 @@ public class RocketLauncher extends Component implements Weapon {
     /**
      * Raketinheittimen ammuksien vahinko.
      */
-    private static final int DAMAGE = 30;
+    private static final int DAMAGE = 20;
 
     /**
      * Raketinheittimen tulinopeus.
@@ -39,6 +39,11 @@ public class RocketLauncher extends Component implements Weapon {
      * Raketinheittimen väri.
      */
     private static final Color COLOR = Color.BLUE;
+
+    /**
+     * Ammusten vahinkomääräkerroin.
+     */
+    private double damageMultiplier = 1;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
@@ -86,9 +91,14 @@ public class RocketLauncher extends Component implements Weapon {
     }
 
     @Override
+    public void setDamageMultiplier(double damageMultiplier) {
+        this.damageMultiplier = damageMultiplier;
+    }
+
+    @Override
     public void shoot() {
         if (getParentUnit() != null) {
-            Missile missile = new Missile(controller, getParentUnit(), SPEED, DAMAGE, rotatingSpeed, getTag(), missileCanLoseTarget);
+            Missile missile = new Missile(controller, getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier), rotatingSpeed, getTag(), missileCanLoseTarget);
             controller.addUpdateableAndSetToScene(missile);
             controller.addHitboxObject(missile);
         }

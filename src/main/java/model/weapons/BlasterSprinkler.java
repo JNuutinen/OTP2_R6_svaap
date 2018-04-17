@@ -61,6 +61,11 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      */
     private double shootingTimeCounter = 0;
 
+    /**
+     * Ammusten vahinkomääräkerroin.
+     */
+    private double damageMultiplier = 1;
+
 
     /**
      * Pelin kontrolleri.
@@ -99,16 +104,6 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     }
 
     @Override
-    public double getFireRate() {
-        return firerate;
-    }
-
-    @Override
-    public void shoot() {
-        isShooting = true;
-    }
-
-    @Override
     public void update(double deltaTime) {
         if(getParentUnit() != null) {
             if (!getParentUnit().isNull()) {
@@ -116,7 +111,7 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
                     firerateCounter += deltaTime;
                     shootingTimeCounter += deltaTime;
                     if (firerateCounter >= firerate) {
-                        SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+                        SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
                                 getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag());
                         controller.addUpdateableAndSetToScene(smallProjectile);
                         controller.addHitboxObject(smallProjectile);
@@ -131,5 +126,20 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
                 controller.removeUpdateable(this);
             }
         }
+    }
+
+    @Override
+    public double getFireRate() {
+        return firerate;
+    }
+
+    @Override
+    public void shoot() {
+        isShooting = true;
+    }
+
+    @Override
+    public void setDamageMultiplier(double damageMultiplier) {
+        this.damageMultiplier = damageMultiplier;
     }
 }

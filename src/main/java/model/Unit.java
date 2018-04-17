@@ -2,7 +2,6 @@ package model;
 
 import controller.Controller;
 import javafx.application.Platform;
-import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -20,12 +19,17 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Unit extends Sprite implements Updateable, HitboxObject {
+public class Unit extends Sprite implements Updateable, HitboxCircle {
 
     /**
      * apumuuttuja jotta komponentit tietävät onko alus oikeasti null, koska aluksesta jää viittaus komponenttiin.
      */
     private boolean isNull = false;
+
+    /**
+     * Aluksen koko. Käytetään mm. räjähdyksen suuruuden määrittelemisessä.
+     */
+    private double unitSize = 1;
 
     /**
      * Kontrolleri.
@@ -84,17 +88,15 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
     private Weapon secondaryWeapon;
 
     /**
-     * Konstruktori Unitin shapen värin valinnalla.
+     * Konstruktori.
      * @param controller Pelin kontrolleri.
-     * @param color Unitin shapen väri.
+     * @param color Aluksen väri.
      * @param componentSideGaps Visuaalinen väli komponenteilla toisiinsa kun ne kasataan alukseen.
      * @param projectilesFrontOffset Alukseen kasattavien aseiden ammusten poikkeama aluksen keskeltä sen etusuuntaan. Sivusuunnassa ammuksen syntyvät komponenttien kohdasta.
      */
     public Unit(Controller controller, Color color, double componentSideGaps, double projectilesFrontOffset){
         this.controller = controller;
         this.color = color;
-        //makePrimaryWeapons(primariesTags);
-
     }
 
     /**
@@ -278,8 +280,6 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
         }
     }
 
-    //      /Secondary
-
     /**
      * Lajittelee komponenttilistan komoponenttien koon mukaan suurimmasta pienimpään. Apumetodi equipComponents():lle.
      */
@@ -327,7 +327,7 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
     public void destroyThis() {
         isNull = true;
         new PowerUp(controller, this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
-        new Explosion(controller, color, getPosition(), 1);
+        new Explosion(controller, color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);
         controller.removeFromCollisionList(this);
     }
@@ -360,7 +360,7 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
         tookDamage = true; // efektiä varten
         if(shape != null){
             shape.setStroke(Color.WHITE);
-            shape.setStrokeWidth(7.0);
+            shape.setStrokeWidth(9.0);
         }
 
         hp -= damage;
@@ -411,6 +411,10 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
 
     public Color getUnitColor(){
         return color;
+    }
+
+    public void setUnitSize(double unitSize) {
+        this.unitSize = unitSize;
     }
 
 }

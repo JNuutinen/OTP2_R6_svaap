@@ -29,11 +29,11 @@ public interface Controller {
     /** TODO
      * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
      */
-    void addHitboxObject(HitboxObject hitboxObject);
+    void addHitboxObject(HitboxCircle hitboxCircle);
     /**
      * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
      */
-    void addTrace(Trace trace);
+    void addTrace(HitboxTrace hitboxTrace);
 
     // TODO
     void addUpdateableAndSetToScene(Updateable updateable);
@@ -82,9 +82,9 @@ public interface Controller {
      * TODO
      * @return
      */
-    ArrayList<HitboxObject> getPlayerHitboxObjects();
+    ArrayList<HitboxCircle> getPlayerHitboxObjects();
 
-    ArrayList<HitboxObject> getHitboxObjects();
+    ArrayList<HitboxCircle> getHitboxObjects();
 
     /**
      * Käynnistää tasosäikeen.
@@ -113,12 +113,12 @@ public interface Controller {
      * Poistaa GameLoopin käsittelystä Updateable olion.
      * @param updateable Olio, joka poistetaan.
      */
-    void removeUpdateable(Updateable updateable, HitboxObject hitboxObject);
+    void removeUpdateable(Updateable updateable, HitboxCircle hitboxCircle);
 
     /**
      * TODO
      */
-    void removeUpdateable(Updateable updateable, Trace trace);
+    void removeUpdateable(Updateable updateable, HitboxTrace hitboxTrace);
 
     /**
      * TODO

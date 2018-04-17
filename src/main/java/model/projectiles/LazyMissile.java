@@ -101,8 +101,8 @@ public class LazyMissile extends Missile {
             }
         }
 
-        // 0.8 sec jälkeen vaihda kääntymisnopeutta. Tarkoitus lentoradan näyttää paremmalata ampumisen jällkeen.
-        if(timeCounter > 0.8){
+        // 0.6 sec jälkeen vaihda kääntymisnopeutta. Tarkoitus lentoradan näyttää paremmalata ampumisen jällkeen.
+        if(timeCounter > 0.6){
             if(doOnce){
                 this.setRotatingSpeed(latterRotatingSpeed);
                 doOnce = false;

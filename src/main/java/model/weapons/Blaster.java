@@ -15,27 +15,43 @@ import model.projectiles.SmallProjectile;
  */
 public class Blaster extends Component implements Weapon {
 
-    /** Blasterin ammuksien nopeus. */
+    /**
+     * Blasterin ammuksien nopeus.
+     */
     private static final int SPEED = 30;
 
-    /** Blasterin ammuksien vahinko. */
-    private static final int DAMAGE = 5;
+    /**
+     * Blasterin ammuksien vahinko.
+     */
+    private static final int DAMAGE = 10;
 
-    /** Blasterin tulinopeus. */
+    /**
+     * Blasterin tulinopeus.
+     */
     private static final double FIRE_RATE = 0.2;
 
-    /** Blasterin komponentin väri. */
+    /**
+     * Blasterin komponentin väri.
+     */
     private static final Color COLOR = Color.ORANGE;
 
-    /** Ammuksien nopeus. */
+    /**
+     * Ammuksien nopeus.
+     */
     private double projectileSpeed = SPEED;
 
+    /**
+     * Ammusten vahinkomääräkerroin.
+     */
+    private double damageMultiplier = 1;
 
-    /** Pelin kontrolleri. */
+    /**
+     * Pelin kontrolleri.
+     */
     private Controller controller;
 
     /**
-     * TODO
+     * Konstruktori
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
@@ -47,12 +63,12 @@ public class Blaster extends Component implements Weapon {
     }
 
     /**
-     * TODO
+     * Konstruktori aseen ja ammuksen aloituspaikan custom poikkeamalla aluksesta
      * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
-     * @param componentOffset TODO
-     * @param projectileOffset TODO
+     * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
+     * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
     public Blaster(Controller controller, int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
         this(controller, orientation, projectileSpeed);
@@ -67,9 +83,14 @@ public class Blaster extends Component implements Weapon {
     }
 
     @Override
+    public void setDamageMultiplier(double damageMultiplier) {
+        this.damageMultiplier = damageMultiplier;
+    }
+
+    @Override
     public void shoot() {
         if(getParentUnit() != null){
-            SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
+            SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
                     getProjectileOffset(), getParentUnitColor(), getTag());
             controller.addUpdateableAndSetToScene(smallProjectile);
             controller.addHitboxObject(smallProjectile);

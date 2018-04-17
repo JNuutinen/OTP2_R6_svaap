@@ -3,10 +3,13 @@ package model;
 import controller.Controller;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
@@ -56,6 +59,10 @@ public class Explosion extends Sprite implements Updateable{
      */
     private double scaleMultiplier;
 
+    private Circle circle;
+    private Color circleColor;
+    private Color insideColor;
+
     /**
      * Konstruktori luo trailin ja lisää sen Updateableihin. Lopussa kutsuu destroyThis() metodia,
      * jossa annetaan räjähdyksen olla hetken "elossa" ja animoitua, jonka jälkeen se poistetaan.
@@ -70,7 +77,24 @@ public class Explosion extends Sprite implements Updateable{
         this.scaleMultiplier = scaleMultiplier;
         colors = new Stop[]{new Stop(0, color), new Stop(1, Color.TRANSPARENT)};
 
+        circleColor = color;
+        insideColor = Color.WHITE;
 
+        circle = new Circle(30 * scaleMultiplier);
+        circle.setFill(insideColor);
+        circle.setStroke(circleColor);
+        circle.setStrokeWidth(20 * scaleMultiplier);
+
+        Bloom bloom = new Bloom(0.0);
+        GaussianBlur blur = new GaussianBlur(18.0);
+        blur.setInput(bloom);
+        circle.setEffect(blur);
+
+        getChildren().addAll(circle);
+        controller.addUpdateableAndSetToScene(this);
+
+
+        /*
         directionVector = new Point2D[linesAmount];
         lines = new ArrayList<>();
         for(int i = 0; i < linesAmount; i++){
@@ -85,48 +109,38 @@ public class Explosion extends Sprite implements Updateable{
             LinearGradient lg = new LinearGradient(0, 0, directionVector[i].getX() * lineLength * 1.05 * scaleMultiplier,
                     directionVector[i].getY() * lineLength * 1.05 * scaleMultiplier, false, CycleMethod.REFLECT, colors);
             lines.get(i).setStroke(lg);
-            lines.get(i).setStrokeWidth(3 * scaleMultiplier + 7);
+            lines.get(i).setStrokeWidth(13 * scaleMultiplier + 7);
         }
 
         getChildren().addAll(lines);
         controller.addUpdateableAndSetToScene(this);
 
         destroyThis();
-
+        */
     }
 
     private void destroyThis(){
-        Explosion toBeRemved = this;
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        toBeRemved.destroyCompletely();
-                    }
-                });
-            }
-        });
-        thread.start();
-    }
-
-    /**
-     * Poistaa räjähdyksen pelistä.
-     */
-    private void destroyCompletely(){
         controller.removeUpdateable(this);
     }
 
+
     @Override
     public void update(double deltaTime) {
-        double deltaTimeMultiplier = 0.4;
-
+        double deltaTimeMultiplier = 3;
         // lisää läpinäkyvyyttä kunnes läpinäkyvyys on niin pieni että koko efektin voi poistaa.
+        if(circleColor.getOpacity() > deltaTime * deltaTimeMultiplier) {
+            circleColor = new Color(circleColor.getRed(), circleColor.getGreen(), circleColor.getBlue(), circleColor.getOpacity() - deltaTime * deltaTimeMultiplier);
+            insideColor = new Color(insideColor.getRed(), insideColor.getGreen(), insideColor.getBlue(), insideColor.getOpacity() - deltaTime * deltaTimeMultiplier);
+            circle.setFill(insideColor);
+            circle.setStroke(circleColor);
+            circle.setRadius(circle.getRadius() + (deltaTimeMultiplier * 0.7));
+        }
+        else{
+            destroyThis();
+        }
+
+
+        /*
         for(int i = 0; i < linesAmount; i++){
             if(colors[0].getColor().getOpacity() > deltaTime * deltaTimeMultiplier) {
                 colors[0] = new Stop(0, new Color(colors[0].getColor().getRed(), colors[0].getColor().getGreen(), colors[0].getColor().getBlue(),
@@ -135,6 +149,6 @@ public class Explosion extends Sprite implements Updateable{
                         directionVector[i].getY() * lineLength * 1.05 * scaleMultiplier, false, CycleMethod.REFLECT, colors);
                 lines.get(i).setStroke(lg);
             }
-        }
+        }*/
     }
 }

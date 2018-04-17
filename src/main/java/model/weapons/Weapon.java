@@ -19,4 +19,10 @@ public interface Weapon {
      * @return Aseen tulinopeus.
      */
     double getFireRate();
+
+    /**
+     * Asettaa aseen ammusten vahinkomääräkertoimen.
+     * @param damageMultiplier ammusten vahinkomääräkerroin
+     */
+    void setDamageMultiplier(double damageMultiplier);
 }
