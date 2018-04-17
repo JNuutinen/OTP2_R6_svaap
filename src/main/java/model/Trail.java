@@ -71,7 +71,7 @@ public class Trail extends Sprite implements Updateable{
      * Konstruktori, luo trailin.
      * @param target Updateable, josta trail lähtee.
      */
-    public Trail(Controller controller, HitboxCircle target, Color color){
+    public Trail(HitboxCircle target, Color color){
         controller = GameController.getInstance();
         this.target = target;
         setPosition(0, 0);

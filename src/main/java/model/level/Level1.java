@@ -48,13 +48,13 @@ public class Level1 extends Thread implements Level {
         try {
             Thread.sleep(1000);
 
-            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER_SPRINKLER)),
+            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER, WEAPON_ROCKET_SHOTGUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
 
             //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
             //        0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
             Thread.sleep(1500);
-            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
+            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 500));
             Thread.sleep(100);
 
