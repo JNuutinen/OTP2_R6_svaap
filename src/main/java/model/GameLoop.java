@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static java.lang.Math.sqrt;
 import static view.GameMain.UNDEFINED_TAG;
 
 /**
@@ -313,7 +314,7 @@ public class GameLoop {
                                         if (getDistanceFromTarget(enemyProjectile.getPosition(), player.getPosition()) <
                                                 (enemyProjectile.getHitboxRadius() + player.getHitboxRadius())) {
                                             // kutsu objektin collides-metodia
-                                            enemyProjectile.collides(players);
+                                            enemyProjectile.collides(player);
                                         }
                                         break;
                                 }
@@ -334,24 +335,15 @@ public class GameLoop {
                                         break;
                                 }
                             }
-
-                            for (Trace enemyTrace : enemyTraces) {
+                            for(Trace enemyTrace : enemyTraces){
                                 switch (enemyTrace.getTag()) {
-                                    // Vihollisien laserammus
                                     case GameMain.ENEMY_PROJECTILE_TAG:
-                                        if (enemyTrace.getPosition().getX() < player.getPosition().getX()) {
-                                            // jos playerin hitboxin säde yltää laseriin
-                                            if (getDistanceFromTarget(enemyTrace.getPosition(), player.getPosition()) < 0) {
-                                                enemyTrace.collides(players);
-                                            }
-                                        } else if (getDistanceFromTarget(new Point2D(0, enemyTrace.getPosition().getY()),
-                                                new Point2D(0, player.getPosition().getY())) < player.getHitboxRadius()) {
-                                            enemyTrace.collides(players);
+                                        if (traceIntersectsCircle(enemyTrace, player.getPosition(), player.getHitboxRadius())) {
+                                            enemyTrace.collides(player);
                                         }
-                                        // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
-                                        enemyTrace.setTag(UNDEFINED_TAG);
                                         break;
                                 }
+                                enemyTrace.setTag(UNDEFINED_TAG); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
                             }
                         }
 
@@ -359,7 +351,6 @@ public class GameLoop {
                         for (HitboxObject playerProjectile : playerProjectiles) {
                             for (HitboxObject enemy : enemies) {
                                 switch (playerProjectile.getTag()) {
-
                                     // Playerin perusammus
                                     case GameMain.PLAYER_PROJECTILE_TAG:
                                         if (getDistanceFromTarget(playerProjectile.getPosition(), enemy.getPosition()) <
@@ -369,12 +360,19 @@ public class GameLoop {
                                         break;
                                 }
                             }
-                            /*
-                            // Kun kaikki viholliset käyty läpi laserin osumia tarkastellessa...
-                            if (playerProjectile.getTag() == GameMain.PLAYER_TRACE_TAG) {
-                                // vaiha laserin tagi pois jotta se ei enää kerran jälkeen tee vahinkoa, mutta pystyy lävitsemään.
-                                playerProjectile.setTag(UNDEFINED_TAG);
-                            }*/
+                        }
+                        for(Trace playerTrace : playerTraces){
+                            for (HitboxObject enemy : enemies) {
+                                switch (playerTrace.getTag()) {
+                                    // Playerin perusammus
+                                    case GameMain.PLAYER_PROJECTILE_TAG:
+                                        if (traceIntersectsCircle(playerTrace, enemy.getPosition(), enemy.getHitboxRadius())) {
+                                            playerTrace.collides(enemy);
+                                        }
+                                        break;
+                                }
+                            }
+                            playerTrace.setTag(UNDEFINED_TAG);
                         }
 
                         // Fps päivitys
@@ -402,6 +400,73 @@ public class GameLoop {
      * @return Pisteiden etäisyys toisistaan.
      */
     private double getDistanceFromTarget(Point2D source, Point2D target){
-        return Math.sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
+        return sqrt(Math.pow(target.getX() - source.getX(), 2) + Math.pow(target.getY() - source.getY(), 2));
+    }
+
+    private boolean traceIntersectsCircle(Trace trace, Point2D circleLocation, double radius){
+
+        Point2D E = trace.getTraceCoordinates().get(0);
+        Point2D L = trace.getTraceCoordinates().get(1);
+        // tracen vektori, aloituspisteestä lopetuspisteeseen.
+        Point2D d = new Point2D(L.getX() - E.getX(), L.getY() - L.getY());
+        // vektori ympyrän keskipisteestä tracen aloituspisteeseen
+        Point2D f = new Point2D(E.getX() - circleLocation.getX(), E.getY() - circleLocation.getY());
+
+        double a = vectorDotProduct(d, d);
+        double b = 2 * vectorDotProduct(f, d);
+        double c = vectorDotProduct(f, f) - radius * radius;
+
+        // TODO
+        double discriminant = b * b - 4 * a * c;
+        if( discriminant < 0 )
+        {
+            // ei osumaa
+        }
+        else
+        {
+            // ray didn't totally miss sphere,
+            // so there is a solution to
+            // the equation.
+
+            discriminant = sqrt(discriminant);
+
+            // either solution may be on or off the ray so need to test both
+            // t1 is always the smaller value, because BOTH discriminant and
+            // a are nonnegative.
+            double t1 = (-b - discriminant)/(2*a);
+            double t2 = (-b + discriminant)/(2*a);
+
+            // 3x HIT cases:
+            //          -o->             --|-->  |            |  --|->
+            // Impale(t1 hit,t2 hit), Poke(t1 hit,t2>1), ExitWound(t1<0, t2 hit),
+
+            // 3x MISS cases:
+            //       ->  o                     o ->              | -> |
+            // FallShort (t1>1,t2>1), Past (t1<0,t2<0), CompletelyInside(t1<0, t2>1)
+
+            if( t1 >= 0 && t1 <= 1 )
+            {
+                // t1 is the intersection, and it's closer than t2
+                // (since t1 uses -b - discriminant)
+                // Impale, Poke
+                return true ;
+            }
+
+            // here t1 didn't intersect so we are either started
+            // inside the sphere or completely past it
+            if( t2 >= 0 && t2 <= 1 )
+            {
+                // ExitWound
+                return true ;
+            }
+
+            // no intn: FallShort, Past, CompletelyInside
+            return false ;
+        }
+        return false;
+    }
+
+    private double vectorDotProduct(Point2D vector1, Point2D vector2){
+        return (vector1.getX() * vector2.getX()) + (vector1.getY() * vector2.getY());
     }
 }

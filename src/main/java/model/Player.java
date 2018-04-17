@@ -116,7 +116,7 @@ public class Player extends Unit {
                 60.0, -1.0);
 
         drawShip(shape);
-        //controller.addUpdateableAndSetToScene(this);
+        //controller.addTrace(this);
     }
 
 
@@ -127,7 +127,7 @@ public class Player extends Unit {
             damagedTimeCounter = 0;
             setTookDamage(false);
         }
-        if(tookDamage2 && damagedTimeCounter > 0.1){
+        if(tookDamage2 && damagedTimeCounter > 0.2){
             tookDamage2 = false;
             setOriginalColor();
             damagedTimeCounter = 0;

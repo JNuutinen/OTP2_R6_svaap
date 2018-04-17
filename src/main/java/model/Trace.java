@@ -13,10 +13,10 @@ public interface Trace {
     List<Point2D> getTraceCoordinates();
 
     /**
-     * Palauttaa olion sijainnin.
+     * TODO
      * @return Olion sijainti Point2D-oliona.
      */
-    Point2D getPosition();
+    Point2D getStartCoordinate();
 
     /**
      * TODO koko homma

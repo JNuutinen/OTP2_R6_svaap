@@ -82,7 +82,8 @@ public class PowerUp extends Sprite implements Updateable, HitboxObject{
         }
         controller = GameController.getInstance();
         setTag(POWERUP_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
-        controller.addUpdateableAndSetToScene(this, this);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
         this.value = value;
         type = powerUpType;
         double xOffset = degreesToVector(deadUnit.getDirection()).getX();

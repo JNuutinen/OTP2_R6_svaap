@@ -117,7 +117,8 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
                     if (firerateCounter >= firerate) {
                         SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, DAMAGE,
                                 getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag());
-                        controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
+                        controller.addUpdateableAndSetToScene(smallProjectile);
+                        controller.addHitboxObject(smallProjectile);
                         firerateCounter = 0;
                         if (shootingTimeCounter > shootingTime) {
                             isShooting = false;

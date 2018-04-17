@@ -88,7 +88,8 @@ public class RocketLauncher extends Component implements Weapon {
     public void shoot() {
         if (getParentUnit() != null) {
             Missile missile = new Missile(getParentUnit(), SPEED, DAMAGE, rotatingSpeed, getTag(), missileCanLoseTarget);
-            controller.addUpdateableAndSetToScene(missile, missile);
+            controller.addUpdateableAndSetToScene(missile);
+            controller.addHitboxObject(missile);
         }
     }
 }

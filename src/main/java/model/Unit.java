@@ -3,6 +3,7 @@ package model;
 import controller.Controller;
 import controller.GameController;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -308,7 +309,6 @@ public class Unit extends Sprite implements Updateable, HitboxObject {
             }
         }*/
     }
-
 
     @Override
     public void collides(Object obj) {

@@ -28,14 +28,12 @@ public interface Controller {
 
     /** TODO
      * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
-     * @param updateable Updateable, joka lisätään.
      */
-    void addUpdateableAndSetToScene(Updateable updateable, HitboxObject hitboxObject);
+    void addHitboxObject(HitboxObject hitboxObject);
     /**
      * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
-     * @param updateable Updateable, joka lisätään.
      */
-    void addUpdateableAndSetToScene(Updateable updateable, Trace trace);
+    void addTrace(Trace trace);
 
     // TODO
     void addUpdateableAndSetToScene(Updateable updateable);

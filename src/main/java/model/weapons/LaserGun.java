@@ -191,7 +191,8 @@ public class LaserGun extends Component implements Weapon, Updateable {
                     if (timeCounter > shootingDelay) {
                         LaserBeam laserBeam = new LaserBeam(getParentUnit(), SPEED, DAMAGE, getParentUnitColor(), getTag(),
                                 new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
-                        controller.addUpdateableAndSetToScene(laserBeam, laserBeam);
+                        controller.addUpdateableAndSetToScene(laserBeam);
+                        controller.addTrace(laserBeam);
                         triggeredShoot = false;
                         readyToShoot = true;
                         timeCounter = 0;

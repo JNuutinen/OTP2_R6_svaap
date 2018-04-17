@@ -572,7 +572,8 @@ public class GameMain extends Application implements View {
 
         //      tieto controllerille pelaajasta
         controller.addPlayers(new ArrayList<Player>(Arrays.asList(player)));
-        controller.addUpdateableAndSetToScene(player, player);
+        controller.addUpdateableAndSetToScene(player);
+        controller.addHitboxObject(player);
 
         //      pelaajalle pyssyt
         player.addPrimaryWeapon(primary);
