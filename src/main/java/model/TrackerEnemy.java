@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -89,27 +90,26 @@ public class TrackerEnemy extends Unit {
 
     /**
      * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
-     * @param controller Pelin kontrolleri
      * @param shipColor Aluksen väri
      * @param initialPosition Aloitussijainti
      * @param path Aluksen reitti
      */
-    public TrackerEnemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, Point2D initialPosition, Point2D[] path) {
-        super(controller, shipColor, 5, 20);
+    public TrackerEnemy(Color shipColor, ArrayList<Integer> primaries, Point2D initialPosition, Point2D[] path) {
+        super(shipColor, 5, 20);
         this.path = path;
-        this.controller = controller;
+        controller = GameController.getInstance();
         setTag(ENEMY_SHIP_TAG);
         lastDestinationIndex = path.length-1;
         controller.addUnitToCollisionList(this);
-        this.initialX = initialPosition.getX();
-        this.initialY = initialPosition.getY();
+        initialX = initialPosition.getX();
+        initialY = initialPosition.getY();
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
         findAndSetTarget();
         rotate(180);
         setIsMoving(true);
         setHitbox(80);
-        setHp((int) (40 * controller.getLevel().getEnemyHealthModifier()));
+        setHp(40);
 
         Polygon shape = new Polygon();
         // aluksen muoto

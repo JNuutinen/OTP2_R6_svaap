@@ -1,15 +1,14 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 import java.util.ArrayList;
 
-import static view.GameMain.ENEMY_SHIP_TAG;
-import static view.GameMain.WINDOW_HEIGHT;
-import static view.GameMain.WINDOW_WIDTH;
+import static view.GameMain.*;
 
 /**
  * Vihollisen pääluokka. Perii unitin ja implementoi Updateable rajapinnan.
@@ -79,15 +78,14 @@ public class Enemy extends Unit {
     /**
      * Vihollisen konstruktori. Luo vihollisen graafisen esityksen, eli kolmion, jonka värin voi valita. Lisää vihollisen CollisionListiin, asettaa
      * tagin, asettaa alkuposition x- ja y-koordinaatit ja liikkumatavan.
-     * @param controller Pelin kontrolleri
      * @param shipColor Vihollisaluksen väri
      * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 = MOVE_SINE.
      * @param initialPosition Aloitussijainti.
      */
-    public Enemy(Controller controller, Color shipColor, ArrayList<Integer> primaries, int movementPattern, Point2D initialPosition) {
-        super(controller, shipColor, 5, 20);
+    public Enemy(Color shipColor, ArrayList<Integer> primaries, int movementPattern, Point2D initialPosition) {
+        super(shipColor, 5, 20);
 
-        this.controller = controller;
+        controller = GameController.getInstance();
         setTag(ENEMY_SHIP_TAG);
         controller.addUnitToCollisionList(this);
         this.initialX = initialPosition.getX();
@@ -98,7 +96,7 @@ public class Enemy extends Unit {
         if (movementPattern == MOVE_NONE) setIsMoving(false);
         else setIsMoving(true);
         this.setHitbox(80);
-        setHp((int) (30 * controller.getLevel().getEnemyHealthModifier()));
+        setHp(30);
         Polygon shape = new Polygon();
         // aluksen muoto
         shape.getPoints().addAll(50.0, 0.0,

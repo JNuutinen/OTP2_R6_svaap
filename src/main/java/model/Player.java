@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -84,13 +85,12 @@ public class Player extends Unit {
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param shipColor Aluksen väri.
      */
-    public Player(Controller controller, Color shipColor) {
-        super(controller, shipColor, 0, 0);
+    public Player(Color shipColor) {
+        super(shipColor, 0, 0);
         setTag(PLAYER_SHIP_TAG);
-        this.controller = controller;
+        controller = GameController.getInstance();
         setHp(MAX_HP );
         setHitbox(60);
         controller.addUnitToCollisionList(this);

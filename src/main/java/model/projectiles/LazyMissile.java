@@ -1,7 +1,5 @@
 package model.projectiles;
 
-import controller.Controller;
-import javafx.scene.paint.Color;
 import model.Unit;
 
 /**
@@ -25,11 +23,6 @@ public class LazyMissile extends Missile {
     private double latterRotatingSpeed = 0;
 
     /**
-     * Ammuksen alkukääntymisnopeus.
-     */
-    private double initialRotatingSpeed = 0;
-
-    /**
      * Aikalaskuri, käytetään ammuksen kääntönopeuden määrittämisessä.
      */
     private double timeCounter = 0;
@@ -37,7 +30,7 @@ public class LazyMissile extends Missile {
     /**
      * Apumuuttuja, käytetään ammuksen kääntönopeuden määrittämisessä.
      */
-    boolean doOnce = true;
+    private boolean doOnce = true;
 
     /**
      * Pitää kirjaa ajasta, jonka ammus ollut luotu. Käytetään HOMING_DELAY:n kanssa.
@@ -46,7 +39,6 @@ public class LazyMissile extends Missile {
 
     /**
      * Konstruktori.
-     * @param controller Kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
@@ -55,19 +47,16 @@ public class LazyMissile extends Missile {
      * @param latterRotatingSpeed Ammuksen myöhempi kääntymisnopeus.
      * @param tag Ammuksen tagi.
      */
-    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
+    public LazyMissile(Unit shooter, double speed, int damage, double direction,
                        double initialRotatingSpeed, double latterRotatingSpeed, int tag) {
-        // Kutsutaaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, initialRotatingSpeed, tag);
+        super(shooter, speed, damage, initialRotatingSpeed, tag);
         this.latterRotatingSpeed = latterRotatingSpeed;
-        this.initialRotatingSpeed = initialRotatingSpeed;
         // Asetetaan projectilen suunta
         rotate(direction);
     }
 
     /**
      * Konstruktori jossa lisäksi canLoseTarget
-     * @param controller Kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
@@ -78,12 +67,10 @@ public class LazyMissile extends Missile {
      *
      * @param canLoseTarget pystyykö ohjus kadottaa kohteen jos menee liian kauas kohteesta
      */
-    public LazyMissile(Controller controller, Unit shooter, double speed, int damage, double direction,
+    public LazyMissile(Unit shooter, double speed, int damage, double direction,
                        double initialRotatingSpeed, double latterRotatingSpeed, int tag, boolean canLoseTarget) {
-        // Kutsutaaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, initialRotatingSpeed, tag, canLoseTarget);
+        super(shooter, speed, damage, initialRotatingSpeed, tag, canLoseTarget);
         this.latterRotatingSpeed = latterRotatingSpeed;
-        this.initialRotatingSpeed = initialRotatingSpeed;
         // Asetetaan projectilen suunta
         rotate(direction);
     }

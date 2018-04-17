@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -57,10 +58,10 @@ public class Boss3 extends Unit {
 
 
 
-    public Boss3(Controller controller, Point2D initialPosition){
+    public Boss3(Point2D initialPosition){
 
         // alus varustetaan erikseen armShip(), niin sitä ei tehdä tässä.
-        super(controller, Color.ORANGE, 0, 0);
+        super(Color.ORANGE, 0, 0);
 
         Polygon shape = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         shape.getPoints().addAll(300.0, 25.0,
@@ -102,7 +103,7 @@ public class Boss3 extends Unit {
 
 
 
-        this.controller = controller;
+        controller = GameController.getInstance();
         this.setPosition(initialPosition.getX(), initialPosition.getY());
         this.setTag(BOSS_SHIP_TAG);
         this.setVelocity(30);
@@ -235,25 +236,25 @@ public class Boss3 extends Unit {
     /** varustaa aluksen aseilla */
     public void armShip(){
 
-        Weapon laserGun = new LaserGun(controller, 0, 0.8, new Point2D(0, -240), new Point2D(0, -240));
+        Weapon laserGun = new LaserGun(0, 0.8, new Point2D(0, -240), new Point2D(0, -240));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
-        laserGun = new LaserGun(controller, 0, 0.8, new Point2D(200, -70), new Point2D(200, -70));
+        laserGun = new LaserGun(0, 0.8, new Point2D(200, -70), new Point2D(200, -70));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
-        laserGun = new LaserGun(controller, 0, 0.8, new Point2D(200, 70), new Point2D(200, 70));
+        laserGun = new LaserGun(0, 0.8, new Point2D(200, 70), new Point2D(200, 70));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
-        laserGun = new LaserGun(controller, 0, 0.8, new Point2D(0, 240), new Point2D(0, 240));
+        laserGun = new LaserGun(0, 0.8, new Point2D(0, 240), new Point2D(0, 240));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
 
 
-        Weapon blasterSprinkler = new BlasterSprinkler(controller, 2, 26, 5, new Point2D(-20, -110),
+        Weapon blasterSprinkler = new BlasterSprinkler(2, 26, 5, new Point2D(-20, -110),
                 new Point2D(-20, -110));
         this.addPrimaryWeaponWithCustomOffsets(blasterSprinkler);
-        blasterSprinkler = new BlasterSprinkler(controller, 2, 26, 5, new Point2D(-20, 110),
+        blasterSprinkler = new BlasterSprinkler(2, 26, 5, new Point2D(-20, 110),
                 new Point2D(-20, 110));
         this.addPrimaryWeaponWithCustomOffsets(blasterSprinkler);
 
 
-        Weapon rocketLauncher = new RocketLauncher(controller, 2, 4.8, true, new Point2D(-15, 0), new Point2D(-15, 0));
+        Weapon rocketLauncher = new RocketLauncher(2, 4.8, true, new Point2D(-15, 0), new Point2D(-15, 0));
         this.setSecondaryWeaponWithCustomOffsets(rocketLauncher);
     }
 }

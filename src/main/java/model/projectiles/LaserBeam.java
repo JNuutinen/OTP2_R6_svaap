@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
@@ -43,17 +44,17 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
     /**
      * nykyisestä väristä vähennettävä punainen arvo häivytyksen aikana.
      */
-    private double redSubtraction = 0;
+    private double redSubtraction;
 
     /**
      * nykyisestä väristä vähennettävä vihreä arvo häivytyksen aikana.
      */
-    private double greenSubtraction = 0;
+    private double greenSubtraction;
 
     /**
      * nykyisestä väristä vähennettävä sininen arvo häivytyksen aikana.
      */
-    private double blueSubtraction = 0;
+    private double blueSubtraction;
 
     /**
      * nykyisestä väristä vähennettävä läpinäkyvyysarvo häivytyksen aikana.
@@ -67,7 +68,6 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
@@ -75,16 +75,13 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
      * @param tag Ammuksen tagi.
      * @param offset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      */
-    public LaserBeam(Controller controller, Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
-        super(controller, shooter, speed, offset, damage, tag);
-
+    public LaserBeam(Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
+        super(shooter, speed, offset, damage, tag);
+        controller = GameController.getInstance();
         redSubtraction = (1 - color.getRed());
         greenSubtraction = (1 - color.getGreen());
         blueSubtraction = (1 - color.getBlue());
         opacitySubtraction = opacitySubtraction * 0.5;
-        // opacitySubtraction pitää muuttaa myös jos noita kaavoja muutetaan ^
-
-        this.controller = controller;
 
         shape = buildLaser(currentColor);
         Platform.runLater(()->getChildren().add(shape)); // TODO hidastaaks tää oikeesti

@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
@@ -52,26 +53,24 @@ public class Blaster extends Component implements Weapon {
 
     /**
      * Konstruktori
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      */
-    public Blaster(Controller controller, int orientation, double projectileSpeed) {
+    public Blaster(int orientation, double projectileSpeed) {
         super("rectangle", 4, orientation, COLOR);
-        this.controller = controller;
+        this.controller = GameController.getInstance();
         this.projectileSpeed = projectileSpeed;
     }
 
     /**
      * Konstruktori aseen ja ammuksen aloituspaikan custom poikkeamalla aluksesta
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public Blaster(Controller controller, int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
-        this(controller, orientation, projectileSpeed);
+    public Blaster(int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, projectileSpeed);
         this.setProjectileOffset(projectileOffset);
         this.setComponentOffset(componentOffset);
     }
@@ -90,7 +89,7 @@ public class Blaster extends Component implements Weapon {
     @Override
     public void shoot() {
         if(getParentUnit() != null){
-            SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
+            SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
                     getProjectileOffset(), getParentUnitColor(), getTag());
             controller.addUpdateableAndSetToScene(smallProjectile);
             controller.addHitboxObject(smallProjectile);

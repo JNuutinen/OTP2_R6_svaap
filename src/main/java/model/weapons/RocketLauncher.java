@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
@@ -58,29 +59,27 @@ public class RocketLauncher extends Component implements Weapon {
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
-    public RocketLauncher(Controller controller, int orientation, double rotatingSpeed, boolean missileCanLoseTarget) {
+    public RocketLauncher(int orientation, double rotatingSpeed, boolean missileCanLoseTarget) {
         super("circle", 4, orientation, COLOR);
-        this.controller = controller;
+        this.controller = GameController.getInstance();
         this.rotatingSpeed = rotatingSpeed;
         this.missileCanLoseTarget = missileCanLoseTarget;
     }
 
     /**
      * TODO
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param componentOffset Aseen x-offset.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
-    public RocketLauncher(Controller controller, int orientation, double rotatingSpeed, boolean missileCanLoseTarget,
+    public RocketLauncher(int orientation, double rotatingSpeed, boolean missileCanLoseTarget,
                           Point2D componentOffset, Point2D prjoectileOffset) {
-        this(controller, orientation, rotatingSpeed, missileCanLoseTarget);
+        this(orientation, rotatingSpeed, missileCanLoseTarget);
         setComponentOffset(componentOffset);
         setProjectileOffset(prjoectileOffset);
     }
@@ -98,7 +97,7 @@ public class RocketLauncher extends Component implements Weapon {
     @Override
     public void shoot() {
         if (getParentUnit() != null) {
-            Missile missile = new Missile(controller, getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier), rotatingSpeed, getTag(), missileCanLoseTarget);
+            Missile missile = new Missile(getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier), rotatingSpeed, getTag(), missileCanLoseTarget);
             controller.addUpdateableAndSetToScene(missile);
             controller.addHitboxObject(missile);
         }

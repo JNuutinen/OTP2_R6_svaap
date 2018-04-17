@@ -1,6 +1,8 @@
 package model.projectiles;
 
 import controller.Controller;
+import controller.GameController;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -80,25 +82,24 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
      * @param tag Ammuksen tagi.
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag) {
+    public Missile(Unit shooter, double speed, int damage, double rotatingSpeed, int tag) {
         // Kutsutaan BaseProjectilen konstruktoria
-        super(controller, shooter, speed, damage, tag);
+        super(shooter, speed, damage, tag);
         this.rotatingSpeed = rotatingSpeed;
-        this.controller = controller;
+        controller = GameController.getInstance();
 
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
-        trail = new Trail(controller, this, shooter.getUnitColor());
+        trail = new Trail(this, shooter.getUnitColor());
         this.getChildren().addAll(trail);
 
         findAndSetTarget();
@@ -106,7 +107,6 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
 
     /**
      * Konstruktori, jossa myös canLoseTarget
-     * @param controller Pelin kontrolleri.
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
@@ -115,8 +115,8 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
      *
      * @param canLoseTarget voiko ohjus kadottaa kohteen jos siirtyy liikaa liian kauas koteesta
      */
-    public Missile(Controller controller, Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean canLoseTarget) {
-        this(controller, shooter, speed, damage, rotatingSpeed, tag);
+    public Missile(Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean canLoseTarget) {
+        this(shooter, speed, damage, rotatingSpeed, tag);
         this.canLoseTarget = canLoseTarget;
     }
 
@@ -131,7 +131,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
     @Override
     public void destroyThis(){
         trail.destroyThis();
-        new Explosion(controller, getShooter().getUnitColor(), getPosition(), 0.1);
+        new Explosion(getShooter().getUnitColor(), getPosition(), 0.1);
         controller.removeUpdateable(this, this);
     }
 

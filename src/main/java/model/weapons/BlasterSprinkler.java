@@ -1,6 +1,7 @@
 package model.weapons;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
@@ -74,15 +75,14 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param shootingTime Ampumisen kesto.
      */
-    public BlasterSprinkler(Controller controller, int orientation, double projectileSpeed, double shootingTime) {
+    public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime) {
         super("rectangle", 4, orientation, COLOR);
         this.shootingTime = shootingTime;
-        this.controller = controller;
+        this.controller = GameController.getInstance();
         controller.addUpdateable(this);
         this.projectileSpeed = projectileSpeed;
 
@@ -90,15 +90,14 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
 
     /**
      * Konstruktori.
-     * @param controller Pelin kontrolleri.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param componentOffset TODO
      * @param projectileOffset TODO
      * @param shootingTime Ampumisen kesto.
      */
-    public BlasterSprinkler(Controller controller, int orientation, double projectileSpeed, double shootingTime, Point2D componentOffset, Point2D projectileOffset) {
-        this(controller, orientation, projectileSpeed, shootingTime);
+    public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, projectileSpeed, shootingTime);
         setProjectileOffset(projectileOffset);
         setComponentOffset(componentOffset);
     }
@@ -111,7 +110,7 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
                     firerateCounter += deltaTime;
                     shootingTimeCounter += deltaTime;
                     if (firerateCounter >= firerate) {
-                        SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
+                        SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
                                 getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getTag());
                         controller.addUpdateableAndSetToScene(smallProjectile);
                         controller.addHitboxObject(smallProjectile);

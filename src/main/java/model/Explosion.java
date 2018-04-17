@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
@@ -66,13 +67,12 @@ public class Explosion extends Sprite implements Updateable{
     /**
      * Konstruktori luo trailin ja lisää sen Updateableihin. Lopussa kutsuu destroyThis() metodia,
      * jossa annetaan räjähdyksen olla hetken "elossa" ja animoitua, jonka jälkeen se poistetaan.
-     * @param controller Pelin kontrolleri.
      * @param color Räjähdyksen väri.
      * @param position Räjähdyksen sijainti.
      * @param scaleMultiplier Räjähdyksen viivojen skaalauskerroin.
      */
-    public Explosion(Controller controller, Color color, Point2D position, double scaleMultiplier){
-        this.controller = controller;
+    public Explosion(Color color, Point2D position, double scaleMultiplier){
+        controller = GameController.getInstance();
         this.setPosition(position.getX(), position.getY());
         this.scaleMultiplier = scaleMultiplier;
         colors = new Stop[]{new Stop(0, color), new Stop(1, Color.TRANSPARENT)};

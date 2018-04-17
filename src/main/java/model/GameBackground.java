@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import view.GameMain;
@@ -53,10 +54,9 @@ public class GameBackground extends Sprite implements Updateable  {
 
     /**
      * Konstruktori, luo kuvat ja lisää ne tämän Spriten Paneen.
-     * @param controller Pelin kontrolleri.
      */
-    public GameBackground(Controller controller) {
-
+    public GameBackground() {
+        Controller controller = GameController.getInstance();
         controller.addUpdateableAndSetToScene(this);
 
         String imagePath = "images/darkSpace.jpg";

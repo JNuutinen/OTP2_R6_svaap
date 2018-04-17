@@ -1,6 +1,7 @@
 package model;
 
 import controller.Controller;
+import controller.GameController;
 import javafx.scene.image.Image;
 
 import static view.GameMain.*;
@@ -69,14 +70,13 @@ public class Boss extends Unit {
      * Konstruktori. Kutsuu yläluokan konstruktoria ja asettaa kontrollerin. orginalHp on sama kuin
      * alunperin parametrinä annettu hp. Pomo lisätään CollisionListiin (osumatarkastelu) ja sille luodaan
      * suorakulmainen hitboxi, 128x256. Saa tagin "boss".
-     * @param controller Pelin kontrolleri
      * @param hp Pomon hp, asettaa samalla originalHp
      * @param initialX X-koordinaatti johon pomo ilmestyy.
      * @param initialY Y-koordinaatti johon pomo ilmestyy.
      */
-    public Boss(Controller controller, int hp, double initialX, double initialY) {
-        super(controller, null, 0, 0);
-        this.controller = controller;
+    public Boss(int hp, double initialX, double initialY) {
+        super(null, 0, 0);
+        controller = GameController.getInstance();
         setIsMoving(true);
         controller.addUnitToCollisionList(this);
         setHp(hp);
@@ -89,7 +89,7 @@ public class Boss extends Unit {
         this.setHitbox(256);
         setUnitSize(6);
 
-        armBoss(controller);
+        armBoss();
 
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
@@ -166,9 +166,8 @@ public class Boss extends Unit {
 
     /**
      * Varustaa aluksen aseilla.
-     * @param controller Pelin kontrolleri.
      */
-    public void armBoss(Controller controller){
+    public void armBoss(){
         /*
         Weapon blaster1 = new BlasterShotgun(controller, 2, new Point2D(2, -92), new Point2D(80, -92));
         Weapon blaster2 = new BlasterShotgun(controller, 2, new Point2D(2, 92), new Point2D(80, 92));
