@@ -134,7 +134,8 @@ public class TrackerEnemy extends Unit {
         drawShip(shape);
         makePrimaryWeapons(primaries);
 
-        controller.addUpdateableAndSetToScene(this, this);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
     }
 
     /**

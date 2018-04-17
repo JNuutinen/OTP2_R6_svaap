@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
 import static view.GameMain.POWERUP_TAG;
 
 /**
@@ -83,7 +82,8 @@ public class PowerUp extends Sprite implements Updateable, HitboxObject{
         }
         this.controller = controller;
         setTag(POWERUP_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
-        controller.addUpdateableAndSetToScene(this, this);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
         this.value = value;
         type = powerUpType;
         double xOffset = degreesToVector(deadUnit.getDirection()).getX();

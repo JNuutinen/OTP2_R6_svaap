@@ -88,21 +88,13 @@ public class GameController implements Controller {
     }
 
     @Override
-    public void addUpdateableAndSetToScene(Updateable updateable, HitboxObject hitboxObject) {
-        Platform.runLater(() -> {
-            view.addSprite((Sprite) updateable);
-        });
+    public void addHitboxObject(HitboxObject hitboxObject) {
         gameLoop.queueHitboxObject(hitboxObject);
-        gameLoop.queueUpdateable(updateable);
     }
 
     @Override
-    public void addUpdateableAndSetToScene(Updateable updateable, Trace trace) {
-        Platform.runLater(() -> {
-            view.addSprite((Sprite) updateable);
-        });
+    public void addTrace(Trace trace) {
         gameLoop.queueTrace(trace);
-        gameLoop.queueUpdateable(updateable);
     }
 
     @Override

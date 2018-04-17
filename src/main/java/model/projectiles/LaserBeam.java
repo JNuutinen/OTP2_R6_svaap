@@ -11,8 +11,10 @@ import model.Trace;
 import model.Unit;
 import model.Updateable;
 
+import java.util.Arrays;
 import java.util.List;
 
+import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 /**
@@ -105,7 +107,15 @@ public class LaserBeam extends BaseProjectile implements Updateable, Trace {
 
     @Override
     public List<Point2D> getTraceCoordinates() {
-        return null;
+        Point2D start = getPosition();
+        Point2D end = degreesToVector(getDirection());
+        end = new Point2D(end.getX() * WINDOW_WIDTH, end.getY() * WINDOW_HEIGHT);
+        return Arrays.asList(start, end);
+    }
+
+    @Override
+    public Point2D getStartCoordinate() {
+        return getPosition();
     }
 
     @Override

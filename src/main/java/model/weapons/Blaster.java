@@ -4,12 +4,7 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
-import model.Player;
-import model.Unit;
 import model.projectiles.SmallProjectile;
-
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Blaster pyssy.
@@ -76,7 +71,8 @@ public class Blaster extends Component implements Weapon {
         if(getParentUnit() != null){
             SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), projectileSpeed, DAMAGE,
                     getProjectileOffset(), getParentUnitColor(), getTag());
-            controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
+            controller.addUpdateableAndSetToScene(smallProjectile);
+            controller.addHitboxObject(smallProjectile);
         }
     }
 }

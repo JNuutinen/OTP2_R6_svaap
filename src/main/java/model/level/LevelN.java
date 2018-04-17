@@ -170,7 +170,7 @@ public class LevelN extends Thread implements Level {
 
                             Thread.sleep(2000);
                             lastEnemy = new Boss(controller, 1000, WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5);
-                            //controller.addUpdateableAndSetToScene(lastEnemy, lastEnemy);
+                            //controller.addTrace(lastEnemy, lastEnemy);
                         }
                         numberOfEnemies--;
                     }

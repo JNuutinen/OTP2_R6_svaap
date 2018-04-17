@@ -90,7 +90,8 @@ public class Boss extends Unit {
 
         armBoss(controller);
 
-        controller.addUpdateableAndSetToScene(this, this);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
     }
 
     /**

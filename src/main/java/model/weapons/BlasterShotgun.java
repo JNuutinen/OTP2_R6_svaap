@@ -4,12 +4,7 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
-import model.Player;
-import model.Unit;
 import model.projectiles.SmallProjectile;
-
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Blasterhaulikkoase.
@@ -99,7 +94,8 @@ public class BlasterShotgun extends Component implements Weapon {
                 // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
                 SmallProjectile smallProjectile = new SmallProjectile(controller, getParentUnit(), SPEED, DAMAGE,
                         getProjectileOffset(), getParentUnitColor(), i * 7, tag);
-                controller.addUpdateableAndSetToScene(smallProjectile, smallProjectile);
+                controller.addUpdateableAndSetToScene(smallProjectile);
+                controller.addHitboxObject(smallProjectile);
             }
         }
     }

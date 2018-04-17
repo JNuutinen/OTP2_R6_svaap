@@ -84,6 +84,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
         rotate(direction);
     }
 
+
     @Override
     public void collides(Object collidingTarget) {
         if(collidingTarget instanceof Unit){

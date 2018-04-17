@@ -116,7 +116,8 @@ public class Boss3 extends Unit {
         this.setHitbox(450);
 
 
-        controller.addUpdateableAndSetToScene(this, this);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
 
     }
 

@@ -193,7 +193,7 @@ public class Level3 extends Thread implements Level {
                     path);
 
 
-            Thread.sleep(5_000);
+            Thread.sleep(25_000);
 
             finalBoss = new Boss3(controller, new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
 

@@ -4,12 +4,7 @@ import controller.Controller;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.Component;
-import model.Player;
-import model.Unit;
 import model.projectiles.Missile;
-
-import static view.GameMain.ENEMY_PROJECTILE_TAG;
-import static view.GameMain.PLAYER_PROJECTILE_TAG;
 
 /**
  * Raketinheitin. Paitsi ampuu ohjuksia.
@@ -94,7 +89,8 @@ public class RocketLauncher extends Component implements Weapon {
     public void shoot() {
         if (getParentUnit() != null) {
             Missile missile = new Missile(controller, getParentUnit(), SPEED, DAMAGE, rotatingSpeed, getTag(), missileCanLoseTarget);
-            controller.addUpdateableAndSetToScene(missile, missile);
+            controller.addUpdateableAndSetToScene(missile);
+            controller.addHitboxObject(missile);
         }
     }
 }

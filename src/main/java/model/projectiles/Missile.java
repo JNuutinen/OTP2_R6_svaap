@@ -1,6 +1,7 @@
 package model.projectiles;
 
 import controller.Controller;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
