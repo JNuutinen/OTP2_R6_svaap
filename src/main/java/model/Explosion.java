@@ -60,9 +60,9 @@ public class Explosion extends Sprite implements Updateable{
      */
     private double scaleMultiplier;
 
+    // TODO jdoc
     private Circle circle;
     private Color circleColor;
-    private Color insideColor;
 
     /**
      * Konstruktori luo trailin ja lisää sen Updateableihin. Lopussa kutsuu destroyThis() metodia,
@@ -78,15 +78,14 @@ public class Explosion extends Sprite implements Updateable{
         colors = new Stop[]{new Stop(0, color), new Stop(1, Color.TRANSPARENT)};
 
         circleColor = color;
-        insideColor = Color.WHITE;
 
         circle = new Circle(30 * scaleMultiplier);
-        circle.setFill(insideColor);
-        circle.setStroke(circleColor);
+        circle.setFill(circleColor);
+        circle.setStroke(Color.TRANSPARENT);
         circle.setStrokeWidth(20 * scaleMultiplier);
 
         Bloom bloom = new Bloom(0.0);
-        GaussianBlur blur = new GaussianBlur(18.0);
+        GaussianBlur blur = new GaussianBlur(7.0);
         blur.setInput(bloom);
         circle.setEffect(blur);
 
@@ -126,16 +125,16 @@ public class Explosion extends Sprite implements Updateable{
 
     @Override
     public void update(double deltaTime) {
-        double deltaTimeMultiplier = 3;
+        double deltaTimeMultiplier = 15;
         // lisää läpinäkyvyyttä kunnes läpinäkyvyys on niin pieni että koko efektin voi poistaa.
-        if(circleColor.getOpacity() > deltaTime * deltaTimeMultiplier) {
-            circleColor = new Color(circleColor.getRed(), circleColor.getGreen(), circleColor.getBlue(), circleColor.getOpacity() - deltaTime * deltaTimeMultiplier);
-            insideColor = new Color(insideColor.getRed(), insideColor.getGreen(), insideColor.getBlue(), insideColor.getOpacity() - deltaTime * deltaTimeMultiplier);
-            circle.setFill(insideColor);
-            circle.setStroke(circleColor);
-            circle.setRadius(circle.getRadius() + (deltaTimeMultiplier * 0.7));
+        if(circleColor.getOpacity() > circleColor.getOpacity() * (1 - deltaTime * deltaTimeMultiplier) + 0.001 && deltaTime < 1) {
+            circleColor = new Color(circleColor.getRed(), circleColor.getGreen(), circleColor.getBlue(), circleColor.getOpacity() * (1 - deltaTime * deltaTimeMultiplier));
+            circle.setFill(circleColor);
+            circle.setStroke(Color.TRANSPARENT);
+            circle.setRadius(circle.getRadius() + (deltaTime * 700 * scaleMultiplier));
         }
         else{
+            System.out.println("kuoli");
             destroyThis();
         }
 

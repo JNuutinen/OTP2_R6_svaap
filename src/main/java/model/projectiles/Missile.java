@@ -24,11 +24,6 @@ import static view.GameMain.*;
 public class Missile extends BaseProjectile implements Updateable, HitboxCircle {
 
     /**
-     * Ohjuksen perusväri.
-     */
-    private static final Color COLOR = Color.YELLOW;
-
-    /**
      * Etäisyys pikseleinä, jonka ammus voi mennä x- tai y-akselilla ruudun ulkopuolelle,
      * ennen kuin se poistetaan pelistä.
      */
@@ -94,7 +89,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
         this.rotatingSpeed = rotatingSpeed;
         controller = GameController.getInstance();
 
-        Polygon shape = buildProjectile(speed, COLOR);
+        Polygon shape = buildProjectile(speed);
         getChildren().add(shape);
         // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
@@ -131,7 +126,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
     @Override
     public void destroyThis(){
         trail.destroyThis();
-        new Explosion(getShooter().getUnitColor(), getPosition(), 0.1);
+        new Explosion(getShooter().getUnitColor(), getPosition(), 0.3);
         controller.removeUpdateable(this, this);
     }
 
@@ -192,10 +187,9 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
     /**
      * Rakentaa projectilen Polygonin
      * @param speed Projectilen nopeus, vaikuttaa hännän pituuteen
-     * @param color Projectilen väri
      * @return Rakennettu Polygon
      */
-    private Polygon buildProjectile(double speed, Color color) {
+    private Polygon buildProjectile(double speed) {
         // Ammuksen muoto
         Polygon shape = new Polygon();
         shape.getPoints().addAll(-9.0, 0.0,
