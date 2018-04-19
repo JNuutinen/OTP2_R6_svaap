@@ -251,10 +251,13 @@ public class GameMain extends Application implements View {
     @Override
     public void start(Stage primaryStage){
         // lokalisointi
-        String language = "en";
-        String country = "NZ";
-        Locale locale = new Locale(language, country);
-        messages = ResourceBundle.getBundle("MessagesBundle", locale);
+        String englishLanguage = "en";
+        String newZealandCountry = "NZ";
+        String finnishLanguage = "fi";
+        String finlandCountry = "FI";
+        Locale enNzLocale = new Locale(englishLanguage, newZealandCountry);
+        Locale fiFiLocale = new Locale(finnishLanguage, finlandCountry);
+        messages = ResourceBundle.getBundle("MessagesBundle", fiFiLocale);
 
         this.primaryStage = primaryStage;
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
