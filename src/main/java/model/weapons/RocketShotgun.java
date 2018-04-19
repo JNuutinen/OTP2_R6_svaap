@@ -83,10 +83,12 @@ public class RocketShotgun extends Component implements Weapon {
     }
 
     /**
-     * Konstruktori.
+     * Konstruktori aseen ja ammuksien poikkeamalla.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
+     * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
+     * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
     public RocketShotgun(int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed,
                          Point2D componentOffset, Point2D projectileOffset) {
@@ -96,21 +98,29 @@ public class RocketShotgun extends Component implements Weapon {
     }
 
     /**
-     * TODO TODO
+     * Konstruktori tiedolla, voiko ohjus menettää kohteensa.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
      */
-    public RocketShotgun(int orientation, double initialMissileRotatingSpeed,
-                         double latterMissileRotatingSpeed, boolean missileCanLoseTarget) {
+    public RocketShotgun(int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed,
+                         boolean missileCanLoseTarget) {
         this(orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed);
         this.missileCanLoseTarget = missileCanLoseTarget;
     }
 
-
-    public RocketShotgun(int orientation, double initialMissileRotatingSpeed,
-                         double latterMissileRotatingSpeed, boolean missileCanLoseTarget, Point2D componentOffset, Point2D projectileOffset) {
+    /**
+     * Konstruktori aseen ja ammuksen poikkeamalla, sekä tiedolla voiko ohjus menettää kohteensa.
+     * @param orientation Aseen orientation.
+     * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
+     * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
+     * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
+     * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
+     * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
+     */
+    public RocketShotgun(int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed,
+                         boolean missileCanLoseTarget, Point2D componentOffset, Point2D projectileOffset) {
         this(orientation, initialMissileRotatingSpeed, latterMissileRotatingSpeed, missileCanLoseTarget);
         setComponentOffset(componentOffset);
         setProjectileOffset(projectileOffset);

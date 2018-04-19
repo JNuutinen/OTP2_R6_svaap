@@ -1,7 +1,5 @@
 package model;
 
-import javafx.geometry.Point2D;
-
 /**
  * Rajapinta Pelin loopissa päivitettävillä olioille.
  * @author Ilari Anttila

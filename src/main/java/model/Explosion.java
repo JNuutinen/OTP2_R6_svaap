@@ -2,18 +2,14 @@ package model;
 
 import controller.Controller;
 import controller.GameController;
-import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,16 +56,22 @@ public class Explosion extends Sprite implements Updateable{
      */
     private double scaleMultiplier;
 
-    // TODO jdoc
+    /**
+     * Räjähdyksen ympyräefekti.
+     */
     private Circle circle;
+
+    /**
+     * Räjähdyksen ympyräefektin väri.
+     */
     private Color circleColor;
 
     /**
-     * Konstruktori luo trailin ja lisää sen Updateableihin. Lopussa kutsuu destroyThis() metodia,
+     * Konstruktori luo räjähdyksen ja lisää sen Updateableihin. Lopussa kutsuu destroyThis() metodia,
      * jossa annetaan räjähdyksen olla hetken "elossa" ja animoitua, jonka jälkeen se poistetaan.
      * @param color Räjähdyksen väri.
      * @param position Räjähdyksen sijainti.
-     * @param scaleMultiplier Räjähdyksen viivojen skaalauskerroin.
+     * @param scaleMultiplier Räjähdyksen skaalauskerroin.
      */
     public Explosion(Color color, Point2D position, double scaleMultiplier){
         controller = GameController.getInstance();
@@ -92,7 +94,6 @@ public class Explosion extends Sprite implements Updateable{
         getChildren().addAll(circle);
         controller.addUpdateableAndSetToScene(this);
 
-
         /*
         directionVector = new Point2D[linesAmount];
         lines = new ArrayList<>();
@@ -102,7 +103,6 @@ public class Explosion extends Sprite implements Updateable{
             lines.add(new Line(0, 0, directionVector[i].getX() * lineLength * scaleMultiplier,
                     directionVector[i].getY() * lineLength * scaleMultiplier));
         }
-
 
         for(int i = 0; i < linesAmount; i++){
             LinearGradient lg = new LinearGradient(0, 0, directionVector[i].getX() * lineLength * 1.05 * scaleMultiplier,
@@ -118,10 +118,12 @@ public class Explosion extends Sprite implements Updateable{
         */
     }
 
+    /**
+     * Poistaa räjähdyksen pelistä.
+     */
     private void destroyThis(){
         controller.removeUpdateable(this);
     }
-
 
     @Override
     public void update(double deltaTime) {
@@ -134,10 +136,8 @@ public class Explosion extends Sprite implements Updateable{
             circle.setRadius(circle.getRadius() + (deltaTime * 700 * scaleMultiplier));
         }
         else{
-            System.out.println("kuoli");
             destroyThis();
         }
-
 
         /*
         for(int i = 0; i < linesAmount; i++){

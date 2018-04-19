@@ -7,6 +7,7 @@ import model.level.Level1;
 import view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Pelin kontrolleri, singleton.
@@ -36,11 +37,6 @@ public class GameController implements Controller {
      * Pelaajaoliot.
      */
     private ArrayList<Player> players;
-
-    /**
-     * Nykyinen taso.
-     */
-    private Level level;
 
     /**
      * Konstruktori, luo GameLoopin. Private, koska singleton.
@@ -84,12 +80,6 @@ public class GameController implements Controller {
         this.players = players;
         gameLoop.setPlayers(players);
     }
-
-    @Override
-    public Level getLevel(){
-        return level;
-    }
-
 
     @Override
     public void addScore(int score) {
@@ -142,7 +132,7 @@ public class GameController implements Controller {
     }
 
     @Override
-    public synchronized ArrayList<Unit> getCollisionList() {
+    public synchronized List<Unit> getCollisionList() {
         return view.getCollisionList();
     }
 
@@ -167,20 +157,21 @@ public class GameController implements Controller {
     }
 
     @Override
-    public synchronized ArrayList<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
+    public synchronized List<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
     @Override
-    public synchronized ArrayList<HitboxCircle> getPlayerHitboxObjects(){
+    public synchronized List<HitboxCircle> getPlayerHitboxObjects(){
         return gameLoop.getPlayerHitboxObjects();
     }
 
     @Override
-    public synchronized ArrayList<HitboxCircle> getHitboxObjects(){
+    public synchronized List<HitboxCircle> getHitboxObjects(){
         return gameLoop.getHitboxObjects();
     }
 
     @Override
     public void startLevel(int levelNumber) {
+        Level level;
         switch (levelNumber) {
             case 1:
                 level = new Level1();
@@ -228,6 +219,5 @@ public class GameController implements Controller {
     public void returnToMain(){
         view.returnToMain();
         gameLoop = new GameLoop();
-
     }
 }

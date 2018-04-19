@@ -136,11 +136,6 @@ public class Enemy extends Unit {
         return movementPattern;
     }
 
-
-    /**
-     * Vihollisen päivitys-funktio, kutsutaan gameLoopista jokaisella iteraatiolla.
-     * @param deltaTime Kulunut aika viime päivityksestä.
-     */
     @Override
     public void update(double deltaTime){
         if(getTookDamage()){

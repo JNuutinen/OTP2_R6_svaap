@@ -57,7 +57,6 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
      */
     private Shape shape;
 
-
     /**
      * Yksikön hitpointsit.
      */
@@ -79,7 +78,7 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
     private List<Weapon> weapons = new ArrayList<>();
 
     /**
-     * Pääase.
+     * Pääaseet.
      */
     private List<Weapon> primaryWeapons = new ArrayList<>();
 
@@ -132,10 +131,9 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
         return originalHp;
     }
 
-
     @Override
     public void update(double deltaTime) {
-        // Overridetaan perivissä luokissa.
+        // Tyhjä oletustoteutus, overridetaan perivissä luokissa.
     }
 
     /**
@@ -143,7 +141,7 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
      * Aseet on luotava sen jälkeen kun aluksen muoto on laitettu (tai ollaan laittamassa) spriten lapseksi.
      * @param primaries primary-aseet tägeinä eli int muodossa.
      */
-    public void makePrimaryWeapons(ArrayList<Integer> primaries){
+    public void makePrimaryWeapons(List<Integer> primaries){
         List<Weapon> initialPrimaryWeapons = new ArrayList<>();
 
         if(primaries != null && controller != null) {
@@ -177,8 +175,6 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
             addPrimaryWeapon(weapon);
         }
     }
-
-    //      Primary
 
     /**
      * Palauttaa Unitin pääaseen.
@@ -312,12 +308,12 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
 
     @Override
     public void collides(Object obj) {
-
+        // Tyhjä oletustoteutus, overridetaan perivissä luokissa.
     }
 
     /**
      * getteri onko alus null, koska aluksesta saattaa jäädä viittaus mm. komponenttiin.
-     * @return
+     * @return Tieto onko alus null.
      */
     public boolean isNull(){
         return isNull;
@@ -331,7 +327,6 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
         controller.removeUpdateable(this, this);
         controller.removeFromCollisionList(this);
     }
-
 
     /**
      * Asettaa Unitin aluksen visuaalisia piirteitä.
@@ -347,13 +342,8 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
         this.shape.setStroke(color);
     }
 
-
-
-
-
     /**
      * Yksikkö ottaa vahinkoa. Kutsutaan osuman tapahtuessa.
-     *
      * @param damage Vahinkomäärä, jonka yksikkö ottaa.
      */
     public void takeDamage(int damage) {
@@ -394,7 +384,7 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
     }
 
     /**
-     * Asettaa Unitin shapen värin.
+     * Asettaa Unitin shapen värin vakioksi.
      */
     public void setOriginalColor(){
         shape.setStroke(color);
@@ -409,10 +399,18 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
         this.tookDamage = tookDamage;
     }
 
+    /**
+     * Palauttaa Unitin värin.
+     * @return Unitin väri.
+     */
     public Color getUnitColor(){
         return color;
     }
 
+    /**
+     * Asettaa Unitin koon.
+     * @param unitSize Unitin koko.
+     */
     public void setUnitSize(double unitSize) {
         this.unitSize = unitSize;
     }

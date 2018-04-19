@@ -8,6 +8,7 @@ import view.GameMain;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import static java.lang.Math.sqrt;
@@ -28,7 +29,7 @@ public class GameLoop {
     private Controller controller;
 
     /**
-     * Jono olioista, jotka lisätään pelistä seuraavan loopin alussa.
+     * Jono olioista, jotka lisätään peliin seuraavan loopin alussa.
      */
     private volatile Queue<Updateable> updateableQueue = new LinkedList<>();
 
@@ -43,17 +44,23 @@ public class GameLoop {
     private volatile ArrayList<Updateable> updateables = new ArrayList<>();
 
     /**
-     * TODO
+     * Jono HitboxCircle-rajapinnan toteuttavista olioista, jotka lisätään peliin seuraavan loopin alussa.
      */
     private Queue<HitboxCircle> hitboxObjectsQueue = new LinkedList<>();
 
+    /**
+     * Jono HitboxCircle-rajapinnan toteuttavista olioista, jotka poistetaan pelistä seuraavan loopin alussa.
+     */
     private Queue<HitboxCircle> removeHitboxObjectsQueue = new LinkedList<>();
 
     /**
-     * TODO
+     * Jono HitboxTrace-rajapinnan toteuttavista olioista, jotka lisätään peliin seuraavan loopin alussa.
      */
     private Queue<HitboxTrace> tracesQueue = new LinkedList<>();
 
+    /**
+     * Jono HitboxTrace-rajapinnan toteuttavista olioista, jotka poistetaan pelistä seuraavan loopin alussa.
+     */
     private Queue<HitboxTrace> removeTracesQueue = new LinkedList<>();
 
     /**
@@ -141,7 +148,19 @@ public class GameLoop {
     synchronized public void removeUpdateable(Updateable updateable) {
         removeUpdateableQueue.add(updateable);
     }
-    synchronized public void removeHitboxObject(HitboxCircle hitboxCircle) { removeHitboxObjectsQueue.add(hitboxCircle);}
+
+    /**
+     * Lisää HitboxCircle-rajapintaolion jonoon, odottamaan poistoa Updateable listasta.
+     * @param hitboxCircle HitboxCircle olio, joka poistetaan listasta.
+     */
+    synchronized public void removeHitboxObject(HitboxCircle hitboxCircle) {
+        removeHitboxObjectsQueue.add(hitboxCircle);
+    }
+
+    /**
+     * Lisää HitboxTrace-rajapintaolion jonoon, odottamaan poistoa Updateable listasta.
+     * @param hitboxTrace HitboxTrace olio, joka poistetaan listasta.
+     */
     synchronized public void removeTrace(HitboxTrace hitboxTrace) { removeTracesQueue.add(hitboxTrace);}
 
     /**
@@ -154,16 +173,19 @@ public class GameLoop {
 
     /**
      * palauttaa pelaajat hitBoxObjecteina
-     * @return
+     * @return Lista, jossa pelaajat.
      */
-    public ArrayList<HitboxCircle> getPlayerHitboxObjects(){
-        ArrayList<HitboxCircle> toHitboxlist = new ArrayList<>();
-        toHitboxlist.addAll(players);
+    public List<HitboxCircle> getPlayerHitboxObjects(){
+        List<HitboxCircle> toHitboxlist = new ArrayList<>(players);
         return toHitboxlist;
     }
 
-    public ArrayList<HitboxCircle> getHitboxObjects(){
-        ArrayList<HitboxCircle> hitboxCircles = new ArrayList<>();
+    /**
+     * Palauttaa pelissä olevat HitboxCircle-rajapinnan toteuttavat oliot.
+     * @return Lista, jossa HitboxCircle-rajapinnan toteuttavat oliot.
+     */
+    public List<HitboxCircle> getHitboxObjects(){
+        List<HitboxCircle> hitboxCircles = new ArrayList<>();
 
         hitboxCircles.addAll(enemyProjectiles);
         hitboxCircles.addAll(enemies);
@@ -279,9 +301,7 @@ public class GameLoop {
                             }
 
                             for (HitboxTrace toBeRemoved : removeTracesQueue) {
-                                if (enemyHitboxTraces.contains(toBeRemoved)) {
-                                    enemyHitboxTraces.remove(toBeRemoved);
-                                }
+                                enemyHitboxTraces.remove(toBeRemoved);
                                 playerHitboxTraces.remove(toBeRemoved);
                             }
                             // Poistojono tyhjätään, kun siinä olleet oliot on poistettu pelistä.
@@ -442,16 +462,18 @@ public class GameLoop {
             }
 
             // jos lävistää vain ympyrän sisältä päin
-            if( t2 >= 0 && t2 <= 1 )
-            {
-                return true ;
-            }
+            return t2 >= 0 && t2 <= 1;
             // muuten ei osunut
-            return false ;
         }
         return false;
     }
 
+    /**
+     * Palauttaa kahden vektorin pistetulon.
+     * @param vector1 Vektori 1.
+     * @param vector2 Vektori 2.
+     * @return Vektorien pistetulo.
+     */
     private double vectorDotProduct(Point2D vector1, Point2D vector2){
         return (vector1.getX() * vector2.getX()) + (vector1.getY() * vector2.getY());
     }

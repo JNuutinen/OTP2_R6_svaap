@@ -52,7 +52,6 @@ public class LaserGun extends Component implements Weapon, Updateable {
      */
     private Color effectsColor = Color.WHITE;
 
-
     /**
      * nykyisestä laserista vähennettävä läpinäkyvyysarvo häivytyksen aikana.
      */
@@ -164,8 +163,6 @@ public class LaserGun extends Component implements Weapon, Updateable {
             }
         }
     }
-
-
 
     @Override
     public void update(double deltaTime) {

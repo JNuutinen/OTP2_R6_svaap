@@ -9,7 +9,6 @@ import model.Unit;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-
 public class LazyMissile extends Missile {
 
     /**
@@ -64,7 +63,6 @@ public class LazyMissile extends Missile {
      * @param initialRotatingSpeed Ammuksen alkukääntymisnopeus.
      * @param latterRotatingSpeed Ammuksen myöhempi kääntymisnopeus.
      * @param tag Ammuksen tagi.
-     *
      * @param canLoseTarget pystyykö ohjus kadottaa kohteen jos menee liian kauas kohteesta
      */
     public LazyMissile(Unit shooter, double speed, int damage, double direction,

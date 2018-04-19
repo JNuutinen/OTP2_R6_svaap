@@ -7,10 +7,6 @@ import model.Unit;
 /**
  * Apuluokka eri projectileille. Pitää sisällään projectilen perus
  * toiminnan, toiminnallisuutta voi lisätä/muuttaa perivässä luokassa.
- * Esimerkiksi Missile muuttaa update metodia.
- * Jos update metodia haluaa muuttaa, tai tarvitsee muuten kutsua kontrolleria
- * perivässä luokassa, sen voi ottaa talteen instanssimuuttujaksi perivässä luokassa.
- * Projectilen kuvan, damagen, nopeuden yms. asetus perivässä luokassa.
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
@@ -37,6 +33,7 @@ class BaseProjectile extends Sprite {
     BaseProjectile(Unit shooter, double speed, double damage, int tag) {
         this.damage = damage;
         setTag(tag);
+        System.out.println(tag);
         // Suunta ja aloituspiste otetaan ampujasta johon laskettu mukaan aloituspisteen poikkeama.
         this.shooter = shooter;
         Point2D startingLocation = new Point2D(shooter.getPosition().getX(), shooter.getPosition().getY());

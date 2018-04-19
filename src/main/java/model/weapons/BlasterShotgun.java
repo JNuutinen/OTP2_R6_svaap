@@ -37,7 +37,7 @@ public class BlasterShotgun extends Component implements Weapon {
     private static final Color COLOR = Color.ORANGERED;
 
     /**
-     * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
+     * Pelin kontrolleri.
      */
     private Controller controller;
 
@@ -45,7 +45,6 @@ public class BlasterShotgun extends Component implements Weapon {
      * Ammusten vahinkomääräkerroin.
      */
     private double damageMultiplier = 1;
-
 
     /**
      * ammuksen nopeus
@@ -55,7 +54,7 @@ public class BlasterShotgun extends Component implements Weapon {
     /**
      * Konstruktori.
      * @param orientation Aseen orientation.
-     * @param projectileSpeed TODO
+     * @param projectileSpeed Ammusten nopeus.
      */
     public BlasterShotgun(int orientation, double projectileSpeed) {
         super("rectangle", 4, orientation, COLOR);
@@ -66,20 +65,16 @@ public class BlasterShotgun extends Component implements Weapon {
     /**
      * Konstruktori.
      * @param orientation Aseen orientation.
-     * @param projectileSpeed TODO
-     * @param componentOffset TODO
-     * @param projectileOffset TODO
+     * @param projectileSpeed Ammusten nopeus
+     * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
+     * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public BlasterShotgun(int orientation, double projectileSpeed, Point2D componentOffset,
-                          Point2D projectileOffset) {
+    public BlasterShotgun(int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
         this(orientation, projectileSpeed);
         setProjectileOffset(projectileOffset);
         setComponentOffset(componentOffset);
     }
 
-    /**
-     * @return tulinopeus
-     */
     @Override
     public double getFireRate() {
         return FIRE_RATE;

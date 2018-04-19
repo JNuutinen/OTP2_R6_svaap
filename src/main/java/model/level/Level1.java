@@ -17,7 +17,6 @@ import static view.GameMain.*;
 
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
- *
  * Luokka tehty ennaltamääriteltyn tason testaamista varten.
  * @author Ilari Anttila
  * @author Jerry Hällfors

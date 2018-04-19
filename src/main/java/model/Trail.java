@@ -98,6 +98,9 @@ public class Trail extends Sprite implements Updateable{
 
     }
 
+    /**
+     * Aloittaa trailin poistosekvenssin, jonka lopuksi trail poistetaan pelistä.
+     */
     public void destroyThis(){
         Thread thread = new Thread(() -> {
             try {
@@ -145,9 +148,6 @@ public class Trail extends Sprite implements Updateable{
         }
 
         double deltaTimeMultiplied = deltaTime * 3;
-
-
-
 
         for(Stop[] stops : colors){
             if(stops[0].getColor().getOpacity() > opacitySubtraction * deltaTimeMultiplied) {
@@ -209,7 +209,6 @@ public class Trail extends Sprite implements Updateable{
             line.setStroke(lg);
             colorsIndex++;
         }
-
     }
 
     /**

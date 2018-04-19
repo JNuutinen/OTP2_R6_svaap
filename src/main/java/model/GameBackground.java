@@ -50,6 +50,9 @@ public class GameBackground extends Sprite implements Updateable  {
      */
     private ImageView nextHorizontalImage;
 
+    /**
+     * Kertoo, onko taustan vierimisnopeus hidastumassa.
+     */
     private boolean decelerate = false;
 
     /**

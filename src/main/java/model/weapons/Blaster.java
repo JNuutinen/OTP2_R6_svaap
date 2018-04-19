@@ -75,7 +75,6 @@ public class Blaster extends Component implements Weapon {
         this.setComponentOffset(componentOffset);
     }
 
-
     @Override
     public double getFireRate() {
         return FIRE_RATE;

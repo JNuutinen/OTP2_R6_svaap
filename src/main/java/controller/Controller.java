@@ -1,9 +1,9 @@
 package controller;
 
 import model.*;
-import model.level.Level;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ohjelman kontrolleri. Ottaa vastaan kutsuja sekä Viewiltä että Modelilta.
@@ -26,25 +26,51 @@ public interface Controller {
      */
     void addScore(int score);
 
-    /** TODO
-     * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
+    /**
+     * Lisää HitboxCircle-rajapinnan toteuttavan olion pelilooppiin osumatarkastelua varten, muttei visuaalista Spriteä,
+     * eikä oliota päivityslistaan.
+     * @param hitboxCircle Ympyrähitboxillinen olio.
      */
     void addHitboxObject(HitboxCircle hitboxCircle);
+
     /**
-     * Lisää Updateable-olion Updateable listaan GameLoopille, sekä Viewiin Spritenä.
+     * Palauttaa pelissä olevat HitboxCircle-rajapinnan toteuttavat oliot listana.
+     * @return Lista HitboxCircle-olioista pelissä.
+     */
+    List<HitboxCircle> getHitboxObjects();
+
+    /**
+     * Palauttaa listan pelaajan (pelaajien?) spriteistä.
+     * @return Lista, jossa pelaajien spritet.
+     */
+    List<HitboxCircle> getPlayerHitboxObjects();
+
+    /**
+     * Lisää HitboxTrace-rajapinnan toteuttavan olion pelilooppiin, osumatarkastelua varten, muttei visuaalista Spriteä,
+     * eikä oliota päivityslistaan.
+     * @param hitboxTrace Tracehitboxillinen olio.
      */
     void addTrace(HitboxTrace hitboxTrace);
 
-    // TODO
+    /**
+     * Lisää Updateable-olion peliloopin päivityslistaan, sekä visuaalisen Spriten pelimaailmaan.
+     * @param updateable Updateable-rajapinnan toteuttava olio.
+     */
     void addUpdateableAndSetToScene(Updateable updateable);
 
     /**
-     * TODO
-     * @param updateable
+     * Lisää Updateable-olion peliloopin päivityslistaan, muttei osumatarkasteluun, eikä visuaalista Spriteä peliin.
+     * @param updateable Updateable-olio, joka lisätään päivityslistaan.
      */
     void addUpdateable(Updateable updateable);
 
-    // TODO: collision listan refaktorointi pois
+    /**
+     * Palauttaa Updateable listan pelin päivitettävistä Spriteistä.
+     * @return Updateable lista.
+     */
+    List<Updateable> getUpdateables();
+
+    //TODO: collisionList alla käytetään ainoastaan bossin olemassaolon tarkasteluun, semi turha.
 
     /**
      * Lisää Unitin collision listaan.
@@ -53,42 +79,22 @@ public interface Controller {
     void addUnitToCollisionList(Unit unit);
 
     /**
-     * Palauttaa nykyisen tason.
-     * @return Nykyinen, käynnissä oleva taso.
-     */
-    Level getLevel();
-
-    /**
      * Poistaa Unitin collision listasta.
      * @param unit Unit, joka poistetaan.
      */
     void removeFromCollisionList(Unit unit);
 
     /**
+     * Palauttaa collision listan.
+     * @return Lista, joka sisältää collision listan Unitit.
+     */
+    List<Unit> getCollisionList();
+
+    /**
      * Palauttaa pelaajan pisteet.
      * @return Pelaajan pisteet.
      */
     int getScore();
-
-    /**
-     * Palauttaa collision listan.
-     * @return Lista, joka sisältää collision listan Unitit.
-     */
-    ArrayList<Unit> getCollisionList();
-
-    /**
-     * Palauttaa Updateable listan pelin päivitettävistä Spriteistä.
-     * @return Updateable lista.
-     */
-    ArrayList<Updateable> getUpdateables();
-
-    /**
-     * TODO
-     * @return
-     */
-    ArrayList<HitboxCircle> getPlayerHitboxObjects();
-
-    ArrayList<HitboxCircle> getHitboxObjects();
 
     /**
      * Käynnistää tasosäikeen.
@@ -114,18 +120,22 @@ public interface Controller {
     void setCurrentFps(double fps);
 
     /**
-     * Poistaa GameLoopin käsittelystä Updateable olion.
+     * Poistaa GameLoopin käsittelystä Updateable- ja HitboxCircle -rajapinnat toteuttavan olion.
      * @param updateable Olio, joka poistetaan.
+     * @param hitboxCircle Se sama olio.
      */
     void removeUpdateable(Updateable updateable, HitboxCircle hitboxCircle);
 
     /**
-     * TODO
+     * Poistaa GameLoopin käsittelystä Updateable- ja HitboxTrace -rajapinant toteuttavan olion.
+     * @param updateable Olio, joka poistetaan.
+     * @param hitboxTrace Se sama olio.
      */
     void removeUpdateable(Updateable updateable, HitboxTrace hitboxTrace);
 
     /**
-     * TODO
+     * Poistaa GameLoopin käsittelystä Updateable-rajapinnan toteuttavan olion.
+     * @param updateable Olio, joka poistetaan.
      */
     void removeUpdateable(Updateable updateable);
 

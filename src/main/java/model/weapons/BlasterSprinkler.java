@@ -67,7 +67,6 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      */
     private double damageMultiplier = 1;
 
-
     /**
      * Pelin kontrolleri.
      */
@@ -92,9 +91,9 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      * Konstruktori.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
-     * @param componentOffset TODO
-     * @param projectileOffset TODO
-     * @param shootingTime Ampumisen kesto.
+     * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
+     * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
+     * @param shootingTime Ampumisruiskautuksen kesto.
      */
     public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime, Point2D componentOffset, Point2D projectileOffset) {
         this(orientation, projectileSpeed, shootingTime);

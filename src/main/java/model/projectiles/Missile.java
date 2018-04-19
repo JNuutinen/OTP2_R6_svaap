@@ -2,7 +2,6 @@ package model.projectiles;
 
 import controller.Controller;
 import controller.GameController;
-import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
@@ -13,9 +12,7 @@ import model.*;
 import static view.GameMain.*;
 
 /**
- * Ohjusammuksen luokka. Luokassa vain ohjukselle ominaisten
- * piirteiden hallinta, kaikille ammuksille yhteiset piirteet
- * yliluokassa (BaseProjectile).
+ * Ohjusammuksen luokka.
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
@@ -107,7 +104,6 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
      * @param damage Ammuksen tekemä vahinko.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
      * @param tag Ammuksen tagi.
-     *
      * @param canLoseTarget voiko ohjus kadottaa kohteen jos siirtyy liikaa liian kauas koteesta
      */
     public Missile(Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean canLoseTarget) {
@@ -144,7 +140,6 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
         } else {
             moveStep(deltaTime * getVelocity());
         }
-
 
         double angleToTarget;
         if (target != null) {

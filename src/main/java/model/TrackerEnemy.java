@@ -6,7 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static view.GameMain.*;
 
@@ -53,16 +53,40 @@ public class TrackerEnemy extends Unit {
      * Aluksen liikkumatapa.
      */
     private int movementPattern;
+
+    /**
+     * Lista Point2D-koordinaateista, joka kertoo aluksen kulkupolun.
+     */
     private Point2D[] path;
+
+    /**
+     * Kertoo nykyisen sijainnin indeksin, apumuuttuja kulkupolkuun.
+     */
     private int currentDestinationIndex = 0;
+
+    /**
+     * TODO JOku
+     */
     private int lastDestinationIndex = 0;
 
     /**
      * Aluksen kääntymisnopeus
      */
     private double rotatingSpeed = 4;
+
+    /**
+     * Kertoo, ampuuko alus kohdettaan.
+     */
     private boolean shootingTarget = false;
+
+    /**
+     * Aluksen kohde, jota se seuraa "katseellaan".
+     */
     private HitboxCircle target = null;
+
+    /**
+     * Aluksen alkunopeus.
+     */
     private final double initialVelocity = 300;
 
     /**
@@ -85,16 +109,14 @@ public class TrackerEnemy extends Unit {
      */
     private boolean tookDamage2 = false;
 
-
-
-
     /**
      * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
      * @param shipColor Aluksen väri
-     * @param initialPosition Aloitussijainti
-     * @param path Aluksen reitti
+     * @param primaries Lista, jossa aluksen aseet kokonaislukuina ilmoitettuina.
+     * @param initialPosition Aloitussijainnin koordinaatit.
+     * @param path Lista, jossa aluksen kulkeman polun koordinaatit.
      */
-    public TrackerEnemy(Color shipColor, ArrayList<Integer> primaries, Point2D initialPosition, Point2D[] path) {
+    public TrackerEnemy(Color shipColor, List<Integer> primaries, Point2D initialPosition, Point2D[] path) {
         super(shipColor, 5, 20);
         this.path = path;
         controller = GameController.getInstance();
@@ -138,10 +160,6 @@ public class TrackerEnemy extends Unit {
         controller.addHitboxObject(this);
     }
 
-    /**
-     * Aluksen liikkumisen, ampumisen ja kääntymisen päivittäminen.
-     * @param deltaTime Kulunut aika viime päivityksestä.
-     */
     @Override
     public void update(double deltaTime){
         if(getTookDamage()){

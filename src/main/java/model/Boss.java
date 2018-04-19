@@ -24,11 +24,11 @@ public class Boss extends Unit {
      * Alku X-koordinaatti
      */
     private double initialX;
+
     /**
      * Alku y-koordinaatti
      */
     private double initialY;
-
 
     /**
      * Kertoo liikutaanko ylös vai alas
@@ -39,16 +39,6 @@ public class Boss extends Unit {
      * Onko boss taistelutilassa.
      */
     private boolean inFightingStage = false;
-
-    /**
-     * joku
-     */
-    private double damagedTimeCounter = 0;
-
-    /**
-     * joku2
-     */
-    private boolean tookDamage2 = false;
 
     /**
      * Apumuuttuja pomon alkuperäisestä hp:stä
@@ -64,7 +54,6 @@ public class Boss extends Unit {
      * Kasvatetaan kunnes sama kuin fireRate, jolloin ammutaan ja fireRateCounter asetetaan 0.
      */
     private int fireRateCounter = 100;
-
 
     /**
      * Konstruktori. Kutsuu yläluokan konstruktoria ja asettaa kontrollerin. orginalHp on sama kuin
@@ -105,10 +94,6 @@ public class Boss extends Unit {
         this.initialY = initialY;
     }
 
-    /** 
-     * Päivittää pomon liikkumisen, ampumisen ja healthbarin. Kutsu VAIN gameloopista!
-     * @param deltaTime Kulunut aika viime päivityksestä.
-     */
     @Override
     public void update(double deltaTime){
         if (fireRateCounter <= fireRate) fireRateCounter++;

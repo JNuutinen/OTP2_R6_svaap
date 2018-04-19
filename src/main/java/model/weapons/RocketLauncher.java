@@ -51,7 +51,6 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private Controller controller;
 
-
     /**
      * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
      */
@@ -73,9 +72,10 @@ public class RocketLauncher extends Component implements Weapon {
     /**
      * TODO
      * @param orientation Aseen orientation.
-     * @param componentOffset Aseen x-offset.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
+     * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
+     * @param prjoectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
     public RocketLauncher(int orientation, double rotatingSpeed, boolean missileCanLoseTarget,
                           Point2D componentOffset, Point2D prjoectileOffset) {

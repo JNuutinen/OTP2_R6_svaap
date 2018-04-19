@@ -28,6 +28,10 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * Ammuksen vakioväri
      */
     private static final Color COLOR = Color.WHITE;
+
+    /**
+     * Pelin kontrolleri.
+     */
     private Controller controller;
 
     /**
@@ -53,12 +57,11 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
-     * @param offset TODO
+     * @param offset Ammuken alkusijainnin poikkeama aluksesta.
      * @param color Ammuksen väri.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Unit shooter, double speed, int damage,
-                           Point2D offset, Color color, int tag) {
+    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, int tag) {
         this(shooter, speed, damage, offset, tag);
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
@@ -69,17 +72,16 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param shooter Ammuksen ampuja.
      * @param speed Ammuksen nopeus.
      * @param damage Ammuksen tekemä vahinko.
-     * @param offset TODO
+     * @param offset Ammuken alkusijainnin poikkeama aluksesta.
      * @param color Ammuksen väri.
      * @param direction Ammuksen suunta.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Unit shooter, double speed, int damage,
-                           Point2D offset, Color color, double direction, int tag) {
+    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, double direction,
+                           int tag) {
         this(shooter, speed, damage, offset, color, tag);
         rotate(direction);
     }
-
 
     @Override
     public void collides(Object collidingTarget) {
@@ -93,7 +95,6 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
     public void destroyThis(){
         controller.removeUpdateable(this, this);
     }
-
 
     @Override
     public void update(double deltaTime){

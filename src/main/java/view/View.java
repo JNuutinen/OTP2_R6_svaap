@@ -79,5 +79,10 @@ public interface View {
      */
     void pause();
 
+    /**
+     * Muuttaa taustan vierimisnopeutta tietyksi ajaksi.
+     * @param speed Taustan väliaikainen vierimisnopeus.
+     * @param duration Väliaikaisen vierimisnopeuden kesto, jonka jälkeen vierimisnopeus palaa vakioarvoonsa.
+     */
     void changeBackgroundScrollSpeed(double speed, double duration);
 }

@@ -35,10 +35,7 @@ import view.menus.MainMenu;
 import view.menus.PauseMenu;
 import view.menus.PlayMenu;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Pelin View. JavaFX Application.
@@ -84,7 +81,9 @@ public class GameMain extends Application implements View {
      */
     public static final int ENEMY_SHIP_TAG = 2;
 
-    //TODO
+    /**
+     * Bossaluksen tägi.
+     */
     public static final int BOSS_SHIP_TAG = 3;
 
     /**
@@ -146,7 +145,7 @@ public class GameMain extends Application implements View {
     /**
      * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
      */
-    public static ArrayList<String> input;
+    public static List<String> input;
 
     /**
      * Pitää sisällään lokalisoidut tekstit.
@@ -238,6 +237,10 @@ public class GameMain extends Application implements View {
      */
     private GameBackground gameBg;
 
+    /**
+     * Käynnistää ohjelman. Kutsuu launch(args) metodia, joka käynnistää JavaFX:n.
+     * @param args Komentoriviargumentit.
+     */
     public static void main(String[] args) {
         //Database database = new Database();
         //database.dbTest();
@@ -294,6 +297,7 @@ public class GameMain extends Application implements View {
         return units;
     }
 
+    @Override
     public void removeFromCollisionList(Unit unit){
         units.remove(unit);
     }
@@ -314,8 +318,6 @@ public class GameMain extends Application implements View {
         }
         debugger_fps.setText(String.valueOf(fps));
     }
-
-    // ------ Debugger
 
     @Override
     public void setCurrentFps(double currentFps){

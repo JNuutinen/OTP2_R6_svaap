@@ -24,24 +24,25 @@ public abstract class Component extends Sprite {
      */
     private Unit parentUnit = null;
 
-
     /**
      * isäntäaluksen väri komponentin luontivaiheessa
      */
     private Color parentUnitColor = Color.WHITE;
-
 
     /**
      *  Ammuksien tagi.
      */
     private int tag = UNDEFINED_TAG;
 
-    /** Komponentin poikkeama aluksesta. x=eteenpäin, y=vasempaan päin,
-     * verrattuna aluksen suuntaan. */
+    /**
+     * Komponentin poikkeama aluksesta. x=eteenpäin, y=vasempaan päin, verrattuna aluksen suuntaan.
+     */
     private Point2D offset = new Point2D(0, 0);
 
-    /** Komponentista lähtevän ammuksen aloituspaikan poikkeama aluksesta. x=eteenpäin, y=vasempaan päin,
-     * verrattuna aluksen suuntaan. */
+    /**
+     * Komponentista lähtevän ammuksen aloituspaikan poikkeama aluksesta. x=eteenpäin, y=vasempaan päin,
+     * verrattuna aluksen suuntaan.
+     */
     private Point2D projectileOffset = new Point2D(0, 0);
 
     /** Konstruktori ilman projectilen offsettejä.
@@ -60,6 +61,10 @@ public abstract class Component extends Sprite {
         }
     }
 
+    /**
+     * Asettaa tämän komponentin parent Unitin, eli jonka osana komponentti on.
+     * @param unit Unit, jonka osana tämä komponentti on.
+     */
     public void setParentUnit(Unit unit){
         this.parentUnit = unit;
         if (unit instanceof Player){
@@ -71,6 +76,10 @@ public abstract class Component extends Sprite {
         this.parentUnitColor = unit.getUnitColor();
     }
 
+    /**
+     * Palauttaa komponentin parent Unitin, eli Unit, jonka osana komponentti on.
+     * @return Unit, jonka osana tämä komponentti on.
+     */
     public Unit getParentUnit(){
         if(parentUnit != null){
             return parentUnit;
@@ -79,8 +88,8 @@ public abstract class Component extends Sprite {
     }
 
     /**
-     * TODO
-     * @return
+     * Palauttaa komponentin parent Unitin värin.
+     * @return Komponentin parent unitin väri.
      */
     public Color getParentUnitColor() {
         return parentUnitColor;
@@ -88,15 +97,15 @@ public abstract class Component extends Sprite {
 
     /**
      * Asettaa visuaalisen komponentin poikkeaman aluksesta.
-     * @param projectileOffset
+     * @param componentOffset Komponentin poikkeama.
      */
-    public void setComponentOffset(Point2D projectileOffset){
-        this.offset = projectileOffset;
+    public void setComponentOffset(Point2D componentOffset){
+        this.offset = componentOffset;
     }
 
     /**
      * Asettaa ammuksen lähtopaikan poikkeaman aluksesta
-     * @param projectileOffset
+     * @param projectileOffset Ammuksen poikkeama.
      */
     public void setProjectileOffset(Point2D projectileOffset){
         this.projectileOffset = projectileOffset;
@@ -182,12 +191,10 @@ public abstract class Component extends Sprite {
         return offset;
     }
 
-
     /**
      * Palauttaa komponentista lähtevän ammuksen aloituspaikan poikkeama aluksen etusuuntaan
      * @return ammuksen aloituspaikan poikkeama aluksen etusuuntaan
      */
     public Point2D getProjectileOffset() { return projectileOffset;}
-
 
 }

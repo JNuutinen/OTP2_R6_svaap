@@ -116,7 +116,6 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
         timeSinceSpawn += deltaTime;
         double deltaTimeMultiplied = deltaTime * 7;
 
-
         // laserin väri pysyy valkoisena 0.15 sec ajan ja sitten alkaa häipymään pois.
         if(timeSinceSpawn > 0.15){
             if(currentColor.getOpacity() * opacitySubtraction < currentColor.getOpacity()) {
@@ -124,7 +123,6 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
                 double newGreenValue = 0;
                 double newBlueValue = 0;
                 double newOpacity = 0;
-
 
                 if(currentColor.getRed() > (redSubtraction * deltaTimeMultiplied)){
                     newRedValue = currentColor.getRed() - (redSubtraction * deltaTimeMultiplied);
@@ -149,9 +147,8 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
 
     /**
      * Rakentaa projectilen Shapen
-     *
      * @param color Projectilen väri
-     * @return Rakennettu Shape
+     * @return Rakennettu PolyLine
      */
     private Polyline buildLaser(Color color) {
         // Ammuksen muoto

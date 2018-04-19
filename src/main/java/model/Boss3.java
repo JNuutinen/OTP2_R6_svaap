@@ -21,43 +21,70 @@ import static view.GameMain.*;
  */
 public class Boss3 extends Unit {
 
-    /** Pelin kontrolleri */
+    /**
+     * Pelin kontrolleri
+     */
     private Controller controller;
 
-    /** Apumuuttuja pomon alkuperäisestä hp:stä */
+    /**
+     * Apumuuttuja pomon alkuperäisestä hp:stä
+     */
     private int originalHp;
 
-    /** Apumuuttuja pomon alkuperäisestä hp:stä */
+    /**
+     * Apumuuttuja pomon alkuperäisestä hp:stä
+     */
     private int originalhp;
 
-    /** tulinopeus */
+    /**
+     * tulinopeus
+     */
     private double fireRate = 0.7;
 
-    /**  ampumisen ajanlaskuri */
+    /**
+     * ampumisen ajanlaskuri
+     */
     private double fireRateCounter = 0;
 
-    /** apumuuttuja ampumistilan ajanlaskun yhteydessä */
+    /**
+     * apumuuttuja ampumistilan ajanlaskun yhteydessä
+     */
     private double stageTimeCounter = 0;
 
-    /** liikkuuko alaspäin hyökkaystilassa */
+    /**
+     * liikkuuko alaspäin hyökkaystilassa
+     */
     private boolean movingDown = true;
 
-    /** apumuuttuja ammuttavien laserien muistamiseksi */
+    /**
+     * apumuuttuja ammuttavien laserien muistamiseksi
+     */
     private int currentLaser = 0;
 
-    /** apumuuttuja laserien ampumisjärjestyksen hallitsemiseksi */
+    /**
+     * apumuuttuja laserien ampumisjärjestyksen hallitsemiseksi
+     */
     private boolean lasersTopToDown = true;
 
-    /** apumuuttuja vahinkoefektin ajanlaskun yhteydessä */
+    /**
+     * apumuuttuja vahinkoefektin ajanlaskun yhteydessä
+     */
     private double damagedTimeCounter = 0;
 
+    /**
+     * Joku apumuuttuja.
+     */
     private boolean tookDamage2 = false;
 
-    /** apumuuttuja tilan yhteydessä*/
+    /**
+     * apumuuttuja tilan yhteydessä
+     */
     private boolean inFightingStage = false;
 
-
-
+    /**
+     * Konstruktori.
+     * @param initialPosition Bossin alkupositio.
+     */
     public Boss3(Point2D initialPosition){
 
         // alus varustetaan erikseen armShip(), niin sitä ei tehdä tässä.
@@ -101,8 +128,6 @@ public class Boss3 extends Unit {
                 300.0, -25.0);
         drawShip(shape);
 
-
-
         controller = GameController.getInstance();
         this.setPosition(initialPosition.getX(), initialPosition.getY());
         this.setTag(BOSS_SHIP_TAG);
@@ -117,18 +142,10 @@ public class Boss3 extends Unit {
         originalHp = getHp();
         this.setHitbox(450);
 
-
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
-
     }
 
-
-
-    /**
-     * Päivittää pomon liikkumisen, ampumisen, värin kun ottaa vahinkoa ja healthbarin. Kutsu VAIN gameloopista!
-     * @param deltaTime Kulunut aika viime päivityksestä.
-     */
     @Override
     public void update(double deltaTime){
 
@@ -217,7 +234,6 @@ public class Boss3 extends Unit {
         }
         controller.setHealthbar(hpPercentage(), 0);
     }
-
 
     /**
      * Laskee pomon jäljellä olevan hp:n kymmenyksissä. Käytetään healthbarin päivittämiseen
