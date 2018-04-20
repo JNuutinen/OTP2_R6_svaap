@@ -19,7 +19,7 @@ import java.util.List;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Explosion extends Sprite implements Updateable{
+public class Explosion extends SpriteImpl implements Updateable {
 
     /**
      * Räjähdyksestä lähtevien viivojen lista.

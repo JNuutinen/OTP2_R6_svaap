@@ -9,7 +9,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import model.*;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Ohjusammuksen luokka.
@@ -80,7 +81,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
      * @param tag Ammuksen tagi.
      */
-    public Missile(Unit shooter, double speed, int damage, double rotatingSpeed, int tag) {
+    public Missile(Unit shooter, double speed, int damage, double rotatingSpeed, Tag tag) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(shooter, speed, damage, tag);
         this.rotatingSpeed = rotatingSpeed;
@@ -106,7 +107,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
      * @param tag Ammuksen tagi.
      * @param canLoseTarget voiko ohjus kadottaa kohteen jos siirtyy liikaa liian kauas koteesta
      */
-    public Missile(Unit shooter, double speed, int damage, double rotatingSpeed, int tag, boolean canLoseTarget) {
+    public Missile(Unit shooter, double speed, int damage, double rotatingSpeed, Tag tag, boolean canLoseTarget) {
         this(shooter, speed, damage, rotatingSpeed, tag);
         this.canLoseTarget = canLoseTarget;
     }
@@ -207,9 +208,10 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
     private void findAndSetTarget() {
         double shortestDistance = Double.MAX_VALUE;
         HitboxCircle closestEnemy = null;
-        if (getShooter().getTag() == PLAYER_SHIP_TAG){
+        if (getShooter().getTag() == Tag.SHIP_PLAYER) {
             for (HitboxCircle hitboxCircle : controller.getHitboxObjects()) {
-                if (hitboxCircle.getTag() == ENEMY_SHIP_TAG || hitboxCircle.getTag() == BOSS_SHIP_TAG) {
+                if (((Sprite) hitboxCircle).getTag() == Tag.SHIP_ENEMY
+                        || ((Sprite) hitboxCircle).getTag() == Tag.SHIP_BOSS) {
                     double distance = getShooter().getDistanceFromTarget(hitboxCircle.getPosition());
                     if (distance < shortestDistance) {
                         shortestDistance = distance;
@@ -222,8 +224,7 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
                     }
                 }
             }
-        }
-        else if(getShooter().getTag() == ENEMY_SHIP_TAG || getShooter().getTag() == BOSS_SHIP_TAG){
+        } else if (getShooter().getTag() == Tag.SHIP_ENEMY || getShooter().getTag() == Tag.SHIP_BOSS) {
             for (HitboxCircle hitboxCircle : controller.getPlayerHitboxObjects()) {
                 double distance = getShooter().getDistanceFromTarget(hitboxCircle.getPosition());
                 if (distance < shortestDistance) {

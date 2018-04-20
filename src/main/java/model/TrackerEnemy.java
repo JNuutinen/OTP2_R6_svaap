@@ -8,7 +8,8 @@ import javafx.scene.shape.Polygon;
 
 import java.util.List;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * TrackerEnemy vihollinen seuraa "katsellaan" ja ampuu pelaajaa kohti.
@@ -112,15 +113,15 @@ public class TrackerEnemy extends Unit {
     /**
      * TrackerEnemyn konstruktori. Luo kolmion muotoisen aluksen ja lisää sen CollisionListiin.
      * @param shipColor Aluksen väri
-     * @param primaries Lista, jossa aluksen aseet kokonaislukuina ilmoitettuina.
+     * @param primaries Lista, jossa aluksen aseet tageina ilmoitettuna.
      * @param initialPosition Aloitussijainnin koordinaatit.
      * @param path Lista, jossa aluksen kulkeman polun koordinaatit.
      */
-    public TrackerEnemy(Color shipColor, List<Integer> primaries, Point2D initialPosition, Point2D[] path) {
+    public TrackerEnemy(Color shipColor, List<Tag> primaries, Point2D initialPosition, Point2D[] path) {
         super(shipColor, 5, 20);
         this.path = path;
         controller = GameController.getInstance();
-        setTag(ENEMY_SHIP_TAG);
+        setTag(Tag.SHIP_ENEMY);
         lastDestinationIndex = path.length-1;
         controller.addUnitToCollisionList(this);
         initialX = initialPosition.getX();

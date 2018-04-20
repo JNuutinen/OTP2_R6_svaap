@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import model.HitboxCircle;
+import model.Tag;
 import model.Unit;
 import model.Updateable;
 
@@ -42,7 +43,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param offset TODO
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, int tag) {
+    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Tag tag) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(shooter, speed, offset, damage, tag);
 
@@ -61,7 +62,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param color Ammuksen väri.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, int tag) {
+    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, Tag tag) {
         this(shooter, speed, damage, offset, tag);
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
@@ -78,7 +79,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param tag Ammuksen tagi.
      */
     public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, double direction,
-                           int tag) {
+                           Tag tag) {
         this(shooter, speed, damage, offset, color, tag);
         rotate(direction);
     }

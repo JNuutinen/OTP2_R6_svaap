@@ -89,7 +89,7 @@ public class Player extends Unit {
      */
     public Player(Color shipColor) {
         super(shipColor, 0, 0);
-        setTag(PLAYER_SHIP_TAG);
+        setTag(Tag.SHIP_PLAYER);
         controller = GameController.getInstance();
         setHp(MAX_HP );
         setHitbox(60);

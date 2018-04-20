@@ -20,7 +20,7 @@ import java.util.List;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Trail extends Sprite implements Updateable{
+public class Trail extends SpriteImpl implements Updateable {
 
     /**
      * Updateable, josta häntä lähtee.

@@ -116,7 +116,7 @@ public class GameController implements Controller {
 
     @Override
     public void addUpdateableAndSetToScene(Updateable updateable) {
-        Platform.runLater(() -> view.addSprite((Sprite) updateable));
+        Platform.runLater(() -> view.addSprite((SpriteImpl) updateable));
         gameLoop.queueUpdateable(updateable);
     }
 
@@ -138,21 +138,21 @@ public class GameController implements Controller {
 
     @Override
     public synchronized void removeUpdateable(Updateable updateable, HitboxCircle hitboxCircle) {
-        view.removeSprite((Sprite)updateable);
+        view.removeSprite((SpriteImpl) updateable);
         gameLoop.removeUpdateable(updateable);
         gameLoop.removeHitboxObject(hitboxCircle);
     }
 
     @Override
     public synchronized void removeUpdateable(Updateable updateable, HitboxTrace hitboxTrace) {
-        view.removeSprite((Sprite)updateable);
+        view.removeSprite((SpriteImpl) updateable);
         gameLoop.removeUpdateable(updateable);
         gameLoop.removeTrace(hitboxTrace);
     }
 
     @Override
     public synchronized void removeUpdateable(Updateable updateable) {
-        view.removeSprite((Sprite)updateable);
+        view.removeSprite((SpriteImpl) updateable);
         gameLoop.removeUpdateable(updateable);
     }
 

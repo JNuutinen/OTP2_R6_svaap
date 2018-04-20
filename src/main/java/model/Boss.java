@@ -4,7 +4,8 @@ import controller.Controller;
 import controller.GameController;
 import javafx.scene.image.Image;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Tason loppupomo
@@ -70,7 +71,7 @@ public class Boss extends Unit {
         controller.addUnitToCollisionList(this);
         setHp(hp);
         originalHp = hp;
-        setTag(ENEMY_SHIP_TAG);
+        setTag(Tag.SHIP_BOSS);
         setPosition(initialX, initialY);
         rotate(180);
         setImage(new Image("/images/bossPlaceholder.png"), 128, 256);

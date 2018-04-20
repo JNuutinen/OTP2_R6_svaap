@@ -11,8 +11,6 @@ import model.weapons.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static view.GameMain.*;
-
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
  * @author Ilari Anttila
@@ -20,7 +18,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Unit extends Sprite implements Updateable, HitboxCircle {
+public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
 
     /**
      * apumuuttuja jotta komponentit tietävät onko alus oikeasti null, koska aluksesta jää viittaus komponenttiin.
@@ -141,11 +139,11 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
      * Aseet on luotava sen jälkeen kun aluksen muoto on laitettu (tai ollaan laittamassa) spriten lapseksi.
      * @param primaries primary-aseet tägeinä eli int muodossa.
      */
-    public void makePrimaryWeapons(List<Integer> primaries){
+    public void makePrimaryWeapons(List<Tag> primaries) {
         List<Weapon> initialPrimaryWeapons = new ArrayList<>();
 
         if(primaries != null && controller != null) {
-            for (int primaryWeaponTag : primaries) {
+            for (Tag primaryWeaponTag : primaries) {
                 switch (primaryWeaponTag){
                     default:
                         break;
@@ -356,21 +354,21 @@ public class Unit extends Sprite implements Updateable, HitboxCircle {
         hp -= damage;
         if(hp <= 0){
             hp = 9999; // ettei voi ottaa vahinkoa poiston yhteydessä
-            if(getTag() == ENEMY_SHIP_TAG){
+            if (getTag() == Tag.SHIP_ENEMY) {
                 controller.addScore(100);
             }
-            if(getTag() == PLAYER_SHIP_TAG){
+            if (getTag() == Tag.SHIP_PLAYER) {
                 controller.setHealthbar(0, 1);
                 controller.returnToMain();
             }
-            if(getTag() == BOSS_SHIP_TAG){
+            if (getTag() == Tag.SHIP_BOSS) {
                 controller.addScore(1000);
                 controller.setHealthbar(0, 0);
             }
 
             destroyThis();
         }
-        if(getTag() == PLAYER_SHIP_TAG){
+        if (getTag() == Tag.SHIP_PLAYER) {
             controller.addScore(-50);
         }
     }

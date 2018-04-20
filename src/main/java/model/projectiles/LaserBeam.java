@@ -9,6 +9,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.HitboxTrace;
+import model.Tag;
 import model.Unit;
 import model.Updateable;
 
@@ -75,7 +76,7 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
      * @param tag Ammuksen tagi.
      * @param offset Ammuksen aloituspaikan poikkeus aluksen etusuuntaan.
      */
-    public LaserBeam(Unit shooter, double speed, int damage, Color color, int tag, Point2D offset) {
+    public LaserBeam(Unit shooter, double speed, int damage, Color color, Tag tag, Point2D offset) {
         super(shooter, speed, offset, damage, tag);
         controller = GameController.getInstance();
         redSubtraction = (1 - color.getRed());

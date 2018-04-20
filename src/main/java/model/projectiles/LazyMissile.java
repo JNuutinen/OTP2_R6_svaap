@@ -1,5 +1,6 @@
 package model.projectiles;
 
+import model.Tag;
 import model.Unit;
 
 /**
@@ -47,7 +48,7 @@ public class LazyMissile extends Missile {
      * @param tag Ammuksen tagi.
      */
     public LazyMissile(Unit shooter, double speed, int damage, double direction,
-                       double initialRotatingSpeed, double latterRotatingSpeed, int tag) {
+                       double initialRotatingSpeed, double latterRotatingSpeed, Tag tag) {
         super(shooter, speed, damage, initialRotatingSpeed, tag);
         this.latterRotatingSpeed = latterRotatingSpeed;
         // Asetetaan projectilen suunta
@@ -66,7 +67,7 @@ public class LazyMissile extends Missile {
      * @param canLoseTarget pystyykö ohjus kadottaa kohteen jos menee liian kauas kohteesta
      */
     public LazyMissile(Unit shooter, double speed, int damage, double direction,
-                       double initialRotatingSpeed, double latterRotatingSpeed, int tag, boolean canLoseTarget) {
+                       double initialRotatingSpeed, double latterRotatingSpeed, Tag tag, boolean canLoseTarget) {
         super(shooter, speed, damage, initialRotatingSpeed, tag, canLoseTarget);
         this.latterRotatingSpeed = latterRotatingSpeed;
         // Asetetaan projectilen suunta

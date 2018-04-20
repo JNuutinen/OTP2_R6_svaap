@@ -67,77 +67,6 @@ public class GameMain extends Application implements View {
     public static final int BANNER_HEIGHT = 200;
 
     /**
-     * Tagi, jota ei ole erityisesti asetettu.
-     */
-    public static final int UNDEFINED_TAG = 0;
-
-    /**
-     * Pelaajan aluksen tagi.
-     */
-    public static final int PLAYER_SHIP_TAG = 1;
-
-    /**
-     * Vihollisaluksien tagi.
-     */
-    public static final int ENEMY_SHIP_TAG = 2;
-
-    /**
-     * Bossaluksen tägi.
-     */
-    public static final int BOSS_SHIP_TAG = 3;
-
-    /**
-     * Pelaajan ammuksien tagi.
-     */
-    public static final int PLAYER_PROJECTILE_TAG = 4;
-
-    /**
-     * Vihollisten ammuksien tagi.
-     */
-    public static final int ENEMY_PROJECTILE_TAG = 5;
-
-    /**
-     * Poweruping tägi.
-     */
-    public static final int POWERUP_TAG = 6;
-
-    /**
-     * Aseen Blaster tägi
-     */
-    public static final int WEAPON_BLASTER = 8;
-
-    /**
-     * Aseen BlasterShotgun tägi
-     */
-    public static final int WEAPON_BLASTER_SHOTGUN = 9;
-
-    /**
-     * Aseen BlasterSprinkler tägi
-     */
-    public static final int WEAPON_BLASTER_SPRINKLER = 10;
-
-    /**
-     * Aseen RcketLaucher tägi
-     */
-    public static final int WEAPON_ROCKET_LAUNCHER = 11;
-
-    /**
-     * Aseen RocketShotugun tägi
-     */
-    public static final int WEAPON_ROCKET_SHOTGUN = 12;
-
-    /**
-     * Aseen LaserGun tägi
-     */
-    public static final int WEAPON_LASER_GUN = 13;
-
-    /**
-     * Spriten määrittämätön nimitagi.
-     */
-    public static final String SPRITE_NAME_UNDEFINED = "undefined";
-
-
-    /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
     private static final int NUMBER_OF_LEVELS = 1;
@@ -251,12 +180,12 @@ public class GameMain extends Application implements View {
     @Override
     public void start(Stage primaryStage){
         // lokalisointi
-        String englishLanguage = "en";
-        String newZealandCountry = "NZ";
-        String finnishLanguage = "fi";
-        String finlandCountry = "FI";
-        Locale enNzLocale = new Locale(englishLanguage, newZealandCountry);
-        Locale fiFiLocale = new Locale(finnishLanguage, finlandCountry);
+        String english = "en";
+        String newZealand = "NZ";
+        String finnish = "fi";
+        String finland = "FI";
+        Locale enNzLocale = new Locale(english, newZealand);
+        Locale fiFiLocale = new Locale(finnish, finland);
         messages = ResourceBundle.getBundle("MessagesBundle", fiFiLocale);
 
         this.primaryStage = primaryStage;
@@ -287,7 +216,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void addSprite(Sprite sprite) {
-        gameRoot.getChildren().add(sprite);
+        gameRoot.getChildren().add((Pane) sprite);
     }
 
     @Override

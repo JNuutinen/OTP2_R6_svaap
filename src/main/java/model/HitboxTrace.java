@@ -24,17 +24,4 @@ public interface HitboxTrace {
      * Poistaa tämän olion pelistä.
      */
     void destroyThis();
-
-
-    /**
-     * Palauttaa olion tunnistetagin.
-     * @return Olion taginumero.
-     */
-    int getTag();
-
-    /**
-     * Asettaa olion tunnistetagin.
-     * @param tag Olion tagi kokonaisnumerona.
-     */
-    void setTag(int tag);
 }

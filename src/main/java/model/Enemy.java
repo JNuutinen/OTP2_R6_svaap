@@ -8,7 +8,8 @@ import javafx.scene.shape.Polygon;
 
 import java.util.ArrayList;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Vihollisen pääluokka. Perii unitin ja implementoi Updateable rajapinnan.
@@ -82,11 +83,11 @@ public class Enemy extends Unit {
      * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 = MOVE_SINE.
      * @param initialPosition Aloitussijainti.
      */
-    public Enemy(Color shipColor, ArrayList<Integer> primaries, int movementPattern, Point2D initialPosition) {
+    public Enemy(Color shipColor, ArrayList<Tag> primaries, int movementPattern, Point2D initialPosition) {
         super(shipColor, 5, 20);
 
         controller = GameController.getInstance();
-        setTag(ENEMY_SHIP_TAG);
+        setTag(Tag.SHIP_ENEMY);
         controller.addUnitToCollisionList(this);
         this.initialX = initialPosition.getX();
         this.initialY = initialPosition.getY();

@@ -1,7 +1,8 @@
 package model.projectiles;
 
 import javafx.geometry.Point2D;
-import model.Sprite;
+import model.SpriteImpl;
+import model.Tag;
 import model.Unit;
 
 /**
@@ -12,7 +13,7 @@ import model.Unit;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-class BaseProjectile extends Sprite {
+class BaseProjectile extends SpriteImpl {
 
     /**
      * Viittaus ammuksen ampuneeseen Unitiin.
@@ -30,7 +31,7 @@ class BaseProjectile extends Sprite {
      * @param speed Ammuksen nopeus.
      * @param tag Ammuksen tagi.
      */
-    BaseProjectile(Unit shooter, double speed, double damage, int tag) {
+    BaseProjectile(Unit shooter, double speed, double damage, Tag tag) {
         this.damage = damage;
         setTag(tag);
         System.out.println(tag);
@@ -51,7 +52,7 @@ class BaseProjectile extends Sprite {
      * @param offset Ammuken alkusijainnin poikkeama aluksesta.
      * @param tag Ammuksen tagi.
      */
-    BaseProjectile(Unit shooter, double speed, Point2D offset, double damage, int tag) {
+    BaseProjectile(Unit shooter, double speed, Point2D offset, double damage, Tag tag) {
         this(shooter, speed, damage, tag);
         double xOffset = degreesToVector(shooter.getDirection()).getX() * offset.getX();
         double yOffset = degreesToVector(shooter.getDirection()).getY() * offset.getX();

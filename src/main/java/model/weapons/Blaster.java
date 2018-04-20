@@ -89,7 +89,7 @@ public class Blaster extends Component implements Weapon {
     public void shoot() {
         if(getParentUnit() != null){
             SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
-                    getProjectileOffset(), getParentUnitColor(), getTag());
+                    getProjectileOffset(), getParentUnitColor(), getComponentProjectileTag());
             controller.addUpdateableAndSetToScene(smallProjectile);
             controller.addHitboxObject(smallProjectile);
         }

@@ -7,8 +7,6 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-import static view.GameMain.*;
-
 /**
  * Komponenttien luokka. Komponentit voivat olla aseita tai passiivisia komponentteja,
  * jotka näkyvät aluksessa, johon ne ovat lisätty.
@@ -17,7 +15,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public abstract class Component extends Sprite {
+public abstract class Component extends SpriteImpl {
 
     /**
      * komponentin isäntäalus
@@ -30,9 +28,9 @@ public abstract class Component extends Sprite {
     private Color parentUnitColor = Color.WHITE;
 
     /**
-     *  Ammuksien tagi.
+     *  Komponentin ammuksien tagi.
      */
-    private int tag = UNDEFINED_TAG;
+    private Tag componentProjectileTag = Tag.UNDEFINED;
 
     /**
      * Komponentin poikkeama aluksesta. x=eteenpäin, y=vasempaan päin, verrattuna aluksen suuntaan.
@@ -68,10 +66,9 @@ public abstract class Component extends Sprite {
     public void setParentUnit(Unit unit){
         this.parentUnit = unit;
         if (unit instanceof Player){
-            this.tag = PLAYER_PROJECTILE_TAG;
-        }
-        else{
-            this.tag = ENEMY_PROJECTILE_TAG;
+            this.componentProjectileTag = Tag.PROJECTILE_PLAYER;
+        } else if (unit instanceof Enemy || unit instanceof Boss || unit instanceof Boss3) {
+            this.componentProjectileTag = Tag.PROJECTILE_ENEMY;
         }
         this.parentUnitColor = unit.getUnitColor();
     }
@@ -115,16 +112,16 @@ public abstract class Component extends Sprite {
      * Komponentin getteri tägille
      * @return tägi
      */
-    public int getTag(){
-        return tag;
+    public Tag getComponentProjectileTag() {
+        return componentProjectileTag;
     }
 
     /**
-     * Komponentin setteri tägille
-     * @param tag Spriten tunnistetagi.
+     * Setteri komponentin ampumien ammuksien tagille.
+     * @param componentProjectileTag Komponentin ampumien ammuksien tagi.
      */
-    public void setTag(int tag){
-        this.tag = tag;
+    public void setComponentProjectileTag(Tag componentProjectileTag) {
+        this.componentProjectileTag = componentProjectileTag;
     }
 
     /**

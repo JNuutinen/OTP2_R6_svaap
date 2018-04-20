@@ -7,8 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-import static view.GameMain.POWERUP_TAG;
-
 /**
  * Power uppien luokka.
  * @author Ilari Anttila
@@ -16,7 +14,7 @@ import static view.GameMain.POWERUP_TAG;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PowerUp extends Sprite implements Updateable, HitboxCircle {
+public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
 
     /**
      * Powerupin arvo.
@@ -81,7 +79,7 @@ public class PowerUp extends Sprite implements Updateable, HitboxCircle {
                 return; //Jos vihollinen ei droppaa mitään
         }
         controller = GameController.getInstance();
-        setTag(POWERUP_TAG); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
+        setTag(Tag.POWERUP); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
         this.value = value;

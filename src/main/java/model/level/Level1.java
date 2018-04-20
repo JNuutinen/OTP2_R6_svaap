@@ -5,15 +5,13 @@ import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.Boss3;
-import model.Enemy;
-import model.TrackerEnemy;
-import model.Updateable;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Threadin alaluokka, hoitaa vihollisten spawnauksen peliin.
@@ -47,13 +45,13 @@ public class Level1 extends Thread implements Level {
         try {
             Thread.sleep(1000);
 
-            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_BLASTER, WEAPON_ROCKET_SHOTGUN)),
+            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER, Tag.WEAPON_ROCKET_SHOTGUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
 
             //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
             //        0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
             Thread.sleep(1500);
-            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN)),
+            new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 500));
             Thread.sleep(100);
 
@@ -66,7 +64,7 @@ public class Level1 extends Thread implements Level {
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 200),
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 700)};
 
-            new TrackerEnemy(Color.DEEPSKYBLUE, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
+            new TrackerEnemy(Color.DEEPSKYBLUE, new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
                     path);
 
             Thread.sleep(4_000);

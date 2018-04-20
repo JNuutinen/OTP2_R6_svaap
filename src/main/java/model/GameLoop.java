@@ -4,7 +4,6 @@ import controller.Controller;
 import controller.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
-import view.GameMain;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Queue;
 
 import static java.lang.Math.sqrt;
-import static view.GameMain.UNDEFINED_TAG;
 
 /**
  * Pelin game loop. Päivittää liikuteltavien spritejen sijainnin ja tarkastelee osumia.
@@ -241,30 +239,30 @@ public class GameLoop {
                             updateables.addAll(updateableQueue);
 
                             for(HitboxCircle hitboxCircle : hitboxObjectsQueue){
-                                switch (hitboxCircle.getTag()) {
-                                    case GameMain.ENEMY_SHIP_TAG:
+                                switch (((Sprite) hitboxCircle).getTag()) {
+                                    case SHIP_ENEMY:
                                         enemies.add(hitboxCircle);
                                         break;
-                                    case GameMain.BOSS_SHIP_TAG:
+                                    case SHIP_BOSS:
                                         enemies.add(hitboxCircle);
                                         break;
-                                    case GameMain.ENEMY_PROJECTILE_TAG:
+                                    case PROJECTILE_ENEMY:
                                         enemyProjectiles.add(hitboxCircle);
                                         break;
-                                    case GameMain.PLAYER_PROJECTILE_TAG:
+                                    case PROJECTILE_PLAYER:
                                         playerProjectiles.add(hitboxCircle);
                                         break;
-                                    case GameMain.POWERUP_TAG:
+                                    case POWERUP:
                                         powerups.add(hitboxCircle);
                                         break;
                                 }
                             }
                             for (HitboxTrace hitboxTrace : tracesQueue){
-                                switch (hitboxTrace.getTag()) {
-                                    case GameMain.ENEMY_PROJECTILE_TAG:
+                                switch (((Sprite) hitboxTrace).getTag()) {
+                                    case PROJECTILE_ENEMY:
                                         enemyHitboxTraces.add(hitboxTrace);
                                         break;
-                                    case GameMain.PLAYER_PROJECTILE_TAG:
+                                    case PROJECTILE_PLAYER:
                                         playerHitboxTraces.add(hitboxTrace);
                                         break;
                                 }
@@ -326,10 +324,10 @@ public class GameLoop {
                         // Vihollisten ammuksien vertailu Playeriin
                         for(Player player : players) {
                             for (HitboxCircle enemyProjectile : enemyProjectiles) {
-                                switch (enemyProjectile.getTag()) {
+                                switch (((Sprite) enemyProjectile).getTag()) {
 
                                     // Vihollisien perusammus
-                                    case GameMain.ENEMY_PROJECTILE_TAG:
+                                    case PROJECTILE_ENEMY:
                                         // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
                                         if (getDistanceFromTarget(enemyProjectile.getPosition(), player.getPosition()) <
                                                 (enemyProjectile.getHitboxRadius() + player.getHitboxRadius())) {
@@ -341,38 +339,37 @@ public class GameLoop {
                             }
                             //poweruppien vertailu playeriin
                             for (HitboxCircle powerup : powerups) {
-                                switch (powerup.getTag()) {
+                                switch (((Sprite) powerup).getTag()) {
 
-                                    // Vihollisien perusammus
-                                    case GameMain.POWERUP_TAG:
+                                    case POWERUP:
                                         // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
                                         if (getDistanceFromTarget(powerup.getPosition(), player.getPosition()) <
                                                 (powerup.getHitboxRadius() + player.getHitboxRadius())) {
                                             // kutsu objektin collides-metodia
                                             powerup.collides(players);
-                                            //powerup.setTag(UNDEFINED_TAG);
+                                            //powerup.setComponentProjectileTag(UNDEFINED_TAG);
                                         }
                                         break;
                                 }
                             }
                             for(HitboxTrace enemyHitboxTrace : enemyHitboxTraces){
-                                switch (enemyHitboxTrace.getTag()) {
-                                    case GameMain.ENEMY_PROJECTILE_TAG:
+                                switch (((Sprite) enemyHitboxTrace).getTag()) {
+                                    case PROJECTILE_ENEMY:
                                         if (traceIntersectsCircle(enemyHitboxTrace, player.getPosition(), player.getHitboxRadius())) {
                                             enemyHitboxTrace.collides(player);
                                         }
                                         break;
                                 }
-                                enemyHitboxTrace.setTag(UNDEFINED_TAG); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
+                                ((Sprite) enemyHitboxTrace).setTag(Tag.UNDEFINED); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
                             }
                         }
 
                         // Playerin ammuksien vertailu kaikkiin vihollisiin
                         for (HitboxCircle playerProjectile : playerProjectiles) {
                             for (HitboxCircle enemy : enemies) {
-                                switch (playerProjectile.getTag()) {
+                                switch (((Sprite) playerProjectile).getTag()) {
                                     // Playerin perusammus
-                                    case GameMain.PLAYER_PROJECTILE_TAG:
+                                    case PROJECTILE_PLAYER:
                                         if (getDistanceFromTarget(playerProjectile.getPosition(), enemy.getPosition()) <
                                                 (playerProjectile.getHitboxRadius() + enemy.getHitboxRadius())) {
                                             playerProjectile.collides(enemy);
@@ -383,16 +380,16 @@ public class GameLoop {
                         }
                         for(HitboxTrace playerHitboxTrace : playerHitboxTraces){
                             for (HitboxCircle enemy : enemies) {
-                                switch (playerHitboxTrace.getTag()) {
+                                switch (((Sprite) playerHitboxTrace).getTag()) {
                                     // Playerin perusammus
-                                    case GameMain.PLAYER_PROJECTILE_TAG:
+                                    case PROJECTILE_PLAYER:
                                         if (traceIntersectsCircle(playerHitboxTrace, enemy.getPosition(), enemy.getHitboxRadius())) {
                                             playerHitboxTrace.collides(enemy);
                                         }
                                         break;
                                 }
                             }
-                            playerHitboxTrace.setTag(UNDEFINED_TAG);
+                            ((Sprite) playerHitboxTrace).setTag(Tag.UNDEFINED);
                         }
 
                         // Fps päivitys

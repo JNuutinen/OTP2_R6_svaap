@@ -10,7 +10,8 @@ import model.weapons.LaserGun;
 import model.weapons.RocketLauncher;
 import model.weapons.Weapon;
 
-import static view.GameMain.*;
+import static view.GameMain.WINDOW_HEIGHT;
+import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Tason loppupomo 3
@@ -130,7 +131,7 @@ public class Boss3 extends Unit {
 
         controller = GameController.getInstance();
         this.setPosition(initialPosition.getX(), initialPosition.getY());
-        this.setTag(BOSS_SHIP_TAG);
+        this.setTag(Tag.SHIP_BOSS);
         this.setVelocity(30);
         setUnitSize(6);
         controller.addUnitToCollisionList(this);

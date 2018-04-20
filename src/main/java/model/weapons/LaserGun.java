@@ -196,7 +196,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
                     // kun ase on lataus on täynnä, niin ammu.
                     if (timeCounter > shootingDelay) {
-                        LaserBeam laserBeam = new LaserBeam(getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier), getParentUnitColor(), getTag(),
+                        LaserBeam laserBeam = new LaserBeam(getParentUnit(), SPEED, (int) (DAMAGE * damageMultiplier), getParentUnitColor(), getComponentProjectileTag(),
                                 new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
                         controller.addUpdateableAndSetToScene(laserBeam);
                         controller.addTrace(laserBeam);
