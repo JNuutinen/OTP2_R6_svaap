@@ -89,7 +89,7 @@ public class Explosion extends SpriteImpl implements Updateable {
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(7.0);
         blur.setInput(bloom);
-        circle.setEffect(blur);
+        //circle.setEffect(blur);
 
         getChildren().addAll(circle);
         controller.addUpdateableAndSetToScene(this);
@@ -129,7 +129,7 @@ public class Explosion extends SpriteImpl implements Updateable {
     public void update(double deltaTime) {
         double deltaTimeMultiplier = 15;
         // lisää läpinäkyvyyttä kunnes läpinäkyvyys on niin pieni että koko efektin voi poistaa.
-        if(circleColor.getOpacity() > circleColor.getOpacity() * (1 - deltaTime * deltaTimeMultiplier) + 0.001 && deltaTime < 1) {
+        if(circleColor.getOpacity() > circleColor.getOpacity() * (1 - deltaTime * deltaTimeMultiplier) + 0.001 && deltaTime * deltaTimeMultiplier < 1) {
             circleColor = new Color(circleColor.getRed(), circleColor.getGreen(), circleColor.getBlue(), circleColor.getOpacity() * (1 - deltaTime * deltaTimeMultiplier));
             circle.setFill(circleColor);
             circle.setStroke(Color.TRANSPARENT);

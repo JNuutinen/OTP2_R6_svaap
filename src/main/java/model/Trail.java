@@ -93,7 +93,7 @@ public class Trail extends SpriteImpl implements Updateable {
         lines = new ArrayList<Line>();
         lines.add(new Line(target.getPosition().getX(), target.getPosition().getY(), target.getPosition().getX(), target.getPosition().getY()));
 
-        Platform.runLater(()->this.getChildren().addAll(lines));
+        this.getChildren().addAll(lines);
         controller.addUpdateableAndSetToScene(this);
 
     }

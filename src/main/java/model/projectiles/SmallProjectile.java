@@ -128,7 +128,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(1.0);
         blur.setInput(bloom);
-        shape.setEffect(blur);
+        //shape.setEffect(blur);
         shape.setFill(Color.WHITE);
         shape.setStroke(color);
         shape.setStrokeWidth(3.0);

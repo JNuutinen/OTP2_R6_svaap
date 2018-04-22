@@ -53,7 +53,6 @@ public class Level1 extends Thread implements Level {
             Thread.sleep(1500);
             new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 500));
-            Thread.sleep(100);
 
             Thread.sleep(4_000);
 
@@ -70,10 +69,10 @@ public class Level1 extends Thread implements Level {
             Thread.sleep(4_000);
 
             //Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
-            Updateable finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
+            Boss3 finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
 
             // pyöri silmukas 1 sec välein niin kauan kuin bossi on olemassa
-            while(controller.getCollisionList().contains(finalBoss)){
+            while(!finalBoss.isNull()){
                 Thread.sleep(1_000);
             }
 
