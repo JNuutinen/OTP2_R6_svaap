@@ -23,17 +23,16 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.GameBackground;
-import model.Player;
+import model.network.PlayerController;
+import model.network.ServerController;
+import model.units.Player;
 import model.Sprite;
-import model.Unit;
+import model.units.Unit;
 import model.weapons.Blaster;
 import model.weapons.LaserGun;
 import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
-import view.menus.CustomizeMenu;
-import view.menus.MainMenu;
-import view.menus.PauseMenu;
-import view.menus.PlayMenu;
+import view.menus.*;
 
 import java.util.*;
 
@@ -71,10 +70,10 @@ public class GameMain extends Application implements View {
      */
     private static final int NUMBER_OF_LEVELS = 1;
 
-    /**
-     * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
-     */
-    public static List<String> input;
+    ServerController serverController;
+
+    boolean isServer = false;
+
 
     /**
      * Pitää sisällään lokalisoidut tekstit.
@@ -85,6 +84,11 @@ public class GameMain extends Application implements View {
      * Pelaa -valikko.
      */
     private PlayMenu playMenu;
+
+    /**
+     * Nettipelaa -valikko.
+     */
+    public NetplayMenu netplayMenu;
 
     /**
      * Lista Uniteista.
@@ -214,9 +218,21 @@ public class GameMain extends Application implements View {
         });
     }
 
+
+
     @Override
     public void addSprite(Sprite sprite) {
         gameRoot.getChildren().add((Pane) sprite);
+    }
+
+    @Override
+    public void setIsServer(boolean isServer) {
+        this.isServer = isServer;
+    }
+
+    @Override
+    public void setServer(ServerController serverController) {
+        this.serverController = serverController;
     }
 
     @Override
@@ -338,7 +354,12 @@ public class GameMain extends Application implements View {
         ArrayList<Weapon> primaries = createPlayerPrimaries1();
 
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
-        Player player = new Player(Color.LIME);
+        //Player player = new Player(Color.LIME);
+
+        PlayerController playerController = new PlayerController();
+        if(isServer){
+            ServerController serverController = new ServerController();
+        }
 
 
 
@@ -349,6 +370,10 @@ public class GameMain extends Application implements View {
         // Play menu
         playMenu = new PlayMenu(messages, NUMBER_OF_LEVELS);
         Group playMenuGroup = playMenu.getGroup();
+
+        // Netplay menu
+        netplayMenu = new NetplayMenu(messages);
+        Group netplayMenuGroup = netplayMenu.getGroup();
 
         // Pane kaikille menuille
         StackPane menuSpace = new StackPane(mainMenuGroup);
@@ -361,9 +386,15 @@ public class GameMain extends Application implements View {
         // Main menun play click event
         mainMenu.play.setOnAction(event ->
             slideIn(mainMenuGroup, playMenuGroup, menuSpace));
+        // Main menun netplay click event
+        mainMenu.netplay.setOnAction(event ->
+            slideIn(mainMenuGroup, netplayMenuGroup, menuSpace));
 
         // Play menun back button click event
         playMenu.backButton.setOnAction(event -> slideOut(playMenuGroup, mainMenuGroup, menuSpace));
+
+        // Netplay menun back button click event
+        netplayMenu.backButton.setOnAction(event -> slideOut(netplayMenuGroup, mainMenuGroup, menuSpace));
 
         // Play menun customize button click event
         playMenu.customizeButton.setOnAction(event -> slideIn(playMenuGroup, customizeMenuGroup, menuSpace));
@@ -400,7 +431,7 @@ public class GameMain extends Application implements View {
             ft2.play();
             ft2.setOnFinished(event1 -> {
                 pane.getChildren().remove(uiRoot);
-                startGame(primaryStage, player, customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+                startGame(primaryStage, playerController, customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
             });
         });
 
@@ -433,11 +464,11 @@ public class GameMain extends Application implements View {
     /**
      * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
      * @param primaryStage Ohjelman Primary Stage.
-     * @param player Pelaaja.
+     * @param playerController TODO
      * @param primary Pelaajan pääase.
      * @param secondary Pelaajan sivuase.
      */
-    private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
+    private void startGame(Stage primaryStage, PlayerController playerController, Weapon primary, Weapon secondary) {
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
         Image uiIMG = new Image("/images/PlayerUi_i18n.png");
@@ -513,19 +544,18 @@ public class GameMain extends Application implements View {
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
 
-        //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
-        input = new ArrayList<>();
+
 
         //      Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            if (!input.contains(code)) input.add(code);
+            if (!playerController.getInput().contains(code)) playerController.getInput().add(code);
         });
 
         //      Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            input.remove(code);
+            playerController.getInput().remove(code);
         });
         primaryStage.setScene(scene);
 

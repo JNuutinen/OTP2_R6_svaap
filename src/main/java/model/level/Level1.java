@@ -6,6 +6,9 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.*;
+import model.units.Boss3;
+import model.units.Enemy;
+import model.units.TrackerEnemy;
 
 import java.util.ArrayList;
 import java.util.Arrays;

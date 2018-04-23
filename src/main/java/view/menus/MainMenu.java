@@ -5,6 +5,8 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import model.network.PlayerController;
+import model.network.ServerController;
 
 import java.util.ResourceBundle;
 
@@ -25,6 +27,11 @@ public class MainMenu {
     public Button play;
 
     /**
+     * Nettipelaa -painike. OnClick asetetaan ulkopuolelta, siksi public.
+     */
+    public Button netplay;
+
+    /**
      * Group, johon valikko rakennetaan.
      */
     private Group mainMenuGroup;
@@ -34,13 +41,17 @@ public class MainMenu {
      */
     private Button exit;
 
+
+
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      */
     public MainMenu(ResourceBundle messages){
         mainMenuGroup = new Group();
         play = new Button(messages.getString("play"));
+        netplay = new Button("netplay"); // TODO resourceBundle tähän
         exit = new Button(messages.getString("exit"));
+
         BorderPane bpane = new BorderPane();
         bpane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         bpane.setCenter(vbox());
@@ -66,10 +77,11 @@ public class MainMenu {
         vbox.setSpacing(8);
 
         play.setPrefWidth(Double.MAX_VALUE);
+        netplay.setPrefWidth(Double.MAX_VALUE);
         exit.setPrefWidth(Double.MAX_VALUE);
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setMaxWidth(150);
-        vbox.getChildren().addAll(play, exit);
+        vbox.getChildren().addAll(play, netplay, exit);
         return vbox;
     }
 }

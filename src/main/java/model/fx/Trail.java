@@ -1,14 +1,16 @@
-package model;
+package model.fx;
 
 import controller.Controller;
 import controller.GameController;
-import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Line;
+import model.HitboxCircle;
+import model.SpriteImpl;
+import model.Updateable;
 
 import java.util.ArrayList;
 import java.util.List;

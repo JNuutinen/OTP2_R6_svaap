@@ -3,7 +3,7 @@ package model.projectiles;
 import javafx.geometry.Point2D;
 import model.SpriteImpl;
 import model.Tag;
-import model.Unit;
+import model.units.Unit;
 
 /**
  * Apuluokka eri projectileille. Pitää sisällään projectilen perus

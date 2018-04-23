@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import model.HitboxTrace;
 import model.Tag;
-import model.Unit;
+import model.units.Unit;
 import model.Updateable;
 
 import java.util.Arrays;

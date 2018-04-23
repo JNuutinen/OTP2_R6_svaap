@@ -6,6 +6,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+import model.units.Player;
+import model.units.Unit;
 
 /**
  * Power uppien luokka.
@@ -55,7 +57,7 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
      *                    SCORE lisää pelaajan pisteitä
      * @param value Arvo, joka lisätään power up:in vaikuttamaan muutujaan
      */
-    public PowerUp(Unit deadUnit,  int powerUpType, int value){
+    public PowerUp(Unit deadUnit, int powerUpType, int value){
         switch (powerUpType) {
             case HP:
                 type = HP;

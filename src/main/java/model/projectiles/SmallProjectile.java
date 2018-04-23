@@ -10,7 +10,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import model.HitboxCircle;
 import model.Tag;
-import model.Unit;
+import model.units.Unit;
 import model.Updateable;
 
 import static view.GameMain.WINDOW_HEIGHT;

@@ -2,6 +2,7 @@ package controller;
 
 import javafx.application.Platform;
 import model.*;
+import model.units.Player;
 import model.level.Level;
 import model.level.Level1;
 import view.View;

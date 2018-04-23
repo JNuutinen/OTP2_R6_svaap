@@ -1,8 +1,9 @@
-package model;
+package model.units;
 
 import controller.Controller;
 import controller.GameController;
 import javafx.scene.image.Image;
+import model.Tag;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
