@@ -225,187 +225,181 @@ public class GameLoop {
 
             @Override
             public void handle(long now) {
-                if ((double) (now - lastUpdate) / 1_000_000_000.0 >= 1.0 / 150.0) {
-                    double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
-                    // jos taajuus on alhaisempi kuin asetettu taajuusrajagappi (250 fps)
-                    if ((double) (now - lastUpdate) / 1_000_000_000.0 >= 1.0 / 250.0) {
-                        System.out.println(deltaTime);
-                        // controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
+                double deltaTime = ((now - lastUpdate) / 1_000_000_000.0) * pauseModifier;
+                // controller.setCurrentFps(1/((now - lastUpdate)/1000000000.0));
 
-                        //---------- Olioiden lisäykset ja poistot
+                //---------- Olioiden lisäykset ja poistot
 
-                        // TODO Tarkistaa Updateable jonon, ja lisää jonottavat oliot Updateable listaan
-                        // ja mahdollisesti joko enemies, enemyProjectiles, tai playerProjectiles listaan.
-                        if (!updateableQueue.isEmpty()) {
-                            updateables.addAll(updateableQueue);
+                // TODO Tarkistaa Updateable jonon, ja lisää jonottavat oliot Updateable listaan
+                // ja mahdollisesti joko enemies, enemyProjectiles, tai playerProjectiles listaan.
+                if (!updateableQueue.isEmpty()) {
+                    updateables.addAll(updateableQueue);
 
-                            for(HitboxCircle hitboxCircle : hitboxObjectsQueue){
-                                switch (((Sprite) hitboxCircle).getTag()) {
-                                    case SHIP_ENEMY:
-                                        enemies.add(hitboxCircle);
-                                        break;
-                                    case SHIP_BOSS:
-                                        enemies.add(hitboxCircle);
-                                        break;
-                                    case PROJECTILE_ENEMY:
-                                        enemyProjectiles.add(hitboxCircle);
-                                        break;
-                                    case PROJECTILE_PLAYER:
-                                        playerProjectiles.add(hitboxCircle);
-                                        break;
-                                    case POWERUP:
-                                        powerups.add(hitboxCircle);
-                                        break;
-                                }
-                            }
-                            for (HitboxTrace hitboxTrace : tracesQueue){
-                                switch (((Sprite) hitboxTrace).getTag()) {
-                                    case PROJECTILE_ENEMY:
-                                        enemyHitboxTraces.add(hitboxTrace);
-                                        break;
-                                    case PROJECTILE_PLAYER:
-                                        playerHitboxTraces.add(hitboxTrace);
-                                        break;
-                                }
-                            }
-                            // queue-jonot tyhjennetään, kun sen oliot ovat lisätty peliin.
-                            updateableQueue.clear();
-                            hitboxObjectsQueue.clear();
-                            tracesQueue.clear();
+                    for(HitboxCircle hitboxCircle : hitboxObjectsQueue){
+                        switch (((Sprite) hitboxCircle).getTag()) {
+                            case SHIP_ENEMY:
+                                enemies.add(hitboxCircle);
+                                break;
+                            case SHIP_BOSS:
+                                enemies.add(hitboxCircle);
+                                break;
+                            case PROJECTILE_ENEMY:
+                                enemyProjectiles.add(hitboxCircle);
+                                break;
+                            case PROJECTILE_PLAYER:
+                                playerProjectiles.add(hitboxCircle);
+                                break;
+                            case POWERUP:
+                                powerups.add(hitboxCircle);
+                                break;
                         }
-
-                        // Poistojonossa olevat oliot poistetaan Updateable listasta, sekä mahdollisesti joko
-                        // enemies, enemyProjectiles, tai playerProjectiles listasta.
-                        if (!removeUpdateableQueue.isEmpty()) {
-                            //updateables.removeAll(removeUpdateableQueue);
-
-                            for (Updateable toBeRemoved : removeUpdateableQueue) {
-                                updateables.remove(toBeRemoved);
-                            }
-
-                            for (HitboxCircle toBeRemoved : removeHitboxObjectsQueue) {
-                                if (enemies.contains(toBeRemoved)) {
-                                    enemies.remove(toBeRemoved);
-                                }
-                                else if(enemyProjectiles.contains(toBeRemoved)) {
-                                    enemyProjectiles.remove(toBeRemoved);
-                                }
-                                else if(playerProjectiles.contains(toBeRemoved)) {
-                                    playerProjectiles.remove(toBeRemoved);
-                                }
-                                else if(enemyProjectiles.contains(toBeRemoved)) {
-                                    enemyProjectiles.remove(toBeRemoved);
-                                }
-                                else powerups.remove(toBeRemoved);
-                            }
-
-                            for (HitboxTrace toBeRemoved : removeTracesQueue) {
-                                enemyHitboxTraces.remove(toBeRemoved);
-                                playerHitboxTraces.remove(toBeRemoved);
-                            }
-                            // Poistojono tyhjätään, kun siinä olleet oliot on poistettu pelistä.
-                            removeTracesQueue.clear();
-                            removeHitboxObjectsQueue.clear();
-                            removeUpdateableQueue.clear();
+                    }
+                    for (HitboxTrace hitboxTrace : tracesQueue){
+                        switch (((Sprite) hitboxTrace).getTag()) {
+                            case PROJECTILE_ENEMY:
+                                enemyHitboxTraces.add(hitboxTrace);
+                                break;
+                            case PROJECTILE_PLAYER:
+                                playerHitboxTraces.add(hitboxTrace);
+                                break;
                         }
+                    }
+                    // queue-jonot tyhjennetään, kun sen oliot ovat lisätty peliin.
+                    updateableQueue.clear();
+                    hitboxObjectsQueue.clear();
+                    tracesQueue.clear();
+                }
 
-                        //---------- Olioiden sijaintien päivitys
+                // Poistojonossa olevat oliot poistetaan Updateable listasta, sekä mahdollisesti joko
+                // enemies, enemyProjectiles, tai playerProjectiles listasta.
+                if (!removeUpdateableQueue.isEmpty()) {
+                    //updateables.removeAll(removeUpdateableQueue);
 
-                        // Kun tässä iteraatiossa peliin lisättävät oliot on lisätty, päivitetään kaikkien
-                        // pelissä olevien olioiden sijainnit.
-                        for (Updateable updateable : updateables) {
-                            if (updateable != null) {
-                                //paivita rajapintaoliot
-                                updateable.update(deltaTime);
-                            }
+                    for (Updateable toBeRemoved : removeUpdateableQueue) {
+                        updateables.remove(toBeRemoved);
+                    }
+
+                    for (HitboxCircle toBeRemoved : removeHitboxObjectsQueue) {
+                        if (enemies.contains(toBeRemoved)) {
+                            enemies.remove(toBeRemoved);
                         }
-
-                        //---------- Osumatarkastelu, käy läpi vain oleelliset Updateablet
-
-                        // Vihollisten ammuksien vertailu Playeriin
-                        for(Player player : players) {
-                            for (HitboxCircle enemyProjectile : enemyProjectiles) {
-                                switch (((Sprite) enemyProjectile).getTag()) {
-
-                                    // Vihollisien perusammus
-                                    case PROJECTILE_ENEMY:
-                                        // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
-                                        if (getDistanceFromTarget(enemyProjectile.getPosition(), player.getPosition()) <
-                                                (enemyProjectile.getHitboxRadius() + player.getHitboxRadius())) {
-                                            // kutsu objektin collides-metodia
-                                            enemyProjectile.collides(player);
-                                        }
-                                        break;
-                                }
-                            }
-                            //poweruppien vertailu playeriin
-                            for (HitboxCircle powerup : powerups) {
-                                switch (((Sprite) powerup).getTag()) {
-
-                                    case POWERUP:
-                                        // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
-                                        if (getDistanceFromTarget(powerup.getPosition(), player.getPosition()) <
-                                                (powerup.getHitboxRadius() + player.getHitboxRadius())) {
-                                            // kutsu objektin collides-metodia
-                                            powerup.collides(players);
-                                            //powerup.setComponentProjectileTag(UNDEFINED_TAG);
-                                        }
-                                        break;
-                                }
-                            }
-                            for(HitboxTrace enemyHitboxTrace : enemyHitboxTraces){
-                                switch (((Sprite) enemyHitboxTrace).getTag()) {
-                                    case PROJECTILE_ENEMY:
-                                        if (traceIntersectsCircle(enemyHitboxTrace, player.getPosition(), player.getHitboxRadius())) {
-                                            enemyHitboxTrace.collides(player);
-                                        }
-                                        break;
-                                }
-                                ((Sprite) enemyHitboxTrace).setTag(Tag.UNDEFINED); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
-                            }
+                        else if(enemyProjectiles.contains(toBeRemoved)) {
+                            enemyProjectiles.remove(toBeRemoved);
                         }
-
-                        // Playerin ammuksien vertailu kaikkiin vihollisiin
-                        for (HitboxCircle playerProjectile : playerProjectiles) {
-                            for (HitboxCircle enemy : enemies) {
-                                switch (((Sprite) playerProjectile).getTag()) {
-                                    // Playerin perusammus
-                                    case PROJECTILE_PLAYER:
-                                        if (getDistanceFromTarget(playerProjectile.getPosition(), enemy.getPosition()) <
-                                                (playerProjectile.getHitboxRadius() + enemy.getHitboxRadius())) {
-                                            playerProjectile.collides(enemy);
-                                        }
-                                        break;
-                                }
-                            }
+                        else if(playerProjectiles.contains(toBeRemoved)) {
+                            playerProjectiles.remove(toBeRemoved);
                         }
-                        for(HitboxTrace playerHitboxTrace : playerHitboxTraces){
-                            for (HitboxCircle enemy : enemies) {
-                                switch (((Sprite) playerHitboxTrace).getTag()) {
-                                    // Playerin perusammus
-                                    case PROJECTILE_PLAYER:
-                                        if (traceIntersectsCircle(playerHitboxTrace, enemy.getPosition(), enemy.getHitboxRadius())) {
-                                            playerHitboxTrace.collides(enemy);
-                                        }
-                                        break;
-                                }
-                            }
-                            ((Sprite) playerHitboxTrace).setTag(Tag.UNDEFINED);
+                        else if(enemyProjectiles.contains(toBeRemoved)) {
+                            enemyProjectiles.remove(toBeRemoved);
                         }
+                        else powerups.remove(toBeRemoved);
+                    }
 
-                        // Fps päivitys
-                        debugger_toSecondCounter += deltaTime;
-                        debugger_frameCounter++;
-                        if (debugger_toSecondCounter > 1) {
-                            controller.setFps(debugger_frameCounter);
-                            debugger_toSecondCounter = 0;
-                            debugger_frameCounter = 0;
-                        }
+                    for (HitboxTrace toBeRemoved : removeTracesQueue) {
+                        enemyHitboxTraces.remove(toBeRemoved);
+                        playerHitboxTraces.remove(toBeRemoved);
+                    }
+                    // Poistojono tyhjätään, kun siinä olleet oliot on poistettu pelistä.
+                    removeTracesQueue.clear();
+                    removeHitboxObjectsQueue.clear();
+                    removeUpdateableQueue.clear();
+                }
 
-                        // Ajan kirjaus
-                        lastUpdate = now;
+                //---------- Olioiden sijaintien päivitys
+
+                // Kun tässä iteraatiossa peliin lisättävät oliot on lisätty, päivitetään kaikkien
+                // pelissä olevien olioiden sijainnit.
+                for (Updateable updateable : updateables) {
+                    if (updateable != null) {
+                        //paivita rajapintaoliot
+                        updateable.update(deltaTime);
                     }
                 }
+
+                //---------- Osumatarkastelu, käy läpi vain oleelliset Updateablet
+
+                // Vihollisten ammuksien vertailu Playeriin
+                for(Player player : players) {
+                    for (HitboxCircle enemyProjectile : enemyProjectiles) {
+                        switch (((Sprite) enemyProjectile).getTag()) {
+
+                            // Vihollisien perusammus
+                            case PROJECTILE_ENEMY:
+                                // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
+                                if (getDistanceFromTarget(enemyProjectile.getPosition(), player.getPosition()) <
+                                        (enemyProjectile.getHitboxRadius() + player.getHitboxRadius())) {
+                                    // kutsu objektin collides-metodia
+                                    enemyProjectile.collides(player);
+                                }
+                                break;
+                        }
+                    }
+                    //poweruppien vertailu playeriin
+                    for (HitboxCircle powerup : powerups) {
+                        switch (((Sprite) powerup).getTag()) {
+
+                            case POWERUP:
+                                // jos objecktien valinen taisyys on pienempi kuin niiden hitboxien sateiden summa:
+                                if (getDistanceFromTarget(powerup.getPosition(), player.getPosition()) <
+                                        (powerup.getHitboxRadius() + player.getHitboxRadius())) {
+                                    // kutsu objektin collides-metodia
+                                    powerup.collides(players);
+                                    //powerup.setComponentProjectileTag(UNDEFINED_TAG);
+                                }
+                                break;
+                        }
+                    }
+                    for(HitboxTrace enemyHitboxTrace : enemyHitboxTraces){
+                        switch (((Sprite) enemyHitboxTrace).getTag()) {
+                            case PROJECTILE_ENEMY:
+                                if (traceIntersectsCircle(enemyHitboxTrace, player.getPosition(), player.getHitboxRadius())) {
+                                    enemyHitboxTrace.collides(player);
+                                }
+                                break;
+                        }
+                        ((Sprite) enemyHitboxTrace).setTag(Tag.UNDEFINED); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
+                    }
+                }
+
+                // Playerin ammuksien vertailu kaikkiin vihollisiin
+                for (HitboxCircle playerProjectile : playerProjectiles) {
+                    for (HitboxCircle enemy : enemies) {
+                        switch (((Sprite) playerProjectile).getTag()) {
+                            // Playerin perusammus
+                            case PROJECTILE_PLAYER:
+                                if (getDistanceFromTarget(playerProjectile.getPosition(), enemy.getPosition()) <
+                                        (playerProjectile.getHitboxRadius() + enemy.getHitboxRadius())) {
+                                    playerProjectile.collides(enemy);
+                                }
+                                break;
+                        }
+                    }
+                }
+                for(HitboxTrace playerHitboxTrace : playerHitboxTraces){
+                    for (HitboxCircle enemy : enemies) {
+                        switch (((Sprite) playerHitboxTrace).getTag()) {
+                            // Playerin perusammus
+                            case PROJECTILE_PLAYER:
+                                if (traceIntersectsCircle(playerHitboxTrace, enemy.getPosition(), enemy.getHitboxRadius())) {
+                                    playerHitboxTrace.collides(enemy);
+                                }
+                                break;
+                        }
+                    }
+                    ((Sprite) playerHitboxTrace).setTag(Tag.UNDEFINED);
+                }
+
+                // Fps päivitys
+                debugger_toSecondCounter += deltaTime;
+                debugger_frameCounter++;
+                if (debugger_toSecondCounter > 1) {
+                    controller.setFps(debugger_frameCounter);
+                    debugger_toSecondCounter = 0;
+                    debugger_frameCounter = 0;
+                }
+
+                // Ajan kirjaus
+                lastUpdate = now;
             }
         };
         gameLoop.start();

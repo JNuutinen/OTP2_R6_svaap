@@ -88,7 +88,6 @@ public class Enemy extends Unit {
 
         controller = GameController.getInstance();
         setTag(Tag.SHIP_ENEMY);
-        controller.addUnitToCollisionList(this);
         this.initialX = initialPosition.getX();
         this.initialY = initialPosition.getY();
         setPosition(initialX, initialY);

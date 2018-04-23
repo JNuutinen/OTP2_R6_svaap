@@ -70,26 +70,6 @@ public interface Controller {
      */
     List<Updateable> getUpdateables();
 
-    //TODO: collisionList alla käytetään ainoastaan bossin olemassaolon tarkasteluun, semi turha.
-
-    /**
-     * Lisää Unitin collision listaan.
-     * @param unit Unit, joka lisätään.
-     */
-    void addUnitToCollisionList(Unit unit);
-
-    /**
-     * Poistaa Unitin collision listasta.
-     * @param unit Unit, joka poistetaan.
-     */
-    void removeFromCollisionList(Unit unit);
-
-    /**
-     * Palauttaa collision listan.
-     * @return Lista, joka sisältää collision listan Unitit.
-     */
-    List<Unit> getCollisionList();
-
     /**
      * Palauttaa pelaajan pisteet.
      * @return Pelaajan pisteet.

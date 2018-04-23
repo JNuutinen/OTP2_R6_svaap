@@ -323,7 +323,6 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
         new PowerUp(this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         new Explosion(color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);
-        controller.removeFromCollisionList(this);
     }
 
     /**

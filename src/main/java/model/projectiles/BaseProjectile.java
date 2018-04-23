@@ -34,7 +34,6 @@ class BaseProjectile extends SpriteImpl {
     BaseProjectile(Unit shooter, double speed, double damage, Tag tag) {
         this.damage = damage;
         setTag(tag);
-        System.out.println(tag);
         // Suunta ja aloituspiste otetaan ampujasta johon laskettu mukaan aloituspisteen poikkeama.
         this.shooter = shooter;
         Point2D startingLocation = new Point2D(shooter.getPosition().getX(), shooter.getPosition().getY());

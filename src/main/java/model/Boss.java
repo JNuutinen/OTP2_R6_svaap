@@ -68,7 +68,6 @@ public class Boss extends Unit {
         super(null, 0, 0);
         controller = GameController.getInstance();
         setIsMoving(true);
-        controller.addUnitToCollisionList(this);
         setHp(hp);
         originalHp = hp;
         setTag(Tag.SHIP_BOSS);

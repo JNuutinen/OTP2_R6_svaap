@@ -123,7 +123,6 @@ public class TrackerEnemy extends Unit {
         controller = GameController.getInstance();
         setTag(Tag.SHIP_ENEMY);
         lastDestinationIndex = path.length-1;
-        controller.addUnitToCollisionList(this);
         initialX = initialPosition.getX();
         initialY = initialPosition.getY();
         setPosition(initialX, initialY);
