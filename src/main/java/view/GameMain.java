@@ -69,7 +69,7 @@ public class GameMain extends Application implements View {
     /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
-    private static final int NUMBER_OF_LEVELS = 1;
+    private static final int NUMBER_OF_LEVELS = 2;
 
     /**
      * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.

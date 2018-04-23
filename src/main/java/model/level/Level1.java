@@ -82,7 +82,7 @@ public class Level1 extends Thread implements Level {
 
             Platform.runLater(() -> controller.addScore(500));
 
-            controller.startLevel(3);
+            controller.startLevel(2);
 
             // Ilmoita levelin loppumisesta
             //Platform.runLater(() -> controller.returnToMain());
