@@ -30,10 +30,7 @@ import model.weapons.Blaster;
 import model.weapons.LaserGun;
 import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
-import view.menus.CustomizeMenu;
-import view.menus.MainMenu;
-import view.menus.PauseMenu;
-import view.menus.PlayMenu;
+import view.menus.*;
 
 import java.util.*;
 
@@ -82,9 +79,24 @@ public class GameMain extends Application implements View {
     private ResourceBundle messages;
 
     /**
+     * Map jossa pelin eri lokaalit.
+     */
+    private Map<String, Locale> locales;
+
+    /**
+     * Lista pelin menuvalikoista.
+     */
+    private List<Menu> menus;
+
+    /**
      * Pelaa -valikko.
      */
     private PlayMenu playMenu;
+
+    /**
+     * Taukovalikko.
+     */
+    private PauseMenu pauseMenu;
 
     /**
      * Lista Uniteista.
@@ -179,14 +191,8 @@ public class GameMain extends Application implements View {
 
     @Override
     public void start(Stage primaryStage){
-        // lokalisointi
-        String english = "en";
-        String newZealand = "NZ";
-        String finnish = "fi";
-        String finland = "FI";
-        Locale enNzLocale = new Locale(english, newZealand);
-        Locale fiFiLocale = new Locale(finnish, finland);
-        messages = ResourceBundle.getBundle("MessagesBundle", fiFiLocale);
+        // alustetaan lokaalit ja asetetaan vakiolokaali
+        initLocales();
 
         this.primaryStage = primaryStage;
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
@@ -316,12 +322,13 @@ public class GameMain extends Application implements View {
     }
 
     /**
-     * Alustaa ohjelman.
+     * Alustaa ohjelman. Luo menut.
      * @param primaryStage Ohjelman Primary Stage.
      */
     private void setupGame(Stage primaryStage) {
         units = new ArrayList<>();
         primaryStage.setOnCloseRequest(event -> System.exit(0));
+        menus = new ArrayList<>();
 
         // Banneri
         ImageView svaapBanner = new ImageView(new Image("images/SVAAP_logo_white.png"));
@@ -340,27 +347,46 @@ public class GameMain extends Application implements View {
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
         Player player = new Player(Color.LIME);
 
-
-
         // Main menu
         MainMenu mainMenu = new MainMenu(messages);
+        menus.add(mainMenu);
         Group mainMenuGroup = mainMenu.getGroup();
+
+        // Settings menu
+        SettingsMenu settingsMenu = new SettingsMenu(messages);
+        menus.add(settingsMenu);
+        Group settingsMenuGroup = settingsMenu.getGroup();
 
         // Play menu
         playMenu = new PlayMenu(messages, NUMBER_OF_LEVELS);
+        menus.add(playMenu);
         Group playMenuGroup = playMenu.getGroup();
+
+        // Pause menu
+        pauseMenu = new PauseMenu(messages);
+        menus.add(pauseMenu);
 
         // Pane kaikille menuille
         StackPane menuSpace = new StackPane(mainMenuGroup);
 
         // Customize menu
         CustomizeMenu customizeMenu = new CustomizeMenu(messages, primaries, secondaries);
+        menus.add(customizeMenu);
         Group customizeMenuGroup = customizeMenu.getGroup();
         customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenuGroup, playMenuGroup, menuSpace));
 
         // Main menun play click event
-        mainMenu.play.setOnAction(event ->
-            slideIn(mainMenuGroup, playMenuGroup, menuSpace));
+        mainMenu.play.setOnAction(event -> slideIn(mainMenuGroup, playMenuGroup, menuSpace));
+
+        // Main menun settings painikkeen click event
+        mainMenu.settings.setOnAction(event -> slideIn(mainMenuGroup, settingsMenuGroup, menuSpace));
+
+        // Settings menun back button click event
+        settingsMenu.backButton.setOnAction(event -> slideOut(settingsMenuGroup, mainMenuGroup, menuSpace));
+
+        // Settings menun lokaalien click eventit
+        settingsMenu.fiFiButton.setOnAction(event -> changeLocale(locales.get("fi_FI")));
+        settingsMenu.enNzButton.setOnAction(event -> changeLocale(locales.get("en_NZ")));
 
         // Play menun back button click event
         playMenu.backButton.setOnAction(event -> slideOut(playMenuGroup, mainMenuGroup, menuSpace));
@@ -410,7 +436,6 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
-        PauseMenu pauseMenu = new PauseMenu(messages);
         Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {
@@ -609,6 +634,32 @@ public class GameMain extends Application implements View {
         Timeline slide = new Timeline(start, end);
         slide.setOnFinished(e -> pane.getChildren().remove(from));
         slide.play();
+    }
+
+    /**
+     * Luo pelin valittavat lokaalit ja tallentaa ne locales Mappiin. Asettaa vakiolokaalin.
+     */
+    private void initLocales() {
+        locales = new HashMap<>();
+        locales.put("en_NZ", new Locale("en", "NZ"));
+        locales.put("fi_FI", new Locale("fi", "FI"));
+        messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
+    }
+
+    /**
+     * Muuttaa pelin lokalisaatiota.
+     *
+     * @param locale Asetettava lokaali.
+     */
+    private void changeLocale(Locale locale) {
+        messages = ResourceBundle.getBundle("MessagesBundle", locale);
+        for (Menu menu : menus) {
+            menu.changeLocale(messages);
+        }
+    }
+
+    private void initMenus() {
+
     }
 
 }

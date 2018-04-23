@@ -18,7 +18,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PauseMenu {
+public class PauseMenu implements Menu {
 
     /**
      * Jatka peliä -painike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -37,6 +37,7 @@ public class PauseMenu {
 
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
+     * @param messages Lokalisoidut resurssit.
      */
     public PauseMenu(ResourceBundle messages) {
         continueButton = new Button(messages.getString("continue"));
@@ -70,10 +71,13 @@ public class PauseMenu {
         pauseMenuGroup.getChildren().add(borderPane);
     }
 
-    /**
-     * Palauttaa luodun taukovalikko Groupin.
-     * @return Valikon Group.
-     */
+    @Override
+    public void changeLocale(ResourceBundle messages) {
+        continueButton.setText(messages.getString("continue"));
+        quitButton.setText(messages.getString("quit"));
+    }
+
+    @Override
     public Group getGroup() {
         return pauseMenuGroup;
     }
