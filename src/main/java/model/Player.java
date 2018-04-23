@@ -59,6 +59,18 @@ public class Player extends Unit {
     private final int MAX_HP = 200;
 
     /**
+     * Pelajaan kokemuspisteet.
+     */
+    //TODO: tietokannasta noutaminen.
+    private int exp = 0;
+
+    /**
+     * Pelaajan taso
+     */
+    //TODO: tietokantahommat.
+    private int level = 1;
+
+    /**
      * Alusta kiihdyttävän voiman suuruus.
      */
     private final double accelerationForce = 5000;
@@ -240,6 +252,8 @@ public class Player extends Unit {
     public int getScore() {
         return score;
     }
+
+
 
 
     // laske ja lisaa vauhtia alukseen riippuen sen nykyisestä nopeudesta ja sen suunnasta: x/yVelocity

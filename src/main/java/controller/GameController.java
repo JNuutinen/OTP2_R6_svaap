@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import model.*;
 import model.level.Level;
 import model.level.Level1;
+import model.level.Level2;
 import view.View;
 
 import java.util.ArrayList;
@@ -160,6 +161,9 @@ public class GameController implements Controller {
         switch (levelNumber) {
             case 1:
                 level = new Level1();
+                break;
+            case 2:
+                level = new Level2();
                 break;
             default:
                 level = new Level1();
