@@ -18,7 +18,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PauseMenu {
+public class PauseMenu extends Menu {
 
     /**
      * Jatka peliä -painike. OnClick asetetaan ulkopuolelta, siksi public.

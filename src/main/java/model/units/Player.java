@@ -9,6 +9,9 @@ import model.Tag;
 import model.network.PlayerController;
 import model.weapons.Weapon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static view.GameMain.*;
 
 /**
@@ -26,6 +29,8 @@ public class Player extends Unit {
     private Controller controller;
 
     private PlayerController playerController;
+
+    private List<String> inputs = new ArrayList<>();
 
     /**
      * Nopeus suuntaan x.
@@ -140,14 +145,14 @@ public class Player extends Unit {
         }
 
         this.deltaTime = deltaTime;
-        if (input.contains("A")) {
+        if (inputs.contains("A")) {
             // TODO: 70px kovakoodattu
             if (getXPosition() > 70) {
                 addVelocity(-1, 0);
             } else {
                 decelerateX();
             }
-        } else if (input.contains("D")) {
+        } else if (inputs.contains("D")) {
             if (getXPosition() < PLAYER_X_LIMIT) {
                 addVelocity(1, 0);
             } else {
@@ -157,13 +162,13 @@ public class Player extends Unit {
             decelerateX();
         }
 
-        if (input.contains("W")) {
+        if (inputs.contains("W")) {
             if (getYPosition() > 50) {
                 addVelocity(0, -1);
             } else {
                 decelerateY();
             }
-        } else if (input.contains("S")) {
+        } else if (inputs.contains("S")) {
             if (getYPosition() < WINDOW_HEIGHT - getHitboxRadius()) {
                 addVelocity(0, 1);
             } else {
@@ -174,7 +179,7 @@ public class Player extends Unit {
         }
 
         // Primary fire
-        if (input.contains("O")) {
+        if (inputs.contains("O")) {
             if (getPrimaryWeapons().get(0) != null) {
                 if (fireRateCounter > getPrimaryWeapons().get(0).getFireRate()) {
                     fireRateCounter = 0;
@@ -186,7 +191,7 @@ public class Player extends Unit {
         }
 
         // Secondary fire
-        if (input.contains("P")) {
+        if (inputs.contains("P")) {
             if (getSecondaryWeapon() != null) {
                 if (secondaryFirerateCounter > getSecondaryWeapon().getFireRate()) {
                     secondaryFirerateCounter = 0;
@@ -197,9 +202,9 @@ public class Player extends Unit {
 
         fireRateCounter += deltaTime;
         secondaryFirerateCounter += deltaTime;
-        if (input.contains("V")) System.exit(0);
+        if (inputs.contains("V")) System.exit(0);
 
-        if (input.contains(KeyCode.ESCAPE.toString())) {
+        if (inputs.contains(KeyCode.ESCAPE.toString())) {
             controller.pauseGame();
         }
 
@@ -209,6 +214,10 @@ public class Player extends Unit {
         }
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
         controller.setHealthbar(hpPercentage(), 1);
+    }
+
+    public void addInput(String input){
+        inputs.add(input);
     }
 
     /**

@@ -19,7 +19,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class MainMenu {
+public class MainMenu extends Menu {
 
     /**
      * Pelaa -painike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -31,10 +31,6 @@ public class MainMenu {
      */
     public Button netplay;
 
-    /**
-     * Group, johon valikko rakennetaan.
-     */
-    private Group mainMenuGroup;
 
     /**
      * Pelin lopetuspainike.
@@ -47,7 +43,6 @@ public class MainMenu {
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      */
     public MainMenu(ResourceBundle messages){
-        mainMenuGroup = new Group();
         play = new Button(messages.getString("play"));
         netplay = new Button("netplay"); // TODO resourceBundle tähän
         exit = new Button(messages.getString("exit"));
@@ -57,15 +52,14 @@ public class MainMenu {
         bpane.setCenter(vbox());
         bpane.setStyle("-fx-background-color: black");
         exit.setOnMouseClicked(event -> System.exit(0));
-        mainMenuGroup.getChildren().addAll(bpane);
-    }
+        getChildren().addAll(bpane);
 
-    /**
-     * Palauttaa luodun Groupin.
-     * @return Group, jossa valikko.
-     */
-    public Group getGroup(){
-        return mainMenuGroup;
+        //      click eventit
+
+        // Main menun play click event
+        play.setOnAction(event -> changeToNextMenu(new PlayMenu(messages))); // TODO parametrit
+        // Main menun netplay click event
+        netplay.setOnAction(event -> changeToNextMenu(new NetplayMenu(messages)));
     }
 
     /**

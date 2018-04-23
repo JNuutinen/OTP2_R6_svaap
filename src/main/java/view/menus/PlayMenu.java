@@ -1,5 +1,6 @@
 package view.menus;
 
+import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.util.ResourceBundle;
 
@@ -19,7 +21,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PlayMenu {
+public class PlayMenu extends Menu{
 
     /**
      * Pelin käynnistyspainike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -47,10 +49,15 @@ public class PlayMenu {
     private Group playMenuGroup;
 
     /**
+     * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
+     */
+    private static final int NUMBER_OF_LEVELS = 1;
+
+    /** TODO
      * Konstruktori, joka luo komponentit ja lisää Groupiin.
      * @param levels Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      */
-    public PlayMenu(ResourceBundle messages, int levels) {
+    public PlayMenu(ResourceBundle messages) {
         playMenuGroup = new Group();
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
@@ -64,7 +71,7 @@ public class PlayMenu {
         //startButton.setStyle("-fx-background-color: transparent");
         Text levelSelectText = new Text(messages.getString("select_level"));
         levelSelectText.setStyle("-fx-fill: white");
-        levelSpinner = new Spinner<>(1, levels, 1);
+        levelSpinner = new Spinner<>(1, NUMBER_OF_LEVELS, 1);
         levelSpinner.setPrefWidth(Double.MAX_VALUE);
 
         customizeButton = new Button(messages.getString("select_weapons"));
@@ -79,6 +86,19 @@ public class PlayMenu {
         borderPane.setCenter(vBox);
 
         playMenuGroup.getChildren().add(borderPane);
+
+        // Pelin aloituspainike click event
+        startButton.setOnAction(event -> {
+            startButton.setDisable(true);
+            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), uiRoot);
+            ft2.setFromValue(1.0);
+            ft2.setToValue(0.0);
+            ft2.play();
+            ft2.setOnFinished(event1 -> {
+                pane.getChildren().remove(uiRoot);
+                startGame(primaryStage, playerController, customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+            });
+        });
     }
 
     /**

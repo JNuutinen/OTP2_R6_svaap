@@ -21,7 +21,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class NetplayMenu {
+public class NetplayMenu extends Menu{
 
     // TODO jdoc
     private Button netPlay;

@@ -1,6 +1,7 @@
 package view.menus;
 
 import javafx.collections.FXCollections;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -22,7 +23,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class CustomizeMenu {
+public class CustomizeMenu extends Menu {
 
     /**
      * Takaisin -painike, joka vie pelaavalikkoon.
@@ -44,21 +45,16 @@ public class CustomizeMenu {
      */
     private ComboBox<String> secondaryComboBox;
 
-    /**
-     * Group, johon valikko tehdään.
-     */
-    private Group customizeMenuGroup;
 
     /**
-     * Konstruktori. Luo komponentit ja lisää Groupiin.
-     * @param primaryWeapons Lista valittavista pääaseista.
-     * @param secondaryWeapons Lista valittavista sivuaseista.
+     * Konstruktori. Luo komponentit ja lisää Groupiin. TODO
      */
-    public CustomizeMenu(ResourceBundle messages, ArrayList<Weapon> primaryWeapons, ArrayList<Weapon> secondaryWeapons) {
-        this.primaryWeapon = primaryWeapons;
-        this.secondaryWeapon = secondaryWeapons;
+    public CustomizeMenu(ResourceBundle messages) {
 
-        customizeMenuGroup = new Group();
+        // Valittavat aselistat
+        secondaryWeapon = createPlayerSecondaries();
+        primaryWeapon = createPlayerPrimaries();
+
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
@@ -69,8 +65,8 @@ public class CustomizeMenu {
         Text secondaryText = new Text(messages.getString("secondary_weapon"));
         secondaryText.setStyle("-fx-fill: white");
 
-        ArrayList<String>primaryWeaponNames = new ArrayList<>(primaryWeapons.size());
-        for (Weapon w : primaryWeapons) {
+        ArrayList<String>primaryWeaponNames = new ArrayList<>(primaryWeapon.size());
+        for (Weapon w : primaryWeapon) {
             if (w instanceof Blaster) primaryWeaponNames.add(messages.getString("weapon_blaster"));
             else if (w instanceof BlasterShotgun) primaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
             else if (w instanceof BlasterSprinkler) primaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
@@ -79,8 +75,8 @@ public class CustomizeMenu {
             else if (w instanceof RocketShotgun) primaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
         }
 
-        ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
-        for (Weapon w : secondaryWeapons) {
+        ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapon.size());
+        for (Weapon w : secondaryWeapon) {
             if (w instanceof Blaster) secondaryWeaponNames.add(messages.getString("weapon_blaster"));
             else if (w instanceof BlasterShotgun) secondaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
             else if (w instanceof BlasterSprinkler) secondaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
@@ -112,15 +108,12 @@ public class CustomizeMenu {
 
         borderPane.setCenter(vBox);
 
-        customizeMenuGroup.getChildren().add(borderPane);
-    }
+        getChildren().add(borderPane);
 
-    /**
-     * Palauttaa valikon Groupin.
-     * @return Valikon Group.
-     */
-    public Group getGroup() {
-        return customizeMenuGroup;
+        //      click eventit
+
+        // Main menun play click event
+        backButton.setOnAction(event -> changeToNextMenu(new PlayMenu(messages)));
     }
 
     /**
@@ -137,5 +130,42 @@ public class CustomizeMenu {
      */
     public Weapon getSelectedSecondaryWeapon() {
         return secondaryWeapon.get(secondaryComboBox.getSelectionModel().getSelectedIndex());
+    }
+
+    /**
+     * Luo listan valittavissa olevista pääaseista
+     * @return Lista, joka sisältää aseita
+     */
+    private ArrayList<Weapon> createPlayerPrimaries() {
+        ArrayList<Weapon> weapons = new ArrayList<>();
+
+        Weapon blaster = new Blaster(0, 45,  new Point2D(-15, 0), new Point2D(100, 0));
+
+        Weapon rocketShotgun = new RocketShotgun(0, 0, 20,
+                false, new Point2D(-15, 0), new Point2D(-15, 0));
+
+        Weapon laserGun = new LaserGun(5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
+
+        weapons.add(blaster);
+        weapons.add(rocketShotgun);
+        weapons.add(laserGun);
+        return weapons;
+    }
+
+    /**
+     * Luo listan valittavissa olevista sivuaseista
+     * @return Lista, joka sisältää aseita
+     */
+    private ArrayList<Weapon> createPlayerSecondaries() {
+        ArrayList<Weapon> weapons = new ArrayList<>();
+
+        Weapon rocketShotgun = new RocketShotgun(0, 0, 20,
+                false, new Point2D(-15, 0), new Point2D(-15, 0));
+
+        Weapon laserGun = new LaserGun(5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
+
+        weapons.add(rocketShotgun);
+        weapons.add(laserGun);
+        return weapons;
     }
 }
