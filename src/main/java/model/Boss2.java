@@ -5,6 +5,7 @@ import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import model.weapons.*;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -28,7 +29,7 @@ public class Boss2 extends Unit {
     /**
      * tulinopeus
      */
-    private double fireRate = 0.7;
+    private double fireRate = 2;
 
     /**
      * ampumisen ajanlaskuri
@@ -74,24 +75,24 @@ public class Boss2 extends Unit {
         super(Color.ORANGE, 0, 0);
         Polygon shape = new Polygon(); //Tämä tekee kolmion mikä esittää vihollisen alusta
         shape.getPoints().addAll(
-                -200.0, 0.0,
-                -250.0, 40.0,
-                -100.0, 80.0,
+                -50.0, 0.0,
                 -100.0, 40.0,
-                0.0, 0.0,
+                50.0, 80.0,
+                50.0, 40.0,
+                150.0, 0.0,
+                50.0, -40.0,
+                50.0, -80.0,
                 -100.0, -40.0,
-                -100.0, -80.0,
-                -250.0, -40.0,
-                -200.0, 0.0
+                -50.0, 0.0
         );
         drawShip(shape);
 
         controller = GameController.getInstance();
         this.setPosition(initialPosition.getX(), initialPosition.getY());
         this.setTag(Tag.SHIP_BOSS);
-        this.setVelocity(30);
+        this.setVelocity(50);
         setUnitSize(6);
-        //armShip();
+        armShip();
 
         rotate(180);
         setIsMoving(true);
@@ -120,9 +121,23 @@ public class Boss2 extends Unit {
         }
 
         //TODO ampuminen
+        if(fireRateCounter >= fireRate){
+            fireRateCounter = 0;
+            getPrimaryWeapons().get(2).shoot();
+        }
 
+        if(stageTimeCounter * 2 >= fireRate){
+            stageTimeCounter = 0;
+            getPrimaryWeapons().get(currentLaser).shoot();
+            if(currentLaser == 0){
+                currentLaser = 1;
+            }else{
+                currentLaser = 0;
+            }
+        }
 
         fireRateCounter += deltaTime;
+        stageTimeCounter += deltaTime;
 
         moveStep(deltaTime);
         if(!inFightingStage){
@@ -136,13 +151,13 @@ public class Boss2 extends Unit {
             }
         }
         else if(movingDown){
-            if(getYPosition() > WINDOW_HEIGHT * 0.55){
+            if(getYPosition() > WINDOW_HEIGHT * 0.8){
                 lockDirection(90);
                 movingDown = false;
             }
         }
         else{
-            if (getYPosition() < WINDOW_HEIGHT * 0.45){
+            if (getYPosition() < WINDOW_HEIGHT * 0.2){
                 lockDirection(270);
                 movingDown = true;
             }
@@ -171,4 +186,16 @@ public class Boss2 extends Unit {
         }
     }
 
+    public void armShip(){
+
+        Weapon laserGun = new LaserGun(0, 0.8, new Point2D(45, 70), new Point2D(45, 70));
+        this.addPrimaryWeaponWithCustomOffsets(laserGun);
+        laserGun = new LaserGun(0, 0.8, new Point2D(45, -70), new Point2D(45, -70));
+        this.addPrimaryWeaponWithCustomOffsets(laserGun);
+
+
+        Weapon blasterShotgun = new BlasterShotgun(0, 26, new Point2D(150, 0), new Point2D(150, 0));
+        this.addPrimaryWeaponWithCustomOffsets(blasterShotgun);
+
+    }
 }

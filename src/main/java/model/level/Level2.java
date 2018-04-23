@@ -31,18 +31,18 @@ public class Level2 extends Thread implements Level{
 
     public void run(){
         try {
-            /*spawnSquad(Tag.WEAPON_LASER_GUN);
+            spawnSquad(Tag.WEAPON_LASER_GUN);
 
             Thread.sleep(5000);
 
             for(int i = 0; i < 10; i++){
                 spawnFighter();
-                Thread.sleep(500);
+                Thread.sleep(1000);
             }
 
             Thread.sleep(2000);
             spawnSquad(Tag.WEAPON_BLASTER);
-            Thread.sleep(10000); */
+            Thread.sleep(10000);
 
             Boss2 finalBoss = new Boss2(new Point2D(WINDOW_WIDTH + 200, WINDOW_HEIGHT * 0.5));
 

@@ -67,7 +67,7 @@ public abstract class Component extends SpriteImpl {
         this.parentUnit = unit;
         if (unit instanceof Player){
             this.componentProjectileTag = Tag.PROJECTILE_PLAYER;
-        } else if (unit instanceof Enemy || unit instanceof Boss || unit instanceof Boss3) {
+        } else {
             this.componentProjectileTag = Tag.PROJECTILE_ENEMY;
         }
         this.parentUnitColor = unit.getUnitColor();
