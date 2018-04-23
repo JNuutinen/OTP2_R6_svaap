@@ -17,12 +17,17 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class MainMenu {
+public class MainMenu implements Menu {
 
     /**
      * Pelaa -painike. OnClick asetetaan ulkopuolelta, siksi public.
      */
     public Button play;
+
+    /**
+     * Asetukset-painike.
+     */
+    public Button settings;
 
     /**
      * Group, johon valikko rakennetaan.
@@ -36,10 +41,12 @@ public class MainMenu {
 
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
+     * @param messages Lokalisoidut resurssit.
      */
     public MainMenu(ResourceBundle messages){
         mainMenuGroup = new Group();
         play = new Button(messages.getString("play"));
+        settings = new Button(messages.getString("settings"));
         exit = new Button(messages.getString("exit"));
         BorderPane bpane = new BorderPane();
         bpane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
@@ -49,10 +56,14 @@ public class MainMenu {
         mainMenuGroup.getChildren().addAll(bpane);
     }
 
-    /**
-     * Palauttaa luodun Groupin.
-     * @return Group, jossa valikko.
-     */
+    @Override
+    public void changeLocale(ResourceBundle messages) {
+        play.setText(messages.getString("play"));
+        settings.setText(messages.getString("settings"));
+        exit.setText(messages.getString("exit"));
+    }
+
+    @Override
     public Group getGroup(){
         return mainMenuGroup;
     }
@@ -67,9 +78,10 @@ public class MainMenu {
 
         play.setPrefWidth(Double.MAX_VALUE);
         exit.setPrefWidth(Double.MAX_VALUE);
+        settings.setPrefWidth(Double.MAX_VALUE);
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setMaxWidth(150);
-        vbox.getChildren().addAll(play, exit);
+        vbox.getChildren().addAll(play, settings, exit);
         return vbox;
     }
 }

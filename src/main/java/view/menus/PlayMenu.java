@@ -19,7 +19,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PlayMenu {
+public class PlayMenu implements Menu {
 
     /**
      * Pelin käynnistyspainike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -37,6 +37,11 @@ public class PlayMenu {
     public Button customizeButton;
 
     /**
+     * Tasonvaihto-otsikko.
+     */
+    private Text levelSelectText;
+
+    /**
      * Spinner tason valintaan.
      */
     private Spinner<Integer> levelSpinner;
@@ -48,6 +53,7 @@ public class PlayMenu {
 
     /**
      * Konstruktori, joka luo komponentit ja lisää Groupiin.
+     * @param messages Lokalisoidut resurssit.
      * @param levels Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      */
     public PlayMenu(ResourceBundle messages, int levels) {
@@ -62,7 +68,7 @@ public class PlayMenu {
         backButton.setPrefWidth(Double.MAX_VALUE);
         //startButton.setGraphic(new ImageView(new Image("/images/Start.png")));
         //startButton.setStyle("-fx-background-color: transparent");
-        Text levelSelectText = new Text(messages.getString("select_level"));
+        levelSelectText = new Text(messages.getString("select_level"));
         levelSelectText.setStyle("-fx-fill: white");
         levelSpinner = new Spinner<>(1, levels, 1);
         levelSpinner.setPrefWidth(Double.MAX_VALUE);
@@ -81,10 +87,15 @@ public class PlayMenu {
         playMenuGroup.getChildren().add(borderPane);
     }
 
-    /**
-     * Palautaa valikon Groupin.
-     * @return Valikon Group.
-     */
+    @Override
+    public void changeLocale(ResourceBundle messages) {
+        startButton.setText(messages.getString("start_game"));
+        backButton.setText(messages.getString("back"));
+        levelSelectText.setText(messages.getString("select_level"));
+        customizeButton.setText(messages.getString("select_weapons"));
+    }
+
+    @Override
     public Group getGroup() {
         return playMenuGroup;
     }
