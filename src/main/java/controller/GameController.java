@@ -95,16 +95,6 @@ public class GameController implements Controller {
     }
 
     @Override
-    public void addUnitToCollisionList(Unit unit) {
-        view.addUnitToCollisionList(unit);
-    }
-
-    @Override
-    public void removeFromCollisionList(Unit unit){
-        Platform.runLater(() ->view.removeFromCollisionList(unit));
-    }
-
-    @Override
     public void addHitboxObject(HitboxCircle hitboxCircle) {
         gameLoop.queueHitboxObject(hitboxCircle);
     }
@@ -129,11 +119,6 @@ public class GameController implements Controller {
     public int getScore() {
         if (players != null) return players.get(0).getScore();
         return 0;
-    }
-
-    @Override
-    public synchronized List<Unit> getCollisionList() {
-        return view.getCollisionList();
     }
 
     @Override

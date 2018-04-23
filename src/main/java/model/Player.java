@@ -93,7 +93,6 @@ public class Player extends Unit {
         controller = GameController.getInstance();
         setHp(MAX_HP );
         setHitbox(60);
-        controller.addUnitToCollisionList(this);
 
         Polygon shape = new Polygon();
         shape.getPoints().addAll(60.0, 1.0,
