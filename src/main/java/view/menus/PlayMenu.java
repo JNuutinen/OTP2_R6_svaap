@@ -52,13 +52,20 @@ public class PlayMenu extends Menu{
     /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
-    private static final int NUMBER_OF_LEVELS = 1;
+    private static final int NUMBER_OF_LEVELS = 2;
 
+    /**
+     * MainMenu-menu
+     */
     private MainMenu mainMenu;
+
+    /**
+     * CustomizeMenu-menu
+     */
     private CustomizeMenu customizeMenu;
 
-    /** TODO
-     * Konstruktori, joka luo komponentit ja lisää Groupiin.
+    /** TODO tää iha vituillaa
+     * Konstruktori, joka luo komponentit ja lisää itseensä. Luo myös click eventit.
      * @param messages Lokalisoidut resurssit.
      * @param messages TODO Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      */
@@ -112,13 +119,13 @@ public class PlayMenu extends Menu{
         });
     }
 
+    @Override
     public void changeLocale(ResourceBundle messages) {
         startButton.setText(messages.getString("start_game"));
         backButton.setText(messages.getString("back"));
         levelSelectText.setText(messages.getString("select_level"));
         customizeButton.setText(messages.getString("select_weapons"));
     }
-
 
     /**
      * Palauttaa Spinnerissä valitun tason numeron.
@@ -128,10 +135,18 @@ public class PlayMenu extends Menu{
         return levelSpinner.getValue();
     }
 
+    /**
+     * Setteri MainMenulle
+     * @param mainMenu MainMenu
+     */
     public void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
     }
 
+    /**
+     * Setteri CustomizeMenulle.
+     * @param customizeMenu CustomizeMenu
+     */
     public void setCustomizeMenu(CustomizeMenu customizeMenu) {
         this.customizeMenu = customizeMenu;
     }

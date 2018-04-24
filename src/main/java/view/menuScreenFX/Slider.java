@@ -1,4 +1,4 @@
-package view.MenuScreenFX;
+package view.menuScreenFX;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

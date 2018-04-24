@@ -39,14 +39,20 @@ public class MainMenu extends Menu {
      */
     private Button exit;
 
-    // TODO jdocit
+    /**
+     * NetPlay-menu
+     */
     private NetplayMenu netplayMenu;
 
+    /**
+     * PlayMenu-menu
+     */
     private PlayMenu playMenu;
 
+    /**
+     * SettingsMenu-menu
+     */
     private SettingsMenu settingsMenu;
-
-
 
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
@@ -95,6 +101,7 @@ public class MainMenu extends Menu {
         return vbox;
     }
 
+    @Override
     public void changeLocale(ResourceBundle messages) {
         play.setText(messages.getString("play"));
         settings.setText(messages.getString("settings"));

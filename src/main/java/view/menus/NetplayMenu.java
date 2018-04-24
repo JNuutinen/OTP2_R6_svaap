@@ -70,15 +70,25 @@ public class NetplayMenu extends Menu{
         backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
     }
 
+    /**
+     * Ei toiminnassa
+     */
     private void hostGame(){
         //Thread serverController = new ServerController();
         //serverController.start();
     }
 
+    /**
+     * Ei toiminnassa
+     */
     private void connectToHost(){
         //PlayerController playerController = new PlayerController();
     }
 
+    /**
+     * Setteri MainMenulle
+     * @param mainMenu MainMenu
+     */
     public void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
     }

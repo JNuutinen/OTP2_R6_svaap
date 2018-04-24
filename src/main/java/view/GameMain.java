@@ -10,6 +10,7 @@ import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -27,6 +28,7 @@ import model.units.Player;
 import model.units.Unit;
 import model.weapons.Weapon;
 import view.menus.MenuSpace;
+import view.menus.PauseMenu;
 
 import java.util.*;
 
@@ -58,11 +60,6 @@ public class GameMain extends Application implements View {
      * svaap -bannerin korkeus menuissa.
      */
     public static final int BANNER_HEIGHT = 200;
-
-    /**
-     * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
-     */
-    private static final int NUMBER_OF_LEVELS = 2;
 
     /**
      * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
@@ -182,14 +179,8 @@ public class GameMain extends Application implements View {
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
         primaryStage.setResizable(false);
 
-
-
         // Kontrolleri-singletonin (parametrillinen) alustaminen.
         controller = GameController.getInstance(this);
-
-
-
-
 
         Slave slave = new Slave();
         slave.connect();
@@ -200,8 +191,6 @@ public class GameMain extends Application implements View {
 
 
         setupGame(this.primaryStage);
-
-
 
     }
 
@@ -376,7 +365,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
-        /*PauseMenu pauseMenu = new PauseMenu(messages);
+        PauseMenu pauseMenu = new PauseMenu(messages);
         Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {
@@ -388,7 +377,7 @@ public class GameMain extends Application implements View {
             pauseMenu.quitButton.setDisable(true);
             controller.returnToMain();
         });
-        gameRoot.setCenter(pauseMenuGroup);*/
+        gameRoot.setCenter(pauseMenuGroup);
     }
 
     @Override

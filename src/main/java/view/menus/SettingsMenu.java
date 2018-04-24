@@ -38,7 +38,9 @@ public class SettingsMenu extends Menu {
      */
     private Text localeText;
 
-    //TODO jdoc
+    /**
+     * MainMenu-menu
+     */
     private MainMenu mainMenu;
 
     /**
@@ -46,9 +48,16 @@ public class SettingsMenu extends Menu {
      */
     private Map<String, Locale> locales;
 
-    // TODO
+    /**
+     * Lokalisoidut tekstit.
+     */
     private ResourceBundle messages;
 
+    /**
+     * Konstruktori. Lisää Komponentit itseensä. Luo myös click eventit.
+     * @param messages Lokalisoidut tekstit
+     * @param menuSpace MenusSpace jossa tieto kaikista menuista.
+     */
     public SettingsMenu(ResourceBundle messages, MenuSpace menuSpace) {
         super(menuSpace);
         this.messages = messages;
@@ -91,8 +100,8 @@ public class SettingsMenu extends Menu {
         backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
 
         // Settings menun lokaalien click eventit
-        fiFiButton.setOnAction(event -> getMenuSpace().changeLocale(locales.get("fi_FI")));
-        enNzButton.setOnAction(event -> getMenuSpace().changeLocale(locales.get("en_NZ")));
+        fiFiButton.setOnAction(event -> getMenuSpace().changeLocales(locales.get("fi_FI")));
+        enNzButton.setOnAction(event -> getMenuSpace().changeLocales(locales.get("en_NZ")));
     }
 
     @Override
@@ -101,6 +110,10 @@ public class SettingsMenu extends Menu {
         backButton.setText(messages.getString("back"));
     }
 
+    /**
+     * Setteri MainMenulle
+     * @param mainMenu MainMenu
+     */
     public void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
     }

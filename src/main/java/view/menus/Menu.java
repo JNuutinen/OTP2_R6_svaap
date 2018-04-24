@@ -10,16 +10,31 @@ import java.util.ResourceBundle;
 public abstract class Menu extends Group {
 
 
-    // TODO jdoc
+    /**
+     * Menuspace jossa tiedot kaikista menuista.
+     */
     private MenuSpace menuSpace;
 
-    public Menu(MenuSpace menuSpace){
+    /**
+     * Konstruktori. Asettaa MenuSpacen
+     * @param menuSpace MenusSpace
+     */
+    Menu(MenuSpace menuSpace){
         this.menuSpace = menuSpace;
     }
 
-    public MenuSpace getMenuSpace(){
+    /**
+     * Getteri MenuSpacelle
+     * @return MenuSpace
+     */
+    MenuSpace getMenuSpace(){
         return menuSpace;
     }
 
+    /**
+     * Muuttaa menun lokalisaatiota.
+     *
+     * @param messages Lokalisoidut tekstit.
+     */
     public abstract void changeLocale(ResourceBundle messages);
 }

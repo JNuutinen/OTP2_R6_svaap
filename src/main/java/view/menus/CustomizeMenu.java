@@ -55,12 +55,14 @@ public class CustomizeMenu extends Menu {
      */
     private ComboBox<String> secondaryComboBox;
 
-    // TODO jdoc
+    /**
+     * Playmenu-menu
+     */
     private PlayMenu playMenu;
 
 
     /**
-     * Konstruktori. Luo komponentit ja lisää Groupiin. TODO
+     * Konstruktori. Luo komponentit ja lisää itseensä. Lisää myös click eventit.
      */
     public CustomizeMenu(ResourceBundle messages, MenuSpace menuSpace) {
         super(menuSpace);

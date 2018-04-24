@@ -1,4 +1,4 @@
-package view.MenuScreenFX;
+package view.menuScreenFX;
 
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
