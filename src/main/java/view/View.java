@@ -1,7 +1,6 @@
 package view;
 
 import model.Sprite;
-import model.network.ServerController;
 import model.units.Unit;
 
 import java.util.ArrayList;
@@ -22,8 +21,6 @@ public interface View {
     void addSprite(Sprite sprite);
 
     public void setIsServer(boolean isServer);
-
-    public void setServer(ServerController serverController);
 
     /**
      * Lisää Unitin collision listaan.

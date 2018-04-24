@@ -3,12 +3,8 @@ package view.menus;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import model.network.PlayerController;
-import model.network.ServerController;
 
 import java.util.ResourceBundle;
 
@@ -35,15 +31,13 @@ public class NetplayMenu extends Menu{
     public Button backButton;
 
 
-    /**
-     * Valikon Group.
-     */
-    private Group netplayMenuGroup;
+    private MainMenu mainMenu;
 
     /**
      * TODO kaikki jdocit
      */
-    public NetplayMenu(ResourceBundle messages) {
+    public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace) {
+        super(menuSpace);
 
         connect = new Button("connect");
         host = new Button("host");
@@ -51,42 +45,41 @@ public class NetplayMenu extends Menu{
 
         connect.setOnMouseClicked(event -> connectToHost());
         host.setOnMouseClicked(event -> hostGame());
-
-
-        netplayMenuGroup = new Group();
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
 
 
         backButton.setPrefWidth(Double.MAX_VALUE);
+        host.setPrefWidth(Double.MAX_VALUE);
+        connect.setPrefWidth(Double.MAX_VALUE);
 
 
         VBox vBox = new VBox();
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(150);
-        vBox.getChildren().addAll(backButton, connect, host);
+        vBox.getChildren().addAll(connect, host, backButton);
 
         borderPane.setCenter(vBox);
 
-        netplayMenuGroup.getChildren().add(borderPane);
+        getChildren().addAll(borderPane);
+
+                    //-- click eventit --//
+
+        backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
     }
 
     private void hostGame(){
-        Thread serverController = new ServerController();
-        serverController.start();
+        //Thread serverController = new ServerController();
+        //serverController.start();
     }
 
     private void connectToHost(){
-        PlayerController playerController = new PlayerController();
+        //PlayerController playerController = new PlayerController();
     }
 
-    /**
-     * Palautaa valikon Groupin.
-     * @return Valikon Group.
-     */
-    public Group getGroup() {
-        return netplayMenuGroup;
+    public void setMainMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
     }
 }

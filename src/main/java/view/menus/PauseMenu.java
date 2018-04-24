@@ -38,7 +38,9 @@ public class PauseMenu extends Menu {
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      */
-    public PauseMenu(ResourceBundle messages) {
+    public PauseMenu(ResourceBundle messages, MenuSpace menuSpace) {
+        super(menuSpace);
+
         continueButton = new Button(messages.getString("continue"));
         continueButton.setMinWidth(100);
         continueButton.setPrefWidth(Double.MAX_VALUE);

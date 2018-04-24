@@ -1,20 +1,41 @@
-package view.MenuScreenFX;
+package view.menus;
 
 import javafx.scene.Group;
 import javafx.scene.layout.StackPane;
 import view.GameMain;
+import view.MenuScreenFX.MenuFX;
+import view.MenuScreenFX.Slider;
+
+import java.util.ResourceBundle;
 
 public class MenuSpace extends StackPane {
 
-    private Group currentMenu;
     private MenuFX menuFX = new Slider();
     private GameMain gameMain;
 
+    private MainMenu mainMenu;
+    private NetplayMenu netplayMenu;
+    private CustomizeMenu customizeMenu;
+    private PauseMenu pauseMenu;
+    private PlayMenu playMenu;
 
-    public MenuSpace(GameMain gameMain, Group initialMenu){
+
+    public MenuSpace(GameMain gameMain, ResourceBundle messages){
         this.gameMain = gameMain;
-        this.currentMenu = initialMenu;
-        this.getChildren().add(initialMenu);
+        mainMenu = new MainMenu(messages, this);
+        netplayMenu = new NetplayMenu(messages, this);
+        customizeMenu = new CustomizeMenu(messages, this);
+        pauseMenu = new PauseMenu(messages, this);
+        playMenu = new PlayMenu(messages, this, gameMain);
+
+        mainMenu.setNetplayMenu(netplayMenu);
+        mainMenu.setPlayMenu(playMenu);
+        netplayMenu.setMainMenu(mainMenu);
+        customizeMenu.setPlayMenu(playMenu);
+        playMenu.setMainMenu(mainMenu);
+        playMenu.setCustomizeMenu(customizeMenu);
+
+        this.getChildren().add(mainMenu);
     }
 
     /**

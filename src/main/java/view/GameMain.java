@@ -6,8 +6,6 @@ import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -20,16 +18,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.GameBackground;
-import model.network.PlayerController;
-import model.network.ServerController;
 import model.Sprite;
+import model.units.Player;
 import model.units.Unit;
-import model.weapons.Blaster;
-import model.weapons.LaserGun;
-import model.weapons.RocketShotgun;
 import model.weapons.Weapon;
-import view.MenuScreenFX.MenuSpace;
-import view.menus.*;
+import view.menus.MenuSpace;
 
 import java.util.*;
 
@@ -62,9 +55,7 @@ public class GameMain extends Application implements View {
      */
     public static final int BANNER_HEIGHT = 200;
 
-
-
-    ServerController serverController;
+    
 
     boolean isServer = false;
 
@@ -151,9 +142,17 @@ public class GameMain extends Application implements View {
     private Pane uiPane;
 
     /**
+     * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
+     */
+    public static List<String> input = new ArrayList<>();
+
+    /**
      * Pelin tausta.
      */
     private GameBackground gameBg;
+
+    // TODO jdoc
+    private BorderPane uiRoot;
 
     /**
      * Käynnistää ohjelman. Kutsuu launch(args) metodia, joka käynnistää JavaFX:n.
@@ -215,11 +214,6 @@ public class GameMain extends Application implements View {
     @Override
     public void setIsServer(boolean isServer) {
         this.isServer = isServer;
-    }
-
-    @Override
-    public void setServer(ServerController serverController) {
-        this.serverController = serverController;
     }
 
     @Override
@@ -341,17 +335,8 @@ public class GameMain extends Application implements View {
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
         //Player player = new Player(Color.LIME);
 
-        PlayerController playerController = new PlayerController();
-        if(isServer){
-            ServerController serverController = new ServerController();
-        }
-
-
-        // Main menu
-        MainMenu mainMenu = new MainMenu(messages);
-
         // Pane kaikille menuille
-        MenuSpace menuSpace = new MenuSpace(this, mainMenu);
+        MenuSpace menuSpace = new MenuSpace(this, messages);
         /*
         customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenu, playMenu, menuSpace));
 
@@ -369,7 +354,7 @@ public class GameMain extends Application implements View {
         // Pane, se kaikkien isä (uiRoot, gameRoot)
         pane = new BorderPane();
         pane.setStyle("-fx-background-color: black");
-        BorderPane uiRoot = new BorderPane();
+        uiRoot = new BorderPane();
         uiRoot.setStyle("-fx-background-color: black");
 
         // Banner uiRootin yläosaan
@@ -396,7 +381,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
-        PauseMenu pauseMenu = new PauseMenu(messages);
+        /*PauseMenu pauseMenu = new PauseMenu(messages);
         Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {
@@ -408,7 +393,7 @@ public class GameMain extends Application implements View {
             pauseMenu.quitButton.setDisable(true);
             controller.returnToMain();
         });
-        gameRoot.setCenter(pauseMenuGroup);
+        gameRoot.setCenter(pauseMenuGroup);*/
     }
 
     @Override
@@ -418,12 +403,13 @@ public class GameMain extends Application implements View {
 
     /**
      * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
-     * @param primaryStage Ohjelman Primary Stage.
-     * @param playerController TODO
      * @param primary Pelaajan pääase.
      * @param secondary Pelaajan sivuase.
      */
-    private void startGame(Stage primaryStage, PlayerController playerController, Weapon primary, Weapon secondary) {
+    public void startGame(Weapon primary, Weapon secondary) {
+        pane.getChildren().remove(uiRoot);
+
+
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
         Image uiIMG = new Image("/images/PlayerUi_i18n.png");
@@ -486,8 +472,9 @@ public class GameMain extends Application implements View {
             uiPane.getChildren().add(debugger_currentFps);*/
         }
 
-        /*
+
         //      Pelaaja
+        Player player = new Player(Color.BLUE);
         player.setPosition(100, 300);
 
         //      tieto controllerille pelaajasta
@@ -498,26 +485,28 @@ public class GameMain extends Application implements View {
         //      pelaajalle pyssyt
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
-        */
-
 
         //      Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            if (!playerController.getInput().contains(code)) playerController.addInput(code);
+            if (!input.contains(code)) input.add(code);
         });
 
         //      Kun näppäintä ei enää paineta, poista se arraylististä
         scene.setOnKeyReleased(keyEvent -> {
             String code = keyEvent.getCode().toString();
-            playerController.getInput().remove(code);
+            input.remove(code);
         });
+
         primaryStage.setScene(scene);
 
         controller.startLoop();
         controller.startLevel(1); // playMenu.getSelectedLevel() TODO
     }
 
+    public BorderPane getUiRoot(){
+        return uiRoot;
+    }
 
 
 }

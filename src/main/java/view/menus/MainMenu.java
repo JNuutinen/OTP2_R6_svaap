@@ -1,12 +1,9 @@
 package view.menus;
 
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import model.network.PlayerController;
-import model.network.ServerController;
 
 import java.util.ResourceBundle;
 
@@ -37,12 +34,19 @@ public class MainMenu extends Menu {
      */
     private Button exit;
 
+    // TODO jdocit
+    private NetplayMenu netplayMenu;
+
+    private PlayMenu playMenu;
+
 
 
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      */
-    public MainMenu(ResourceBundle messages){
+    public MainMenu(ResourceBundle messages, MenuSpace menuSpace){
+        super(menuSpace);
+
         play = new Button(messages.getString("play"));
         netplay = new Button("netplay"); // TODO resourceBundle tähän
         exit = new Button(messages.getString("exit"));
@@ -54,12 +58,12 @@ public class MainMenu extends Menu {
         exit.setOnMouseClicked(event -> System.exit(0));
         getChildren().addAll(bpane);
 
-        //      click eventit
+                    //-- click eventit --//
 
         // Main menun play click event
-        play.setOnAction(event -> changeToNextMenu(new PlayMenu(messages))); // TODO parametrit
+        play.setOnAction(event -> getMenuSpace().changeToNextMenu(this, playMenu));
         // Main menun netplay click event
-        netplay.setOnAction(event -> changeToNextMenu(new NetplayMenu(messages)));
+        netplay.setOnAction(event -> getMenuSpace().changeToNextMenu(this, netplayMenu));
     }
 
     /**
@@ -77,6 +81,14 @@ public class MainMenu extends Menu {
         vbox.setMaxWidth(150);
         vbox.getChildren().addAll(play, netplay, exit);
         return vbox;
+    }
+
+    public void setNetplayMenu(NetplayMenu netplayMenu) {
+        this.netplayMenu = netplayMenu;
+    }
+
+    public void setPlayMenu(PlayMenu playMenu) {
+        this.playMenu = playMenu;
     }
 }
 

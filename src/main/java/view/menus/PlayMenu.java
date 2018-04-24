@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import view.GameMain;
 
 import java.util.ResourceBundle;
 
@@ -44,21 +45,20 @@ public class PlayMenu extends Menu{
     private Spinner<Integer> levelSpinner;
 
     /**
-     * Valikon Group.
-     */
-    private Group playMenuGroup;
-
-    /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
     private static final int NUMBER_OF_LEVELS = 1;
 
+    private MainMenu mainMenu;
+    private CustomizeMenu customizeMenu;
+
     /** TODO
      * Konstruktori, joka luo komponentit ja lisää Groupiin.
-     * @param levels Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
+     * @param messages TODO Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      */
-    public PlayMenu(ResourceBundle messages) {
-        playMenuGroup = new Group();
+    public PlayMenu(ResourceBundle messages, MenuSpace menuSpace, GameMain gameMain) {
+        super(menuSpace);
+
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
@@ -85,28 +85,25 @@ public class PlayMenu extends Menu{
 
         borderPane.setCenter(vBox);
 
-        playMenuGroup.getChildren().add(borderPane);
+        getChildren().addAll(borderPane);
+
+        //-- click eventit --//
+
+        backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
+        customizeButton.setOnAction(event -> getMenuSpace().changeToNextMenu(this, customizeMenu));
 
         // Pelin aloituspainike click event
         startButton.setOnAction(event -> {
             startButton.setDisable(true);
-            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), uiRoot);
+            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
             ft2.setFromValue(1.0);
             ft2.setToValue(0.0);
             ft2.play();
             ft2.setOnFinished(event1 -> {
-                pane.getChildren().remove(uiRoot);
-                startGame(primaryStage, playerController, customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+                //pane.getChildren().remove(uiRoot);
+                gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
             });
         });
-    }
-
-    /**
-     * Palautaa valikon Groupin.
-     * @return Valikon Group.
-     */
-    public Group getGroup() {
-        return playMenuGroup;
     }
 
     /**
@@ -115,5 +112,13 @@ public class PlayMenu extends Menu{
      */
     public int getSelectedLevel() {
         return levelSpinner.getValue();
+    }
+
+    public void setMainMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
+    }
+
+    public void setCustomizeMenu(CustomizeMenu customizeMenu) {
+        this.customizeMenu = customizeMenu;
     }
 }

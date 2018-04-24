@@ -3,7 +3,6 @@ package view.menus;
 import javafx.collections.FXCollections;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
@@ -45,11 +44,15 @@ public class CustomizeMenu extends Menu {
      */
     private ComboBox<String> secondaryComboBox;
 
+    // TODO jdoc
+    private PlayMenu playMenu;
+
 
     /**
      * Konstruktori. Luo komponentit ja lisää Groupiin. TODO
      */
-    public CustomizeMenu(ResourceBundle messages) {
+    public CustomizeMenu(ResourceBundle messages, MenuSpace menuSpace) {
+        super(menuSpace);
 
         // Valittavat aselistat
         secondaryWeapon = createPlayerSecondaries();
@@ -110,10 +113,10 @@ public class CustomizeMenu extends Menu {
 
         getChildren().add(borderPane);
 
-        //      click eventit
+                    //-- click eventit --//
 
         // Main menun play click event
-        backButton.setOnAction(event -> changeToNextMenu(new PlayMenu(messages)));
+        backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, playMenu));
     }
 
     /**
@@ -167,5 +170,9 @@ public class CustomizeMenu extends Menu {
         weapons.add(rocketShotgun);
         weapons.add(laserGun);
         return weapons;
+    }
+
+    public void setPlayMenu(PlayMenu playMenu) {
+        this.playMenu = playMenu;
     }
 }
