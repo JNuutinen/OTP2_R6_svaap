@@ -1,17 +1,25 @@
 package Multiplayer;
-
+import model.Player;
 import model.Unit;
 
+import java.util.HashMap;
+
 public class Multiplayer {
-    public Multiplayer () {}
+    static HashMap<Integer, Unit> players = new HashMap<>();
 
-    public void move(Unit unit, int x, int y) {
-        unit.setPosition(x, y);
-    }
 
+    /*
     public void shoot(Unit unit) {
-        Data d = new ShootData(unit);
-        Host.streamOut(d);
+        Data data = new ShootData(unit);
+        Host.streamOut(data);
+    }
+    */
+
+    public static Unit getPlayerById(int id) {
+            return players.get(id);
     }
 
+    public static void connect(Player player) {
+        players.put(player.getPlayerId(), (Unit)player);
+    }
 }

@@ -1,6 +1,5 @@
 package Multiplayer;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.*;
@@ -11,7 +10,6 @@ import java.util.logging.Logger;
 //Tää pitää käynnistää ennen Hostia.
 
 public class Slave implements Runnable {
-    //DataInputStream in;
     ObjectInputStream in;
 
     public Slave() {}
@@ -20,9 +18,7 @@ public class Slave implements Runnable {
         try {
             ServerSocket serv = new ServerSocket(1111);
             Socket s = serv.accept();
-            //in = new DataInputStream(s.getInputStream());
-
-           in = new ObjectInputStream(s.getInputStream());
+            in = new ObjectInputStream(s.getInputStream());
 
         } catch (IOException ex) {
             Logger.getLogger(Slave.class.getName()).log(Level.SEVERE, null, ex);

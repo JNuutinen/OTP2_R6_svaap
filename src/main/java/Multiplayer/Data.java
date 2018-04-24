@@ -1,9 +1,11 @@
 package Multiplayer;
 
-import model.Unit;
+import java.io.Serializable;
 
-public abstract class Data {
-    Unit unit;
+public abstract class Data implements Serializable {
+    int PlayerId;
 
-    public void action(){}
+    public void action(){
+        System.out.println("Abstract data");
+    }
 }

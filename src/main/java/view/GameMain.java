@@ -1,5 +1,9 @@
 package view;
 
+import Multiplayer.Data;
+import Multiplayer.Host;
+import Multiplayer.ShootData;
+import Multiplayer.Slave;
 import controller.Controller;
 import controller.GameController;
 import javafx.animation.FadeTransition;
@@ -200,7 +204,21 @@ public class GameMain extends Application implements View {
 
         // Kontrolleri-singletonin (parametrillinen) alustaminen.
         controller = GameController.getInstance(this);
+
+
+
+        Slave slave = new Slave();
+        slave.connect();
+        //Host.connect();
+
+        (new Thread(slave)).start();
+        //Seuraava viittaus rivillä 370
+
+
         setupGame(this.primaryStage);
+
+
+
     }
 
     /**
@@ -346,6 +364,26 @@ public class GameMain extends Application implements View {
 
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
         Player player = new Player(Color.LIME);
+
+
+
+
+
+
+
+
+        //Data d = new ShootData(1);
+        //Host.streamOut(d);
+
+
+
+
+
+
+
+
+
+
 
         // Main menu
         MainMenu mainMenu = new MainMenu(messages);
