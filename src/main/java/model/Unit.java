@@ -215,7 +215,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     /**
      * Ampuu yksikön pääaseella.
      */
-    void shootPrimary() {
+    public void shootPrimary() {
         if (primaryWeapons != null) {
             for(Weapon primaryWeapon : primaryWeapons) {
                 primaryWeapon.shoot();
