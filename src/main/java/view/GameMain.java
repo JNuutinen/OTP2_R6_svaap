@@ -189,6 +189,8 @@ public class GameMain extends Application implements View {
 
 
 
+
+
         Slave slave = new Slave();
         slave.connect();
         //Host.connect();

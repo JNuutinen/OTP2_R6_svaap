@@ -1,5 +1,6 @@
 package Multiplayer;
 
+import javafx.scene.paint.Color;
 import model.units.Player;
 import model.units.Unit;
 
@@ -21,6 +22,14 @@ public class Multiplayer {
     }
 
     public static void connect(Player player) {
-        players.put(player.getPlayerId(), (Unit)player);
+        players.put(player.getPlayerId(), player);
+        Host.connect();
+        Host.streamOut(new ConnectionData(player.getPlayerId()));
     }
+    /*
+    public static void addPlayer(int playerId) {
+        Player player = PlayerFactory.getPlayer(Color.WHITE);
+        players.put(playerId, player);
+    }
+    */
 }

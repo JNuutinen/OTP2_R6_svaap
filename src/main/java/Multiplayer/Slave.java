@@ -42,6 +42,7 @@ public class Slave implements Runnable {
 
                 Data data = (Data)in.readObject();
                 data.action();
+                stop = true;
 
             } catch (IOException ex) {
                 Logger.getLogger(Slave.class.getName()).log(Level.SEVERE, null, ex);

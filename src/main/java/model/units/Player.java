@@ -138,7 +138,7 @@ public class Player extends Unit {
         //controller.addTrace(this);
 
         playerId = (int)Math.random() * 100;
-        Multiplayer.connect(this);
+        //Multiplayer.connect(this);
     }
 
     public int getPlayerId() {

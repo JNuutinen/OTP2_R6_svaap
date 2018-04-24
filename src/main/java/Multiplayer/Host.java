@@ -1,5 +1,10 @@
 package Multiplayer;
 
+import controller.GameController;
+import javafx.scene.paint.Color;
+import model.PlayerFactory;
+import model.units.Player;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -11,7 +16,6 @@ public class Host {
     static String ip = "10.112.195.107";
     static int port = 1111;
     static DataInputStream in;
-    //DataOutputStream out;
     static ObjectOutputStream out;
 
     public Host(String ip, int port) {
@@ -25,6 +29,8 @@ public class Host {
         try {
             Socket s = new Socket(ip, port);
             out = new ObjectOutputStream(s.getOutputStream());
+
+            Player player2 = PlayerFactory.getPlayer(Color.WHITE);
 
             System.out.println("Connected");
         } catch (IOException ex) {
