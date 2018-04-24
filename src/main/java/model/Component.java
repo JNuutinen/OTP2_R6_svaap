@@ -6,6 +6,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import model.units.*;
 
 /**
  * Komponenttien luokka. Komponentit voivat olla aseita tai passiivisia komponentteja,

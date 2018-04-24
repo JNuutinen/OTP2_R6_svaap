@@ -1,7 +1,7 @@
 package view;
 
 import model.Sprite;
-import model.Unit;
+import model.units.Unit;
 
 import java.util.ArrayList;
 
@@ -19,6 +19,8 @@ public interface View {
      * @param sprite Sprite joka lisätään.
      */
     void addSprite(Sprite sprite);
+
+    public void setIsServer(boolean isServer);
 
     /**
      * Lisää Unitin collision listaan.

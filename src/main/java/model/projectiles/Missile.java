@@ -8,6 +8,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 import model.*;
+import model.fx.Explosion;
+import model.fx.Trail;
+import model.units.Unit;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;

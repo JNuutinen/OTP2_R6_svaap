@@ -1,4 +1,4 @@
-package model;
+package model.fx;
 
 import controller.Controller;
 import controller.GameController;
@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import model.SpriteImpl;
+import model.Updateable;
 
 import java.util.List;
 

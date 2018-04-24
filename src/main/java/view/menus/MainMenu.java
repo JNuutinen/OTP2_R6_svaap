@@ -1,7 +1,6 @@
 package view.menus;
 
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -17,7 +16,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class MainMenu implements Menu {
+public class MainMenu extends Menu {
 
     /**
      * Pelaa -painike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -30,31 +29,41 @@ public class MainMenu implements Menu {
     public Button settings;
 
     /**
-     * Group, johon valikko rakennetaan.
+     * Nettipelaa -painike. OnClick asetetaan ulkopuolelta, siksi public.
      */
-    private Group mainMenuGroup;
+    public Button netplay;
+
 
     /**
      * Pelin lopetuspainike.
      */
     private Button exit;
 
+    // TODO jdocit
+    private NetplayMenu netplayMenu;
+
+    private PlayMenu playMenu;
+
+
+
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      * @param messages Lokalisoidut resurssit.
      */
-    public MainMenu(ResourceBundle messages){
-        mainMenuGroup = new Group();
+    public MainMenu(ResourceBundle messages, MenuSpace menuSpace){
+        super(menuSpace);
+
         play = new Button(messages.getString("play"));
         settings = new Button(messages.getString("settings"));
+        netplay = new Button("netplay"); // TODO resourceBundle tähän
         exit = new Button(messages.getString("exit"));
+
         BorderPane bpane = new BorderPane();
         bpane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         bpane.setCenter(vbox());
         bpane.setStyle("-fx-background-color: black");
         exit.setOnMouseClicked(event -> System.exit(0));
-        mainMenuGroup.getChildren().addAll(bpane);
-    }
+        getChildren().addAll(bpane);
 
     @Override
     public void changeLocale(ResourceBundle messages) {
@@ -62,11 +71,12 @@ public class MainMenu implements Menu {
         settings.setText(messages.getString("settings"));
         exit.setText(messages.getString("exit"));
     }
+                hh    //-- click eventit --//
 
-    @Override
-    public Group getGroup(){
-        return mainMenuGroup;
-    }
+        // Main menun play click event
+        play.setOnAction(event -> getMenuSpace().changeToNextMenu(this, playMenu));
+        // Main menun netplay click event
+        netplay.setOnAction(event -> getMenuSpace().changeToNextMenu(this, netplayMenu));
 
     /**
      * Luo VBoxin, johon lisätään komponentit. VBox lisätään Groupiin.
@@ -77,12 +87,21 @@ public class MainMenu implements Menu {
         vbox.setSpacing(8);
 
         play.setPrefWidth(Double.MAX_VALUE);
+        netplay.setPrefWidth(Double.MAX_VALUE);
         exit.setPrefWidth(Double.MAX_VALUE);
         settings.setPrefWidth(Double.MAX_VALUE);
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setMaxWidth(150);
-        vbox.getChildren().addAll(play, settings, exit);
+        vbox.getChildren().addAll(play, settings, netplay, exit);
         return vbox;
+    }
+
+    public void setNetplayMenu(NetplayMenu netplayMenu) {
+        this.netplayMenu = netplayMenu;
+    }
+
+    public void setPlayMenu(PlayMenu playMenu) {
+        this.playMenu = playMenu;
     }
 }
 

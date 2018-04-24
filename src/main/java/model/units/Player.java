@@ -1,11 +1,15 @@
-package model;
+package model.units;
 
 import controller.Controller;
 import controller.GameController;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import model.Tag;
 import model.weapons.Weapon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static view.GameMain.*;
 
@@ -166,7 +170,6 @@ public class Player extends Unit {
         }
 
         if (input.contains("W")) {
-            // TODO: 50px kovakoodattu
             if (getYPosition() > 50) {
                 addVelocity(0, -1);
             } else {

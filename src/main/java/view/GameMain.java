@@ -3,14 +3,9 @@ package view;
 import controller.Controller;
 import controller.GameController;
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,14 +18,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.GameBackground;
-import model.Player;
 import model.Sprite;
-import model.Unit;
-import model.weapons.Blaster;
-import model.weapons.LaserGun;
-import model.weapons.RocketShotgun;
+import model.units.Player;
+import model.units.Unit;
 import model.weapons.Weapon;
-import view.menus.*;
+import view.menus.MenuSpace;
 
 import java.util.*;
 
@@ -63,10 +55,7 @@ public class GameMain extends Application implements View {
      */
     public static final int BANNER_HEIGHT = 200;
 
-    /**
-     * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
-     */
-    private static final int NUMBER_OF_LEVELS = 2;
+
 
     /**
      * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
@@ -178,6 +167,9 @@ public class GameMain extends Application implements View {
      */
     private GameBackground gameBg;
 
+    // TODO jdoc
+    private BorderPane uiRoot;
+
     /**
      * Käynnistää ohjelman. Kutsuu launch(args) metodia, joka käynnistää JavaFX:n.
      * @param args Komentoriviargumentit.
@@ -197,6 +189,8 @@ public class GameMain extends Application implements View {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("svaap: SivuvieritysAvaruusAmmuntaPeli");
         primaryStage.setResizable(false);
+
+
 
         // Kontrolleri-singletonin (parametrillinen) alustaminen.
         controller = GameController.getInstance(this);
@@ -219,6 +213,8 @@ public class GameMain extends Application implements View {
             setupGame(primaryStage);
         });
     }
+
+
 
     @Override
     public void addSprite(Sprite sprite) {
@@ -328,7 +324,6 @@ public class GameMain extends Application implements View {
     private void setupGame(Stage primaryStage) {
         units = new ArrayList<>();
         primaryStage.setOnCloseRequest(event -> System.exit(0));
-        menus = new ArrayList<>();
 
         // Banneri
         ImageView svaapBanner = new ImageView(new Image("images/SVAAP_logo_white.png"));
@@ -340,40 +335,16 @@ public class GameMain extends Application implements View {
         // Luodaan gameRoot jo tässä, koska pelaaja luodaan ja sen Sprite lisätään siihen
         gameRoot = new BorderPane();
 
-        // Valittavat aselistat
-        ArrayList<Weapon> secondaries = createPlayerSecondaries();
-        ArrayList<Weapon> primaries = createPlayerPrimaries1();
+
 
         //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
-        Player player = new Player(Color.LIME);
-
-        // Main menu
-        MainMenu mainMenu = new MainMenu(messages);
-        menus.add(mainMenu);
-        Group mainMenuGroup = mainMenu.getGroup();
-
-        // Settings menu
-        SettingsMenu settingsMenu = new SettingsMenu(messages);
-        menus.add(settingsMenu);
-        Group settingsMenuGroup = settingsMenu.getGroup();
-
-        // Play menu
-        playMenu = new PlayMenu(messages, NUMBER_OF_LEVELS);
-        menus.add(playMenu);
-        Group playMenuGroup = playMenu.getGroup();
-
-        // Pause menu
-        pauseMenu = new PauseMenu(messages);
-        menus.add(pauseMenu);
+        //Player player = new Player(Color.LIME);
 
         // Pane kaikille menuille
-        StackPane menuSpace = new StackPane(mainMenuGroup);
+        MenuSpace menuSpace = new MenuSpace(this, messages);
+        /*
+        customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenu, playMenu, menuSpace));
 
-        // Customize menu
-        CustomizeMenu customizeMenu = new CustomizeMenu(messages, primaries, secondaries);
-        menus.add(customizeMenu);
-        Group customizeMenuGroup = customizeMenu.getGroup();
-        customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenuGroup, playMenuGroup, menuSpace));
 
         // Main menun play click event
         mainMenu.play.setOnAction(event -> slideIn(mainMenuGroup, playMenuGroup, menuSpace));
@@ -391,18 +362,20 @@ public class GameMain extends Application implements View {
         // Play menun back button click event
         playMenu.backButton.setOnAction(event -> slideOut(playMenuGroup, mainMenuGroup, menuSpace));
 
+        // Netplay menun back button click event
+        netplayMenu.backButton.setOnAction(event -> slideOut(netplayMenuGroup, mainMenuGroup, menuSpace));
+
         // Play menun customize button click event
-        playMenu.customizeButton.setOnAction(event -> slideIn(playMenuGroup, customizeMenuGroup, menuSpace));
+        playMenu.customizeButton.setOnAction(event -> slideIn(playMenuGroup, customizeMenuGroup, menuSpace))*/
 
         // Pane, se kaikkien isä (uiRoot, gameRoot)
         pane = new BorderPane();
         pane.setStyle("-fx-background-color: black");
-        BorderPane uiRoot = new BorderPane();
+        uiRoot = new BorderPane();
         uiRoot.setStyle("-fx-background-color: black");
 
         // Banner uiRootin yläosaan
         uiRoot.setTop(bannerSpace);
-
         // kaikki menut uiRootin keskelle
         uiRoot.setCenter(menuSpace);
 
@@ -417,18 +390,7 @@ public class GameMain extends Application implements View {
         scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
 
-        // Pelin aloituspainike click event
-        playMenu.startButton.setOnAction(event -> {
-            playMenu.startButton.setDisable(true);
-            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), uiRoot);
-            ft2.setFromValue(1.0);
-            ft2.setToValue(0.0);
-            ft2.play();
-            ft2.setOnFinished(event1 -> {
-                pane.getChildren().remove(uiRoot);
-                startGame(primaryStage, player, customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
-            });
-        });
+
 
         // Show käyntiin
         primaryStage.show();
@@ -436,6 +398,7 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
+        /*PauseMenu pauseMenu = new PauseMenu(messages);
         Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {
@@ -447,7 +410,7 @@ public class GameMain extends Application implements View {
             pauseMenu.quitButton.setDisable(true);
             controller.returnToMain();
         });
-        gameRoot.setCenter(pauseMenuGroup);
+        gameRoot.setCenter(pauseMenuGroup);*/
     }
 
     @Override
@@ -457,12 +420,13 @@ public class GameMain extends Application implements View {
 
     /**
      * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
-     * @param primaryStage Ohjelman Primary Stage.
-     * @param player Pelaaja.
      * @param primary Pelaajan pääase.
      * @param secondary Pelaajan sivuase.
      */
-    private void startGame(Stage primaryStage, Player player, Weapon primary, Weapon secondary) {
+    public void startGame(Weapon primary, Weapon secondary) {
+        pane.getChildren().remove(uiRoot);
+
+
         uiPane = new Pane();
         ImageView uiIV = new ImageView();
         Image uiIMG = new Image("/images/PlayerUi_i18n.png");
@@ -527,6 +491,7 @@ public class GameMain extends Application implements View {
 
 
         //      Pelaaja
+        Player player = new Player(Color.BLUE);
         player.setPosition(100, 300);
 
         //      tieto controllerille pelaajasta
@@ -537,9 +502,6 @@ public class GameMain extends Application implements View {
         //      pelaajalle pyssyt
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
-
-        //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
-        input = new ArrayList<>();
 
         //      Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
@@ -552,89 +514,17 @@ public class GameMain extends Application implements View {
             String code = keyEvent.getCode().toString();
             input.remove(code);
         });
+
         primaryStage.setScene(scene);
 
         controller.startLoop();
-        controller.startLevel(playMenu.getSelectedLevel());
+        controller.startLevel(1); // playMenu.getSelectedLevel() TODO
     }
 
-    /**
-     * Luo listan valittavissa olevista pääaseista
-     * @return Lista, joka sisältää aseita
-     */
-    private ArrayList<Weapon> createPlayerPrimaries1() {
-        ArrayList<Weapon> weapons = new ArrayList<>();
-
-        Weapon blaster = new Blaster(0, 45,  new Point2D(-15, 0), new Point2D(100, 0));
-
-        Weapon rocketShotgun = new RocketShotgun(0, 0, 20,
-                false, new Point2D(-15, 0), new Point2D(-15, 0));
-
-        Weapon laserGun = new LaserGun(5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
-
-        weapons.add(blaster);
-        weapons.add(rocketShotgun);
-        weapons.add(laserGun);
-        return weapons;
+    public BorderPane getUiRoot(){
+        return uiRoot;
     }
 
-
-    /**
-     * Luo listan valittavissa olevista sivuaseista
-     * @return Lista, joka sisältää aseita
-     */
-    private ArrayList<Weapon> createPlayerSecondaries() {
-        ArrayList<Weapon> weapons = new ArrayList<>();
-
-        Weapon rocketShotgun = new RocketShotgun(0, 0, 20,
-                false, new Point2D(-15, 0), new Point2D(-15, 0));
-
-        Weapon laserGun = new LaserGun(5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
-
-        weapons.add(rocketShotgun);
-        weapons.add(laserGun);
-        return weapons;
-    }
-
-    /**
-     * Liukumasiirtymä, näkymää vieritetään vasemmalle.
-     * @param from Group, joka vieritetään pois näytöstä. Täytyy olla jo lisättynä Paneen.
-     * @param to Group, joka vieritetään näyttöön. Lisätään paneen metodissa.
-     * @param pane Pane, jota käsitellään.
-     */
-    private void slideIn(Group from, Group to, Pane pane) {
-        pane.getChildren().add(to);
-        double width = pane.getWidth();
-        KeyFrame start = new KeyFrame(Duration.ZERO,
-                new KeyValue(to.translateXProperty(), width),
-                new KeyValue(from.translateXProperty(), 0));
-        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
-                new KeyValue(to.translateXProperty(), 0),
-                new KeyValue(from.translateXProperty(), -width));
-        Timeline slide = new Timeline(start, end);
-        slide.setOnFinished(e -> pane.getChildren().remove(from));
-        slide.play();
-    }
-
-    /**
-     * Liukumasiirtymä, näkymää vieritetään oikealle.
-     * @param from Group, joka vieritetään pois näytöstä. Täytyy olla jo lisättynä Paneen.
-     * @param to Group, joka vieritetään näyttöön. Lisätään paneen metodissa.
-     * @param pane Pane, jota käsitellään.
-     */
-    private void slideOut(Group from, Group to, Pane pane) {
-        pane.getChildren().add(to);
-        double width = pane.getWidth();
-        KeyFrame start = new KeyFrame(Duration.ZERO,
-                new KeyValue(to.translateXProperty(), -width),
-                new KeyValue(from.translateXProperty(), 0));
-        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
-                new KeyValue(to.translateXProperty(), 0),
-                new KeyValue(from.translateXProperty(), width));
-        Timeline slide = new Timeline(start, end);
-        slide.setOnFinished(e -> pane.getChildren().remove(from));
-        slide.play();
-    }
 
     /**
      * Luo pelin valittavat lokaalit ja tallentaa ne locales Mappiin. Asettaa vakiolokaalin.

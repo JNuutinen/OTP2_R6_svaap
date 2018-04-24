@@ -18,7 +18,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PauseMenu implements Menu {
+public class PauseMenu extends Menu {
 
     /**
      * Jatka peliä -painike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -39,7 +39,9 @@ public class PauseMenu implements Menu {
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      * @param messages Lokalisoidut resurssit.
      */
-    public PauseMenu(ResourceBundle messages) {
+    public PauseMenu(ResourceBundle messages, MenuSpace menuSpace) {
+        super(menuSpace);
+
         continueButton = new Button(messages.getString("continue"));
         continueButton.setMinWidth(100);
         continueButton.setPrefWidth(Double.MAX_VALUE);

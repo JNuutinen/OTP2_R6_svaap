@@ -1,5 +1,6 @@
 package view.menus;
 
+import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -7,6 +8,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import view.GameMain;
 
 import java.util.ResourceBundle;
 
@@ -19,7 +22,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PlayMenu implements Menu {
+public class PlayMenu extends Menu{
 
     /**
      * Pelin käynnistyspainike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -47,17 +50,22 @@ public class PlayMenu implements Menu {
     private Spinner<Integer> levelSpinner;
 
     /**
-     * Valikon Group.
+     * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
-    private Group playMenuGroup;
+    private static final int NUMBER_OF_LEVELS = 1;
 
-    /**
+    private MainMenu mainMenu;
+    private CustomizeMenu customizeMenu;
+
+    /** TODO
      * Konstruktori, joka luo komponentit ja lisää Groupiin.
      * @param messages Lokalisoidut resurssit.
      * @param levels Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
+     * @param messages TODO Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      */
-    public PlayMenu(ResourceBundle messages, int levels) {
-        playMenuGroup = new Group();
+    public PlayMenu(ResourceBundle messages, MenuSpace menuSpace, GameMain gameMain) {
+        super(menuSpace);
+
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
@@ -70,7 +78,7 @@ public class PlayMenu implements Menu {
         //startButton.setStyle("-fx-background-color: transparent");
         levelSelectText = new Text(messages.getString("select_level"));
         levelSelectText.setStyle("-fx-fill: white");
-        levelSpinner = new Spinner<>(1, levels, 1);
+        levelSpinner = new Spinner<>(1, NUMBER_OF_LEVELS, 1);
         levelSpinner.setPrefWidth(Double.MAX_VALUE);
 
         customizeButton = new Button(messages.getString("select_weapons"));
@@ -84,8 +92,9 @@ public class PlayMenu implements Menu {
 
         borderPane.setCenter(vBox);
 
-        playMenuGroup.getChildren().add(borderPane);
-    }
+        getChildren().addAll(borderPane);
+
+        //-- click eventit --//
 
     @Override
     public void changeLocale(ResourceBundle messages) {
@@ -98,6 +107,21 @@ public class PlayMenu implements Menu {
     @Override
     public Group getGroup() {
         return playMenuGroup;
+        backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
+        customizeButton.setOnAction(event -> getMenuSpace().changeToNextMenu(this, customizeMenu));
+
+        // Pelin aloituspainike click event
+        startButton.setOnAction(event -> {
+            startButton.setDisable(true);
+            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
+            ft2.setFromValue(1.0);
+            ft2.setToValue(0.0);
+            ft2.play();
+            ft2.setOnFinished(event1 -> {
+                //pane.getChildren().remove(uiRoot);
+                gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+            });
+        });
     }
 
     /**
@@ -106,5 +130,13 @@ public class PlayMenu implements Menu {
      */
     public int getSelectedLevel() {
         return levelSpinner.getValue();
+    }
+
+    public void setMainMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
+    }
+
+    public void setCustomizeMenu(CustomizeMenu customizeMenu) {
+        this.customizeMenu = customizeMenu;
     }
 }

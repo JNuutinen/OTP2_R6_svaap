@@ -1,7 +1,7 @@
 package model.projectiles;
 
 import model.Tag;
-import model.Unit;
+import model.units.Unit;
 
 /**
  * Viiveellä hakeutuva ohjusammus.

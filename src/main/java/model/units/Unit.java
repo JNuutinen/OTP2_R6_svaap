@@ -1,4 +1,4 @@
-package model;
+package model.units;
 
 import controller.Controller;
 import controller.GameController;
@@ -6,6 +6,8 @@ import javafx.application.Platform;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import model.*;
+import model.fx.Explosion;
 import model.weapons.*;
 
 import java.util.ArrayList;

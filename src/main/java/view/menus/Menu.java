@@ -2,24 +2,20 @@ package view.menus;
 
 import javafx.scene.Group;
 
-import java.util.ResourceBundle;
-
 /**
- * Valikoiden interface.
+ * Yläluokka käytetään MenuSpace olion säilömiseen ja olemiseen Group alaluokkana
  */
-public interface Menu {
+public class Menu extends Group {
 
-    /**
-     * Vaihtaa valikon elementtien tekstit parametrina annetun ResourceBundlen mukaan.
-     *
-     * @param messages Lokalisoidut resurssit.
-     */
-    void changeLocale(ResourceBundle messages);
 
-    /**
-     * Palauttaa menun groupin.
-     *
-     * @return Group, johon menu on rakennettu.
-     */
-    Group getGroup();
+    // TODO jdoc
+    private MenuSpace menuSpace;
+
+    public Menu(MenuSpace menuSpace){
+        this.menuSpace = menuSpace;
+    }
+
+    public MenuSpace getMenuSpace(){
+        return menuSpace;
+    }
 }

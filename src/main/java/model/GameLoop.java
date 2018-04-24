@@ -4,6 +4,7 @@ import controller.Controller;
 import controller.GameController;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
+import model.units.Player;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
