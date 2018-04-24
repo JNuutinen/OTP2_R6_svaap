@@ -1,7 +1,6 @@
 package view.menus;
 
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,11 +9,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import static view.GameMain.*;
 
-public class SettingsMenu implements Menu {
+public class SettingsMenu extends Menu {
 
     /**
      * Takaisinnappi.
@@ -36,13 +38,22 @@ public class SettingsMenu implements Menu {
      */
     private Text localeText;
 
-    /**
-     * Group, johon valikko rakennetaan.
-     */
-    private Group settingsMenuGroup;
+    //TODO jdoc
+    private MainMenu mainMenu;
 
-    public SettingsMenu(ResourceBundle messages) {
-        settingsMenuGroup = new Group();
+    /**
+     * Map jossa pelin eri lokaalit.
+     */
+    private Map<String, Locale> locales;
+
+    // TODO
+    private ResourceBundle messages;
+
+    public SettingsMenu(ResourceBundle messages, MenuSpace menuSpace) {
+        super(menuSpace);
+        this.messages = messages;
+
+        initLocales();
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT - BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
@@ -72,7 +83,16 @@ public class SettingsMenu implements Menu {
 
         borderPane.setCenter(vBox);
 
-        settingsMenuGroup.getChildren().add(borderPane);
+        getChildren().add(borderPane);
+
+                    //-- click eventit --//
+
+        // Settings menun back button click event
+        backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
+
+        // Settings menun lokaalien click eventit
+        fiFiButton.setOnAction(event -> getMenuSpace().changeLocale(locales.get("fi_FI")));
+        enNzButton.setOnAction(event -> getMenuSpace().changeLocale(locales.get("en_NZ")));
     }
 
     @Override
@@ -81,8 +101,17 @@ public class SettingsMenu implements Menu {
         backButton.setText(messages.getString("back"));
     }
 
-    @Override
-    public Group getGroup() {
-        return settingsMenuGroup;
+    public void setMainMenu(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
+    }
+
+    /**
+     * Luo pelin valittavat lokaalit ja tallentaa ne locales Mappiin. Asettaa vakiolokaalin.
+     */
+    private void initLocales() {
+        locales = new HashMap<>();
+        locales.put("en_NZ", new Locale("en", "NZ"));
+        locales.put("fi_FI", new Locale("fi", "FI"));
+        messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
     }
 }

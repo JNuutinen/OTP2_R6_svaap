@@ -1,10 +1,12 @@
-package model;
+package model.units;
 
 import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import model.Tag;
+import model.units.Unit;
 import model.weapons.*;
 
 import static view.GameMain.WINDOW_HEIGHT;

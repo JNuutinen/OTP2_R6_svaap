@@ -73,14 +73,9 @@ public class PauseMenu extends Menu {
         pauseMenuGroup.getChildren().add(borderPane);
     }
 
-    @Override
     public void changeLocale(ResourceBundle messages) {
         continueButton.setText(messages.getString("continue"));
         quitButton.setText(messages.getString("quit"));
     }
 
-    @Override
-    public Group getGroup() {
-        return pauseMenuGroup;
-    }
 }

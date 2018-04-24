@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import model.weapons.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static view.GameMain.*;
@@ -30,9 +31,19 @@ public class CustomizeMenu extends Menu {
     public Button backButton;
 
     /**
+     * Pääaseotsikko.
+     */
+    private Text primaryText;
+
+    /**
+     * Sivuaseotsikko.
+     */
+    private Text secondaryText;
+
+    /**
      * Valittavien aseiden listat, joiden perusteella ComboBoxit tehdään.
      */
-    private ArrayList<Weapon> primaryWeapon, secondaryWeapon;
+    private ArrayList<Weapon> primaryWeapons, secondaryWeapons;
 
     /**
      * ComboBox pääaseen valintaan.
@@ -55,21 +66,21 @@ public class CustomizeMenu extends Menu {
         super(menuSpace);
 
         // Valittavat aselistat
-        secondaryWeapon = createPlayerSecondaries();
-        primaryWeapon = createPlayerPrimaries();
+        secondaryWeapons = createPlayerSecondaries();
+        primaryWeapons = createPlayerPrimaries();
 
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
 
-        Text primary1Text = new Text(messages.getString("primary_weapon"));
-        primary1Text.setStyle("-fx-fill: white");
+        primaryText = new Text(messages.getString("primary_weapon"));
+        primaryText.setStyle("-fx-fill: white");
 
-        Text secondaryText = new Text(messages.getString("secondary_weapon"));
+        secondaryText = new Text(messages.getString("secondary_weapon"));
         secondaryText.setStyle("-fx-fill: white");
 
-        ArrayList<String>primaryWeaponNames = new ArrayList<>(primaryWeapon.size());
-        for (Weapon w : primaryWeapon) {
+        ArrayList<String>primaryWeaponNames = new ArrayList<>(primaryWeapons.size());
+        for (Weapon w : primaryWeapons) {
             if (w instanceof Blaster) primaryWeaponNames.add(messages.getString("weapon_blaster"));
             else if (w instanceof BlasterShotgun) primaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
             else if (w instanceof BlasterSprinkler) primaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
@@ -78,8 +89,8 @@ public class CustomizeMenu extends Menu {
             else if (w instanceof RocketShotgun) primaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
         }
 
-        ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapon.size());
-        for (Weapon w : secondaryWeapon) {
+        ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
+        for (Weapon w : secondaryWeapons) {
             if (w instanceof Blaster) secondaryWeaponNames.add(messages.getString("weapon_blaster"));
             else if (w instanceof BlasterShotgun) secondaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
             else if (w instanceof BlasterSprinkler) secondaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
@@ -107,7 +118,7 @@ public class CustomizeMenu extends Menu {
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(150);
-        vBox.getChildren().addAll(primary1Text, primaryComboBox, secondaryText, secondaryComboBox, backButton);
+        vBox.getChildren().addAll(primaryText, primaryComboBox, secondaryText, secondaryComboBox, backButton);
 
         borderPane.setCenter(vBox);
 
@@ -124,7 +135,7 @@ public class CustomizeMenu extends Menu {
      * @return Valittu pääase.
      */
     public Weapon getSelectedPrimaryWeapon() {
-        return primaryWeapon.get(primaryComboBox.getSelectionModel().getSelectedIndex());
+        return primaryWeapons.get(primaryComboBox.getSelectionModel().getSelectedIndex());
     }
 
     /**
@@ -132,7 +143,7 @@ public class CustomizeMenu extends Menu {
      * @return Valittu sivuase.
      */
     public Weapon getSelectedSecondaryWeapon() {
-        return secondaryWeapon.get(secondaryComboBox.getSelectionModel().getSelectedIndex());
+        return secondaryWeapons.get(secondaryComboBox.getSelectionModel().getSelectedIndex());
     }
 
     /**
@@ -172,7 +183,52 @@ public class CustomizeMenu extends Menu {
         return weapons;
     }
 
+    @Override
+    public void changeLocale(ResourceBundle messages) {
+        setWeaponSpinners(messages);
+        primaryText.setText(messages.getString("primary_weapon"));
+        secondaryText.setText(messages.getString("secondary_weapon"));
+        backButton.setText(messages.getString("back"));
+    }
+
     public void setPlayMenu(PlayMenu playMenu) {
         this.playMenu = playMenu;
+    }
+
+    /**
+     * Asettaa aseidenvalintaspinnereiden aseiden nimet lokaalin mukaan
+     *
+     * @param messages Lokalisoidut resurssit.
+     */
+    private void setWeaponSpinners(ResourceBundle messages) {
+        List<String> primaryWeaponNames = new ArrayList<>(primaryWeapons.size());
+        for (Weapon w : primaryWeapons) {
+            if (w instanceof Blaster) primaryWeaponNames.add(messages.getString("weapon_blaster"));
+            else if (w instanceof BlasterShotgun) primaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
+            else if (w instanceof BlasterSprinkler)
+                primaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
+            else if (w instanceof LaserGun) primaryWeaponNames.add(messages.getString("weapon_laser_gun"));
+            else if (w instanceof RocketLauncher) primaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
+            else if (w instanceof RocketShotgun) primaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
+        }
+
+        List<String> secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
+        for (Weapon w : secondaryWeapons) {
+            if (w instanceof Blaster) secondaryWeaponNames.add(messages.getString("weapon_blaster"));
+            else if (w instanceof BlasterShotgun)
+                secondaryWeaponNames.add(messages.getString("weapon_blaster_shotgun"));
+            else if (w instanceof BlasterSprinkler)
+                secondaryWeaponNames.add(messages.getString("weapon_blaster_sprinkler"));
+            else if (w instanceof LaserGun) secondaryWeaponNames.add(messages.getString("weapon_laser_gun"));
+            else if (w instanceof RocketLauncher)
+                secondaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
+            else if (w instanceof RocketShotgun) secondaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
+        }
+
+        primaryComboBox.setItems(FXCollections.observableArrayList(primaryWeaponNames));
+        secondaryComboBox.setItems(FXCollections.observableArrayList(secondaryWeaponNames));
+
+        primaryComboBox.setValue(primaryWeaponNames.get(0));
+        secondaryComboBox.setValue(secondaryWeaponNames.get(0));
     }
 }

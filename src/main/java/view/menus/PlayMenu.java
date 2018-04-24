@@ -60,14 +60,13 @@ public class PlayMenu extends Menu{
     /** TODO
      * Konstruktori, joka luo komponentit ja lisää Groupiin.
      * @param messages Lokalisoidut resurssit.
-     * @param levels Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      * @param messages TODO Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
      */
     public PlayMenu(ResourceBundle messages, MenuSpace menuSpace, GameMain gameMain) {
         super(menuSpace);
 
         BorderPane borderPane = new BorderPane();
-        borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
+        borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT - BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
 
         startButton = new Button(messages.getString("start_game"));
@@ -96,21 +95,10 @@ public class PlayMenu extends Menu{
 
         //-- click eventit --//
 
-    @Override
-    public void changeLocale(ResourceBundle messages) {
-        startButton.setText(messages.getString("start_game"));
-        backButton.setText(messages.getString("back"));
-        levelSelectText.setText(messages.getString("select_level"));
-        customizeButton.setText(messages.getString("select_weapons"));
-    }
-
-    @Override
-    public Group getGroup() {
-        return playMenuGroup;
         backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
+
         customizeButton.setOnAction(event -> getMenuSpace().changeToNextMenu(this, customizeMenu));
 
-        // Pelin aloituspainike click event
         startButton.setOnAction(event -> {
             startButton.setDisable(true);
             FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
@@ -123,6 +111,14 @@ public class PlayMenu extends Menu{
             });
         });
     }
+
+    public void changeLocale(ResourceBundle messages) {
+        startButton.setText(messages.getString("start_game"));
+        backButton.setText(messages.getString("back"));
+        levelSelectText.setText(messages.getString("select_level"));
+        customizeButton.setText(messages.getString("select_weapons"));
+    }
+
 
     /**
      * Palauttaa Spinnerissä valitun tason numeron.

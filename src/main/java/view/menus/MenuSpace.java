@@ -6,6 +6,9 @@ import view.GameMain;
 import view.MenuScreenFX.MenuFX;
 import view.MenuScreenFX.Slider;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MenuSpace extends StackPane {
@@ -18,22 +21,42 @@ public class MenuSpace extends StackPane {
     private CustomizeMenu customizeMenu;
     private PauseMenu pauseMenu;
     private PlayMenu playMenu;
+    private SettingsMenu settingsMenu;
+
+    private List<Menu> menus;
+    /**
+     * Pitää sisällään lokalisoidut tekstit.
+     */
+    private ResourceBundle messages;
 
 
     public MenuSpace(GameMain gameMain, ResourceBundle messages){
         this.gameMain = gameMain;
+        this.messages = messages;
+        menus = new ArrayList<>();
+
         mainMenu = new MainMenu(messages, this);
         netplayMenu = new NetplayMenu(messages, this);
         customizeMenu = new CustomizeMenu(messages, this);
         pauseMenu = new PauseMenu(messages, this);
         playMenu = new PlayMenu(messages, this, gameMain);
+        settingsMenu = new SettingsMenu(messages, this);
+
+        menus.add(mainMenu);
+        menus.add(netplayMenu);
+        menus.add(customizeMenu);
+        menus.add(pauseMenu);
+        menus.add(playMenu);
+        menus.add(settingsMenu);
 
         mainMenu.setNetplayMenu(netplayMenu);
         mainMenu.setPlayMenu(playMenu);
+        mainMenu.setSettingsMenu(settingsMenu);
         netplayMenu.setMainMenu(mainMenu);
         customizeMenu.setPlayMenu(playMenu);
         playMenu.setMainMenu(mainMenu);
         playMenu.setCustomizeMenu(customizeMenu);
+        settingsMenu.setMainMenu(mainMenu);
 
         this.getChildren().add(mainMenu);
     }
@@ -54,6 +77,18 @@ public class MenuSpace extends StackPane {
      */
     public void changeToPreviousMenu(Group currentMenu, Group previousMenu){
         menuFX.changeToPreviousMenu(currentMenu, previousMenu, this);
+    }
+
+    /**
+     * Muuttaa pelin lokalisaatiota.
+     *
+     * @param locale Asetettava lokaali.
+     */
+    public void changeLocale(Locale locale) {
+        messages = ResourceBundle.getBundle("MessagesBundle", locale);
+        for (Menu menu : menus) {
+            menu.changeLocale(messages);
+        }
     }
 
     public GameMain getGameMain() {

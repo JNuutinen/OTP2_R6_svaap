@@ -1,6 +1,7 @@
 package Multiplayer;
-import model.Player;
-import model.Unit;
+
+import model.units.Player;
+import model.units.Unit;
 
 import java.util.HashMap;
 

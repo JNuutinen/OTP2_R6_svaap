@@ -39,8 +39,8 @@ public class NetplayMenu extends Menu{
     public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace) {
         super(menuSpace);
 
-        connect = new Button("connect");
-        host = new Button("host");
+        connect = new Button("connect"); //TODO locale
+        host = new Button("host");  // TODO locale
         backButton = new Button(messages.getString("back"));
 
         connect.setOnMouseClicked(event -> connectToHost());
@@ -81,5 +81,10 @@ public class NetplayMenu extends Menu{
 
     public void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
+    }
+
+    @Override
+    public void changeLocale(ResourceBundle messages) {
+        backButton.setText(messages.getString("back"));
     }
 }

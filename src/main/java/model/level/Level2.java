@@ -4,10 +4,9 @@ import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.Boss2;
-import model.Boss3;
-import model.Enemy;
+import model.units.Boss2;
 import model.Tag;
+import model.units.Enemy;
 
 import java.util.ArrayList;
 import java.util.Arrays;

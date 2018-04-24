@@ -20,8 +20,6 @@ public interface View {
      */
     void addSprite(Sprite sprite);
 
-    public void setIsServer(boolean isServer);
-
     /**
      * Lisää Unitin collision listaan.
      * @param unit Unit, joka lisätään.

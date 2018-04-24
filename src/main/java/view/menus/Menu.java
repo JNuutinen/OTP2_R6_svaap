@@ -2,10 +2,12 @@ package view.menus;
 
 import javafx.scene.Group;
 
+import java.util.ResourceBundle;
+
 /**
  * Yläluokka käytetään MenuSpace olion säilömiseen ja olemiseen Group alaluokkana
  */
-public class Menu extends Group {
+public abstract class Menu extends Group {
 
 
     // TODO jdoc
@@ -18,4 +20,6 @@ public class Menu extends Group {
     public MenuSpace getMenuSpace(){
         return menuSpace;
     }
+
+    public abstract void changeLocale(ResourceBundle messages);
 }

@@ -44,13 +44,15 @@ public class MainMenu extends Menu {
 
     private PlayMenu playMenu;
 
+    private SettingsMenu settingsMenu;
+
 
 
     /**
      * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
      * @param messages Lokalisoidut resurssit.
      */
-    public MainMenu(ResourceBundle messages, MenuSpace menuSpace){
+    public MainMenu(ResourceBundle messages, MenuSpace menuSpace) {
         super(menuSpace);
 
         play = new Button(messages.getString("play"));
@@ -59,24 +61,21 @@ public class MainMenu extends Menu {
         exit = new Button(messages.getString("exit"));
 
         BorderPane bpane = new BorderPane();
-        bpane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
+        bpane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT - BANNER_HEIGHT);
         bpane.setCenter(vbox());
         bpane.setStyle("-fx-background-color: black");
         exit.setOnMouseClicked(event -> System.exit(0));
         getChildren().addAll(bpane);
 
-    @Override
-    public void changeLocale(ResourceBundle messages) {
-        play.setText(messages.getString("play"));
-        settings.setText(messages.getString("settings"));
-        exit.setText(messages.getString("exit"));
-    }
-                hh    //-- click eventit --//
+        //-- click eventit --//
 
-        // Main menun play click event
         play.setOnAction(event -> getMenuSpace().changeToNextMenu(this, playMenu));
-        // Main menun netplay click event
+
         netplay.setOnAction(event -> getMenuSpace().changeToNextMenu(this, netplayMenu));
+
+        settings.setOnAction(event -> getMenuSpace().changeToNextMenu(this, settingsMenu));
+
+    }
 
     /**
      * Luo VBoxin, johon lisätään komponentit. VBox lisätään Groupiin.
@@ -96,12 +95,22 @@ public class MainMenu extends Menu {
         return vbox;
     }
 
+    public void changeLocale(ResourceBundle messages) {
+        play.setText(messages.getString("play"));
+        settings.setText(messages.getString("settings"));
+        exit.setText(messages.getString("exit"));
+    }
+
     public void setNetplayMenu(NetplayMenu netplayMenu) {
         this.netplayMenu = netplayMenu;
     }
 
     public void setPlayMenu(PlayMenu playMenu) {
         this.playMenu = playMenu;
+    }
+
+    public void setSettingsMenu(view.menus.SettingsMenu settingsMenu) {
+        this.settingsMenu = settingsMenu;
     }
 }
 

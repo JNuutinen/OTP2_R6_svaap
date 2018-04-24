@@ -80,21 +80,6 @@ public class GameMain extends Application implements View {
     private Map<String, Locale> locales;
 
     /**
-     * Lista pelin menuvalikoista.
-     */
-    private List<Menu> menus;
-
-    /**
-     * Pelaa -valikko.
-     */
-    private PlayMenu playMenu;
-
-    /**
-     * Taukovalikko.
-     */
-    private PauseMenu pauseMenu;
-
-    /**
      * Lista Uniteista.
      */
     private ArrayList<Unit> units;
@@ -357,37 +342,8 @@ public class GameMain extends Application implements View {
         gameRoot = new BorderPane();
 
 
-
-        //pelaajan luonti jo tässä, jotta saadaan luotua aseet customizemenulle (aseet vaatii playerin parametrina)
-        //Player player = new Player(Color.LIME);
-
         // Pane kaikille menuille
         MenuSpace menuSpace = new MenuSpace(this, messages);
-        /*
-        customizeMenu.backButton.setOnAction(event -> slideOut(customizeMenu, playMenu, menuSpace));
-
-
-        // Main menun play click event
-        mainMenu.play.setOnAction(event -> slideIn(mainMenuGroup, playMenuGroup, menuSpace));
-
-        // Main menun settings painikkeen click event
-        mainMenu.settings.setOnAction(event -> slideIn(mainMenuGroup, settingsMenuGroup, menuSpace));
-
-        // Settings menun back button click event
-        settingsMenu.backButton.setOnAction(event -> slideOut(settingsMenuGroup, mainMenuGroup, menuSpace));
-
-        // Settings menun lokaalien click eventit
-        settingsMenu.fiFiButton.setOnAction(event -> changeLocale(locales.get("fi_FI")));
-        settingsMenu.enNzButton.setOnAction(event -> changeLocale(locales.get("en_NZ")));
-
-        // Play menun back button click event
-        playMenu.backButton.setOnAction(event -> slideOut(playMenuGroup, mainMenuGroup, menuSpace));
-
-        // Netplay menun back button click event
-        netplayMenu.backButton.setOnAction(event -> slideOut(netplayMenuGroup, mainMenuGroup, menuSpace));
-
-        // Play menun customize button click event
-        playMenu.customizeButton.setOnAction(event -> slideIn(playMenuGroup, customizeMenuGroup, menuSpace))*/
 
         // Pane, se kaikkien isä (uiRoot, gameRoot)
         pane = new BorderPane();
@@ -410,7 +366,6 @@ public class GameMain extends Application implements View {
         // Ohjelman scene
         scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
-
 
 
         // Show käyntiin
@@ -524,6 +479,9 @@ public class GameMain extends Application implements View {
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
 
+        //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
+        input = new ArrayList<>();
+
         //      Näppäintä painaessa, lisää se arraylistiin, ellei se jo ole siellä
         scene.setOnKeyPressed(keyEvent -> {
             String code = keyEvent.getCode().toString();
@@ -555,22 +513,6 @@ public class GameMain extends Application implements View {
         locales.put("en_NZ", new Locale("en", "NZ"));
         locales.put("fi_FI", new Locale("fi", "FI"));
         messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
-    }
-
-    /**
-     * Muuttaa pelin lokalisaatiota.
-     *
-     * @param locale Asetettava lokaali.
-     */
-    private void changeLocale(Locale locale) {
-        messages = ResourceBundle.getBundle("MessagesBundle", locale);
-        for (Menu menu : menus) {
-            menu.changeLocale(messages);
-        }
-    }
-
-    private void initMenus() {
-
     }
 
 }
