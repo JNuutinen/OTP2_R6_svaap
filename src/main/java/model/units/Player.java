@@ -1,5 +1,7 @@
 package model.units;
 
+import Multiplayer.Multiplayer;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import controller.Controller;
 import controller.GameController;
 import javafx.scene.input.KeyCode;
@@ -21,6 +23,8 @@ import static view.GameMain.*;
  * @author Henrik Virrankoski
  */
 public class Player extends Unit {
+
+    private int playerId;
 
     /**
      * Pelin kontrolleri.
@@ -132,8 +136,14 @@ public class Player extends Unit {
 
         drawShip(shape);
         //controller.addTrace(this);
+
+        playerId = (int)Math.random() * 100;
+        Multiplayer.connect(this);
     }
 
+    public int getPlayerId() {
+        return playerId;
+    }
 
     @Override
     public void update(double deltaTime){

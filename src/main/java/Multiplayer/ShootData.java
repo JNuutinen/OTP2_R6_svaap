@@ -1,12 +1,12 @@
 package Multiplayer;
 
-import model.Unit;
-
 public class ShootData extends Data {
-    public ShootData(Unit unit) {
-        this.unit = unit;
+    public ShootData(int id) {
+        this.PlayerId = id;
     }
     public void action() {
-        unit.shootPrimary();
+        System.out.println(Multiplayer.getPlayerById(PlayerId));
+        //Multiplayer.getPlayerById(PlayerId).shootPrimary();
+        //unit.shootPrimary();
     }
 }

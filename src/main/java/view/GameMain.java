@@ -1,5 +1,9 @@
 package view;
 
+import Multiplayer.Data;
+import Multiplayer.Host;
+import Multiplayer.ShootData;
+import Multiplayer.Slave;
 import controller.Controller;
 import controller.GameController;
 import javafx.animation.FadeTransition;
@@ -55,7 +59,10 @@ public class GameMain extends Application implements View {
      */
     public static final int BANNER_HEIGHT = 200;
 
-
+    /**
+     * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
+     */
+    private static final int NUMBER_OF_LEVELS = 2;
 
     /**
      * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
@@ -194,7 +201,21 @@ public class GameMain extends Application implements View {
 
         // Kontrolleri-singletonin (parametrillinen) alustaminen.
         controller = GameController.getInstance(this);
+
+
+
+        Slave slave = new Slave();
+        slave.connect();
+        //Host.connect();
+
+        (new Thread(slave)).start();
+        //Seuraava viittaus rivillä 370
+
+
         setupGame(this.primaryStage);
+
+
+
     }
 
     /**
