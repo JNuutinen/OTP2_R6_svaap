@@ -61,7 +61,6 @@ public class Blaster extends Weapon {
 
     @Override
     public void shoot() {
-        System.out.println("ee");
         if(getParentUnit() != null){
             if (getFireRateCounter() >= getFirerate()) {
                 setFireRateCounter(0);
