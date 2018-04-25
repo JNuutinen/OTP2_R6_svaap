@@ -1,9 +1,5 @@
 package view;
 
-import Multiplayer.Data;
-import Multiplayer.Host;
-import Multiplayer.ShootData;
-import Multiplayer.Slave;
 import controller.Controller;
 import controller.GameController;
 import javafx.animation.FadeTransition;
@@ -112,6 +108,11 @@ public class GameMain extends Application implements View {
     private Stage primaryStage;
 
     /**
+     * TODO
+     */
+    private PauseMenu pauseMenu;
+
+    /**
      * Kytkin, jonka perusteella näytetään debuggaus fps mittarit.
      */
     private boolean debuggerToolsEnabled = true;
@@ -181,14 +182,6 @@ public class GameMain extends Application implements View {
 
         // Kontrolleri-singletonin (parametrillinen) alustaminen.
         controller = GameController.getInstance(this);
-
-        Slave slave = new Slave();
-        slave.connect();
-        //Host.connect();
-
-        (new Thread(slave)).start();
-        //Seuraava viittaus rivillä 370
-
 
         setupGame(this.primaryStage);
 
@@ -336,6 +329,9 @@ public class GameMain extends Application implements View {
         // Pane kaikille menuille
         MenuSpace menuSpace = new MenuSpace(this, messages);
 
+        // Asetetaan pausemenu joka haetaan MenuSpacesta
+        pauseMenu = menuSpace.getPauseMenu();
+
         // Pane, se kaikkien isä (uiRoot, gameRoot)
         pane = new BorderPane();
         pane.setStyle("-fx-background-color: black");
@@ -365,8 +361,6 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
-        PauseMenu pauseMenu = new PauseMenu(messages);
-        Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {
             gameRoot.setCenter(null);
@@ -377,7 +371,7 @@ public class GameMain extends Application implements View {
             pauseMenu.quitButton.setDisable(true);
             controller.returnToMain();
         });
-        gameRoot.setCenter(pauseMenuGroup);
+        gameRoot.setCenter(pauseMenu);
     }
 
     @Override

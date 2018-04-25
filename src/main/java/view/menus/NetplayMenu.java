@@ -17,6 +17,10 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
+
+// TODO     EI KÄYTÖSSÄ                                 EI KÄYTÖSSÄ
+    // TODO POISTA LUOKKA JOS NETTIPELAUSTA EI TEHDÄ
+
 public class NetplayMenu extends Menu{
 
     // TODO jdoc
