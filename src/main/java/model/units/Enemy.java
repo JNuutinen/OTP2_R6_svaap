@@ -13,7 +13,7 @@ import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 /**
- * Vihollisen pääluokka. Perii unitin ja implementoi Updateable rajapinnan.
+ * Vihollisen pääluokka. Perii unitin ja implementoi Updateable rajapinnan. Liikkuu ja ampuu suoraan määriteltyyn suuntaan.
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
@@ -78,14 +78,13 @@ public class Enemy extends Unit {
     private boolean tookDamage2 = false;
 
     /**
-     * Vihollisen konstruktori. Luo vihollisen graafisen esityksen, eli kolmion, jonka värin voi valita. Lisää vihollisen CollisionListiin, asettaa
+     * Vihollisen konstruktori. Luo vihollisen graafisen esityksen. Lisää vihollisen peliin, asettaa
      * tagin, asettaa alkuposition x- ja y-koordinaatit ja liikkumatavan.
-     * @param shipColor Vihollisaluksen väri
      * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 = MOVE_SINE.
      * @param initialPosition Aloitussijainti.
      */
-    public Enemy(Color shipColor, ArrayList<Tag> primaries, int movementPattern, Point2D initialPosition) {
-        super(shipColor, 5, 20);
+    public Enemy(ArrayList<Tag> primaries, int movementPattern, Point2D initialPosition) {
+        super(Color.YELLOW, 5, 20);
 
         controller = GameController.getInstance();
         setTag(Tag.SHIP_ENEMY);
@@ -153,13 +152,6 @@ public class Enemy extends Unit {
             damagedTimeCounter += deltaTime;
         }
 
-        if (fireRateCounter <= fireRate) {
-            fireRateCounter += deltaTime;
-        }
-        if (fireRateCounter >= fireRate) {
-            fireRateCounter = 0;
-            shootPrimary();
-        }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200
@@ -169,6 +161,9 @@ public class Enemy extends Unit {
         } else {
             setPosition(getXPosition(), (((Math.sin(getXPosition() / 70) * 60)) * movementPattern) + initialY);
             moveStep(deltaTime);
+            shootPrimary();
         }
+
+
     }
 }

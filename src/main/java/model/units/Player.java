@@ -1,7 +1,5 @@
 package model.units;
 
-import Multiplayer.Multiplayer;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import controller.Controller;
 import controller.GameController;
 import javafx.scene.input.KeyCode;
@@ -9,9 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.Tag;
 import model.weapons.Weapon;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static view.GameMain.*;
 
@@ -198,7 +193,7 @@ public class Player extends Unit {
         // Primary fire
         if (input.contains("O")) {
             if (getPrimaryWeapons().get(0) != null) {
-                if (fireRateCounter > getPrimaryWeapons().get(0).getFireRate()) {
+                if (fireRateCounter > getPrimaryWeapons().get(0).getFirerate()) {
                     fireRateCounter = 0;
                     for(Weapon primaryWeapon : getPrimaryWeapons()){
                         primaryWeapon.shoot();
@@ -210,7 +205,7 @@ public class Player extends Unit {
         // Secondary fire
         if (input.contains("P")) {
             if (getSecondaryWeapon() != null) {
-                if (secondaryFirerateCounter > getSecondaryWeapon().getFireRate()) {
+                if (secondaryFirerateCounter > getSecondaryWeapon().getFirerate()) {
                     secondaryFirerateCounter = 0;
                     shootSecondary();
                 }

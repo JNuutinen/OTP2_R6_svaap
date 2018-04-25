@@ -4,7 +4,6 @@ import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.Component;
 import model.projectiles.LazyMissile;
 
 /**
@@ -14,22 +13,12 @@ import model.projectiles.LazyMissile;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class RocketShotgun extends Component implements Weapon {
+public class RocketShotgun extends Weapon {
 
     /**
      * Rakettihaulukon ammuksien nopeus.
      */
     private static final int SPEED = 15;
-
-    /**
-     * Rakettihaulukon ammuksien vahinko.
-     */
-    private static final int DAMAGE = 7;
-
-    /**
-     * Rakettihaulukon tulinopeus.
-     */
-    private static final double FIRE_RATE = 4;
 
     /**
      * Ammusten käääntymisnopeus aluksi.
@@ -60,11 +49,6 @@ public class RocketShotgun extends Component implements Weapon {
     private Controller controller;
 
     /**
-     * Ammusten vahinkomääräkerroin.
-     */
-    private double damageMultiplier = 1;
-
-    /**
      * Apumuuttuja joka määrittelee voiko ohjus hävittää kohteen jos menee liian kauas kohteesta
      */
     private boolean missileCanLoseTarget = true;
@@ -76,7 +60,7 @@ public class RocketShotgun extends Component implements Weapon {
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      */
     public RocketShotgun(int orientation, double initialMissileRotatingSpeed, double latterMissileRotatingSpeed) {
-        super("circle", 4, orientation, COLOR);
+        super("circle", 4, orientation, COLOR, 7, 3);
         controller = GameController.getInstance();
         this.initialMissileRotatingSpeed = initialMissileRotatingSpeed;
         this.latterMissileRotatingSpeed = latterMissileRotatingSpeed;
@@ -127,24 +111,25 @@ public class RocketShotgun extends Component implements Weapon {
     }
 
     @Override
-    public double getFireRate() {
-        return FIRE_RATE;
-    }
-
-    @Override
-    public void setDamageMultiplier(double damageMultiplier) {
-        this.damageMultiplier = damageMultiplier;
-    }
-
-    @Override
     public void shoot() {
         if(getParentUnit() != null) {
-            for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
-                LazyMissile lazyMissile = new LazyMissile(getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier), PROJECTILE_DIRECTIONS[i],
-                        initialMissileRotatingSpeed, latterMissileRotatingSpeed, getComponentProjectileTag(), missileCanLoseTarget);
-                controller.addUpdateableAndSetToScene(lazyMissile);
-                controller.addHitboxObject(lazyMissile);
+            if (getFireRateCounter() >= getFirerate()) {
+                setFireRateCounter(0);
+
+                for (int i = 0; i < PROJECTILE_DIRECTIONS.length; i++) {
+                    LazyMissile lazyMissile = new LazyMissile(getParentUnit(), SPEED, (int) (getDamage() * getDamageMultiplier()), PROJECTILE_DIRECTIONS[i],
+                            initialMissileRotatingSpeed, latterMissileRotatingSpeed, getWeaponProjectileTag(), missileCanLoseTarget);
+                    controller.addUpdateableAndSetToScene(lazyMissile);
+                    controller.addHitboxObject(lazyMissile);
+                }
             }
+        }
+    }
+
+    @Override
+    public void update(double deltaTime) {
+        if (getFireRateCounter() <= getFirerate()) {
+            setFireRateCounter(getFireRateCounter() + deltaTime);
         }
     }
 }

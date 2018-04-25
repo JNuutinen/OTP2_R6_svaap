@@ -6,10 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.Tag;
-import model.weapons.BlasterSprinkler;
-import model.weapons.LaserGun;
-import model.weapons.RocketLauncher;
-import model.weapons.Weapon;
+import model.weapons.*;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;

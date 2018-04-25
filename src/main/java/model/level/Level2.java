@@ -55,23 +55,23 @@ public class Level2 extends Thread implements Level{
     }
 
     public void spawnSquad(Tag tag){
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH + 200, 100));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH +150, 200));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH + 100, 300));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH + 50, 400));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH, 500));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH - 50, 600));
 
     }
 
     public void spawnFighter(){
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)),
+        new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)),
                 0, new Point2D(WINDOW_WIDTH + 100, rnd.nextInt(500) + 100));
     }
 

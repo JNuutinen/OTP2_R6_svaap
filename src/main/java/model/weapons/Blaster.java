@@ -4,7 +4,6 @@ import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.Component;
 import model.projectiles.SmallProjectile;
 
 /**
@@ -14,22 +13,12 @@ import model.projectiles.SmallProjectile;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Blaster extends Component implements Weapon {
+public class Blaster extends Weapon {
 
     /**
      * Blasterin ammuksien nopeus.
      */
     private static final int SPEED = 30;
-
-    /**
-     * Blasterin ammuksien vahinko.
-     */
-    private static final int DAMAGE = 10;
-
-    /**
-     * Blasterin tulinopeus.
-     */
-    private static final double FIRE_RATE = 0.2;
 
     /**
      * Blasterin komponentin väri.
@@ -42,11 +31,6 @@ public class Blaster extends Component implements Weapon {
     private double projectileSpeed = SPEED;
 
     /**
-     * Ammusten vahinkomääräkerroin.
-     */
-    private double damageMultiplier = 1;
-
-    /**
      * Pelin kontrolleri.
      */
     private Controller controller;
@@ -57,7 +41,7 @@ public class Blaster extends Component implements Weapon {
      * @param projectileSpeed Ammuksen nopeus.
      */
     public Blaster(int orientation, double projectileSpeed) {
-        super("rectangle", 4, orientation, COLOR);
+        super("rectangle", 4, orientation, COLOR, 10, 1.5);
         this.controller = GameController.getInstance();
         this.projectileSpeed = projectileSpeed;
     }
@@ -76,22 +60,23 @@ public class Blaster extends Component implements Weapon {
     }
 
     @Override
-    public double getFireRate() {
-        return FIRE_RATE;
-    }
-
-    @Override
-    public void setDamageMultiplier(double damageMultiplier) {
-        this.damageMultiplier = damageMultiplier;
-    }
-
-    @Override
     public void shoot() {
+        System.out.println("ee");
         if(getParentUnit() != null){
-            SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
-                    getProjectileOffset(), getParentUnitColor(), getComponentProjectileTag());
-            controller.addUpdateableAndSetToScene(smallProjectile);
-            controller.addHitboxObject(smallProjectile);
+            if (getFireRateCounter() >= getFirerate()) {
+                setFireRateCounter(0);
+                SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int) (getDamage() * getDamageMultiplier()),
+                        getProjectileOffset(), getParentUnitColor(), getWeaponProjectileTag());
+                controller.addUpdateableAndSetToScene(smallProjectile);
+                controller.addHitboxObject(smallProjectile);
+            }
+        }
+    }
+
+    @Override
+    public void update(double deltaTime) {
+        if (getFireRateCounter() <= getFirerate()) {
+            setFireRateCounter(getFireRateCounter() + deltaTime);
         }
     }
 }

@@ -7,6 +7,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import model.*;
+import model.weapons.Weapon;
 import model.fx.Explosion;
 import model.weapons.*;
 
@@ -70,7 +71,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     /**
      * Komponenttilista.
      *
-    ArrayList<Component> components = new ArrayList<>(); */
+    ArrayList<Weapon> components = new ArrayList<>(); */
 
     /**
      * Kaikki aseet mm. järjestämistä varten.
@@ -142,7 +143,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaries primary-aseet tägeinä eli int muodossa.
      */
     public void makePrimaryWeapons(List<Tag> primaries) {
-        List<Weapon> initialPrimaryWeapons = new ArrayList<>();
+        List<model.weapons.Weapon> initialPrimaryWeapons = new ArrayList<>();
 
         if(primaries != null && controller != null) {
             for (Tag primaryWeaponTag : primaries) {
@@ -171,7 +172,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
             }
         }
 
-        for(Weapon weapon : initialPrimaryWeapons){
+        for(model.weapons.Weapon weapon : initialPrimaryWeapons){
             addPrimaryWeapon(weapon);
         }
     }
@@ -189,9 +190,9 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
     public void addPrimaryWeapon(Weapon primaryWeapon) {
-        ((Component)primaryWeapon).setParentUnit(this);
-        this.primaryWeapons.add(primaryWeapon);
-        Platform.runLater(()-> this.getChildren().add(((Component) primaryWeapon).getShape()));
+        (primaryWeapon).setParentUnit(this); // asettaa aseen ampujaksi tämän.
+        this.primaryWeapons.add(primaryWeapon); // lisää pääaseisiin parametrin
+        Platform.runLater(()-> this.getChildren().add(((Weapon) primaryWeapon).getShape()));
 
         //sortComponents(); TODO
     }
@@ -201,16 +202,15 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
     public void addPrimaryWeaponWithCustomOffsets(Weapon primaryWeapon) {
-        Component component = (Component)primaryWeapon;
-        ((Component)primaryWeapon).setParentUnit(this);
+        (primaryWeapon).setParentUnit(this);
 
         // asetetaan komponentin poikkeama
-        Shape componentShape = component.getShape();
-        componentShape.setLayoutX(component.getOffset().getX());
-        componentShape.setLayoutY(component.getOffset().getY());
+        Shape componentShape = primaryWeapon.getShape();
+        componentShape.setLayoutX(primaryWeapon.getOffset().getX());
+        componentShape.setLayoutY(primaryWeapon.getOffset().getY());
 
         this.primaryWeapons.add(primaryWeapon);
-        Platform.runLater(()-> this.getChildren().add(((Component) primaryWeapon).getShape()));
+        Platform.runLater(()-> this.getChildren().add((primaryWeapon).getShape()));
         // tästä metodista ei mene koottavien komponenttien joukkoon
     }
 
@@ -240,9 +240,9 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param secondaryWeapon Weapon-rajapinnan toteuttava ase.
      */
     public void setSecondaryWeapon(Weapon secondaryWeapon) {
-        ((Component)secondaryWeapon).setParentUnit(this);
-        Platform.runLater(()->this.getChildren().add(((Component)secondaryWeapon).getShape()));
-        this.secondaryWeapon = secondaryWeapon;
+        (secondaryWeapon).setParentUnit(this); // asettaa aseen ampujaksi tämän.
+        Platform.runLater(()->this.getChildren().add((secondaryWeapon).getShape()));
+        this.secondaryWeapon = secondaryWeapon; // asettaa sekundaariaseeksi parametrin
 
         //sortComponents(); TODO
     }
@@ -252,16 +252,15 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param secondaryWeapon Weapon-rajapinnan toteuttava olio.
      */
     public void setSecondaryWeaponWithCustomOffsets(Weapon secondaryWeapon) {
-        Component component = (Component)secondaryWeapon;
-        ((Component)secondaryWeapon).setParentUnit(this);
+        secondaryWeapon.setParentUnit(this);
 
         // asetetaan komponentin poikkeama
-        Shape componentShape = component.getShape();
-        componentShape.setLayoutX(component.getOffset().getX());
-        componentShape.setLayoutY(component.getOffset().getY());
+        Shape componentShape = secondaryWeapon.getShape();
+        componentShape.setLayoutX(secondaryWeapon.getOffset().getX());
+        componentShape.setLayoutY(secondaryWeapon.getOffset().getY());
 
         this.secondaryWeapon = secondaryWeapon;
-        Platform.runLater(()-> this.getChildren().add(((Component) secondaryWeapon).getShape()));
+        Platform.runLater(()-> this.getChildren().add((secondaryWeapon).getShape()));
         // tästä metodista ei mene koottavien komponenttien joukkoon
     }
 
@@ -283,9 +282,9 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
 
         if(primaryWeapons.size() > 0){
             for(Weapon primaryWeapon : primaryWeapons){
-                System.out.print(" shape " + ((Component)primaryWeapon).getShape());
+                System.out.print(" shape " + ((Weapon)primaryWeapon).getShape());
                 System.out.println(",  luokka " + primaryWeapon);
-                Component primaryWeaponComponent = (Component)primaryWeapon;
+                Weapon primaryWeaponComponent = (Weapon)primaryWeapon;
                 primaryWeaponComponent.getShape().setLayoutX(primaryWeaponComponent.getOffset().getX());
                 primaryWeaponComponent.getShape().setLayoutY(primaryWeaponComponent.getOffset().getY());
             }
@@ -297,7 +296,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
             for (int n = 0; n < components.size(); n++) {
                 if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i).getShape().getLayoutBounds().getWidth()
                         > components.get(n).getShape().getLayoutBounds().getHeight() * components.get(n).getShape().getLayoutBounds().getWidth()) {
-                    Component x = components.get(n);
+                    Weapon x = components.get(n);
                     components.set(n, components.get(i));
                     components.set(i, x);
 

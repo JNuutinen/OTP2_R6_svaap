@@ -345,7 +345,7 @@ public class GameLoop {
                                         (powerup.getHitboxRadius() + player.getHitboxRadius())) {
                                     // kutsu objektin collides-metodia
                                     powerup.collides(players);
-                                    //powerup.setComponentProjectileTag(UNDEFINED_TAG);
+                                    //powerup.setWeaponProjectileTag(UNDEFINED_TAG);
                                 }
                                 break;
                         }
