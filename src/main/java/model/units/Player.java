@@ -138,7 +138,7 @@ public class Player extends Unit {
         //controller.addTrace(this);
 
         playerId = (int)Math.random() * 100;
-        //Multiplayer.connect(this);
+
     }
 
     public int getPlayerId() {
@@ -202,6 +202,7 @@ public class Player extends Unit {
                     fireRateCounter = 0;
                     for(Weapon primaryWeapon : getPrimaryWeapons()){
                         primaryWeapon.shoot();
+                        Multiplayer.shoot();
                     }
                 }
             }

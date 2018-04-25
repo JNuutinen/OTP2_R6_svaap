@@ -59,6 +59,8 @@ public interface Controller {
      */
     void addUpdateableAndSetToScene(Updateable updateable);
 
+    void setToScene(Sprite sprite);
+
     /**
      * Lisää Updateable-olion peliloopin päivityslistaan, muttei osumatarkasteluun, eikä visuaalista Spriteä peliin.
      * @param updateable Updateable-olio, joka lisätään päivityslistaan.

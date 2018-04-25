@@ -1,9 +1,6 @@
 package view;
 
-import Multiplayer.Data;
-import Multiplayer.Host;
-import Multiplayer.ShootData;
-import Multiplayer.Slave;
+import Multiplayer.*;
 import controller.Controller;
 import controller.GameController;
 import javafx.animation.FadeTransition;
@@ -159,6 +156,8 @@ public class GameMain extends Application implements View {
     // TODO jdoc
     private BorderPane uiRoot;
 
+    public static Player player;
+
     /**
      * Käynnistää ohjelman. Kutsuu launch(args) metodia, joka käynnistää JavaFX:n.
      * @param args Komentoriviargumentit.
@@ -182,12 +181,14 @@ public class GameMain extends Application implements View {
         // Kontrolleri-singletonin (parametrillinen) alustaminen.
         controller = GameController.getInstance(this);
 
-        Slave slave = new Slave();
-        slave.connect();
-        //Host.connect();
 
-        (new Thread(slave)).start();
-        //Seuraava viittaus rivillä 370
+
+
+
+
+
+
+
 
 
         setupGame(this.primaryStage);
@@ -458,7 +459,7 @@ public class GameMain extends Application implements View {
 
 
         //      Pelaaja
-        Player player = new Player(Color.BLUE);
+        player = new Player(Color.BLUE);
         player.setPosition(100, 300);
 
         //      tieto controllerille pelaajasta
@@ -469,6 +470,13 @@ public class GameMain extends Application implements View {
         //      pelaajalle pyssyt
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
+
+/*
+        Slave slave = new Slave();
+        slave.connect();
+        (new Thread(slave)).start();
+ */
+        Host.connect();
 
         //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
@@ -489,6 +497,8 @@ public class GameMain extends Application implements View {
 
         controller.startLoop();
         controller.startLevel(1); // playMenu.getSelectedLevel() TODO
+
+
     }
 
     public BorderPane getUiRoot(){

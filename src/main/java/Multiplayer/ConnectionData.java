@@ -7,6 +7,6 @@ public class ConnectionData extends Data {
     }
 
     public void action() {
-        //Multiplayer.addPlayer(playerId);
+        Multiplayer.addPlayer(playerId);
     }
 }

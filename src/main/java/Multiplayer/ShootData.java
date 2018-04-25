@@ -5,8 +5,6 @@ public class ShootData extends Data {
         this.playerId = id;
     }
     public void action() {
-        System.out.println(Multiplayer.getPlayerById(playerId));
-        //Multiplayer.getPlayerById(PlayerId).shootPrimary();
-        //unit.shootPrimary();
+        Multiplayer.getPlayerById(playerId).shootPrimary();
     }
 }

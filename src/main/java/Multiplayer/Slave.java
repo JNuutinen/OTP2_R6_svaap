@@ -15,13 +15,17 @@ public class Slave implements Runnable {
     public Slave() {}
 
     public void connect() {
+        System.out.println("Slaving...");
         try {
             ServerSocket serv = new ServerSocket(1111);
             Socket s = serv.accept();
+            System.out.println("Slave connected...");
             in = new ObjectInputStream(s.getInputStream());
+
 
         } catch (IOException ex) {
             Logger.getLogger(Slave.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Connection failed");
         }
     }
 
@@ -30,6 +34,7 @@ public class Slave implements Runnable {
     @Override
     public void run() {
         Boolean stop = false;
+        System.out.println("Slave running...");
         while (!stop) {
             try {
 
@@ -42,7 +47,7 @@ public class Slave implements Runnable {
 
                 Data data = (Data)in.readObject();
                 data.action();
-                stop = true;
+                //stop = true;
 
             } catch (IOException ex) {
                 Logger.getLogger(Slave.class.getName()).log(Level.SEVERE, null, ex);

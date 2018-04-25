@@ -113,6 +113,12 @@ public class GameController implements Controller {
     }
 
     @Override
+    public void setToScene(Sprite sprite) {
+        Platform.runLater(() -> view.addSprite(sprite));
+        System.out.println("asd " + sprite);
+    }
+
+    @Override
     public void addUpdateable(Updateable updateable) {
         gameLoop.queueUpdateable(updateable);
     }
