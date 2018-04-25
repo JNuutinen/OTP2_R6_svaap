@@ -183,14 +183,6 @@ public class GameMain extends Application implements View {
 
 
 
-
-
-
-
-
-
-
-
         setupGame(this.primaryStage);
 
     }
@@ -497,8 +489,6 @@ public class GameMain extends Application implements View {
 
         controller.startLoop();
         controller.startLevel(1); // playMenu.getSelectedLevel() TODO
-
-
     }
 
     public BorderPane getUiRoot(){
