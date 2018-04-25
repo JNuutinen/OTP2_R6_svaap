@@ -14,11 +14,11 @@ public class PlayerFactory {
 
     public static Player getPlayer(Color color) {
         //      Pelaaja
-        Player player = new Player(Color.BLUE);
-        player.setPosition(100, 300);
+        Player player = new Player(color);
+        player.setPosition(200, 400);
 
         //      tieto controllerille pelaajasta
-        controller.addPlayers(new ArrayList<Player>(Arrays.asList(player)));
+        controller.addPlayers(new ArrayList<>(Arrays.asList(player)));
         controller.addUpdateableAndSetToScene(player);
         controller.addHitboxObject(player);
 
