@@ -1,5 +1,7 @@
 package view.menus;
 
+import Multiplayer.Client;
+import Multiplayer.Server;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -39,7 +41,7 @@ public class NetplayMenu extends Menu{
     public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace) {
         super(menuSpace);
 
-        connect = new Button("startServer"); //TODO locale
+        connect = new Button("connect"); //TODO locale
         host = new Button("host");  // TODO locale
         backButton = new Button(messages.getString("back"));
 
@@ -74,6 +76,9 @@ public class NetplayMenu extends Menu{
      * Ei toiminnassa
      */
     private void hostGame(){
+        Server server = new Server();
+        server.startServer();
+        (new Thread(server)).start();
         //Thread serverController = new ServerController();
         //serverController.start();
     }
@@ -82,6 +87,7 @@ public class NetplayMenu extends Menu{
      * Ei toiminnassa
      */
     private void connectToHost(){
+        Client.connect();
         //PlayerController playerController = new PlayerController();
     }
 

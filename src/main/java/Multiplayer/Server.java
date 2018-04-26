@@ -24,7 +24,7 @@ public class Server implements Runnable {
 
 
         } catch (IOException ex) {
-            Logger.getLogger(Multiplayer.Server.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Connection failed");
         }
     }
@@ -50,7 +50,7 @@ public class Server implements Runnable {
                 //stop = true;
 
             } catch (IOException ex) {
-                Logger.getLogger(Multiplayer.Server.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
