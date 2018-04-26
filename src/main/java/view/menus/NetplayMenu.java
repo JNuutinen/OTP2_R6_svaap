@@ -79,8 +79,7 @@ public class NetplayMenu extends Menu{
         Server server = new Server();
         server.startServer();
         (new Thread(server)).start();
-        //Thread serverController = new ServerController();
-        //serverController.start();
+        //TODO: start game
     }
 
     /**
@@ -88,7 +87,7 @@ public class NetplayMenu extends Menu{
      */
     private void connectToHost(){
         Client.connect();
-        //PlayerController playerController = new PlayerController();
+        //TODO: start game
     }
 
     /**

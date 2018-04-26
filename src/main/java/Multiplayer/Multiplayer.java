@@ -10,14 +10,25 @@ import java.util.HashMap;
 
 public class Multiplayer {
     static HashMap<Integer, Unit> players = new HashMap<>();
+    static boolean connected;
 
 
+    //TODO: connected stateks
+    public static void shootSecondary() {
+        if (connected) {
+            Client.streamOut(new ShootSecondaryData(GameMain.player.getPlayerId()));
+        }
+    }
 
-    public static void shoot() {
-        Client.streamOut(new ShootData(GameMain.player.getPlayerId()));
+    public static void shootPrimary() {
+        if (connected) {
+            Client.streamOut(new ShootPrimaryData(GameMain.player.getPlayerId()));
+        }
     }
     public static void move(double x, double y) {
-        Client.streamOut(new MoveData(GameMain.player.getPlayerId(),x , y));
+        if (connected) {
+            Client.streamOut(new MoveData(GameMain.player.getPlayerId(), x, y));
+        }
     }
 
     public static Unit getPlayerById(int id) {
@@ -28,6 +39,7 @@ public class Multiplayer {
         Player player = GameMain.player;
         players.put(player.getPlayerId(), player); //lisää oman instanssinsa playerin, listaan
         Client.streamOut(new ConnectionData(player.getPlayerId()));  // lähettää tiedon itsestään eteenpäin
+        connected = true;
         System.out.println("connection packet sent...");
     }
 

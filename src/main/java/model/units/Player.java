@@ -202,7 +202,7 @@ public class Player extends Unit {
                     fireRateCounter = 0;
                     for(Weapon primaryWeapon : getPrimaryWeapons()){
                         primaryWeapon.shoot();
-                        Multiplayer.shoot();
+                        Multiplayer.shootPrimary();
                     }
                 }
             }
@@ -210,15 +210,11 @@ public class Player extends Unit {
 
         // Secondary fire
         if (input.contains("P")) {
-
-
-
-
-
             if (getSecondaryWeapon() != null) {
                 if (secondaryFirerateCounter > getSecondaryWeapon().getFireRate()) {
                     secondaryFirerateCounter = 0;
                     shootSecondary();
+                    Multiplayer.shootSecondary();
                 }
             }
         }

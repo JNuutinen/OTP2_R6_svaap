@@ -1,7 +1,7 @@
 package Multiplayer;
 
-public class ShootData extends Data {
-    public ShootData(int id) {
+public class ShootPrimaryData extends Data {
+    public ShootPrimaryData(int id) {
         this.playerId = id;
     }
     public void action() {
