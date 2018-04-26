@@ -19,7 +19,7 @@ public class PlayerFactory {
 
         //      tieto controllerille pelaajasta
         controller.addPlayers(new ArrayList<>(Arrays.asList(player)));
-        controller.addUpdateableAndSetToScene(player);
+        controller.setToScene(player);
         controller.addHitboxObject(player);
 
         //      pelaajalle pyssyt

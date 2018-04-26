@@ -210,6 +210,7 @@ public class Player extends Unit {
 
         // Secondary fire
         if (input.contains("P")) {
+
             if (getSecondaryWeapon() != null) {
                 if (secondaryFirerateCounter > getSecondaryWeapon().getFireRate()) {
                     secondaryFirerateCounter = 0;
@@ -229,6 +230,8 @@ public class Player extends Unit {
         // Päivitä sijainti
         if(deltaTime < 1) { // TODO
             setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+            Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+
         }
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
         controller.setHealthbar(hpPercentage(), 1);
