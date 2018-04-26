@@ -39,7 +39,7 @@ public class NetplayMenu extends Menu{
     public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace) {
         super(menuSpace);
 
-        connect = new Button("connect"); //TODO locale
+        connect = new Button("startServer"); //TODO locale
         host = new Button("host");  // TODO locale
         backButton = new Button(messages.getString("back"));
 

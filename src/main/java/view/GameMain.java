@@ -464,11 +464,11 @@ public class GameMain extends Application implements View {
         player.setSecondaryWeapon(secondary);
 
 /*
-        Slave slave = new Slave();
-        slave.connect();
+        Server slave = new Server();
+        slave.startServer();
         (new Thread(slave)).start();
  */
-        Host.connect();
+        Multiplayer.Client.connect();
 
         //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();

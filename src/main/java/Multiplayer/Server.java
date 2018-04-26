@@ -9,22 +9,22 @@ import java.util.logging.Logger;
 
 //Tää pitää käynnistää ennen Hostia.
 
-public class Slave implements Runnable {
+public class Server implements Runnable {
     ObjectInputStream in;
 
-    public Slave() {}
+    public Server() {}
 
-    public void connect() {
-        System.out.println("Slaving...");
+    public void startServer() {
+        System.out.println("Waiting for players...");
         try {
             ServerSocket serv = new ServerSocket(1111);
             Socket s = serv.accept();
-            System.out.println("Slave connected...");
+            System.out.println("Client connected...");
             in = new ObjectInputStream(s.getInputStream());
 
 
         } catch (IOException ex) {
-            Logger.getLogger(Slave.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Multiplayer.Server.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Connection failed");
         }
     }
@@ -34,7 +34,7 @@ public class Slave implements Runnable {
     @Override
     public void run() {
         Boolean stop = false;
-        System.out.println("Slave running...");
+        System.out.println("Listening for packets...");
         while (!stop) {
             try {
 
@@ -50,7 +50,7 @@ public class Slave implements Runnable {
                 //stop = true;
 
             } catch (IOException ex) {
-                Logger.getLogger(Slave.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Multiplayer.Server.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
