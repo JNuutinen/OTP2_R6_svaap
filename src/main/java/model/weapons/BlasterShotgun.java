@@ -33,15 +33,15 @@ public class BlasterShotgun extends Weapon {
     /**
      * ammuksen nopeus
      */
-    private double projectileSpeed = 0;
+    private double projectileSpeed = SPEED;
 
     /**
      * Konstruktori.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammusten nopeus.
      */
-    public BlasterShotgun(int orientation, double projectileSpeed) {
-        super("rectangle", 4, orientation, COLOR, 10, 1.5);
+    public BlasterShotgun(int orientation, double projectileSpeed, double firerate) {
+        super("rectangle", 4, orientation, COLOR, 10, firerate);
         this.projectileSpeed = projectileSpeed;
         controller = GameController.getInstance();
     }
@@ -53,8 +53,8 @@ public class BlasterShotgun extends Weapon {
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public BlasterShotgun(int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
-        this(orientation, projectileSpeed);
+    public BlasterShotgun(int orientation, double projectileSpeed, double firerate, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, projectileSpeed, firerate);
         setProjectileOffset(projectileOffset);
         setComponentOffset(componentOffset);
     }
@@ -67,7 +67,7 @@ public class BlasterShotgun extends Weapon {
                 for (int i = -1; i < 2; i++) {
                     // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
                     SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), SPEED, (int) (getDamage() * getDamageMultiplier()),
-                            getProjectileOffset(), getParentUnitColor(), i * 7, getWeaponProjectileTag());
+                            getProjectileOffset(), getParentUnitColor(), i * 9, getWeaponProjectileTag());
                     controller.addUpdateableAndSetToScene(smallProjectile);
                     controller.addHitboxObject(smallProjectile);
                 }

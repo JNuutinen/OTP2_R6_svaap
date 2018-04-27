@@ -46,10 +46,11 @@ public class RocketLauncher extends Weapon {
      * Konstruktori.
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param firerate TODO
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
-    public RocketLauncher(int orientation, double rotatingSpeed, boolean missileCanLoseTarget) {
-        super("circle", 4, orientation, COLOR, 20, 1);
+    public RocketLauncher(int orientation, double rotatingSpeed, double firerate, boolean missileCanLoseTarget) {
+        super("circle", 4, orientation, COLOR, 20, firerate);
         this.controller = GameController.getInstance();
         this.rotatingSpeed = rotatingSpeed;
         this.missileCanLoseTarget = missileCanLoseTarget;
@@ -59,13 +60,14 @@ public class RocketLauncher extends Weapon {
      * TODO
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     *
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param prjoectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public RocketLauncher(int orientation, double rotatingSpeed, boolean missileCanLoseTarget,
+    public RocketLauncher(int orientation, double rotatingSpeed, double firerate, boolean missileCanLoseTarget,
                           Point2D componentOffset, Point2D prjoectileOffset) {
-        this(orientation, rotatingSpeed, missileCanLoseTarget);
+        this(orientation, rotatingSpeed, firerate, missileCanLoseTarget);
         setComponentOffset(componentOffset);
         setProjectileOffset(prjoectileOffset);
     }

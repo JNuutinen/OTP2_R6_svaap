@@ -65,12 +65,13 @@ public abstract class Weapon extends SpriteImpl implements Updateable {
     private int damage;
 
     /**
-     * Blasterin tulinopeus.
+     * Tulinopeus.
      */
     private double firerate;
 
     /**
-     * Apumuuttuja ajanlaskemiseen ampumisen kannalta.
+     * Tulinopeuden laskuri, tätä kasvatetaan kunnes se saavuttaa tulinopeuden, jolloin ammutaan.
+     * Tämän jälkeen laskuri nollataan.
      */
     private double fireRateCounter = 0;
 
@@ -169,7 +170,7 @@ public abstract class Weapon extends SpriteImpl implements Updateable {
      * @return Tehty Shape kolmio.
      */
     private Shape triangle(int size, int orientation, Color color) {
-        double tip = 6 * size * 1.3;
+        double tip = 6 * size * 0.8;
         double point = 3 * size * 1.3;
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(

@@ -155,12 +155,12 @@ public class CustomizeMenu extends Menu {
     private ArrayList<Weapon> createPlayerPrimaries() {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon blaster = new Blaster(0, 45,  new Point2D(-15, 0), new Point2D(100, 0));
+        Weapon blaster = new Blaster(0, 45, 0.2,  new Point2D(-15, 0), new Point2D(100, 0));
 
-        Weapon rocketShotgun = new RocketShotgun(0, 0, 20,
+        Weapon rocketShotgun = new RocketShotgun(0, 0, 3, 20,
                 false, new Point2D(-15, 0), new Point2D(-15, 0));
 
-        Weapon laserGun = new LaserGun(5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
+        Weapon laserGun = new LaserGun(5, 0.5, 0.2, new Point2D(-15, 0), new Point2D(80, 0));
 
         weapons.add(blaster);
         weapons.add(rocketShotgun);
@@ -175,13 +175,16 @@ public class CustomizeMenu extends Menu {
     private ArrayList<Weapon> createPlayerSecondaries() {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon rocketShotgun = new RocketShotgun(0, 0, 20,
+        Weapon rocketShotgun = new RocketShotgun(0, 0, 3, 20,
                 false, new Point2D(-15, 0), new Point2D(-15, 0));
 
-        Weapon laserGun = new LaserGun(5, 0.5, new Point2D(-15, 0), new Point2D(80, 0));
+        Weapon laserGun = new LaserGun(5, 0.5, 0.8, new Point2D(-15, 0), new Point2D(80, 0));
+
+        Weapon blasterSprinkler = new BlasterSprinkler(2, 20, 2, 1);
 
         weapons.add(rocketShotgun);
         weapons.add(laserGun);
+        weapons.add(blasterSprinkler);
         return weapons;
     }
 

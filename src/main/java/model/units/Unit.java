@@ -24,9 +24,9 @@ import java.util.List;
 public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
 
     /**
-     * apumuuttuja jotta komponentit tietävät onko alus oikeasti null, koska aluksesta jää viittaus komponenttiin.
+     * apumuuttuja jotta komponentit tietävät onko alus oikeasti tuhottu, koska aluksesta jää viittaus komponenttiin.
      */
-    private boolean isNull = false;
+    private boolean isDestroyed = false;
 
     /**
      * Aluksen koko. Käytetään mm. räjähdyksen suuruuden määrittelemisessä.
@@ -151,28 +151,28 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
                     default:
                         break;
                     case WEAPON_BLASTER:
-                        initialPrimaryWeapons.add(new Blaster(2, 20));
+                        initialPrimaryWeapons.add(new Blaster(2, 20, 1.5));
                         break;
                     case WEAPON_BLASTER_SHOTGUN:
-                        initialPrimaryWeapons.add(new BlasterShotgun(2, 20));
+                        initialPrimaryWeapons.add(new BlasterShotgun(2, 20, 1.5));
                         break;
                     case WEAPON_BLASTER_SPRINKLER:
-                        initialPrimaryWeapons.add(new BlasterSprinkler(2, 20, 2));
+                        initialPrimaryWeapons.add(new BlasterSprinkler(2, 20, 2, 3));
                         break;
                     case WEAPON_ROCKET_LAUNCHER:
-                        initialPrimaryWeapons.add(new RocketLauncher(2, 4.8, true));
+                        initialPrimaryWeapons.add(new RocketLauncher(2, 4.8, 1, true));
                         break;
                     case WEAPON_ROCKET_SHOTGUN:
-                        initialPrimaryWeapons.add(new RocketShotgun(2, 0, 4.8, true));
+                        initialPrimaryWeapons.add(new RocketShotgun(2, 0, 3, 4.8, true));
                         break;
                     case WEAPON_LASER_GUN:
-                        initialPrimaryWeapons.add(new LaserGun(2, 1));
+                        initialPrimaryWeapons.add(new LaserGun(2, 1, 1.5));
                         break;
                 }
             }
         }
 
-        for(model.weapons.Weapon weapon : initialPrimaryWeapons){
+        for(Weapon weapon : initialPrimaryWeapons){
             addPrimaryWeapon(weapon);
         }
     }
@@ -191,10 +191,10 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      */
     public void addPrimaryWeapon(Weapon primaryWeapon) {
         (primaryWeapon).setParentUnit(this); // asettaa aseen ampujaksi tämän.
-        this.primaryWeapons.add(primaryWeapon); // lisää pääaseisiin parametrin
+        primaryWeapons.add(primaryWeapon); // lisää pääaseisiin parametrin
         Platform.runLater(()-> this.getChildren().add(((Weapon) primaryWeapon).getShape()));
 
-        //sortComponents(); TODO
+        sortComponents();
     }
 
     /**
@@ -244,7 +244,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
         Platform.runLater(()->this.getChildren().add((secondaryWeapon).getShape()));
         this.secondaryWeapon = secondaryWeapon; // asettaa sekundaariaseeksi parametrin
 
-        //sortComponents(); TODO
+        sortComponents();
     }
 
     /**
@@ -279,17 +279,48 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * Lajittelee komponenttilistan komoponenttien koon mukaan suurimmasta pienimpään. Apumetodi equipComponents():lle.
      */
     private void sortComponents() {
+        List<List<Weapon>> weaponLists = new ArrayList<>();
 
-        if(primaryWeapons.size() > 0){
-            for(Weapon primaryWeapon : primaryWeapons){
-                System.out.print(" shape " + ((Weapon)primaryWeapon).getShape());
-                System.out.println(",  luokka " + primaryWeapon);
-                Weapon primaryWeaponComponent = (Weapon)primaryWeapon;
-                primaryWeaponComponent.getShape().setLayoutX(primaryWeaponComponent.getOffset().getX());
-                primaryWeaponComponent.getShape().setLayoutY(primaryWeaponComponent.getOffset().getY());
+        for(Weapon primaryWeapon : primaryWeapons){
+            int sameWeaponAmount = 1;
+            boolean inList = false;
+            for(Weapon primaryWeapon2 : primaryWeapons){
+                for(List weaponList : weaponLists) {
+                    if(!weaponList.contains(primaryWeapon.getClass())) {
+                        System.out.println("on listas " + primaryWeapon);
+                        inList = true;
+                        if (primaryWeapon2 != primaryWeapon && primaryWeapon2.getClass() == primaryWeapon.getClass()) {
+
+                            System.out.println("true " + primaryWeapon);
+                            sameWeaponAmount++;
+                        }
+                    }
+                }
+            }
+            if(!inList) {
+                while (weaponLists.size() < sameWeaponAmount) {
+                    weaponLists.add(0, new ArrayList<>());
+                    weaponLists.add(new ArrayList<>());
+                }
+                int firstIndex = (weaponLists.size() - sameWeaponAmount) / 2;
+                for (int i = firstIndex; i < sameWeaponAmount; i++) {
+                    weaponLists.get(i).add(primaryWeapon);
+                }
             }
         }
 
+        int i = 0;
+        for(List weaponList : weaponLists){
+            int j = 0;
+            for(Object weapon : weaponList){
+
+                Shape componentShape = ((Weapon)weapon).getShape();
+                componentShape.setLayoutX(10 * j);
+                componentShape.setLayoutY(10 * i);
+                j++;
+            }
+            i++;
+        }
 
         /*
         for (int i = 0; i < components.size(); i++) { //Lajitellaan komponentit suurimmasta pienimpään
@@ -314,13 +345,13 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * getteri onko alus null, koska aluksesta saattaa jäädä viittaus mm. komponenttiin.
      * @return Tieto onko alus null.
      */
-    public boolean isNull(){
-        return isNull;
+    public boolean isDestroyed(){
+        return isDestroyed;
     }
 
     @Override
     public void destroyThis() {
-        isNull = true;
+        isDestroyed = true;
         new PowerUp(this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         new Explosion(color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);

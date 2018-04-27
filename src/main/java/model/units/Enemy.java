@@ -57,17 +57,6 @@ public class Enemy extends Unit {
     private int movementPattern;
 
     /**
-     * Tulinopeus
-     */
-    private double fireRate = 3;
-
-    /**
-     * Tulinopeuden laskuri, tätä kasvatetaan kunnes se saavuttaa tulinopeuden, jolloin ammutaan.
-     * Tämän jälkeen laskuri nollataan.
-     */
-    private double fireRateCounter = 2;
-
-    /**
      * Laskuri, joka kertoo kuinka kauan osuman graafinen efekti kestää.
      */
     private double damagedTimeCounter = 0;

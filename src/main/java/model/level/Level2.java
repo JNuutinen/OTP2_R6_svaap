@@ -3,7 +3,6 @@ package model.level;
 import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 import model.units.Boss2;
 import model.Tag;
 import model.units.Enemy;
@@ -46,7 +45,7 @@ public class Level2 extends Thread implements Level{
             Boss2 finalBoss = new Boss2(new Point2D(WINDOW_WIDTH + 200, WINDOW_HEIGHT * 0.5));
 
             // pyöri silmukas 1 sec välein niin kauan kuin bossi on olemassa
-            while (!finalBoss.isNull()) {
+            while (!finalBoss.isDestroyed()) {
                 Thread.sleep(1_000);
             }
         }catch (InterruptedException e) {

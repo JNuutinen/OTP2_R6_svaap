@@ -40,8 +40,8 @@ public class Blaster extends Weapon {
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      */
-    public Blaster(int orientation, double projectileSpeed) {
-        super("rectangle", 4, orientation, COLOR, 10, 1.5);
+    public Blaster(int orientation, double projectileSpeed, double firerate) {
+        super("rectangle", 4, orientation, COLOR, 10, firerate);
         this.controller = GameController.getInstance();
         this.projectileSpeed = projectileSpeed;
     }
@@ -53,8 +53,8 @@ public class Blaster extends Weapon {
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public Blaster(int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
-        this(orientation, projectileSpeed);
+    public Blaster(int orientation, double projectileSpeed, double firerate, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, projectileSpeed, firerate);
         this.setProjectileOffset(projectileOffset);
         this.setComponentOffset(componentOffset);
     }
@@ -74,8 +74,6 @@ public class Blaster extends Weapon {
 
     @Override
     public void update(double deltaTime) {
-        if (getFireRateCounter() <= getFirerate()) {
-            setFireRateCounter(getFireRateCounter() + deltaTime);
-        }
+        setFireRateCounter(getFireRateCounter() + deltaTime);
     }
 }

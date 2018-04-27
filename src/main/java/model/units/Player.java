@@ -42,19 +42,9 @@ public class Player extends Unit {
     private int score = 0;
 
     /**
-     * Laskuri pääaseen ampumisesta kuluneeseen aikaan. Vertaillaan pääaseen tulinopeuteen.
-     */
-    private double fireRateCounter;
-
-    /**
      * Viime päivityksestä kulunut aika.
      */
     private double deltaTime = 0;
-
-    /**
-     * Laskuri sivuaseen ampumisesta kuluneeseen aikaan. Vertaillaan sivuaseen tulinopeuteen.
-     */
-    private double secondaryFirerateCounter;
 
     /**
      * Maximi hitpointsit.
@@ -193,11 +183,8 @@ public class Player extends Unit {
         // Primary fire
         if (input.contains("O")) {
             if (getPrimaryWeapons().get(0) != null) {
-                if (fireRateCounter > getPrimaryWeapons().get(0).getFirerate()) {
-                    fireRateCounter = 0;
-                    for(Weapon primaryWeapon : getPrimaryWeapons()){
-                        primaryWeapon.shoot();
-                    }
+                for(Weapon primaryWeapon : getPrimaryWeapons()){
+                    primaryWeapon.shoot();
                 }
             }
         }
@@ -205,15 +192,10 @@ public class Player extends Unit {
         // Secondary fire
         if (input.contains("P")) {
             if (getSecondaryWeapon() != null) {
-                if (secondaryFirerateCounter > getSecondaryWeapon().getFirerate()) {
-                    secondaryFirerateCounter = 0;
-                    shootSecondary();
-                }
+                shootSecondary();
             }
         }
 
-        fireRateCounter += deltaTime;
-        secondaryFirerateCounter += deltaTime;
         if (input.contains("V")) System.exit(0);
 
         if (input.contains(KeyCode.ESCAPE.toString())) {
