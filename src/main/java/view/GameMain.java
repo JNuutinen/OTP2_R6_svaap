@@ -240,7 +240,7 @@ public class GameMain extends Application implements View {
         } else{
             debugger_fps.setTextFill(Color.web("#ffffff"));//valkone
         }
-        debugger_fps.setText(String.valueOf(fps));
+        debugger_fps.setText(String.valueOf((int)fps));
     }
 
     @Override
