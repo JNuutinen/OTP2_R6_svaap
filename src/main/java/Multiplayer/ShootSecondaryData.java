@@ -7,5 +7,6 @@ public class ShootSecondaryData extends Data {
     }
     public void action() {
         Multiplayer.getPlayerById(playerId).shootSecondary();
+        System.out.println("Secondary fired");
     }
 }

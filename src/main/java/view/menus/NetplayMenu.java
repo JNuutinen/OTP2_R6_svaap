@@ -77,17 +77,19 @@ public class NetplayMenu extends Menu{
      */
     private void hostGame(){
         Server server = new Server();
-        server.startServer();
-        (new Thread(server)).start();
-        //TODO: start game
+        if (server.startServer()) {
+            //TODO: Start game
+        }
     }
 
     /**
      * Ei toiminnassa
      */
     private void connectToHost(){
-        Client.connect();
-        //TODO: start game
+        Client client = new Client();
+        if (client.connect()) {
+            //TODO: start game
+        }
     }
 
     /**

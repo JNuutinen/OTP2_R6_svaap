@@ -16,18 +16,18 @@ public class Multiplayer {
     //TODO: connected stateks
     public static void shootSecondary() {
         if (connected) {
-            Client.streamOut(new ShootSecondaryData(GameMain.player.getPlayerId()));
+            Sender.streamOut(new ShootSecondaryData(GameMain.player.getPlayerId()));
         }
     }
 
     public static void shootPrimary() {
         if (connected) {
-            Client.streamOut(new ShootPrimaryData(GameMain.player.getPlayerId()));
+            Sender.streamOut(new ShootPrimaryData(GameMain.player.getPlayerId()));
         }
     }
     public static void move(double x, double y) {
         if (connected) {
-            Client.streamOut(new MoveData(GameMain.player.getPlayerId(), x, y));
+            Sender.streamOut(new MoveData(GameMain.player.getPlayerId(), x, y));
         }
     }
 
@@ -38,7 +38,7 @@ public class Multiplayer {
     public static void connect() { //Liitytään muiden peliin
         Player player = GameMain.player;
         players.put(player.getPlayerId(), player); //lisää oman instanssinsa playerin, listaan
-        Client.streamOut(new ConnectionData(player.getPlayerId()));  // lähettää tiedon itsestään eteenpäin
+        Sender.streamOut(new ConnectionData(player.getPlayerId()));  // lähettää tiedon itsestään eteenpäin
         connected = true;
         System.out.println("connection packet sent...");
     }

@@ -468,7 +468,8 @@ public class GameMain extends Application implements View {
         slave.startServer();
         (new Thread(slave)).start();
  */
-        Client.connect();
+        Client client = new Client();
+        client.connect();
 
         //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
