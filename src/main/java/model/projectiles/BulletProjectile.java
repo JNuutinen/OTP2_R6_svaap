@@ -16,14 +16,7 @@ import model.units.Unit;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
-/**
- * Pieni perusammus
- * @author Ilari Anttila
- * @author Jerry Hällfors
- * @author Juha Nuutinen
- * @author Henrik Virrankoski
- */
-public class SmallProjectile extends BaseProjectile implements Updateable, HitboxCircle {
+public class BulletProjectile extends BaseProjectile implements Updateable, HitboxCircle {
 
     /**
      * Ammuksen vakioväri
@@ -43,12 +36,12 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param offset Ammuken alkusijainnin poikkeama aluksesta.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Tag tag) {
+    public BulletProjectile(Unit shooter, double speed, int damage, Point2D offset, Tag tag) {
         // Kutsutaan BaseProjectilen konstruktoria
         super(shooter, speed, offset, damage, tag);
 
         controller = GameController.getInstance();
-        setHitbox(10);// TODO: hitboxin koko kovakoodattu | 16
+        setHitbox(5);// TODO: hitboxin koko kovakoodattu | 16
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
     }
@@ -62,7 +55,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param color Ammuksen väri.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, Tag tag) {
+    public BulletProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, Tag tag) {
         this(shooter, speed, damage, offset, tag);
         Polygon shape = buildProjectile(speed, color);
         getChildren().add(shape);
@@ -78,7 +71,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
      * @param direction Ammuksen suunta.
      * @param tag Ammuksen tagi.
      */
-    public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, double direction,
+    public BulletProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, double direction,
                            Tag tag) {
         this(shooter, speed, damage, offset, color, tag);
         rotate(direction);
@@ -93,12 +86,12 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
     }
 
     @Override
-    public void destroyThis(){
+    public void destroyThis() {
         controller.removeUpdateable(this, this);
     }
 
     @Override
-    public void update(double deltaTime){
+    public void update(double deltaTime) {
         // tarkastele menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200
@@ -111,19 +104,18 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
     }
 
     /**
-     * Rakentaa projectilen Polygonin
+     * Rakentaa projectilen Shapen
      * @param speed Projectilen nopeus, vaikuttaa hännän pituuteen
-     * @param color Projectilen väri
      * @return Rakennettu Polygon
      */
     private Polygon buildProjectile(double speed, Color color) {
         // Ammuksen muoto
         Polygon shape = new Polygon();
-        shape.getPoints().addAll(-7.0, 2.5,
-                -7.0, -2.5,
-                0.0, -6.0,
-                speed*0.4+7.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 7.0
-                0.0, 6.0);
+        shape.getPoints().addAll(-4.0, 0.5,
+                -4.0, -0.5,
+                0.0, -3.0,
+                speed*0.4+4.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 7.0
+                0.0, 4.0);
 
         Bloom bloom = new Bloom(0.0);
         GaussianBlur blur = new GaussianBlur(1.0);

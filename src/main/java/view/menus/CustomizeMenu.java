@@ -89,6 +89,7 @@ public class CustomizeMenu extends Menu {
             else if (w instanceof LaserGun) primaryWeaponNames.add(messages.getString("weapon_laser_gun"));
             else if (w instanceof RocketLauncher) primaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
             else if (w instanceof RocketShotgun) primaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
+            else if (w instanceof MachineGun) primaryWeaponNames.add(messages.getString("weapon_machine_gun"));
         }
 
         ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
@@ -99,6 +100,7 @@ public class CustomizeMenu extends Menu {
             else if (w instanceof LaserGun) secondaryWeaponNames.add(messages.getString("weapon_laser_gun"));
             else if (w instanceof RocketLauncher) secondaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
             else if (w instanceof RocketShotgun) secondaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
+            else if (w instanceof MachineGun) secondaryWeaponNames.add(messages.getString("weapon_machine_gun"));
         }
 
         primaryComboBox = new ComboBox<>();
@@ -155,16 +157,23 @@ public class CustomizeMenu extends Menu {
     private ArrayList<Weapon> createPlayerPrimaries() {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
-        Weapon blaster = new Blaster(0, 45, 0.2,  new Point2D(-15, 0), new Point2D(100, 0));
+        Weapon blaster = new Blaster(0, 40, 0.5,  new Point2D(-15, 0), new Point2D(100, 0));
 
         Weapon rocketShotgun = new RocketShotgun(0, 0, 3, 20,
                 false, new Point2D(-15, 0), new Point2D(-15, 0));
 
         Weapon laserGun = new LaserGun(5, 0.5, 0.2, new Point2D(-15, 0), new Point2D(80, 0));
 
+        Weapon rocketLauncher = new RocketLauncher(5, 20, 4, false);
+
+        // TODO: machine gun offsets
+        Weapon machineGun = new MachineGun(0, 55, 0.1);
+
         weapons.add(blaster);
-        weapons.add(rocketShotgun);
         weapons.add(laserGun);
+        weapons.add(machineGun);
+        weapons.add(rocketLauncher);
+        weapons.add(rocketShotgun);
         return weapons;
     }
 
@@ -175,6 +184,8 @@ public class CustomizeMenu extends Menu {
     private ArrayList<Weapon> createPlayerSecondaries() {
         ArrayList<Weapon> weapons = new ArrayList<>();
 
+        Weapon blaster = new Blaster(0, 40, 0.5,  new Point2D(-15, 0), new Point2D(100, 0));
+
         Weapon rocketShotgun = new RocketShotgun(0, 0, 3, 20,
                 false, new Point2D(-15, 0), new Point2D(-15, 0));
 
@@ -182,9 +193,14 @@ public class CustomizeMenu extends Menu {
 
         Weapon blasterSprinkler = new BlasterSprinkler(2, 20, 2, 1);
 
+        // TODO: machine gun offsets
+        Weapon machineGun = new MachineGun(0, 55, 0.1);
+
+        weapons.add(blaster);
         weapons.add(rocketShotgun);
         weapons.add(laserGun);
         weapons.add(blasterSprinkler);
+        weapons.add(machineGun);
         return weapons;
     }
 
@@ -215,6 +231,8 @@ public class CustomizeMenu extends Menu {
             else if (w instanceof LaserGun) primaryWeaponNames.add(messages.getString("weapon_laser_gun"));
             else if (w instanceof RocketLauncher) primaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
             else if (w instanceof RocketShotgun) primaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
+            else if (w instanceof MachineGun) primaryWeaponNames.add(messages.getString("weapon_machine_gun"));
+
         }
 
         List<String> secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
@@ -228,6 +246,7 @@ public class CustomizeMenu extends Menu {
             else if (w instanceof RocketLauncher)
                 secondaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
             else if (w instanceof RocketShotgun) secondaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
+            else if (w instanceof MachineGun) secondaryWeaponNames.add(messages.getString("weapon_machine_gun"));
         }
 
         primaryComboBox.setItems(FXCollections.observableArrayList(primaryWeaponNames));

@@ -11,7 +11,8 @@ import javafx.scene.shape.Shape;
 import model.SpriteImpl;
 import model.Tag;
 import model.Updateable;
-import model.units.*;
+import model.units.Player;
+import model.units.Unit;
 
 /**
  * Komponenttien luokka. Komponentit voivat olla aseita tai passiivisia komponentteja,
@@ -62,7 +63,7 @@ public abstract class Weapon extends SpriteImpl implements Updateable {
     /**
      * Blasterin ammuksien vahinko.
      */
-    private int damage;
+    private double damage;
 
     /**
      * Tulinopeus.
@@ -81,7 +82,7 @@ public abstract class Weapon extends SpriteImpl implements Updateable {
      * @param orientation Komponentin orientaatio.
      * @param color Komponentin väri.
      */
-    public Weapon(String shape, int size, int orientation, Color color, int damage, double firerate) {
+    public Weapon(String shape, int size, int orientation, Color color, double damage, double firerate) {
         this.damage = damage;
         this.firerate = firerate;
 
@@ -241,7 +242,7 @@ public abstract class Weapon extends SpriteImpl implements Updateable {
      * Palauttaa Aseen ammuksen vahinkomäärän.
      * @return vahinkomäärä
      */
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 

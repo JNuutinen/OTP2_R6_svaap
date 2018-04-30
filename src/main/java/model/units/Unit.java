@@ -7,7 +7,6 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import model.*;
-import model.weapons.Weapon;
 import model.fx.Explosion;
 import model.weapons.*;
 
@@ -160,13 +159,16 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
                         initialPrimaryWeapons.add(new BlasterSprinkler(2, 20, 2, 3));
                         break;
                     case WEAPON_ROCKET_LAUNCHER:
-                        initialPrimaryWeapons.add(new RocketLauncher(2, 4.8, 1, true));
+                        initialPrimaryWeapons.add(new RocketLauncher(2, 4.8, 3, true));
                         break;
                     case WEAPON_ROCKET_SHOTGUN:
-                        initialPrimaryWeapons.add(new RocketShotgun(2, 0, 3, 4.8, true));
+                        initialPrimaryWeapons.add(new RocketShotgun(2, 0, 5, 4.8, true));
                         break;
                     case WEAPON_LASER_GUN:
                         initialPrimaryWeapons.add(new LaserGun(2, 1, 1.5));
+                        break;
+                    case WEAPON_MACHINE_GUN:
+                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.1));
                         break;
                 }
             }
@@ -192,7 +194,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     public void addPrimaryWeapon(Weapon primaryWeapon) {
         (primaryWeapon).setParentUnit(this); // asettaa aseen ampujaksi tämän.
         primaryWeapons.add(primaryWeapon); // lisää pääaseisiin parametrin
-        Platform.runLater(()-> this.getChildren().add(((Weapon) primaryWeapon).getShape()));
+        Platform.runLater(()-> this.getChildren().add(primaryWeapon.getShape()));
 
         sortComponents();
     }

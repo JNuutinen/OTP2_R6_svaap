@@ -18,7 +18,7 @@ public class Blaster extends Weapon {
     /**
      * Blasterin ammuksien nopeus.
      */
-    private static final int SPEED = 30;
+    private static final int SPEED = 40;
 
     /**
      * Blasterin komponentin väri.
