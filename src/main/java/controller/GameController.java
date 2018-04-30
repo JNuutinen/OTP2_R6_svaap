@@ -2,10 +2,7 @@ package controller;
 
 import javafx.application.Platform;
 import model.*;
-import model.level.Level;
-import model.level.Level1;
-import model.level.Level2;
-import model.level.Level3;
+import model.level.*;
 import model.units.Player;
 import view.View;
 
@@ -169,6 +166,12 @@ public class GameController implements Controller {
                 break;
             case 3:
                 level = new Level3();
+                break;
+            case 4:
+                level = new Level4();
+                break;
+            case 5:
+                level = new Level5();
                 break;
             default:
                 level = new Level1();

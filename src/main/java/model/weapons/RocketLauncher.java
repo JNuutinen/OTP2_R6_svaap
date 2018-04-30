@@ -50,7 +50,7 @@ public class RocketLauncher extends Weapon {
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
     public RocketLauncher(int orientation, double rotatingSpeed, double firerate, boolean missileCanLoseTarget) {
-        super("circle", 4, orientation, COLOR, 20, firerate);
+        super("circle", 4, orientation, COLOR, 30, firerate);
         this.controller = GameController.getInstance();
         this.rotatingSpeed = rotatingSpeed;
         this.missileCanLoseTarget = missileCanLoseTarget;
