@@ -3,8 +3,6 @@ package model.projectiles;
 import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
@@ -111,19 +109,23 @@ public class BulletProjectile extends BaseProjectile implements Updateable, Hitb
     private Polygon buildProjectile(double speed, Color color) {
         // Ammuksen muoto
         Polygon shape = new Polygon();
-        shape.getPoints().addAll(-4.0, 0.5,
-                -4.0, -0.5,
-                0.0, -3.0,
-                speed*0.4+4.0, 0.0, // ammuksen hanta skaalautuu nopeuden mukaan, mutta on ainakin 7.0
-                0.0, 4.0);
+        shape.getPoints().addAll(
+                0.0, 2.0,
+                0.0, -2.0,
+                5.0, -2.0,
+                speed * 0.4 + 5, 0.0, // häntä
+                5.0, 2.0
+        );
 
-        Bloom bloom = new Bloom(0.0);
-        GaussianBlur blur = new GaussianBlur(1.0);
+        /*
+        Bloom bloom = new Bloom(2.0);
+        GaussianBlur blur = new GaussianBlur(1.5);
         blur.setInput(bloom);
-        //shape.setEffect(blur);
+        shape.setEffect(blur);
+        */
         shape.setFill(Color.WHITE);
         shape.setStroke(color);
-        shape.setStrokeWidth(3.0);
+        shape.setStrokeWidth(2.0);
         shape.getTransforms().add(new Rotate(180, 0, 0));
         return shape;
     }

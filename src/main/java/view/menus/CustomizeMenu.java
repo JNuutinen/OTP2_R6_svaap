@@ -109,7 +109,7 @@ public class CustomizeMenu extends Menu {
         primaryComboBox.setItems(FXCollections.observableArrayList(primaryWeaponNames));
         secondaryComboBox.setItems(FXCollections.observableArrayList(secondaryWeaponNames));
 
-        primaryComboBox.setValue(primaryWeaponNames.get(0));
+        primaryComboBox.setValue(primaryWeaponNames.get(2));
         secondaryComboBox.setValue(secondaryWeaponNames.get(0));
 
         primaryComboBox.setPrefWidth(Double.MAX_VALUE);
