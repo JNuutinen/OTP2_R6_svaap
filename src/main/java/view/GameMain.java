@@ -165,9 +165,6 @@ public class GameMain extends Application implements View {
      * @param args Komentoriviargumentit.
      */
     public static void main(String[] args) {
-        //Database database = new Database();
-        //database.dbTest();
-        //database.purgeSaves();
         launch(args);
     }
 
