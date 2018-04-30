@@ -2,7 +2,6 @@ package model.units;
 
 import controller.Controller;
 import controller.GameController;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.Tag;
@@ -198,9 +197,11 @@ public class Player extends Unit {
 
         if (input.contains("V")) System.exit(0);
 
+        /* TODO: pause ei toimi joten ei anneta laittaa pauselle
         if (input.contains(KeyCode.ESCAPE.toString())) {
             controller.pauseGame();
         }
+        */
 
         // Päivitä sijainti
         if(deltaTime < 1) { // TODO

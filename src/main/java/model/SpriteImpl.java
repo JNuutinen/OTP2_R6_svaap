@@ -28,7 +28,7 @@ public class SpriteImpl extends Pane implements Sprite {
     /**
      * Spriten nopeus.
      */
-    private double velocity = 200;
+    private double velocity = 100;
 
     /**
      * Ympyrähitboxin halkaisija.

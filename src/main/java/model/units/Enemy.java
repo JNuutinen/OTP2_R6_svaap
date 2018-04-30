@@ -69,6 +69,7 @@ public class Enemy extends Unit {
     /**
      * Vihollisen konstruktori. Luo vihollisen graafisen esityksen. Lisää vihollisen peliin, asettaa
      * tagin, asettaa alkuposition x- ja y-koordinaatit ja liikkumatavan.
+     * @param primaries Lista, jossa aluksen aseet tageina ilmoitettuna.
      * @param movementPattern Liikkumatyyli, -1 = MOVE_NONE, 0 MOVE_STRAIGHT, 1 = MOVE_SINE.
      * @param initialPosition Aloitussijainti.
      */

@@ -24,6 +24,7 @@ import model.units.Unit;
 import model.weapons.Weapon;
 import view.menus.MenuSpace;
 import view.menus.PauseMenu;
+import view.menus.PlayMenu;
 
 import java.util.*;
 
@@ -481,7 +482,7 @@ public class GameMain extends Application implements View {
         primaryStage.setScene(scene);
 
         controller.startLoop();
-        controller.startLevel(1); // playMenu.getSelectedLevel() TODO
+        controller.startLevel(PlayMenu.getSelectedLevel());
     }
 
     public BorderPane getUiRoot(){

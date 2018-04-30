@@ -2,7 +2,6 @@ package view.menus;
 
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
@@ -45,14 +44,13 @@ public class PlayMenu extends Menu{
     private Text levelSelectText;
 
     /**
-     * Spinner tason valintaan.
-     */
-    private Spinner<Integer> levelSpinner;
-
-    /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
-    private static final int NUMBER_OF_LEVELS = 2;
+    private static final int NUMBER_OF_LEVELS = 3;
+    /**
+     * Spinner tason valintaan.
+     */
+    private static Spinner<Integer> levelSpinner;
 
     /**
      * MainMenu-menu
@@ -131,7 +129,7 @@ public class PlayMenu extends Menu{
      * Palauttaa Spinnerissä valitun tason numeron.
      * @return Valitun tason numero.
      */
-    public int getSelectedLevel() {
+    public static int getSelectedLevel() {
         return levelSpinner.getValue();
     }
 
