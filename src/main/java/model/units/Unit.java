@@ -280,46 +280,58 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      */
     private void sortComponents() {
         List<List<Weapon>> weaponLists = new ArrayList<>();
+        weaponLists.add(new ArrayList<>());
+        List<Integer> alreadyAddedIndex = new ArrayList<>();
 
-        for(Weapon primaryWeapon : primaryWeapons){
-            int sameWeaponAmount = 1;
-            boolean inList = false;
-            for(Weapon primaryWeapon2 : primaryWeapons){
-                for(List weaponList : weaponLists) {
-                    if(!weaponList.contains(primaryWeapon.getClass())) {
-                        System.out.println("on listas " + primaryWeapon);
-                        inList = true;
-                        if (primaryWeapon2 != primaryWeapon && primaryWeapon2.getClass() == primaryWeapon.getClass()) {
 
-                            System.out.println("true " + primaryWeapon);
-                            sameWeaponAmount++;
-                        }
-                    }
+        for(int i = 0; i < primaryWeapons.size(); i++) {
+            int sameWeaponsAmount = 1; //
+            for (int j = 0; j < primaryWeapons.size(); j++) {
+                if (primaryWeapons.get(i) != primaryWeapons.get(j) && primaryWeapons.get(i).getClass() == primaryWeapons.get(j).getClass() &&
+                        !alreadyAddedIndex.contains(i)) {
+                    alreadyAddedIndex.add(j);
+                    sameWeaponsAmount++;
                 }
             }
-            if(!inList) {
-                while (weaponLists.size() < sameWeaponAmount) {
-                    weaponLists.add(0, new ArrayList<>());
-                    weaponLists.add(new ArrayList<>());
+            // niin kauan kun asejonoja (aluksen sivusuuntaan) ei ole yhtä monta kuin saman tyyppisiä aseita lisätään, luodaan 2 uutta jonoa.
+            // jotta jonolukumäärä pysyy parittomana.
+            while (weaponLists.size() < sameWeaponsAmount) {
+                weaponLists.add(0, new ArrayList<>());
+                weaponLists.add(new ArrayList<>());
+            }
+
+            int firstIndex = (weaponLists.size() - sameWeaponsAmount) / 2;
+            int midIndex = (weaponLists.size()) / 2;
+            int addedIndex = 0;
+            System.out.println("    -   -   ");
+            for (int k = firstIndex; k < sameWeaponsAmount; k++) {
+                if(sameWeaponsAmount % 2 == 0){
+                    if(k == midIndex){
+                        System.out.println("2");
+                        addedIndex = 1;
+                        weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
+                    }
+                    else{
+                        System.out.println("3");
+                        weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
+                    }
                 }
-                int firstIndex = (weaponLists.size() - sameWeaponAmount) / 2;
-                for (int i = firstIndex; i < sameWeaponAmount; i++) {
-                    weaponLists.get(i).add(primaryWeapon);
+                else{
+                    System.out.println("1");
+                    weaponLists.get(k).add(primaryWeapons.get(i));
                 }
             }
         }
-
-        int i = 0;
-        for(List weaponList : weaponLists){
-            int j = 0;
-            for(Object weapon : weaponList){
-
-                Shape componentShape = ((Weapon)weapon).getShape();
-                componentShape.setLayoutX(10 * j);
-                componentShape.setLayoutY(10 * i);
-                j++;
+        System.out.println("...");
+        int iMidIndex = (weaponLists.size()) / 2;
+        for(int i = 0; i < weaponLists.size(); i++){
+            int jMidIndex = (weaponLists.get(i).size()) / 2;
+            for(int j = 0; j < weaponLists.get(i).size(); j++){
+                System.out.println(weaponLists.get(i).get(j) + "i&j " + i + ", " + j + ", iMid & jMid + " + iMidIndex + ", " + jMidIndex);
+                Shape componentShape = weaponLists.get(i).get(j).getShape();
+                //componentShape.setLayoutX(50 * (j - jMidIndex));
+                componentShape.setLayoutY(150 * (i - iMidIndex));
             }
-            i++;
         }
 
         /*
@@ -376,6 +388,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param damage Vahinkomäärä, jonka yksikkö ottaa.
      */
     public void takeDamage(int damage) {
+        sortComponents();
         tookDamage = true; // efektiä varten
         if(shape != null){
             shape.setStroke(Color.WHITE);
