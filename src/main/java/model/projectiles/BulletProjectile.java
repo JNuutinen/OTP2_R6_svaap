@@ -14,6 +14,14 @@ import model.units.Unit;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
+/**
+ * Pieni ammus.
+ *
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
+ */
 public class BulletProjectile extends BaseProjectile implements Updateable, HitboxCircle {
 
     /**
@@ -70,7 +78,7 @@ public class BulletProjectile extends BaseProjectile implements Updateable, Hitb
      * @param tag Ammuksen tagi.
      */
     public BulletProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, double direction,
-                           Tag tag) {
+                            Tag tag) {
         this(shooter, speed, damage, offset, color, tag);
         rotate(direction);
     }

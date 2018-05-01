@@ -10,6 +10,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Konekivääriase.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class MachineGun extends Weapon {
 

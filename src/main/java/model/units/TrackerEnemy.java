@@ -24,21 +24,6 @@ import static view.GameMain.WINDOW_WIDTH;
 public class TrackerEnemy extends Unit {
 
     /**
-     * Jos vihollinen ei liiku, se saa arvon -1
-     */
-    public static final int MOVE_NONE = -1;
-
-    /**
-     * Jos vihollinen liikkuu suoraan -x suunnassa, se saa 0.
-     */
-    public static final int MOVE_STRAIGHT = 0;
-
-    /**
-     * Jos vihollinen liikkuu siniaallon tavoin, se saa arvon 1.
-     */
-    public static final int MOVE_SINE = 1;
-
-    /**
      * Pelin kontrolleri
      */
     private Controller controller;
@@ -52,11 +37,6 @@ public class TrackerEnemy extends Unit {
      * Alkuposition y-koordinaatti.
      */
     private double initialY;
-
-    /**
-     * Aluksen liikkumatapa.
-     */
-    private int movementPattern;
 
     /**
      * Lista Point2D-koordinaateista, joka kertoo aluksen kulkupolun.
@@ -111,7 +91,7 @@ public class TrackerEnemy extends Unit {
     /**
      * Osuma-efketin totuusarvo.
      */
-    private boolean tookDamage2 = false;
+    private boolean tookDamage = false;
 
     /**
      * TrackerEnemyn konstruktori. Luo aluksen ja lisää sen peliin.
@@ -165,16 +145,15 @@ public class TrackerEnemy extends Unit {
     @Override
     public void update(double deltaTime){
         if(getTookDamage()){
-            tookDamage2 = true;
+            tookDamage = true;
             damagedTimeCounter = 0;
             setTookDamage(false);
         }
-        if(tookDamage2 && damagedTimeCounter > 0.1){
-            tookDamage2 = false;
+        if (tookDamage && damagedTimeCounter > 0.1) {
+            tookDamage = false;
             setOriginalColor();
             damagedTimeCounter = 0;
-        }
-        else if(tookDamage2){
+        } else if (tookDamage) {
             damagedTimeCounter += deltaTime;
         }
 

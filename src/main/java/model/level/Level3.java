@@ -17,6 +17,10 @@ import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Kolmostaso. Säie, joka suorittaa kovakoodatun tason lineaarisesti, ilman looppeja.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Level3 extends Thread implements Level {
 

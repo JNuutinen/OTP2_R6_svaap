@@ -16,6 +16,10 @@ import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Nelostaso. Säie, joka suorittaa kovakoodatun tason lineaarisesti, ilman looppeja.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Level4 extends Thread implements Level {
 

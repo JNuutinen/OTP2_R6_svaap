@@ -459,4 +459,13 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
         this.unitSize = unitSize;
     }
 
+    /**
+     * Getteri Unitin koolle.
+     *
+     * @return Unitin koko.
+     */
+    public double getUnitSize() {
+        return unitSize;
+    }
+
 }

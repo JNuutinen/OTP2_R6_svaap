@@ -3,8 +3,8 @@ package model.level;
 import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
-import model.units.Boss2;
 import model.Tag;
+import model.units.Boss2;
 import model.units.Enemy;
 
 import java.util.ArrayList;
@@ -14,6 +14,14 @@ import java.util.Random;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
+/**
+ * Kakkostaso.
+ *
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
+ */
 public class Level2 extends Thread implements Level{
     Controller controller;
     Random rnd = new Random();
@@ -49,8 +57,8 @@ public class Level2 extends Thread implements Level{
                 Thread.sleep(1_000);
             }
         }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+        }
     }
 
     public void spawnSquad(Tag tag){

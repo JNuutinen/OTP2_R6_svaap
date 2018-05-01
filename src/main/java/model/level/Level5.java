@@ -4,12 +4,21 @@ import controller.Controller;
 import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import model.Tag;
 import model.units.Enemy;
+import model.units.TeleporterEnemy;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static view.GameMain.WINDOW_WIDTH;
 
 /**
  * Nelostaso. Säie, joka suorittaa kovakoodatun tason lineaarisesti, ilman looppeja.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
 public class Level5 extends Thread implements Level {
 
@@ -34,6 +43,7 @@ public class Level5 extends Thread implements Level {
     public void run() {
         try {
             Thread.sleep(1000);
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_MACHINE_GUN)), new Point2D(WINDOW_WIDTH - 700, 200));
 
             new Enemy(null, Enemy.MOVE_NONE, new Point2D(WINDOW_WIDTH-300, 50));
             new Enemy(null, Enemy.MOVE_NONE, new Point2D(WINDOW_WIDTH-300, 150));
