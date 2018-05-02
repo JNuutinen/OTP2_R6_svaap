@@ -31,7 +31,7 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
     /**
      * Powerupin tyyppien vakiot.
      */
-    static final int HP = 0, DAMAGE = 1, SPEED = 2, SCORE = 3;
+    public static final int HP = 0, DAMAGE = 1, SPEED = 2, SCORE = 3;
 
     /**
      * Powerupin koko.

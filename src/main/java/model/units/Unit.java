@@ -388,7 +388,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
             for (int i = 0; i < 10; i++) {
                 int x = ThreadLocalRandom.current().nextInt((int) (getXPosition()), (int) (getXPosition() + getHitboxRadius()) + 1);
                 int y = ThreadLocalRandom.current().nextInt((int) (getYPosition()), (int) (getYPosition() + getHitboxRadius()) + 1);
-                new PowerUp(0, 10, new Point2D(x, y));
+                new PowerUp(PowerUp.HP, 30, new Point2D(x, y));
             }
         } else {
             // Muut vihut random powerup
