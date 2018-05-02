@@ -53,7 +53,7 @@ public class SpriteImpl extends Pane implements Sprite {
     /**
      * Debuggaustyökalujen toggle.
      */
-    private boolean debuggerToolsEnabled = false;
+    private boolean debuggerToolsEnabled = true;
 
     /**
      * Toggle lockedDirectionille.

@@ -90,6 +90,7 @@ public class CustomizeMenu extends Menu {
             else if (w instanceof RocketLauncher) primaryWeaponNames.add(messages.getString("weapon_rocket_launcher"));
             else if (w instanceof RocketShotgun) primaryWeaponNames.add(messages.getString("weapon_rocket_shotgun"));
             else if (w instanceof MachineGun) primaryWeaponNames.add(messages.getString("weapon_machine_gun"));
+            else if (w instanceof PlasmaGun) primaryWeaponNames.add("PlasmaGun (yo taa pitää lisää lokaaleihin | CustomizeMenu.java)"); // TODO
         }
 
         ArrayList<String>secondaryWeaponNames = new ArrayList<>(secondaryWeapons.size());
@@ -169,11 +170,14 @@ public class CustomizeMenu extends Menu {
         // TODO: machine gun offsets
         Weapon machineGun = new MachineGun(0, 55, 0.05);
 
+        Weapon plasmaGun = new PlasmaGun(5, 0.5, 0.2, new Point2D(-15, 0), new Point2D(80, 0));
+
         weapons.add(blaster);
         weapons.add(laserGun);
         weapons.add(machineGun);
         weapons.add(rocketLauncher);
         weapons.add(rocketShotgun);
+        weapons.add(plasmaGun);
         return weapons;
     }
 
