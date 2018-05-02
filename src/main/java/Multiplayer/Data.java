@@ -1,5 +1,7 @@
 package Multiplayer;
 
-public abstract class Data {
+import java.io.Serializable;
+
+public abstract class Data implements Serializable{
     public void action() {}
 }

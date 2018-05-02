@@ -1,7 +1,7 @@
 package Multiplayer;
 
 public class ConnectionData extends Data {
-
+    int playerId;
     public ConnectionData(int playerId) {
         this.playerId = playerId;
     }
