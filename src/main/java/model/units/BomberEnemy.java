@@ -14,14 +14,13 @@ import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 /**
- * TrackerEnemy vihollinen liikkuu aluksi määritellun reitin (path) ja kun on kulkenut sen loppuun, niin
- * alkaa valumaan vasemmalle päin samalla kun katsoo ja ampuu pelaajaa kohti.
+ * BomberEnemy TODO
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class TrackerEnemy extends Unit {
+public class BomberEnemy extends Unit {
 
     /**
      * Pelin kontrolleri
@@ -39,6 +38,11 @@ public class TrackerEnemy extends Unit {
     private double initialY;
 
     /**
+     * Aluksen liikkumatapa.
+     */
+    private int movementPattern;
+
+    /**
      * Lista Point2D-koordinaateista, joka kertoo aluksen kulkupolun.
      */
     private Point2D[] path;
@@ -54,14 +58,16 @@ public class TrackerEnemy extends Unit {
     private int lastDestinationIndex = 0;
 
     /**
+     * path-listan indeksi eli piste johon alus kulkee sen jälkeen kun on saavuttanut path-listan
+     * viimeisen pisteen. Jos arvo on -1, niin alus tuhoaa itsensä sen jälkeen kun on saavuttanut viimeisen pisteen.
+     */
+    private int connectingPoint;
+
+    /**
      * Aluksen kääntymisnopeus
      */
     private double rotatingSpeed = 4;
 
-    /**
-     * Kertoo, ampuuko alus kohdettaan.
-     */
-    private boolean shootingTarget = false;
 
     /**
      * Aluksen kohde, jota se seuraa "katseellaan".
@@ -71,7 +77,7 @@ public class TrackerEnemy extends Unit {
     /**
      * Aluksen alkunopeus.
      */
-    private final double initialVelocity = 300;
+    private final double initialVelocity = 270;
 
     /**
      * Tulinopeus
@@ -91,17 +97,20 @@ public class TrackerEnemy extends Unit {
     /**
      * Osuma-efketin totuusarvo.
      */
-    private boolean tookDamage = false;
+    private boolean tookDamage2 = false;
 
     /**
-     * TrackerEnemyn konstruktori. Luo aluksen ja lisää sen peliin.
+     * BomberEnemyn konstruktori. Luo aluksen ja lisää sen peliin.
      * @param primaries Lista, jossa aluksen aseet tageina ilmoitettuna.
      * @param initialPosition Aloitussijainnin koordinaatit.
      * @param path Lista, jossa aluksen kulkeman polun koordinaatit.
+     * @param connectingPoint path-listan indeksi eli piste johon alus kulkee sen jälkeen kun on saavuttanut path-listan
+     *                       viimeisen pisteen. Jos arvo on -1, niin alus tuhoaa itsensä sen jälkeen kun on saavuttanut viimeisen pisteen.
      */
-    public TrackerEnemy(List<Tag> primaries, Point2D initialPosition, Point2D[] path) {
-        super(Color.DEEPSKYBLUE, 5, 20);
+    public BomberEnemy(List<Tag> primaries, Point2D initialPosition, Point2D[] path, int connectingPoint) {
+        super(Color.DEEPPINK, 5, 20);
         this.path = path;
+        this.connectingPoint = connectingPoint;
         controller = GameController.getInstance();
         setTag(Tag.SHIP_ENEMY);
         lastDestinationIndex = path.length-1;
@@ -145,15 +154,16 @@ public class TrackerEnemy extends Unit {
     @Override
     public void update(double deltaTime){
         if(getTookDamage()){
-            tookDamage = true;
+            tookDamage2 = true;
             damagedTimeCounter = 0;
             setTookDamage(false);
         }
-        if (tookDamage && damagedTimeCounter > 0.1) {
-            tookDamage = false;
+        if(tookDamage2 && damagedTimeCounter > 0.1){
+            tookDamage2 = false;
             setOriginalColor();
             damagedTimeCounter = 0;
-        } else if (tookDamage) {
+        }
+        else if(tookDamage2){
             damagedTimeCounter += deltaTime;
         }
 
@@ -175,46 +185,47 @@ public class TrackerEnemy extends Unit {
         }
 
         double angleToTarget;
-        if(!shootingTarget) {
-            // kun paasee tarpeeksi lahelle maaranpaata, vaiha maaranpaa seuraavaan
-            if(getDistanceFromTarget(path[currentDestinationIndex]) < 18){
-                if(path[currentDestinationIndex] == path[lastDestinationIndex]){
-                    shootingTarget = true;
-                    lockDirection(180);
-                    fireRateCounter = 1;
-                    fireRate = 3;
-                    setVelocity(100);
+        // kun paasee tarpeeksi lahelle maaranpaata, vaiha maaranpaa seuraavaan
+        if(getDistanceFromTarget(path[currentDestinationIndex]) < 18){
+            if(path[currentDestinationIndex] == path[lastDestinationIndex]){
+                // jos liittymispiste on määritelty -1, niin tuhoa alus reitin loppussa.
+                if(connectingPoint == -1){
+                    destroyThis();
                 }
-                else{
-                    currentDestinationIndex++;
+                // tai jos liittymispiste on jokin reitin pisteistä paitsi viimeinen piste, niin aseta seuraava piste kyseiseen reitin pisteeseen.
+                else if(connectingPoint < path.length - 1 && connectingPoint >= 0){
+                    currentDestinationIndex = connectingPoint;
                 }
             }
+            else{
+                currentDestinationIndex++;
+            }
+        }
 
+        // tää vaa pitaa asteet -180 & 180 valissa
+        angleToTarget = getAngleFromTarget(path[currentDestinationIndex]) - getDirection();
+        while (angleToTarget >= 180.0) {
+            angleToTarget -= 360.0;
+        }
+        while (angleToTarget < -180) {
+            angleToTarget += 360.0;
+        }
+        rotate(angleToTarget * rotatingSpeed * deltaTime);
+
+        /*
+        if(target != null) {
+            angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
             // taa vaa pitaa asteet -180 & 180 valissa
-            angleToTarget = getAngleFromTarget(path[currentDestinationIndex]) - getDirection();
             while (angleToTarget >= 180.0) {
                 angleToTarget -= 360.0;
             }
             while (angleToTarget < -180) {
                 angleToTarget += 360.0;
             }
+
             rotate(angleToTarget * rotatingSpeed * deltaTime);
-        }
-        else{
-            if(target != null) {
-                angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
-                // taa vaa pitaa asteet -180 & 180 valissa
-                while (angleToTarget >= 180.0) {
-                    angleToTarget -= 360.0;
-                }
-                while (angleToTarget < -180) {
-                    angleToTarget += 360.0;
-                }
 
-                rotate(angleToTarget * rotatingSpeed * deltaTime);
-
-            }
-        }
+        }*/
     }
 
     /**

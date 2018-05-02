@@ -4,7 +4,6 @@ import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.Component;
 import model.projectiles.SmallProjectile;
 
 /**
@@ -14,22 +13,12 @@ import model.projectiles.SmallProjectile;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class BlasterShotgun extends Component implements Weapon {
+public class BlasterShotgun extends Weapon {
 
     /**
      * Aseen ammuksien nopeus
      */
-    private static final int SPEED = 25;
-
-    /**
-     * Aseen ammuksien vahinko.
-     */
-    private static final int DAMAGE = 5;
-
-    /**
-     * Aseen tulinopeus.
-     */
-    private static final double FIRE_RATE = 0.2;
+    private final int SPEED = 25;
 
     /**
      * Aseen väri.
@@ -42,22 +31,17 @@ public class BlasterShotgun extends Component implements Weapon {
     private Controller controller;
 
     /**
-     * Ammusten vahinkomääräkerroin.
-     */
-    private double damageMultiplier = 1;
-
-    /**
      * ammuksen nopeus
      */
-    private double projectileSpeed = 0;
+    private double projectileSpeed = SPEED;
 
     /**
      * Konstruktori.
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammusten nopeus.
      */
-    public BlasterShotgun(int orientation, double projectileSpeed) {
-        super("rectangle", 4, orientation, COLOR);
+    public BlasterShotgun(int orientation, double projectileSpeed, double firerate) {
+        super("rectangle", 4, orientation, COLOR, 10, firerate);
         this.projectileSpeed = projectileSpeed;
         controller = GameController.getInstance();
     }
@@ -69,32 +53,32 @@ public class BlasterShotgun extends Component implements Weapon {
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public BlasterShotgun(int orientation, double projectileSpeed, Point2D componentOffset, Point2D projectileOffset) {
-        this(orientation, projectileSpeed);
+    public BlasterShotgun(int orientation, double projectileSpeed, double firerate, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, projectileSpeed, firerate);
         setProjectileOffset(projectileOffset);
         setComponentOffset(componentOffset);
     }
 
     @Override
-    public double getFireRate() {
-        return FIRE_RATE;
-    }
-
-    @Override
-    public void setDamageMultiplier(double damageMultiplier) {
-        this.damageMultiplier = damageMultiplier;
-    }
-
-    @Override
     public void shoot() {
         if(getParentUnit() != null) {
-            for (int i = -1; i < 2; i++) {
-                // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
-                SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), SPEED, (int)(DAMAGE * damageMultiplier),
-                        getProjectileOffset(), getParentUnitColor(), i * 7, getComponentProjectileTag());
-                controller.addUpdateableAndSetToScene(smallProjectile);
-                controller.addHitboxObject(smallProjectile);
+            if (getFireRateCounter() >= getFirerate()) {
+                setFireRateCounter(0);
+                for (int i = -1; i < 2; i++) {
+                    // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
+                    SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), SPEED, (int) (getDamage() * getDamageMultiplier()),
+                            getProjectileOffset(), getParentUnitColor(), i * 9, getWeaponProjectileTag());
+                    controller.addUpdateableAndSetToScene(smallProjectile);
+                    controller.addHitboxObject(smallProjectile);
+                }
             }
+        }
+    }
+
+    @Override
+    public void update(double deltaTime) {
+        if (getFireRateCounter() <= getFirerate()) {
+            setFireRateCounter(getFireRateCounter() + deltaTime);
         }
     }
 }

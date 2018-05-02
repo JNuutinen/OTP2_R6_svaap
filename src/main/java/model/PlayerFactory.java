@@ -23,7 +23,7 @@ public class PlayerFactory {
         controller.addHitboxObject(player);
 
         //      pelaajalle pyssyt
-        player.addPrimaryWeapon(new Blaster(1,30));
+        player.addPrimaryWeapon(new Blaster(1,30 , 1));
         System.out.println("New player created");
         return player;
     }

@@ -11,6 +11,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * StackPanen alaluokka joka toimii kaikkien menujen isäntänä.
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
+ */
 public class MenuSpace extends StackPane {
 
     /**
@@ -18,11 +25,29 @@ public class MenuSpace extends StackPane {
      */
     private MenuFX menuFX = new Slider();
 
+    /**
+     * MainMenu-menu
+     */
     private MainMenu mainMenu;
-    private NetplayMenu netplayMenu;
+
+    /**
+     * CustomizeMenu-menu
+     */
     private CustomizeMenu customizeMenu;
-    private PauseMenu pauseMenu; // ei saa poistaa
+
+    /**
+     * PauseMenu-menu
+     */
+    private PauseMenu pauseMenu;
+
+    /**
+     * PlayMenu-menu
+     */
     private PlayMenu playMenu;
+
+    /**
+     * SettingsMenu-menu
+     */
     private SettingsMenu settingsMenu;
 
     /**
@@ -45,23 +70,19 @@ public class MenuSpace extends StackPane {
         menus = new ArrayList<>();
 
         mainMenu = new MainMenu(messages, this);
-        netplayMenu = new NetplayMenu(messages, this);
         customizeMenu = new CustomizeMenu(messages, this);
-        //pauseMenu = new PauseMenu(messages, this);
+        pauseMenu = new PauseMenu(messages, this);
         playMenu = new PlayMenu(messages, this, gameMain);
         settingsMenu = new SettingsMenu(messages, this);
 
         menus.add(mainMenu);
-        menus.add(netplayMenu);
         menus.add(customizeMenu);
-        //menus.add(pauseMenu);
+        menus.add(pauseMenu);
         menus.add(playMenu);
         menus.add(settingsMenu);
 
-        mainMenu.setNetplayMenu(netplayMenu);
         mainMenu.setPlayMenu(playMenu);
         mainMenu.setSettingsMenu(settingsMenu);
-        netplayMenu.setMainMenu(mainMenu);
         customizeMenu.setPlayMenu(playMenu);
         playMenu.setMainMenu(mainMenu);
         playMenu.setCustomizeMenu(customizeMenu);
@@ -97,5 +118,9 @@ public class MenuSpace extends StackPane {
         for (Menu menu : menus) {
             menu.changeLocale(messages);
         }
+    }
+
+    public PauseMenu getPauseMenu() {
+        return pauseMenu;
     }
 }

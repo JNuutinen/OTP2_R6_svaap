@@ -12,7 +12,6 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import model.Component;
 import model.Updateable;
 import model.projectiles.LaserBeam;
 
@@ -25,22 +24,13 @@ import static view.GameMain.WINDOW_WIDTH;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class LaserGun extends Component implements Weapon, Updateable {
+public class LaserGun extends Weapon implements Updateable {
 
     /**
      * Aseen ammuksien nopeus
      */
     private static final int SPEED = 30;
 
-    /**
-     * Aseen ammuksien vahinko.
-     */
-    private static final int DAMAGE = 40;
-
-    /**
-     *  Aseen tulinopeus.
-     */
-    private static final double FIRE_RATE = 1.0;
 
     /**
      * Aseen väri.
@@ -83,11 +73,6 @@ public class LaserGun extends Component implements Weapon, Updateable {
     private boolean readyToShoot = true;
 
     /**
-     * Ammusten vahinkomääräkerroin.
-     */
-    private double damageMultiplier = 1;
-
-    /**
      * Aseen latausefekti.
      */
     private Circle chargingEffect;
@@ -107,59 +92,55 @@ public class LaserGun extends Component implements Weapon, Updateable {
      * @param orientation Aseen orientation.
      * @param shootingDelay Ampumisen viive.
      */
-    public LaserGun(int orientation, double shootingDelay) {
-        super("triangle", 4, orientation, COLOR);
+    public LaserGun(int orientation, double shootingDelay, double firerate) {
+        super("triangle", 4, orientation, COLOR, 40, firerate); // firerate ei saa olla <= shootingDelay TODO poista kommentti
         this.shootingDelay = shootingDelay;
         controller = GameController.getInstance();
-        controller.addUpdateable(this);
     }
 
     /**
      * Konstruktori ampumisviiveen kanssa.
      * @param orientation Aseen orientation.
      * @param shootingDelay Ampumisen viive
+     * @param firerate TODO
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta.
      * .
      */
-    public LaserGun(int orientation, double shootingDelay, Point2D componentOffset, Point2D projectileOffset) {
-        this(orientation, shootingDelay);
+    public LaserGun(int orientation, double shootingDelay, double firerate, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, shootingDelay, firerate);
         setProjectileOffset(projectileOffset);
         setComponentOffset(componentOffset);
-        controller.addUpdateable(this);
-    }
-
-    @Override
-    public double getFireRate() {
-        return FIRE_RATE;
-    }
-
-    @Override
-    public void setDamageMultiplier(double damageMultiplier) {
-        this.damageMultiplier = damageMultiplier;
     }
 
     @Override
     public void shoot() {
-        if(!triggeredShoot && getParentUnit() != null) {
-            effectsColor = new Color(getParentUnitColor().getRed(), getParentUnitColor().getGreen(), getParentUnitColor().getBlue(), 0);
-            opacityAddition = 0;
+        if(!triggeredShoot && getFireRateCounter() >= getFirerate()) {
+            if(readyToShoot && !getParentUnit().getChildren().contains(pointerEffect)) {
+                setFireRateCounter(0);
 
-            chargingEffect = buildChargingEffect(effectsColor);
-            Platform.runLater(()->getParentUnit().getChildren().add(chargingEffect));
-            pointerEffect = buildPointerEffect(effectsColor);
-            Platform.runLater(()->getParentUnit().getChildren().add(pointerEffect));
+                effectsColor = new Color(getParentUnitColor().getRed(), getParentUnitColor().getGreen(), getParentUnitColor().getBlue(), 0);
+                opacityAddition = 0;
 
-            chargingEffect.setCenterX(getProjectileOffset().getX());
-            chargingEffect.setCenterY(getProjectileOffset().getY());
+                chargingEffect = buildChargingEffect(effectsColor);
+                Platform.runLater(() -> getParentUnit().getChildren().add(chargingEffect));
+                pointerEffect = buildPointerEffect(effectsColor);
+                Platform.runLater(() -> getParentUnit().getChildren().add(pointerEffect));
 
-            pointerEffect.setStartX(getProjectileOffset().getX());
-            pointerEffect.setStartY(getProjectileOffset().getY());
-            pointerEffect.setEndX(WINDOW_WIDTH);
-            pointerEffect.setEndY(getProjectileOffset().getY());
+                chargingEffect.setRadius(1);
+                chargingEffect.setStrokeWidth(1);
 
-            if(readyToShoot){
-                triggeredShoot = true;
+                chargingEffect.setCenterX(getProjectileOffset().getX());
+                chargingEffect.setCenterY(getProjectileOffset().getY());
+
+                pointerEffect.setStartX(getProjectileOffset().getX());
+                pointerEffect.setStartY(getProjectileOffset().getY());
+                pointerEffect.setEndX(WINDOW_WIDTH);
+                pointerEffect.setEndY(getProjectileOffset().getY());
+
+                if (readyToShoot) {
+                    triggeredShoot = true;
+                }
             }
         }
     }
@@ -167,7 +148,8 @@ public class LaserGun extends Component implements Weapon, Updateable {
     @Override
     public void update(double deltaTime) {
         if(getParentUnit() != null) {
-            if (!getParentUnit().isNull()) {
+            setFireRateCounter(getFireRateCounter() + deltaTime);
+            if (!getParentUnit().isDestroyed()) {
                 if (triggeredShoot) { // jos ase on lataamassa laseria
                     readyToShoot = false;
                     timeCounter += deltaTime; // viime silmukasta kulunut aika lisätään aikalaskuriin
@@ -196,7 +178,7 @@ public class LaserGun extends Component implements Weapon, Updateable {
 
                     // kun ase on lataus on täynnä, niin ammu.
                     if (timeCounter > shootingDelay) {
-                        LaserBeam laserBeam = new LaserBeam(getParentUnit(), SPEED, (int) (DAMAGE * damageMultiplier), getParentUnitColor(), getComponentProjectileTag(),
+                        LaserBeam laserBeam = new LaserBeam(getParentUnit(), SPEED, (int) (getDamage() * getDamageMultiplier()), getParentUnitColor(), getWeaponProjectileTag(),
                                 new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
                         controller.addUpdateableAndSetToScene(laserBeam);
                         controller.addTrace(laserBeam);

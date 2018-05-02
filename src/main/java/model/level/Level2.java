@@ -3,9 +3,8 @@ package model.level;
 import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import model.units.Boss2;
 import model.Tag;
+import model.units.Boss2;
 import model.units.Enemy;
 
 import java.util.ArrayList;
@@ -15,6 +14,14 @@ import java.util.Random;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
+/**
+ * Kakkostaso.
+ *
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
+ */
 public class Level2 extends Thread implements Level{
     Controller controller;
     Random rnd = new Random();
@@ -46,32 +53,32 @@ public class Level2 extends Thread implements Level{
             Boss2 finalBoss = new Boss2(new Point2D(WINDOW_WIDTH + 200, WINDOW_HEIGHT * 0.5));
 
             // pyöri silmukas 1 sec välein niin kauan kuin bossi on olemassa
-            while (!finalBoss.isNull()) {
+            while (!finalBoss.isDestroyed()) {
                 Thread.sleep(1_000);
             }
         }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+        }
     }
 
     public void spawnSquad(Tag tag){
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH + 200, 100));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH +150, 200));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH + 100, 300));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH + 50, 400));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH, 500));
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(tag)),
+        new Enemy(new ArrayList<>(Arrays.asList(tag)),
                 0, new Point2D(WINDOW_WIDTH - 50, 600));
 
     }
 
     public void spawnFighter(){
-        new Enemy(Color.YELLOW, new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)),
+        new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)),
                 0, new Point2D(WINDOW_WIDTH + 100, rnd.nextInt(500) + 100));
     }
 

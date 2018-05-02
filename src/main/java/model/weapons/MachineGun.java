@@ -4,31 +4,28 @@ import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.projectiles.SmallProjectile;
+import model.projectiles.BulletProjectile;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Blaster pyssy.
+ * Konekivääriase.
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Blaster extends Weapon {
+public class MachineGun extends Weapon {
 
     /**
-     * Blasterin ammuksien nopeus.
+     * Aseen ammuksien nopeus.
      */
-    private static final int SPEED = 40;
+    private static final int SPEED = 55;
 
     /**
-     * Blasterin komponentin väri.
+     * Aseen komponentin väri.
      */
-    private static final Color COLOR = Color.ORANGE;
-
-    /**
-     * Ammuksien nopeus.
-     */
-    private double projectileSpeed = SPEED;
+    private static final Color COLOR = Color.RED;
 
     /**
      * Pelin kontrolleri.
@@ -36,12 +33,18 @@ public class Blaster extends Weapon {
     private Controller controller;
 
     /**
+     * Ammuksien nopeus.
+     */
+    private double projectileSpeed = SPEED;
+
+    /**
      * Konstruktori
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
+     * @param firerate Tulinopeus.
      */
-    public Blaster(int orientation, double projectileSpeed, double firerate) {
-        super("rectangle", 4, orientation, COLOR, 10, firerate);
+    public MachineGun(int orientation, double projectileSpeed, double firerate) {
+        super("rectangle", 4, orientation, COLOR, 2, firerate);
         this.controller = GameController.getInstance();
         this.projectileSpeed = projectileSpeed;
     }
@@ -50,24 +53,29 @@ public class Blaster extends Weapon {
      * Konstruktori aseen ja ammuksen aloituspaikan custom poikkeamalla aluksesta
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
+     * @param firerate Tulinopeus.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public Blaster(int orientation, double projectileSpeed, double firerate, Point2D componentOffset, Point2D projectileOffset) {
+    public MachineGun(int orientation, double projectileSpeed, double firerate, Point2D componentOffset, Point2D projectileOffset) {
         this(orientation, projectileSpeed, firerate);
         this.setProjectileOffset(projectileOffset);
         this.setComponentOffset(componentOffset);
     }
 
+    /**
+     * Ampuu BulletProjectileja hajonnalla. Hajonnan suuntakulmaa voidaan säätää ThreadLocalRandom.current().nextInt()
+     * -kutsussa.
+     */
     @Override
     public void shoot() {
         if(getParentUnit() != null){
             if (getFireRateCounter() >= getFirerate()) {
                 setFireRateCounter(0);
-                SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int) (getDamage() * getDamageMultiplier()),
-                        getProjectileOffset(), getParentUnitColor(), getWeaponProjectileTag());
-                controller.addUpdateableAndSetToScene(smallProjectile);
-                controller.addHitboxObject(smallProjectile);
+                BulletProjectile bulletProjectile = new BulletProjectile(getParentUnit(), projectileSpeed, (int) (getDamage() * getDamageMultiplier()),
+                        getProjectileOffset(), getParentUnitColor(), ThreadLocalRandom.current().nextInt(-2, 2 + 1), getWeaponProjectileTag());
+                controller.addUpdateableAndSetToScene(bulletProjectile);
+                controller.addHitboxObject(bulletProjectile);
             }
         }
     }

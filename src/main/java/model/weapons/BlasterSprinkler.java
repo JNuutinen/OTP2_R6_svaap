@@ -4,7 +4,6 @@ import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.Component;
 import model.Updateable;
 import model.projectiles.SmallProjectile;
 
@@ -15,27 +14,12 @@ import model.projectiles.SmallProjectile;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class BlasterSprinkler extends Component implements Weapon, Updateable {
-
-    /**
-     * Aseen ammuksien vahinko.
-     */
-    private static final int DAMAGE = 5;
-
-    /**
-     * Aseen tulinopeus.
-     */
-    private double firerate = 0.07;
+public class BlasterSprinkler extends Weapon implements Updateable {
 
     /**
      * Aseen vakioväri.
      */
     private static final Color COLOR = Color.RED;
-
-    /**
-     * Ammuksen väri.
-     */
-    private Color projectileColor;
 
     /**
      * Ammuksen nopeus.
@@ -63,11 +47,6 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
     private double shootingTimeCounter = 0;
 
     /**
-     * Ammusten vahinkomääräkerroin.
-     */
-    private double damageMultiplier = 1;
-
-    /**
      * Pelin kontrolleri.
      */
     private Controller controller;
@@ -77,12 +56,12 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param shootingTime Ampumisen kesto.
+     * @param firerate TODO
      */
-    public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime) {
-        super("rectangle", 4, orientation, COLOR);
+    public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime, double firerate) {
+        super("rectangle", 4, orientation, COLOR, 10, firerate);
         this.shootingTime = shootingTime;
         this.controller = GameController.getInstance();
-        controller.addUpdateable(this);
         this.projectileSpeed = projectileSpeed;
 
     }
@@ -92,25 +71,38 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
+     * @param firerate TODO
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      * @param shootingTime Ampumisruiskautuksen kesto.
      */
-    public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime, Point2D componentOffset, Point2D projectileOffset) {
-        this(orientation, projectileSpeed, shootingTime);
+    public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime, double firerate, Point2D componentOffset, Point2D projectileOffset) {
+        this(orientation, projectileSpeed, shootingTime, firerate);
         setProjectileOffset(projectileOffset);
         setComponentOffset(componentOffset);
     }
 
     @Override
+    public void shoot() {
+        if (getFireRateCounter() >= getFirerate() && !isShooting) {
+            setFireRateCounter(0);
+            isShooting = true;
+        }
+    }
+
+    @Override
     public void update(double deltaTime) {
+        if (getFireRateCounter() <= getFirerate()) {
+            setFireRateCounter(getFireRateCounter() + deltaTime);
+        }
+
         if(getParentUnit() != null) {
-            if (!getParentUnit().isNull()) {
+            if (!getParentUnit().isDestroyed()) {
                 if (isShooting) {
                     firerateCounter += deltaTime;
                     shootingTimeCounter += deltaTime;
-                    if (firerateCounter >= firerate) {
-                        SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int)(DAMAGE * damageMultiplier),
-                                getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getComponentProjectileTag());
+                    if (firerateCounter >= 0.07) {
+                        SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int)(getDamage() * getDamageMultiplier()),
+                                getProjectileOffset(), getParentUnitColor(), Math.random() * 140 - 70, getWeaponProjectileTag());
                         controller.addUpdateableAndSetToScene(smallProjectile);
                         controller.addHitboxObject(smallProjectile);
                         firerateCounter = 0;
@@ -124,20 +116,5 @@ public class BlasterSprinkler extends Component implements Weapon, Updateable {
                 controller.removeUpdateable(this);
             }
         }
-    }
-
-    @Override
-    public double getFireRate() {
-        return firerate;
-    }
-
-    @Override
-    public void shoot() {
-        isShooting = true;
-    }
-
-    @Override
-    public void setDamageMultiplier(double damageMultiplier) {
-        this.damageMultiplier = damageMultiplier;
     }
 }

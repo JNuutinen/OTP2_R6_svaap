@@ -190,13 +190,13 @@ public class Boss2 extends Unit {
 
     public void armShip(){
 
-        Weapon laserGun = new LaserGun(0, 0.8, new Point2D(45, 70), new Point2D(45, 70));
+        Weapon laserGun = new LaserGun(0, 0.8, 1, new Point2D(45, 70), new Point2D(45, 70));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
-        laserGun = new LaserGun(0, 0.8, new Point2D(45, -70), new Point2D(45, -70));
+        laserGun = new LaserGun(0, 0.8, 1, new Point2D(45, -70), new Point2D(45, -70));
         this.addPrimaryWeaponWithCustomOffsets(laserGun);
 
 
-        Weapon blasterShotgun = new BlasterShotgun(0, 26, new Point2D(150, 0), new Point2D(150, 0));
+        Weapon blasterShotgun = new BlasterShotgun(0, 26, 3, new Point2D(150, 0), new Point2D(150, 0));
         this.addPrimaryWeaponWithCustomOffsets(blasterShotgun);
 
     }

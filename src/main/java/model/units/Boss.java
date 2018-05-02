@@ -48,16 +48,6 @@ public class Boss extends Unit {
     private int originalHp;
 
     /**
-     * Kuinka usein ammutaan
-     */
-    private int fireRate = 100;
-
-    /**
-     * Kasvatetaan kunnes sama kuin fireRate, jolloin ammutaan ja fireRateCounter asetetaan 0.
-     */
-    private int fireRateCounter = 100;
-
-    /**
      * Konstruktori. Kutsuu yläluokan konstruktoria ja asettaa kontrollerin. orginalHp on sama kuin
      * alunperin parametrinä annettu hp. Pomo lisätään CollisionListiin (osumatarkastelu) ja sille luodaan
      * suorakulmainen hitboxi, 128x256. Saa tagin "boss".
@@ -97,12 +87,6 @@ public class Boss extends Unit {
 
     @Override
     public void update(double deltaTime){
-        if (fireRateCounter <= fireRate) fireRateCounter++;
-        if (fireRateCounter >= fireRate) {
-            fireRateCounter = 0;
-            shootPrimary();
-            shootSecondary();
-        }
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200
@@ -111,6 +95,8 @@ public class Boss extends Unit {
             destroyThis();
         }
         controller.setHealthbar(hpPercentage(), 0);
+        shootPrimary();
+        shootSecondary();
 
         moveStep(deltaTime);
         if(!inFightingStage){

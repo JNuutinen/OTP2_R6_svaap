@@ -4,7 +4,6 @@ import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import model.Component;
 import model.projectiles.Missile;
 
 /**
@@ -14,7 +13,7 @@ import model.projectiles.Missile;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class RocketLauncher extends Component implements Weapon {
+public class RocketLauncher extends Weapon {
 
     /**
      * Raketinheittimen ammuksien nopeus.
@@ -26,25 +25,12 @@ public class RocketLauncher extends Component implements Weapon {
      */
     private double rotatingSpeed = 9.0;
 
-    /**
-     * Raketinheittimen ammuksien vahinko.
-     */
-    private static final int DAMAGE = 20;
-
-    /**
-     * Raketinheittimen tulinopeus.
-     */
-    private static final double FIRE_RATE = 1;
 
     /**
      * Raketinheittimen väri.
      */
     private static final Color COLOR = Color.BLUE;
 
-    /**
-     * Ammusten vahinkomääräkerroin.
-     */
-    private double damageMultiplier = 1;
 
     /**
      * Kontrolleriin viittaus projectilen spawnaamisen mahdollistamiseen.
@@ -60,10 +46,11 @@ public class RocketLauncher extends Component implements Weapon {
      * Konstruktori.
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     * @param firerate TODO
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
-    public RocketLauncher(int orientation, double rotatingSpeed, boolean missileCanLoseTarget) {
-        super("circle", 4, orientation, COLOR);
+    public RocketLauncher(int orientation, double rotatingSpeed, double firerate, boolean missileCanLoseTarget) {
+        super("circle", 4, orientation, COLOR, 30, firerate);
         this.controller = GameController.getInstance();
         this.rotatingSpeed = rotatingSpeed;
         this.missileCanLoseTarget = missileCanLoseTarget;
@@ -73,33 +60,35 @@ public class RocketLauncher extends Component implements Weapon {
      * TODO
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
+     *
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param prjoectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      */
-    public RocketLauncher(int orientation, double rotatingSpeed, boolean missileCanLoseTarget,
+    public RocketLauncher(int orientation, double rotatingSpeed, double firerate, boolean missileCanLoseTarget,
                           Point2D componentOffset, Point2D prjoectileOffset) {
-        this(orientation, rotatingSpeed, missileCanLoseTarget);
+        this(orientation, rotatingSpeed, firerate, missileCanLoseTarget);
         setComponentOffset(componentOffset);
         setProjectileOffset(prjoectileOffset);
     }
 
     @Override
-    public double getFireRate() {
-        return FIRE_RATE;
-    }
-
-    @Override
-    public void setDamageMultiplier(double damageMultiplier) {
-        this.damageMultiplier = damageMultiplier;
-    }
-
-    @Override
     public void shoot() {
         if (getParentUnit() != null) {
-            Missile missile = new Missile(getParentUnit(), SPEED, (int) (DAMAGE * damageMultiplier), rotatingSpeed, getComponentProjectileTag(), missileCanLoseTarget);
-            controller.addUpdateableAndSetToScene(missile);
-            controller.addHitboxObject(missile);
+            if (getFireRateCounter() >= getFirerate()) {
+                setFireRateCounter(0);
+
+                Missile missile = new Missile(getParentUnit(), SPEED, (int) (getDamage() * getDamageMultiplier()), rotatingSpeed, getWeaponProjectileTag(), missileCanLoseTarget);
+                controller.addUpdateableAndSetToScene(missile);
+                controller.addHitboxObject(missile);
+            }
+        }
+    }
+
+    @Override
+    public void update(double deltaTime) {
+        if (getFireRateCounter() <= getFirerate()) {
+            setFireRateCounter(getFireRateCounter() + deltaTime);
         }
     }
 }

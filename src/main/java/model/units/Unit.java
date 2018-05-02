@@ -23,9 +23,9 @@ import java.util.List;
 public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
 
     /**
-     * apumuuttuja jotta komponentit tietävät onko alus oikeasti null, koska aluksesta jää viittaus komponenttiin.
+     * apumuuttuja jotta komponentit tietävät onko alus oikeasti tuhottu, koska aluksesta jää viittaus komponenttiin.
      */
-    private boolean isNull = false;
+    private boolean isDestroyed = false;
 
     /**
      * Aluksen koko. Käytetään mm. räjähdyksen suuruuden määrittelemisessä.
@@ -70,7 +70,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     /**
      * Komponenttilista.
      *
-    ArrayList<Component> components = new ArrayList<>(); */
+    ArrayList<Weapon> components = new ArrayList<>(); */
 
     /**
      * Kaikki aseet mm. järjestämistä varten.
@@ -142,7 +142,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaries primary-aseet tägeinä eli int muodossa.
      */
     public void makePrimaryWeapons(List<Tag> primaries) {
-        List<Weapon> initialPrimaryWeapons = new ArrayList<>();
+        List<model.weapons.Weapon> initialPrimaryWeapons = new ArrayList<>();
 
         if(primaries != null && controller != null) {
             for (Tag primaryWeaponTag : primaries) {
@@ -150,22 +150,25 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
                     default:
                         break;
                     case WEAPON_BLASTER:
-                        initialPrimaryWeapons.add(new Blaster(2, 20));
+                        initialPrimaryWeapons.add(new Blaster(2, 20, 1.5));
                         break;
                     case WEAPON_BLASTER_SHOTGUN:
-                        initialPrimaryWeapons.add(new BlasterShotgun(2, 20));
+                        initialPrimaryWeapons.add(new BlasterShotgun(2, 20, 1.5));
                         break;
                     case WEAPON_BLASTER_SPRINKLER:
-                        initialPrimaryWeapons.add(new BlasterSprinkler(2, 20, 2));
+                        initialPrimaryWeapons.add(new BlasterSprinkler(2, 20, 2, 3));
                         break;
                     case WEAPON_ROCKET_LAUNCHER:
-                        initialPrimaryWeapons.add(new RocketLauncher(2, 4.8, true));
+                        initialPrimaryWeapons.add(new RocketLauncher(2, 4.8, 3, true));
                         break;
                     case WEAPON_ROCKET_SHOTGUN:
-                        initialPrimaryWeapons.add(new RocketShotgun(2, 0, 4.8, true));
+                        initialPrimaryWeapons.add(new RocketShotgun(2, 0, 5, 4.8, true));
                         break;
                     case WEAPON_LASER_GUN:
-                        initialPrimaryWeapons.add(new LaserGun(2, 1));
+                        initialPrimaryWeapons.add(new LaserGun(2, 1, 1.5));
+                        break;
+                    case WEAPON_MACHINE_GUN:
+                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.1));
                         break;
                 }
             }
@@ -189,11 +192,11 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
     public void addPrimaryWeapon(Weapon primaryWeapon) {
-        ((Component)primaryWeapon).setParentUnit(this);
-        this.primaryWeapons.add(primaryWeapon);
-        Platform.runLater(()-> this.getChildren().add(((Component) primaryWeapon).getShape()));
+        (primaryWeapon).setParentUnit(this); // asettaa aseen ampujaksi tämän.
+        primaryWeapons.add(primaryWeapon); // lisää pääaseisiin parametrin
+        Platform.runLater(()-> this.getChildren().add(primaryWeapon.getShape()));
 
-        //sortComponents(); TODO
+        sortComponents();
     }
 
     /**
@@ -201,16 +204,15 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaryWeapon Weapon-rajapinnan toteuttava olio.
      */
     public void addPrimaryWeaponWithCustomOffsets(Weapon primaryWeapon) {
-        Component component = (Component)primaryWeapon;
-        ((Component)primaryWeapon).setParentUnit(this);
+        (primaryWeapon).setParentUnit(this);
 
         // asetetaan komponentin poikkeama
-        Shape componentShape = component.getShape();
-        componentShape.setLayoutX(component.getOffset().getX());
-        componentShape.setLayoutY(component.getOffset().getY());
+        Shape componentShape = primaryWeapon.getShape();
+        componentShape.setLayoutX(primaryWeapon.getOffset().getX());
+        componentShape.setLayoutY(primaryWeapon.getOffset().getY());
 
         this.primaryWeapons.add(primaryWeapon);
-        Platform.runLater(()-> this.getChildren().add(((Component) primaryWeapon).getShape()));
+        Platform.runLater(()-> this.getChildren().add((primaryWeapon).getShape()));
         // tästä metodista ei mene koottavien komponenttien joukkoon
     }
 
@@ -240,11 +242,11 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param secondaryWeapon Weapon-rajapinnan toteuttava ase.
      */
     public void setSecondaryWeapon(Weapon secondaryWeapon) {
-        ((Component)secondaryWeapon).setParentUnit(this);
-        Platform.runLater(()->this.getChildren().add(((Component)secondaryWeapon).getShape()));
-        this.secondaryWeapon = secondaryWeapon;
+        (secondaryWeapon).setParentUnit(this); // asettaa aseen ampujaksi tämän.
+        Platform.runLater(()->this.getChildren().add((secondaryWeapon).getShape()));
+        this.secondaryWeapon = secondaryWeapon; // asettaa sekundaariaseeksi parametrin
 
-        //sortComponents(); TODO
+        sortComponents();
     }
 
     /**
@@ -252,16 +254,15 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param secondaryWeapon Weapon-rajapinnan toteuttava olio.
      */
     public void setSecondaryWeaponWithCustomOffsets(Weapon secondaryWeapon) {
-        Component component = (Component)secondaryWeapon;
-        ((Component)secondaryWeapon).setParentUnit(this);
+        secondaryWeapon.setParentUnit(this);
 
         // asetetaan komponentin poikkeama
-        Shape componentShape = component.getShape();
-        componentShape.setLayoutX(component.getOffset().getX());
-        componentShape.setLayoutY(component.getOffset().getY());
+        Shape componentShape = secondaryWeapon.getShape();
+        componentShape.setLayoutX(secondaryWeapon.getOffset().getX());
+        componentShape.setLayoutY(secondaryWeapon.getOffset().getY());
 
         this.secondaryWeapon = secondaryWeapon;
-        Platform.runLater(()-> this.getChildren().add(((Component) secondaryWeapon).getShape()));
+        Platform.runLater(()-> this.getChildren().add((secondaryWeapon).getShape()));
         // tästä metodista ei mene koottavien komponenttien joukkoon
     }
 
@@ -280,24 +281,67 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * Lajittelee komponenttilistan komoponenttien koon mukaan suurimmasta pienimpään. Apumetodi equipComponents():lle.
      */
     private void sortComponents() {
+        List<List<Weapon>> weaponLists = new ArrayList<>();
+        weaponLists.add(new ArrayList<>());
+        List<Integer> alreadyAddedIndex = new ArrayList<>();
 
-        if(primaryWeapons.size() > 0){
-            for(Weapon primaryWeapon : primaryWeapons){
-                System.out.print(" shape " + ((Component)primaryWeapon).getShape());
-                System.out.println(",  luokka " + primaryWeapon);
-                Component primaryWeaponComponent = (Component)primaryWeapon;
-                primaryWeaponComponent.getShape().setLayoutX(primaryWeaponComponent.getOffset().getX());
-                primaryWeaponComponent.getShape().setLayoutY(primaryWeaponComponent.getOffset().getY());
+
+        for(int i = 0; i < primaryWeapons.size(); i++) {
+            int sameWeaponsAmount = 1; //
+            for (int j = 0; j < primaryWeapons.size(); j++) {
+                if (primaryWeapons.get(i) != primaryWeapons.get(j) && primaryWeapons.get(i).getClass() == primaryWeapons.get(j).getClass() &&
+                        !alreadyAddedIndex.contains(i)) {
+                    alreadyAddedIndex.add(j);
+                    sameWeaponsAmount++;
+                }
+            }
+            // niin kauan kun asejonoja (aluksen sivusuuntaan) ei ole yhtä monta kuin saman tyyppisiä aseita lisätään, luodaan 2 uutta jonoa.
+            // jotta jonolukumäärä pysyy parittomana.
+            while (weaponLists.size() < sameWeaponsAmount) {
+                weaponLists.add(0, new ArrayList<>());
+                weaponLists.add(new ArrayList<>());
+            }
+
+            int firstIndex = (weaponLists.size() - sameWeaponsAmount) / 2;
+            int midIndex = (weaponLists.size()) / 2;
+            int addedIndex = 0;
+            System.out.println("    -   -   ");
+            for (int k = firstIndex; k < sameWeaponsAmount; k++) {
+                if(sameWeaponsAmount % 2 == 0){
+                    if(k == midIndex){
+                        System.out.println("2");
+                        addedIndex = 1;
+                        weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
+                    }
+                    else{
+                        System.out.println("3");
+                        weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
+                    }
+                }
+                else{
+                    System.out.println("1");
+                    weaponLists.get(k).add(primaryWeapons.get(i));
+                }
             }
         }
-
+        System.out.println("...");
+        int iMidIndex = (weaponLists.size()) / 2;
+        for(int i = 0; i < weaponLists.size(); i++){
+            int jMidIndex = (weaponLists.get(i).size()) / 2;
+            for(int j = 0; j < weaponLists.get(i).size(); j++){
+                System.out.println(weaponLists.get(i).get(j) + "i&j " + i + ", " + j + ", iMid & jMid + " + iMidIndex + ", " + jMidIndex);
+                Shape componentShape = weaponLists.get(i).get(j).getShape();
+                //componentShape.setLayoutX(50 * (j - jMidIndex));
+                componentShape.setLayoutY(150 * (i - iMidIndex));
+            }
+        }
 
         /*
         for (int i = 0; i < components.size(); i++) { //Lajitellaan komponentit suurimmasta pienimpään
             for (int n = 0; n < components.size(); n++) {
                 if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i).getShape().getLayoutBounds().getWidth()
                         > components.get(n).getShape().getLayoutBounds().getHeight() * components.get(n).getShape().getLayoutBounds().getWidth()) {
-                    Component x = components.get(n);
+                    Weapon x = components.get(n);
                     components.set(n, components.get(i));
                     components.set(i, x);
 
@@ -315,13 +359,13 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * getteri onko alus null, koska aluksesta saattaa jäädä viittaus mm. komponenttiin.
      * @return Tieto onko alus null.
      */
-    public boolean isNull(){
-        return isNull;
+    public boolean isDestroyed(){
+        return isDestroyed;
     }
 
     @Override
     public void destroyThis() {
-        isNull = true;
+        isDestroyed = true;
         new PowerUp(this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         new Explosion(color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);
@@ -346,6 +390,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param damage Vahinkomäärä, jonka yksikkö ottaa.
      */
     public void takeDamage(int damage) {
+        sortComponents();
         tookDamage = true; // efektiä varten
         if(shape != null){
             shape.setStroke(Color.WHITE);
@@ -412,6 +457,15 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      */
     public void setUnitSize(double unitSize) {
         this.unitSize = unitSize;
+    }
+
+    /**
+     * Getteri Unitin koolle.
+     *
+     * @return Unitin koko.
+     */
+    public double getUnitSize() {
+        return unitSize;
     }
 
 }

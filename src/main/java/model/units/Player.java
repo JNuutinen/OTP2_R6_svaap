@@ -1,17 +1,11 @@
 package model.units;
 
-import Multiplayer.Multiplayer;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import controller.Controller;
 import controller.GameController;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.Tag;
 import model.weapons.Weapon;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static view.GameMain.*;
 
@@ -47,19 +41,9 @@ public class Player extends Unit {
     private int score = 0;
 
     /**
-     * Laskuri pääaseen ampumisesta kuluneeseen aikaan. Vertaillaan pääaseen tulinopeuteen.
-     */
-    private double fireRateCounter;
-
-    /**
      * Viime päivityksestä kulunut aika.
      */
     private double deltaTime = 0;
-
-    /**
-     * Laskuri sivuaseen ampumisesta kuluneeseen aikaan. Vertaillaan sivuaseen tulinopeuteen.
-     */
-    private double secondaryFirerateCounter;
 
     /**
      * Maximi hitpointsit.
@@ -211,28 +195,24 @@ public class Player extends Unit {
         // Secondary fire
         if (input.contains("P")) {
             if (getSecondaryWeapon() != null) {
-                if (secondaryFirerateCounter > getSecondaryWeapon().getFireRate()) {
-                    secondaryFirerateCounter = 0;
+                if (getSecondaryWeapon() != null) {
                     shootSecondary();
                     Multiplayer.shootSecondary();
                 }
             }
         }
 
-        fireRateCounter += deltaTime;
-        secondaryFirerateCounter += deltaTime;
         if (input.contains("V")) System.exit(0);
 
+        /* TODO: pause ei toimi joten ei anneta laittaa pauselle
         if (input.contains(KeyCode.ESCAPE.toString())) {
             controller.pauseGame();
         }
+        */
 
         // Päivitä sijainti
         if(deltaTime < 1) { // TODO
             setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
-
-
-
         }
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
         controller.setHealthbar(hpPercentage(), 1);

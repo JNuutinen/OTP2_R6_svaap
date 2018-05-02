@@ -7,7 +7,6 @@ import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -26,6 +25,7 @@ import model.units.Unit;
 import model.weapons.Weapon;
 import view.menus.MenuSpace;
 import view.menus.PauseMenu;
+import view.menus.PlayMenu;
 
 import java.util.*;
 
@@ -109,6 +109,11 @@ public class GameMain extends Application implements View {
     private Stage primaryStage;
 
     /**
+     * TODO
+     */
+    private PauseMenu pauseMenu;
+
+    /**
      * Kytkin, jonka perusteella näytetään debuggaus fps mittarit.
      */
     private boolean debuggerToolsEnabled = true;
@@ -163,9 +168,6 @@ public class GameMain extends Application implements View {
      * @param args Komentoriviargumentit.
      */
     public static void main(String[] args) {
-        //Database database = new Database();
-        //database.dbTest();
-        //database.purgeSaves();
         launch(args);
     }
 
@@ -240,7 +242,7 @@ public class GameMain extends Application implements View {
         } else{
             debugger_fps.setTextFill(Color.web("#ffffff"));//valkone
         }
-        debugger_fps.setText(String.valueOf(fps));
+        debugger_fps.setText(String.valueOf((int)fps));
     }
 
     @Override
@@ -329,6 +331,9 @@ public class GameMain extends Application implements View {
         // Pane kaikille menuille
         MenuSpace menuSpace = new MenuSpace(this, messages);
 
+        // Asetetaan pausemenu joka haetaan MenuSpacesta
+        pauseMenu = menuSpace.getPauseMenu();
+
         // Pane, se kaikkien isä (uiRoot, gameRoot)
         pane = new BorderPane();
         pane.setStyle("-fx-background-color: black");
@@ -358,8 +363,6 @@ public class GameMain extends Application implements View {
 
     @Override
     public void pause() {
-        PauseMenu pauseMenu = new PauseMenu(messages);
-        Group pauseMenuGroup = pauseMenu.getGroup();
 
         pauseMenu.continueButton.setOnAction(event -> {
             gameRoot.setCenter(null);
@@ -370,7 +373,7 @@ public class GameMain extends Application implements View {
             pauseMenu.quitButton.setDisable(true);
             controller.returnToMain();
         });
-        gameRoot.setCenter(pauseMenuGroup);
+        gameRoot.setCenter(pauseMenu);
     }
 
     @Override
@@ -489,7 +492,7 @@ public class GameMain extends Application implements View {
         primaryStage.setScene(scene);
 
         controller.startLoop();
-        controller.startLevel(1); // playMenu.getSelectedLevel() TODO
+        controller.startLevel(PlayMenu.getSelectedLevel());
     }
 
     public BorderPane getUiRoot(){

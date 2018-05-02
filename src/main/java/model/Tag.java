@@ -69,5 +69,10 @@ public enum Tag {
     /**
      * Aseen Laser Gun tagi.
      */
-    WEAPON_LASER_GUN
+    WEAPON_LASER_GUN,
+
+    /**
+     * Aseen Machine Gun tagi.
+     */
+    WEAPON_MACHINE_GUN
 }

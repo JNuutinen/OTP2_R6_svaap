@@ -18,7 +18,7 @@ import static view.GameMain.*;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class PauseMenu extends BorderPane {
+public class PauseMenu extends Menu {
 
     /**
      * Jatka peliä -painike. OnClick asetetaan ulkopuolelta, siksi public.
@@ -31,15 +31,12 @@ public class PauseMenu extends BorderPane {
     public Button quitButton;
 
     /**
-     * Taukovalikon Group.
-     */
-    private Group pauseMenuGroup;
-
-    /**
-     * Konstruktori, jossa luodaan komponentit ja lisätään Groupiin.
+     * Konstruktori, jossa luodaan komponentit ja ne lisätään itseensä.
      * @param messages Lokalisoidut resurssit.
+     * @param menuSpace MenuSpace MenuSpace.
      */
-    public PauseMenu(ResourceBundle messages) {
+    public PauseMenu(ResourceBundle messages, MenuSpace menuSpace) {
+        super(menuSpace);
 
         continueButton = new Button(messages.getString("continue"));
         continueButton.setMinWidth(100);
@@ -49,7 +46,6 @@ public class PauseMenu extends BorderPane {
         quitButton.setMinWidth(100);
         quitButton.setPrefWidth(Double.MAX_VALUE);
 
-        pauseMenuGroup = new Group();
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
 
@@ -69,18 +65,12 @@ public class PauseMenu extends BorderPane {
 
         borderPane.setCenter(vBox);
 
-        pauseMenuGroup.getChildren().add(borderPane);
+        getChildren().add(borderPane);
     }
 
-    /**
-     * Palauttaa Node-Groupin.
-     */
-    public Group getGroup() {
-        return pauseMenuGroup;
-    }
-
-    // TODO Ei toiminnassa
+    @Override
     public void changeLocale(ResourceBundle messages) {
+        System.out.println("hm");
         continueButton.setText(messages.getString("continue"));
         quitButton.setText(messages.getString("quit"));
     }
