@@ -34,6 +34,11 @@ public class SettingsMenu extends Menu {
     public Button enNzButton;
 
     /**
+     * Näppäin Ruotsilokaalille.
+     */
+    public Button seSeButton;
+
+    /**
      * Lokaaliotsikko.
      */
     private Text localeText;
@@ -73,6 +78,9 @@ public class SettingsMenu extends Menu {
         fiFiButton = new Button();
         fiFiButton.setGraphic(new ImageView(new Image("/images/fi.png")));
 
+        seSeButton = new Button();
+        seSeButton.setGraphic(new ImageView(new Image("/images/se.png")));
+
         enNzButton = new Button();
         enNzButton.setGraphic(new ImageView(new Image("/images/nz.png")));
 
@@ -82,7 +90,7 @@ public class SettingsMenu extends Menu {
         HBox localeBox = new HBox();
         localeBox.setSpacing(8);
         localeBox.setAlignment(Pos.TOP_CENTER);
-        localeBox.getChildren().addAll(fiFiButton, enNzButton);
+        localeBox.getChildren().addAll(fiFiButton, seSeButton, enNzButton);
 
         VBox vBox = new VBox();
         vBox.setSpacing(8);
@@ -101,6 +109,7 @@ public class SettingsMenu extends Menu {
 
         // Settings menun lokaalien click eventit
         fiFiButton.setOnAction(event -> getMenuSpace().changeLocales(locales.get("fi_FI")));
+        seSeButton.setOnAction(event -> getMenuSpace().changeLocales(locales.get("se_SE")));
         enNzButton.setOnAction(event -> getMenuSpace().changeLocales(locales.get("en_NZ")));
     }
 
@@ -125,6 +134,7 @@ public class SettingsMenu extends Menu {
         locales = new HashMap<>();
         locales.put("en_NZ", new Locale("en", "NZ"));
         locales.put("fi_FI", new Locale("fi", "FI"));
+        locales.put("se_SE", new Locale("se", "SE"));
         messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
     }
 }
