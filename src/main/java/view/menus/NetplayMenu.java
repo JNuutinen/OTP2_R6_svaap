@@ -78,24 +78,25 @@ public class NetplayMenu extends Menu{
                     //-- click eventit --//
 
         backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
-
+/*
         connectButton.setOnAction(event -> {
             Client client = new Client();
-            if (client.connect()) {
-            connectButton.setDisable(true);
-            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
-            ft2.setFromValue(1.0);
-            ft2.setToValue(0.0);
-            ft2.play();
-            ft2.setOnFinished(event1 -> {
+
+                connectButton.setDisable(true);
+                FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
+                ft2.setFromValue(1.0);
+                ft2.setToValue(0.0);
+                ft2.play();
+                ft2.setOnFinished(event1 -> {
                 //pane.getChildren().remove(uiRoot);
                 gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
             });
-        }});
+            client.connect();
+        });
 
         hostButton.setOnAction(event -> {
             Server server = new Server();
-            if (server.startServer()) {
+
                 hostButton.setDisable(true);
                 FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
                 ft2.setFromValue(1.0);
@@ -105,7 +106,9 @@ public class NetplayMenu extends Menu{
                     //pane.getChildren().remove(uiRoot);
                     gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
                 });
-            }});
+                server.startServer();
+            });
+        */
     }
 
     /**

@@ -18,6 +18,7 @@ public class Server  {
             Socket s = serv.accept();
             System.out.println("Client connected...");
 
+
             Reciever r = new Reciever();
             r.init(new ObjectInputStream(s.getInputStream()));
             (new Thread(r)).start();

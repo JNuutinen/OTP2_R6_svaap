@@ -466,11 +466,10 @@ public class GameMain extends Application implements View {
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
 
-/*
+
         Server slave = new Server();
         slave.startServer();
-        (new Thread(slave)).start();
-
+/*
         Client client = new Client();
         client.connect();
 */

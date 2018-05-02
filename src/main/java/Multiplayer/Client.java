@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client  {
-    String ip = "192.168.43.199";
+    String ip = "192.168.43.224";
     int port = 1111;
 
 
