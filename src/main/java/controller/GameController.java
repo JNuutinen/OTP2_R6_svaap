@@ -77,7 +77,13 @@ public class GameController implements Controller {
 
     @Override
     public void addPlayers(ArrayList<Player> players) {
-        this.players = players;
+        if (this.players == null) {
+            this.players = players;
+        } else {
+            for (Player p : players) {
+                this.players.add(p);
+            }
+        }
         gameLoop.setPlayers(players);
     }
 
@@ -113,7 +119,6 @@ public class GameController implements Controller {
     @Override
     public void setToScene(Sprite sprite) {
         Platform.runLater(() -> view.addSprite(sprite));
-        System.out.println("asd " + sprite);
     }
 
     @Override

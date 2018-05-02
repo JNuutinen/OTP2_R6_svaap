@@ -12,7 +12,7 @@ public class MoveData extends Data {
     }
 
     public void action() {
-        System.out.println("move");
         Multiplayer.getPlayerById(playerId).setPosition(x, y);
+        System.out.println(Multiplayer.getPlayerById(playerId).getPosition());
     }
 }

@@ -132,6 +132,7 @@ public class Player extends Unit {
 
     @Override
     public void update(double deltaTime){
+
         if(getTookDamage()){
             tookDamage2 = true;
             damagedTimeCounter = 0;
