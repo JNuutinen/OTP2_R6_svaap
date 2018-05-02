@@ -7,6 +7,7 @@ import javafx.geometry.Point2D;
 import model.Tag;
 import model.units.Boss3;
 import model.units.Enemy;
+import model.units.TeleporterEnemy;
 import model.units.TrackerEnemy;
 
 import java.util.ArrayList;
@@ -89,6 +90,38 @@ public class Level3 extends Thread implements Level {
             Thread.sleep(1215);
 
             new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER)), Enemy.MOVE_STRAIGHT, new Point2D(WINDOW_WIDTH+100, 359));
+
+            Thread.sleep(5_000);
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH - 300, 600));
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH - 600, 200));
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_ROCKET_LAUNCHER)), new Point2D(WINDOW_WIDTH - 800, 700));
+
+            Thread.sleep(3_000);
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH - 500, 100));
+
+            Thread.sleep(1_000);
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)), new Point2D(WINDOW_WIDTH - 900, 300));
+
+            Thread.sleep(1_000);
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)), new Point2D(WINDOW_WIDTH - 900, 600));
+
+            Thread.sleep(1_000);
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_MACHINE_GUN)), new Point2D(WINDOW_WIDTH - 200, 500));
+
+            Thread.sleep(1_000);
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH - 580, 350));
+
+            Thread.sleep(1_000);
+
+            new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH - 1100, 100));
 
             Thread.sleep(8_000);
 

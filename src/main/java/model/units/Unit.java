@@ -13,6 +13,7 @@ import model.weapons.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
@@ -169,7 +170,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
                         initialPrimaryWeapons.add(new LaserGun(2, 1, 1.5));
                         break;
                     case WEAPON_MACHINE_GUN:
-                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.1));
+                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.05));
                         break;
                 }
             }
@@ -358,7 +359,17 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     @Override
     public void destroyThis() {
         isDestroyed = true;
-        new PowerUp(this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        if (this instanceof Boss) {
+            // Bossi droppaa kuollessaan läjän HP poweruppeja
+            for (int i = 0; i < 10; i++) {
+                int x = ThreadLocalRandom.current().nextInt((int) (getXPosition()), (int) (getXPosition() + getHitboxRadius()) + 1);
+                int y = ThreadLocalRandom.current().nextInt((int) (getYPosition()), (int) (getYPosition() + getHitboxRadius()) + 1);
+                new PowerUp(0, 10, new Point2D(x, y));
+            }
+        } else {
+            // Muut vihut random powerup
+            new PowerUp(this, (int) (Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        }
         new Explosion(color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);
     }

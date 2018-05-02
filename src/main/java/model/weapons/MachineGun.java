@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Konekivääriase.
+ *
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
@@ -39,18 +40,20 @@ public class MachineGun extends Weapon {
 
     /**
      * Konstruktori
+     *
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param firerate Tulinopeus.
      */
     public MachineGun(int orientation, double projectileSpeed, double firerate) {
-        super("rectangle", 4, orientation, COLOR, 2, firerate);
+        super("rectangle", 4, orientation, COLOR, 3, firerate);
         this.controller = GameController.getInstance();
         this.projectileSpeed = projectileSpeed;
     }
 
     /**
      * Konstruktori aseen ja ammuksen aloituspaikan custom poikkeamalla aluksesta
+     *
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param firerate Tulinopeus.
