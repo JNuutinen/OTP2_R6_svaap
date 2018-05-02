@@ -8,6 +8,7 @@ import model.*;
 import model.units.BomberEnemy;
 import model.units.Boss3;
 import model.units.Enemy;
+import model.units.TrackerEnemy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +48,8 @@ public class Level1 extends Thread implements Level {
         try {
             Thread.sleep(1000);
 
-            new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER)),
+            new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_BLASTER,
+                    Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER_SHOTGUN)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
 
             //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
@@ -65,12 +67,13 @@ public class Level1 extends Thread implements Level {
                     new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 400),
                     new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 700)};
 
-            //new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300), path);
+            new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN)),
+                    new Point2D(WINDOW_WIDTH + 50, 300), path);
 
-            new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
-                    path2, -1);
+            /*new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH + 50, 300),
+                    path2, -1);*/
 
-            Thread.sleep(40_000);
+            Thread.sleep(10_000);
 
             //Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
             Boss3 finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));

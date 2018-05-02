@@ -74,6 +74,7 @@ public class MenuSpace extends StackPane {
         pauseMenu = new PauseMenu(messages, this);
         playMenu = new PlayMenu(messages, this, gameMain);
         settingsMenu = new SettingsMenu(messages, this);
+        settingsMenu = new SettingsMenu(messages, this);
 
         menus.add(mainMenu);
         menus.add(customizeMenu);
