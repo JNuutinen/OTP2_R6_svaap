@@ -280,44 +280,65 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     }
 
     /**
-     * Lajittelee komponenttilistan komoponenttien koon mukaan suurimmasta pienimpään. Apumetodi equipComponents():lle.
+     * Lajittelee primaryWeapons ja secondaryWeapon -aseet, niin että luo jonoja aina parittoman määrän vähintään yhtä monta kun kyseisissä listoissa
+     * on eniten saman tyyppisiä aseita. Pariton määrä jonoja siksi jotta aluksella on aina olemassa 1 jono keskellä alusta. Saman tyyppiset aseet lajitellaan
+     * eri jonoihin eli aluksen sivusuuntaisesti niin että parillisesta määrästä samoista aseista ei mene asetta aluksen keskijonoon, ja toisinpäin, jotta lajittelu
+     * pysyisi symmetrisenä. Yksi jono voi taas sisältää rajaton määrä eri tyyppisiä aseita jotka lajitellaan aluksen etusuuntaisesti.
+     * Aseet lajitellaan siis siten että aluksen keskeltä alkaen lisätään aseita sivu- tai/ja etusuuntaan riippuen
+     * kuinka monta saman tyyppistä asetta ja kuinka monta eri asetta on aluksella.
      */
     private void sortComponents() {
+        // lista johon lisätään lajiteltavat aseet.
         List<List<Weapon>> weaponLists = new ArrayList<>();
         weaponLists.add(new ArrayList<>());
+        // aseiden indeksit jota on jo lisätty lajiteltaviin aseisiin
         List<Integer> alreadyAddedIndex = new ArrayList<>();
+        // aseiden indeksit jotka lisätään lajiteltaviin aseisiiin. apumuuttuja.
         List<Integer> toBeAddedIndexes = new ArrayList<>();
 
-
+        // tuplaiterointi
         for(int i = 0; i < primaryWeapons.size(); i++) {
+            // tyhjää lisättävät aseiden indeksit ja lisää tarkasteltava alkio
             toBeAddedIndexes.clear();
             if(!alreadyAddedIndex.contains(i)){
                 toBeAddedIndexes.add(i);
             }
+
             for (int j = 0; j < primaryWeapons.size(); j++) {
+                // jos tarkasteltavat alkiot eivät ole sama olio, ja jos alkiot ovat samaa alaluokkaa (sama ase), ja jos tarkasteltavaa alkiota
+                // ei ole jo lisätty lajiteltaviin...
                 if (primaryWeapons.get(i) != primaryWeapons.get(j) && primaryWeapons.get(i).getClass() == primaryWeapons.get(j).getClass() &&
                         !alreadyAddedIndex.contains(i)) {
+                    // ...niin lisää alkio lajiteltuihin ja lisättäviin aseisiin joka pitää sisällään vain saman tyyppisiä aseita.
                     alreadyAddedIndex.add(j);
                     toBeAddedIndexes.add(j);
                 }
             }
-            // niin kauan kun asejonoja (aluksen sivusuuntaan) ei ole yhtä monta kuin saman tyyppisiä aseita lisätään, luodaan 2 uutta jonoa.
+            // niin kauan kun asejonoja (aluksen sivusuuntaan) ei ole yhtä monta kuin lisättäviä saman tyyppisiä aseita, luodaan 2 uutta jonoa.
             // jotta jonolukumäärä pysyy parittomana.
             while (weaponLists.size() < toBeAddedIndexes.size()) {
                 weaponLists.add(0, new ArrayList<>());
                 weaponLists.add(new ArrayList<>());
             }
 
+            // eka indeksi johon lisättävistä lisätään ase jotta weaponList lista pysyy symmetrisenä.
             int firstIndex = (weaponLists.size() - toBeAddedIndexes.size()) / 2;
+            // keskimmäinen indeksi aselistoista. apumuuttuja
             int iMidIndex = (weaponLists.size()) / 2;
+            // apumuuttuja tilanteeseen jossa ei lisätä keskimmäiseen listaan asetta, eli silloin kun saman tyyppisiä aseita on parillinen määrä.
             int addedIndex = 0;
 
+            // lisätään secondaryWeapon keskimmäiseen listaan.
             if(getSecondaryWeapon() != null){
                 weaponLists.get(iMidIndex).add(getSecondaryWeapon());
             }
 
+            // listään lisättävät, eli samantyyppiset, aseet lajiteltavien listaan:
             for (int k = 0; k < toBeAddedIndexes.size(); k++) {
+                // jos lisättävät on parillinen määrä
                 if(toBeAddedIndexes.size() % 2 == 0){
+                    // ja jos lisättävä kohta on keskimmäinen lista, niin lisää sitä seuraavaan listaan, ja apumuuttujan avulla pidä huoli että
+                    // seuraavat aseet lisätään aina yhtä pidemmälle olevaan listaan (koska keskilista skipattiin)
                     if(k + firstIndex == iMidIndex){
                         addedIndex = 1;
                         weaponLists.get(k + firstIndex + addedIndex).add(primaryWeapons.get(toBeAddedIndexes.get(k)));
@@ -326,11 +347,14 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
                         weaponLists.get(k + firstIndex + addedIndex).add(primaryWeapons.get(toBeAddedIndexes.get(k)));
                     }
                 }
+                // jos lisättävät on pariton määrä
                 else{
                     weaponLists.get(k + firstIndex).add(primaryWeapons.get(toBeAddedIndexes.get(k)));
                 }
             }
         }
+        // Vaihda lajiteltavien aseiden sijantia ja ammuksen aloitussijaintia riippuen lajiteltavat listan listan indeksistä ja
+        // sen listan aseen indeksistä, verrattuna kummankin llistan keski-indekseihin.
         int iMidIndex = (weaponLists.size()) / 2;
         for(int i = 0; i < weaponLists.size(); i++){
             int jMidIndex = (weaponLists.get(i).size()) / 2;
