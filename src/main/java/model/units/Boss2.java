@@ -6,13 +6,14 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.Tag;
-import model.units.Unit;
-import model.weapons.*;
+import model.weapons.BlasterShotgun;
+import model.weapons.LaserGun;
+import model.weapons.Weapon;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
-public class Boss2 extends Unit {
+public class Boss2 extends Unit implements Boss {
     /**
      * Pelin kontrolleri
      */

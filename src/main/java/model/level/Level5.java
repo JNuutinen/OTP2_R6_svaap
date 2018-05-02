@@ -4,17 +4,13 @@ import controller.Controller;
 import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import model.Tag;
-import model.units.Enemy;
-import model.units.TeleporterEnemy;
+import model.units.Boss3;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 /**
- * Nelostaso. Säie, joka suorittaa kovakoodatun tason lineaarisesti, ilman looppeja.
+ * Vitostaso. Säie, joka suorittaa kovakoodatun tason lineaarisesti, ilman looppeja.
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
@@ -43,6 +39,7 @@ public class Level5 extends Thread implements Level {
     public void run() {
         try {
             Thread.sleep(1000);
+            /*
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_MACHINE_GUN)), new Point2D(WINDOW_WIDTH - 700, 200));
 
             new Enemy(null, Enemy.MOVE_NONE, new Point2D(WINDOW_WIDTH-300, 50));
@@ -60,18 +57,29 @@ public class Level5 extends Thread implements Level {
             new Enemy(null, Enemy.MOVE_NONE, new Point2D(WINDOW_WIDTH-300, 700));
 
             Thread.sleep(500_000);
+            */
+
+            Thread.sleep(8_000);
+
+            //Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
+            Boss3 finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
+
+            // pyöri silmukas 1 sec välein niin kauan kuin bossi on olemassa
+            while (!finalBoss.isDestroyed()) {
+                Thread.sleep(1_000);
+            }
 
             // Hyperdrive
-            //controller.changeBackgroundScrollSpeed(2000, 5);
-            //Thread.sleep(6_000);
+            controller.changeBackgroundScrollSpeed(2000, 5);
+            Thread.sleep(6_000);
 
             Platform.runLater(() -> controller.addScore(500));
 
             // Seuraavan tason aloitus
-            //controller.startLevel(2);
+            controller.startLevel(3);
 
             // Jos ei seuraavaa tasoa, palataan päävalikkoon
-            Platform.runLater(() -> controller.returnToMain());
+            //Platform.runLater(() -> controller.returnToMain());
 
         } catch (InterruptedException e) {
             e.printStackTrace();

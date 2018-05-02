@@ -167,7 +167,7 @@ public class CustomizeMenu extends Menu {
         Weapon rocketLauncher = new RocketLauncher(5, 20, 4, false);
 
         // TODO: machine gun offsets
-        Weapon machineGun = new MachineGun(0, 55, 0.1);
+        Weapon machineGun = new MachineGun(0, 55, 0.05);
 
         weapons.add(blaster);
         weapons.add(laserGun);
@@ -194,7 +194,7 @@ public class CustomizeMenu extends Menu {
         Weapon blasterSprinkler = new BlasterSprinkler(2, 20, 2, 1);
 
         // TODO: machine gun offsets
-        Weapon machineGun = new MachineGun(0, 55, 0.1);
+        Weapon machineGun = new MachineGun(0, 55, 0.05);
 
         weapons.add(blaster);
         weapons.add(rocketShotgun);

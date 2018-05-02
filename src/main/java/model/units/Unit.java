@@ -3,6 +3,7 @@ package model.units;
 import controller.Controller;
 import controller.GameController;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -12,6 +13,7 @@ import model.weapons.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
@@ -168,7 +170,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
                         initialPrimaryWeapons.add(new LaserGun(2, 1, 1.5));
                         break;
                     case WEAPON_MACHINE_GUN:
-                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.1));
+                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.05));
                         break;
                 }
             }
@@ -305,31 +307,25 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
             int firstIndex = (weaponLists.size() - sameWeaponsAmount) / 2;
             int midIndex = (weaponLists.size()) / 2;
             int addedIndex = 0;
-            System.out.println("    -   -   ");
             for (int k = firstIndex; k < sameWeaponsAmount; k++) {
                 if(sameWeaponsAmount % 2 == 0){
                     if(k == midIndex){
-                        System.out.println("2");
                         addedIndex = 1;
                         weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
                     }
                     else{
-                        System.out.println("3");
                         weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
                     }
                 }
                 else{
-                    System.out.println("1");
                     weaponLists.get(k).add(primaryWeapons.get(i));
                 }
             }
         }
-        System.out.println("...");
         int iMidIndex = (weaponLists.size()) / 2;
         for(int i = 0; i < weaponLists.size(); i++){
             int jMidIndex = (weaponLists.get(i).size()) / 2;
             for(int j = 0; j < weaponLists.get(i).size(); j++){
-                System.out.println(weaponLists.get(i).get(j) + "i&j " + i + ", " + j + ", iMid & jMid + " + iMidIndex + ", " + jMidIndex);
                 Shape componentShape = weaponLists.get(i).get(j).getShape();
                 //componentShape.setLayoutX(50 * (j - jMidIndex));
                 componentShape.setLayoutY(150 * (i - iMidIndex));
@@ -366,7 +362,17 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     @Override
     public void destroyThis() {
         isDestroyed = true;
-        new PowerUp(this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        if (this instanceof Boss) {
+            // Bossi droppaa kuollessaan läjän HP poweruppeja
+            for (int i = 0; i < 10; i++) {
+                int x = ThreadLocalRandom.current().nextInt((int) (getXPosition()), (int) (getXPosition() + getHitboxRadius()) + 1);
+                int y = ThreadLocalRandom.current().nextInt((int) (getYPosition()), (int) (getYPosition() + getHitboxRadius()) + 1);
+                new PowerUp(0, 10, new Point2D(x, y));
+            }
+        } else {
+            // Muut vihut random powerup
+            new PowerUp(this, (int) (Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        }
         new Explosion(color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);
     }

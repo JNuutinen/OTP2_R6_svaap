@@ -6,7 +6,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import model.Tag;
-import model.weapons.*;
+import model.weapons.BlasterSprinkler;
+import model.weapons.LaserGun;
+import model.weapons.RocketLauncher;
+import model.weapons.Weapon;
 
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
@@ -18,7 +21,7 @@ import static view.GameMain.WINDOW_WIDTH;
  * @author Juha Nuutinen
  * @author Henrik Virrankoski
  */
-public class Boss3 extends Unit {
+public class Boss3 extends Unit implements Boss {
 
     /**
      * Pelin kontrolleri
