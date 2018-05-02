@@ -51,6 +51,11 @@ public class MenuSpace extends StackPane {
     private SettingsMenu settingsMenu;
 
     /**
+     * SettingsMenu-menu
+     */
+    private NetplayMenu netPlayMenu;
+
+    /**
      * Lista menuista
      */
     private List<Menu> menus;
@@ -74,12 +79,14 @@ public class MenuSpace extends StackPane {
         pauseMenu = new PauseMenu(messages, this);
         playMenu = new PlayMenu(messages, this, gameMain);
         settingsMenu = new SettingsMenu(messages, this);
+        netPlayMenu = new NetplayMenu(messages, this, gameMain);
 
         menus.add(mainMenu);
         menus.add(customizeMenu);
         menus.add(pauseMenu);
         menus.add(playMenu);
         menus.add(settingsMenu);
+        menus.add(netPlayMenu);
 
         mainMenu.setPlayMenu(playMenu);
         mainMenu.setSettingsMenu(settingsMenu);
@@ -87,6 +94,9 @@ public class MenuSpace extends StackPane {
         playMenu.setMainMenu(mainMenu);
         playMenu.setCustomizeMenu(customizeMenu);
         settingsMenu.setMainMenu(mainMenu);
+        netPlayMenu.setMainMenu(mainMenu);
+        mainMenu.setNetplayMenu(netPlayMenu);
+
 
         this.getChildren().add(mainMenu);
     }

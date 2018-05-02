@@ -2,11 +2,13 @@ package view.menus;
 
 import Multiplayer.Client;
 import Multiplayer.Server;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import view.GameMain;
 
 import java.util.ResourceBundle;
 
@@ -29,43 +31,45 @@ public class NetplayMenu extends Menu{
     private Button netPlay;
 
     // TODO jdoc
-    private Button connect;
+    private Button connectButton;
 
     // TODO jdoc
-    private Button host;
+    private Button hostButton;
 
     public Button backButton;
 
 
     private MainMenu mainMenu;
 
+    private CustomizeMenu customizeMenu;
+
     /**
      * TODO kaikki jdocit
      */
-    public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace) {
+    public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace, GameMain gameMain) {
         super(menuSpace);
 
-        connect = new Button("connect"); //TODO locale
-        host = new Button("host");  // TODO locale
+        connectButton = new Button("connect"); //TODO locale
+        hostButton = new Button("host");  // TODO locale
         backButton = new Button(messages.getString("back"));
 
-        connect.setOnMouseClicked(event -> connectToHost());
-        host.setOnMouseClicked(event -> hostGame());
+        connectButton.setOnMouseClicked(event -> connectToHost());
+        hostButton.setOnMouseClicked(event -> hostGame());
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT-BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
 
 
         backButton.setPrefWidth(Double.MAX_VALUE);
-        host.setPrefWidth(Double.MAX_VALUE);
-        connect.setPrefWidth(Double.MAX_VALUE);
+        hostButton.setPrefWidth(Double.MAX_VALUE);
+        connectButton.setPrefWidth(Double.MAX_VALUE);
 
 
         VBox vBox = new VBox();
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(150);
-        vBox.getChildren().addAll(connect, host, backButton);
+        vBox.getChildren().addAll(connectButton, hostButton, backButton);
 
         borderPane.setCenter(vBox);
 
@@ -74,6 +78,34 @@ public class NetplayMenu extends Menu{
                     //-- click eventit --//
 
         backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
+
+        connectButton.setOnAction(event -> {
+            Client client = new Client();
+            if (client.connect()) {
+            connectButton.setDisable(true);
+            FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
+            ft2.setFromValue(1.0);
+            ft2.setToValue(0.0);
+            ft2.play();
+            ft2.setOnFinished(event1 -> {
+                //pane.getChildren().remove(uiRoot);
+                gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+            });
+        }});
+
+        hostButton.setOnAction(event -> {
+            Server server = new Server();
+            if (server.startServer()) {
+                hostButton.setDisable(true);
+                FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
+                ft2.setFromValue(1.0);
+                ft2.setToValue(0.0);
+                ft2.play();
+                ft2.setOnFinished(event1 -> {
+                    //pane.getChildren().remove(uiRoot);
+                    gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+                });
+            }});
     }
 
     /**
