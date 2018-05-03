@@ -144,7 +144,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaries primary-aseet tägeinä eli int muodossa.
      */
     public void makePrimaryWeapons(List<Tag> primaries) {
-        List<model.weapons.Weapon> initialPrimaryWeapons = new ArrayList<>();
+        List<Weapon> initialPrimaryWeapons = new ArrayList<>();
 
         if(primaries != null && controller != null) {
             for (Tag primaryWeaponTag : primaries) {
