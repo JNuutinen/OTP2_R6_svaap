@@ -76,15 +76,20 @@ public class GameController implements Controller {
     }
 
     @Override
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    @Override
     public void addPlayers(ArrayList<Player> players) {
         if (this.players == null) {
             this.players = players;
         } else {
             for (Player p : players) {
-                this.players.add(p);
+                if (!players.contains(p))
+                    this.players.add(p);
             }
         }
-        gameLoop.setPlayers(players);
     }
 
     @Override
@@ -94,6 +99,8 @@ public class GameController implements Controller {
         }
         view.setScore(players.get(0).getScore());
     }
+
+
 
     @Override
     public void setHealthbar(int hp, int selector){
@@ -173,6 +180,11 @@ public class GameController implements Controller {
     @Override
     public synchronized List<HitboxCircle> getHitboxObjects(){
         return gameLoop.getHitboxObjects();
+    }
+
+    @Override
+    public GameLoop getGameLoop() {
+        return gameLoop;
     }
 
     @Override
