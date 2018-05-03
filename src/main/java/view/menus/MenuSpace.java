@@ -30,7 +30,7 @@ public class MenuSpace extends StackPane {
     /**
      * SettingsMenu-menu
      */
-    private NetplayMenu netPlayMenu;
+    private SettingsMenu settingsMenu;
 
     /**
      * Lista menuista
@@ -59,7 +59,8 @@ public class MenuSpace extends StackPane {
         PlayMenu playMenu = new PlayMenu(messages, this, gameMain);
 
         SettingsMenu settingsMenu = new SettingsMenu(messages, locales, this);
-        settingsMenu = new SettingsMenu(messages, locales, this);
+
+        NetplayMenu netPlayMenu = new NetplayMenu(messages, this, gameMain);
 
         menus.add(mainMenu);
         menus.add(customizeMenu);
