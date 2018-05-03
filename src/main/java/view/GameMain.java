@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.GameBackground;
+import model.PlayerFactory;
 import model.Sprite;
 import model.units.Player;
 import model.units.Unit;
@@ -385,7 +386,7 @@ public class GameMain extends Application implements View {
      * @param primary Pelaajan pääase.
      * @param secondary Pelaajan sivuase.
      */
-    public void startGame(Weapon primary, Weapon secondary) {
+    public void init(Weapon primary, Weapon secondary) {
         pane.getChildren().remove(uiRoot);
 
 
@@ -451,27 +452,8 @@ public class GameMain extends Application implements View {
             uiPane.getChildren().add(debugger_currentFps);*/
         }
 
+        player = PlayerFactory.getPlayer(Color.BLUE, primary, secondary);
 
-        //      Pelaaja
-        player = new Player(Color.BLUE);
-        player.setPosition(100, 300);
-
-        //      tieto controllerille pelaajasta
-        controller.addPlayers(new ArrayList<Player>(Arrays.asList(player)));
-        controller.addUpdateableAndSetToScene(player);
-        controller.addHitboxObject(player);
-
-        //      pelaajalle pyssyt
-        player.addPrimaryWeapon(primary);
-        player.setSecondaryWeapon(secondary);
-
-        System.out.println("asd");
-        //Server slave = new Server();
-        //slave.startServer();
-/*
-        Client client = new Client();
-        client.connect();
-*/
         //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
@@ -486,6 +468,13 @@ public class GameMain extends Application implements View {
             String code = keyEvent.getCode().toString();
             input.remove(code);
         });
+    }
+
+    public void startGame() {
+        controller.getGameLoop().setPlayers(controller.getPlayers());
+        for(Player p : controller.getPlayers()) {
+            controller.addHitboxObject(p);
+        }
 
         primaryStage.setScene(scene);
 

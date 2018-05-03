@@ -21,6 +21,8 @@ public interface Controller {
      */
     void addPlayers(ArrayList<Player> players);
 
+    GameLoop getGameLoop();
+
     /**
      * Lisää pelaajan pistemäärää.
      * @param score Pisteet, jotka lisätään pelaajalle.
@@ -33,6 +35,8 @@ public interface Controller {
      * @param hitboxCircle Ympyrähitboxillinen olio.
      */
     void addHitboxObject(HitboxCircle hitboxCircle);
+
+    ArrayList<Player> getPlayers();
 
     /**
      * Palauttaa pelissä olevat HitboxCircle-rajapinnan toteuttavat oliot listana.

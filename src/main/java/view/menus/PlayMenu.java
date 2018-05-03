@@ -112,7 +112,8 @@ public class PlayMenu extends Menu{
             ft2.play();
             ft2.setOnFinished(event1 -> {
                 //pane.getChildren().remove(uiRoot);
-                gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+                gameMain.init(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+                gameMain.startGame();
             });
         });
     }
