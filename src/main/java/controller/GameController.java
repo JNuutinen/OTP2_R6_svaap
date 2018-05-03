@@ -77,7 +77,13 @@ public class GameController implements Controller {
 
     @Override
     public void addPlayers(ArrayList<Player> players) {
-        this.players = players;
+        if (this.players == null) {
+            this.players = players;
+        } else {
+            for (Player p : players) {
+                this.players.add(p);
+            }
+        }
         gameLoop.setPlayers(players);
     }
 
@@ -111,6 +117,11 @@ public class GameController implements Controller {
     }
 
     @Override
+    public void setToScene(Sprite sprite) {
+        Platform.runLater(() -> view.addSprite(sprite));
+    }
+
+    @Override
     public void addUpdateable(Updateable updateable) {
         gameLoop.queueUpdateable(updateable);
     }
@@ -139,6 +150,16 @@ public class GameController implements Controller {
     public synchronized void removeUpdateable(Updateable updateable) {
         view.removeSprite((SpriteImpl) updateable);
         gameLoop.removeUpdateable(updateable);
+    }
+
+    @Override
+    public void removeHitbox(HitboxCircle hitboxCircle) {
+        
+    }
+
+    @Override
+    public void removeHitbox(HitboxTrace hitboxTrace) {
+
     }
 
     @Override

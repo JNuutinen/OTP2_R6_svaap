@@ -50,7 +50,9 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
         controller = GameController.getInstance();
         setHitbox(10);// TODO: hitboxin koko kovakoodattu | 16
         Polygon shape = buildProjectile(speed, COLOR);
-        getChildren().add(shape);
+        try {
+            getChildren().add(shape);
+        }catch (IllegalArgumentException e) {}
     }
 
     /**
@@ -65,7 +67,9 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
     public SmallProjectile(Unit shooter, double speed, int damage, Point2D offset, Color color, Tag tag) {
         this(shooter, speed, damage, offset, tag);
         Polygon shape = buildProjectile(speed, color);
-        getChildren().add(shape);
+        try {
+            getChildren().add(shape);
+        }catch (IllegalArgumentException e) {}
     }
 
     /**

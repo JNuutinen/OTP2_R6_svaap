@@ -68,7 +68,6 @@ public class PlasmaGun extends Weapon {
                 setFireRateCounter(0);
                 Plasma plasma = new Plasma(getParentUnit(), SPEED, (int) (getDamage() * getDamageMultiplier()), getParentUnitColor(), getWeaponProjectileTag(),
                         new Point2D(getProjectileOffset().getX(), getProjectileOffset().getY()));
-                controller.addUpdateableAndSetToScene(plasma);
                 controller.addHitboxObject(plasma);
             }
         }

@@ -6,7 +6,10 @@ import view.GameMain;
 import view.menuScreenFX.MenuFX;
 import view.menuScreenFX.PlainMenuTransition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * StackPanen alaluokka joka toimii kaikkien menujen isäntänä.
@@ -48,6 +51,11 @@ public class MenuSpace extends StackPane {
     private SettingsMenu settingsMenu;
 
     /**
+     * SettingsMenu-menu
+     */
+    private NetplayMenu netPlayMenu;
+
+    /**
      * Lista menuista
      */
     private List<Menu> menus;
@@ -62,7 +70,7 @@ public class MenuSpace extends StackPane {
      * @param gameMain gameMain playMenua varten.
      * @param messages lokalisoidut tekstit.
      */
-    public MenuSpace(GameMain gameMain, ResourceBundle messages, Map<String, Locale> locales) {
+    public MenuSpace(GameMain gameMain, ResourceBundle messages){
         this.messages = messages;
         menus = new ArrayList<>();
 
@@ -70,14 +78,15 @@ public class MenuSpace extends StackPane {
         customizeMenu = new CustomizeMenu(messages, this);
         pauseMenu = new PauseMenu(messages, this);
         playMenu = new PlayMenu(messages, this, gameMain);
-        settingsMenu = new SettingsMenu(messages, locales, this);
-        settingsMenu = new SettingsMenu(messages, locales, this);
+        settingsMenu = new SettingsMenu(messages, this);
+        netPlayMenu = new NetplayMenu(messages, this, gameMain);
 
         menus.add(mainMenu);
         menus.add(customizeMenu);
         menus.add(pauseMenu);
         menus.add(playMenu);
         menus.add(settingsMenu);
+        menus.add(netPlayMenu);
 
         mainMenu.setPlayMenu(playMenu);
         mainMenu.setSettingsMenu(settingsMenu);
@@ -85,6 +94,10 @@ public class MenuSpace extends StackPane {
         playMenu.setMainMenu(mainMenu);
         playMenu.setCustomizeMenu(customizeMenu);
         settingsMenu.setMainMenu(mainMenu);
+        netPlayMenu.setMainMenu(mainMenu);
+        netPlayMenu.setCustomizeMenu(customizeMenu);
+        mainMenu.setNetplayMenu(netPlayMenu);
+
 
         this.getChildren().add(mainMenu);
     }

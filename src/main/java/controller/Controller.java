@@ -59,6 +59,8 @@ public interface Controller {
      */
     void addUpdateableAndSetToScene(Updateable updateable);
 
+    void setToScene(Sprite sprite);
+
     /**
      * Lisää Updateable-olion peliloopin päivityslistaan, muttei osumatarkasteluun, eikä visuaalista Spriteä peliin.
      * @param updateable Updateable-olio, joka lisätään päivityslistaan.
@@ -119,6 +121,18 @@ public interface Controller {
      * @param updateable Olio, joka poistetaan.
      */
     void removeUpdateable(Updateable updateable);
+
+    /**
+     * Poistaa HitboxCircle -rajapintaolion pelistä
+     * @param hitboxCircle HitboxCircle
+     */
+    void removeHitbox(HitboxCircle hitboxCircle);
+
+    /**
+     * Poistaa HitboxTrace -rajapintaolion pelistä
+     * @param hitboxTrace HitboxTrace
+     */
+    void removeHitbox(HitboxTrace hitboxTrace);
 
     /**
      * Palauttaa pelin Main menuun, ja alustaa tarvittavat ohjelman komponentit uutta käynnistystä varten.

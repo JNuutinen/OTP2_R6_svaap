@@ -1,5 +1,6 @@
 package view;
 
+import Multiplayer.*;
 import controller.Controller;
 import controller.GameController;
 import javafx.animation.FadeTransition;
@@ -160,6 +161,8 @@ public class GameMain extends Application implements View {
     // TODO jdoc
     private BorderPane uiRoot;
 
+    public static Player player;
+
     /**
      * Käynnistää ohjelman. Kutsuu launch(args) metodia, joka käynnistää JavaFX:n.
      * @param args Komentoriviargumentit.
@@ -179,6 +182,8 @@ public class GameMain extends Application implements View {
 
         // Kontrolleri-singletonin (parametrillinen) alustaminen.
         controller = GameController.getInstance(this);
+
+
 
         setupGame(this.primaryStage);
 
@@ -324,7 +329,7 @@ public class GameMain extends Application implements View {
 
 
         // Pane kaikille menuille
-        MenuSpace menuSpace = new MenuSpace(this, messages, locales);
+        MenuSpace menuSpace = new MenuSpace(this, messages);
 
         // Asetetaan pausemenu joka haetaan MenuSpacesta
         pauseMenu = menuSpace.getPauseMenu();
@@ -449,7 +454,7 @@ public class GameMain extends Application implements View {
 
 
         //      Pelaaja
-        Player player = new Player(Color.BLUE);
+        player = new Player(Color.BLUE);
         player.setPosition(100, 300);
 
         //      tieto controllerille pelaajasta
@@ -461,6 +466,13 @@ public class GameMain extends Application implements View {
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
 
+        System.out.println("asd");
+        //Server slave = new Server();
+        //slave.startServer();
+/*
+        Client client = new Client();
+        client.connect();
+*/
         //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
@@ -494,7 +506,6 @@ public class GameMain extends Application implements View {
         locales = new HashMap<>();
         locales.put("en_NZ", new Locale("en", "NZ"));
         locales.put("fi_FI", new Locale("fi", "FI"));
-        locales.put("se_SE", new Locale("se", "SE"));
         messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
     }
 

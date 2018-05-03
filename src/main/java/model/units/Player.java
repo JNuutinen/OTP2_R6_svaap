@@ -1,5 +1,6 @@
 package model.units;
 
+import Multiplayer.Multiplayer;
 import controller.Controller;
 import controller.GameController;
 import javafx.scene.paint.Color;
@@ -123,7 +124,7 @@ public class Player extends Unit {
         //controller.addTrace(this);
 
         playerId = (int)Math.random() * 100;
-        //Multiplayer.connect(this);
+
     }
 
     public int getPlayerId() {
@@ -132,6 +133,7 @@ public class Player extends Unit {
 
     @Override
     public void update(double deltaTime){
+
         if(getTookDamage()){
             tookDamage2 = true;
             damagedTimeCounter = 0;
@@ -185,6 +187,7 @@ public class Player extends Unit {
             if (getPrimaryWeapons().get(0) != null) {
                 for(Weapon primaryWeapon : getPrimaryWeapons()){
                     primaryWeapon.shoot();
+                    Multiplayer.shootPrimary();
                 }
             }
         }
@@ -192,7 +195,10 @@ public class Player extends Unit {
         // Secondary fire
         if (input.contains("P")) {
             if (getSecondaryWeapon() != null) {
-                shootSecondary();
+                if (getSecondaryWeapon() != null) {
+                    shootSecondary();
+                    Multiplayer.shootSecondary();
+                }
             }
         }
 
@@ -277,6 +283,7 @@ public class Player extends Unit {
         } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             yVelocity += directionY * deltaTime * accelerationForce;
         }
+        Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
     }
 
     /**
@@ -296,6 +303,7 @@ public class Player extends Unit {
                 xVelocity += decelerateForce * deltaTime;
             }
         }
+        Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
     }
 
     /**
@@ -317,6 +325,7 @@ public class Player extends Unit {
                 yVelocity += decelerateForce * deltaTime;
             }
         }
+        Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
     }
 
     /**

@@ -14,16 +14,16 @@ public class PlayerFactory {
 
     public static Player getPlayer(Color color) {
         //      Pelaaja
-        Player player = new Player(Color.BLUE);
-        player.setPosition(100, 300);
+        Player player = new Player(color);
+        player.setPosition(200, 400);
 
         //      tieto controllerille pelaajasta
-        controller.addPlayers(new ArrayList<Player>(Arrays.asList(player)));
-        controller.addUpdateableAndSetToScene(player);
+        controller.addPlayers(new ArrayList<>(Arrays.asList(player)));
+        controller.setToScene(player);
         controller.addHitboxObject(player);
 
         //      pelaajalle pyssyt
-        player.addPrimaryWeapon(new Blaster(1,10 , 1));
+        player.addPrimaryWeapon(new Blaster(1,30 , 1));
         System.out.println("New player created");
         return player;
     }
