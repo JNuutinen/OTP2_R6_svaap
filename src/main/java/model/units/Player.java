@@ -213,6 +213,7 @@ public class Player extends Unit {
         // Päivitä sijainti
         if(deltaTime < 1) { // TODO
             setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+            Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
         }
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
         controller.setHealthbar(hpPercentage(), 1);
@@ -283,7 +284,7 @@ public class Player extends Unit {
         } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             yVelocity += directionY * deltaTime * accelerationForce;
         }
-        Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+
     }
 
     /**
@@ -303,7 +304,7 @@ public class Player extends Unit {
                 xVelocity += decelerateForce * deltaTime;
             }
         }
-        Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+
     }
 
     /**
@@ -325,7 +326,7 @@ public class Player extends Unit {
                 yVelocity += decelerateForce * deltaTime;
             }
         }
-        Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+
     }
 
     /**

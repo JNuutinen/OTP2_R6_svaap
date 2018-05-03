@@ -70,7 +70,6 @@ public class PauseMenu extends Menu {
 
     @Override
     public void changeLocale(ResourceBundle messages) {
-        System.out.println("hm");
         continueButton.setText(messages.getString("continue"));
         quitButton.setText(messages.getString("quit"));
     }

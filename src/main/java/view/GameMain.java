@@ -457,7 +457,7 @@ public class GameMain extends Application implements View {
         player.setPosition(100, 300);
 
         //      tieto controllerille pelaajasta
-        controller.addPlayers(new ArrayList<Player>(Arrays.asList(player)));
+        controller.addPlayers(new ArrayList<>(Arrays.asList(player)));
         controller.addUpdateableAndSetToScene(player);
         controller.addHitboxObject(player);
 
@@ -465,13 +465,7 @@ public class GameMain extends Application implements View {
         player.addPrimaryWeapon(primary);
         player.setSecondaryWeapon(secondary);
 
-        System.out.println("asd");
-        //Server slave = new Server();
-        //slave.startServer();
-/*
-        Client client = new Client();
-        client.connect();
-*/
+
         //      ArrayList pitää sisällään kyseisellä hetkellä painettujen näppäinten event-koodit
         input = new ArrayList<>();
 
