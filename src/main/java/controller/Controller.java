@@ -121,6 +121,18 @@ public interface Controller {
     void removeUpdateable(Updateable updateable);
 
     /**
+     * Poistaa HitboxCircle -rajapintaolion pelistä
+     * @param hitboxCircle HitboxCircle
+     */
+    void removeHitbox(HitboxCircle hitboxCircle);
+
+    /**
+     * Poistaa HitboxTrace -rajapintaolion pelistä
+     * @param hitboxTrace HitboxTrace
+     */
+    void removeHitbox(HitboxTrace hitboxTrace);
+
+    /**
      * Palauttaa pelin Main menuun, ja alustaa tarvittavat ohjelman komponentit uutta käynnistystä varten.
      */
     void returnToMain();

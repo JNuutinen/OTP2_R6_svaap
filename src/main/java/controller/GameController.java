@@ -142,6 +142,16 @@ public class GameController implements Controller {
     }
 
     @Override
+    public void removeHitbox(HitboxCircle hitboxCircle) {
+        
+    }
+
+    @Override
+    public void removeHitbox(HitboxTrace hitboxTrace) {
+
+    }
+
+    @Override
     public synchronized List<Updateable> getUpdateables(){ return gameLoop.getUpdateables(); }
 
     @Override
