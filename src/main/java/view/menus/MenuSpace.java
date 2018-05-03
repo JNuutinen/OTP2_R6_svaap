@@ -4,7 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.layout.StackPane;
 import view.GameMain;
 import view.menuScreenFX.MenuFX;
-import view.menuScreenFX.Slider;
+import view.menuScreenFX.PlainMenuTransition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class MenuSpace extends StackPane {
     /**
      * Menunvaihtoefektiolio.
      */
-    private MenuFX menuFX = new Slider();
+    private MenuFX menuFX = new PlainMenuTransition();
 
     /**
      * MainMenu-menu
