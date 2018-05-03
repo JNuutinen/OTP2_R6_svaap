@@ -27,12 +27,14 @@ public class PlainMenuTransition implements MenuFX {
     @Override
     public void changeToNextMenu(Group currentMenu, Group nextMenu, Pane pane) {
         pane.getChildren().remove(currentMenu);
+        nextMenu.setTranslateX(0);
         pane.getChildren().add(nextMenu);
     }
 
     @Override
     public void changeToPreviousMenu(Group currentMenu, Group previousMenu, Pane pane) {
         pane.getChildren().remove(currentMenu);
+        previousMenu.setTranslateX(0);
         pane.getChildren().add(previousMenu);
     }
 
