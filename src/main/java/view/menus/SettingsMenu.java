@@ -33,16 +33,6 @@ public class SettingsMenu extends Menu {
     private Button backButton;
 
     /**
-     * Näppäin Uusi Seelanti -lokaalille.
-     */
-    private Button enNzButton;
-
-    /**
-     * Näppäin Ruotsilokaalille.
-     */
-    private Button seSeButton;
-
-    /**
      * Lokaaliotsikko.
      */
     private Text localeText;
@@ -90,10 +80,10 @@ public class SettingsMenu extends Menu {
         Button fiFiButton = new Button();
         fiFiButton.setGraphic(new ImageView(new Image("/images/fi.png")));
 
-        seSeButton = new Button();
+        Button seSeButton = new Button();
         seSeButton.setGraphic(new ImageView(new Image("/images/se.png")));
 
-        enNzButton = new Button();
+        Button enNzButton = new Button();
         enNzButton.setGraphic(new ImageView(new Image("/images/nz.png")));
 
         backButton = new Button(messages.getString("back"));
