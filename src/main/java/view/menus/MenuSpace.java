@@ -95,6 +95,7 @@ public class MenuSpace extends StackPane {
         playMenu.setCustomizeMenu(customizeMenu);
         settingsMenu.setMainMenu(mainMenu);
         netPlayMenu.setMainMenu(mainMenu);
+        netPlayMenu.setCustomizeMenu(customizeMenu);
         mainMenu.setNetplayMenu(netPlayMenu);
 
 

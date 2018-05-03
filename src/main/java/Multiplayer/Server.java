@@ -25,8 +25,6 @@ public class Server  {
 
             Sender.init(new ObjectOutputStream(s.getOutputStream()));
 
-            Multiplayer.connect();
-
             System.out.println("Connected");
             return true;
         } catch (IOException ex) {
@@ -34,5 +32,9 @@ public class Server  {
             System.out.println("Connection failed");
             return false;
         }
+    }
+
+    public void startMultiplayer() {
+        Multiplayer.connect();
     }
 }

@@ -37,7 +37,10 @@ public class Multiplayer {
 
     public static void connect() { //Liitytään muiden peliin
         Player player = GameMain.player;
+        System.out.println("player " + player);
         players.put(player.getPlayerId(), player); //lisää oman instanssinsa playerin, listaan
+        System.out.println("playerId " + player.getPlayerId());
+        System.out.println("players " + players);
         Sender.streamOut(new ConnectionData(player.getPlayerId()));  // lähettää tiedon itsestään eteenpäin
         connected = true;
         System.out.println("connection packet sent...");

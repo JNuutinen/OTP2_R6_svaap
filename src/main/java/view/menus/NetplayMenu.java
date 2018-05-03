@@ -1,6 +1,7 @@
 package view.menus;
 
 import Multiplayer.Client;
+import Multiplayer.Multiplayer;
 import Multiplayer.Server;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
@@ -78,10 +79,11 @@ public class NetplayMenu extends Menu{
                     //-- click eventit --//
 
         backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
-/*
+
         connectButton.setOnAction(event -> {
             Client client = new Client();
-
+            if (client.connect()) {
+            System.out.println("toka");
                 connectButton.setDisable(true);
                 FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
                 ft2.setFromValue(1.0);
@@ -89,14 +91,17 @@ public class NetplayMenu extends Menu{
                 ft2.play();
                 ft2.setOnFinished(event1 -> {
                 //pane.getChildren().remove(uiRoot);
+
                 gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+                    Multiplayer.connect();
+
             });
-            client.connect();
-        });
+        }});
 
         hostButton.setOnAction(event -> {
             Server server = new Server();
-
+            if (server.startServer()) {
+            System.out.println("toka");
                 hostButton.setDisable(true);
                 FadeTransition ft2 = new FadeTransition(Duration.millis(1000), gameMain.getUiRoot());
                 ft2.setFromValue(1.0);
@@ -105,30 +110,11 @@ public class NetplayMenu extends Menu{
                 ft2.setOnFinished(event1 -> {
                     //pane.getChildren().remove(uiRoot);
                     gameMain.startGame(customizeMenu.getSelectedPrimaryWeapon(), customizeMenu.getSelectedSecondaryWeapon());
+                    Multiplayer.connect();
+
                 });
-                server.startServer();
-            });
-        */
-    }
+            }});
 
-    /**
-     * Ei toiminnassa
-     */
-    private void hostGame(){
-        Server server = new Server();
-        if (server.startServer()) {
-            //TODO: Start game
-        }
-    }
-
-    /**
-     * Ei toiminnassa
-     */
-    private void connectToHost(){
-        Client client = new Client();
-        if (client.connect()) {
-            //TODO: start game
-        }
     }
 
     /**
@@ -142,5 +128,23 @@ public class NetplayMenu extends Menu{
     @Override
     public void changeLocale(ResourceBundle messages) {
         backButton.setText(messages.getString("back"));
+    }
+
+    public void hostGame() {
+        System.out.println("eka");
+    }
+
+    public void connectToHost() {
+
+        System.out.println("eka");
+
+    }
+
+    /**
+     * Setteri CustomizeMenulle.
+     * @param customizeMenu CustomizeMenu
+     */
+    public void setCustomizeMenu(CustomizeMenu customizeMenu) {
+        this.customizeMenu = customizeMenu;
     }
 }

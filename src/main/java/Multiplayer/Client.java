@@ -31,7 +31,6 @@ public class Client  {
             r.init(new ObjectInputStream(s.getInputStream()));
             (new Thread(r)).start();
 
-            Multiplayer.connect();
 
             System.out.println("Connected");
             return true;
@@ -40,5 +39,9 @@ public class Client  {
             System.out.println("Connection failed");
             return false;
         }
+    }
+
+    public void startMultipayer() {
+        Multiplayer.connect();
     }
 }
