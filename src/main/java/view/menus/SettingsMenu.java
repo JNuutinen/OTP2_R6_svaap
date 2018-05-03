@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -63,11 +62,10 @@ public class SettingsMenu extends Menu {
      * @param messages Lokalisoidut tekstit
      * @param menuSpace MenusSpace jossa tieto kaikista menuista.
      */
-    public SettingsMenu(ResourceBundle messages, MenuSpace menuSpace) {
+    public SettingsMenu(ResourceBundle messages, Map<String, Locale> locales, MenuSpace menuSpace) {
         super(menuSpace);
         this.messages = messages;
 
-        initLocales();
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT - BANNER_HEIGHT);
         borderPane.setStyle("-fx-background-color: black");
@@ -125,16 +123,5 @@ public class SettingsMenu extends Menu {
      */
     public void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
-    }
-
-    /**
-     * Luo pelin valittavat lokaalit ja tallentaa ne locales Mappiin. Asettaa vakiolokaalin.
-     */
-    private void initLocales() {
-        locales = new HashMap<>();
-        locales.put("en_NZ", new Locale("en", "NZ"));
-        locales.put("fi_FI", new Locale("fi", "FI"));
-        locales.put("se_SE", new Locale("se", "SE"));
-        messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
     }
 }

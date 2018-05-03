@@ -6,10 +6,7 @@ import view.GameMain;
 import view.menuScreenFX.MenuFX;
 import view.menuScreenFX.Slider;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * StackPanen alaluokka joka toimii kaikkien menujen isäntänä.
@@ -65,7 +62,7 @@ public class MenuSpace extends StackPane {
      * @param gameMain gameMain playMenua varten.
      * @param messages lokalisoidut tekstit.
      */
-    public MenuSpace(GameMain gameMain, ResourceBundle messages){
+    public MenuSpace(GameMain gameMain, ResourceBundle messages, Map<String, Locale> locales) {
         this.messages = messages;
         menus = new ArrayList<>();
 
@@ -73,8 +70,8 @@ public class MenuSpace extends StackPane {
         customizeMenu = new CustomizeMenu(messages, this);
         pauseMenu = new PauseMenu(messages, this);
         playMenu = new PlayMenu(messages, this, gameMain);
-        settingsMenu = new SettingsMenu(messages, this);
-        settingsMenu = new SettingsMenu(messages, this);
+        settingsMenu = new SettingsMenu(messages, locales, this);
+        settingsMenu = new SettingsMenu(messages, locales, this);
 
         menus.add(mainMenu);
         menus.add(customizeMenu);
