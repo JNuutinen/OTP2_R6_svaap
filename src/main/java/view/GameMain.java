@@ -1,6 +1,5 @@
 package view;
 
-import Multiplayer.*;
 import controller.Controller;
 import controller.GameController;
 import javafx.animation.FadeTransition;
@@ -329,7 +328,7 @@ public class GameMain extends Application implements View {
 
 
         // Pane kaikille menuille
-        MenuSpace menuSpace = new MenuSpace(this, messages);
+        MenuSpace menuSpace = new MenuSpace(this, messages, locales);
 
         // Asetetaan pausemenu joka haetaan MenuSpacesta
         pauseMenu = menuSpace.getPauseMenu();
@@ -506,6 +505,7 @@ public class GameMain extends Application implements View {
         locales = new HashMap<>();
         locales.put("en_NZ", new Locale("en", "NZ"));
         locales.put("fi_FI", new Locale("fi", "FI"));
+        locales.put("se_SE", new Locale("se", "SE"));
         messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
     }
 

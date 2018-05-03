@@ -1,8 +1,11 @@
 package view.menus;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import view.menuScreenFX.SliderMenuTransition;
 
 import java.util.Locale;
 import java.util.Map;
@@ -63,6 +67,7 @@ public class SettingsMenu extends Menu {
 
     /**
      * Konstruktori. Lisää Komponentit itseensä. Luo myös click eventit.
+     *
      * @param messages Lokalisoidut tekstit
      * @param menuSpace MenusSpace jossa tieto kaikista menuista.
      */
@@ -100,12 +105,14 @@ public class SettingsMenu extends Menu {
         slideEffectButton = new RadioButton(messages.getString("menu_effect_slide"));
         slideEffectButton.setToggleGroup(effectButtons);
         slideEffectButton.setSelected(true);
+        menuSpace.setMenuFX(SliderMenuTransition.getInstance());
+        setRadioButtonCallback(effectButtons);
 
         VBox vBox = new VBox();
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(150);
-        vBox.getChildren().addAll(localeText, localeBox, backButton);
+        vBox.getChildren().addAll(localeText, localeBox, slideEffectButton, noEffectButton, backButton);
 
         borderPane.setCenter(vBox);
 
@@ -130,9 +137,26 @@ public class SettingsMenu extends Menu {
 
     /**
      * Setteri MainMenulle
+     *
      * @param mainMenu MainMenu
      */
     void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
+    }
+
+    /**
+     * Apumetodi toggleGroupin listenerin asettamiseen.
+     *
+     * @param toggleGroup ToggleGroup, johon listener asetetaan.
+     */
+    private void setRadioButtonCallback(ToggleGroup toggleGroup) {
+        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                if (toggleGroup.getSelectedToggle() != null) {
+                    System.out.println(new_toggle.getUserData());
+                }
+            }
+        });
     }
 }

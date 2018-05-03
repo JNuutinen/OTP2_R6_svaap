@@ -17,6 +17,16 @@ import javafx.util.Duration;
  */
 public class SliderMenuTransition implements MenuFX {
 
+    /**
+     * Singleton-instanssi menuefektistä.
+     */
+    private static final SliderMenuTransition INSTANCE = new SliderMenuTransition();
+
+    /**
+     * Private konstruktori, jottei tästä luokasta voi luoda uusia instansseja ulkopuolelta.
+     */
+    private SliderMenuTransition() {
+    }
 
     @Override
     public void changeToNextMenu(Group currentMenu, Group nextMenu, Pane pane) {
@@ -46,5 +56,14 @@ public class SliderMenuTransition implements MenuFX {
         Timeline slide = new Timeline(start, end);
         slide.setOnFinished(e -> pane.getChildren().remove(currentMenu));
         slide.play();
+    }
+
+    /**
+     * Metodi SliderMenuTransition-instanssin saamiseen.
+     *
+     * @return Instanssi menuefektistä.
+     */
+    public static SliderMenuTransition getInstance() {
+        return INSTANCE;
     }
 }
