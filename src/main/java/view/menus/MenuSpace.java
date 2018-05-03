@@ -79,7 +79,6 @@ public class MenuSpace extends StackPane {
         netPlayMenu.setCustomizeMenu(customizeMenu);
         mainMenu.setNetplayMenu(netPlayMenu);
 
-
         this.getChildren().add(mainMenu);
     }
 

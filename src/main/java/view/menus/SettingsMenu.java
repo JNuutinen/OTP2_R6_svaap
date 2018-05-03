@@ -1,18 +1,18 @@
 package view.menus;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import view.menuScreenFX.MenuFX;
+import view.menuScreenFX.PlainMenuTransition;
 import view.menuScreenFX.SliderMenuTransition;
 
 import java.util.Locale;
@@ -46,24 +46,15 @@ public class SettingsMenu extends Menu {
      */
     private Text menuEffectText;
 
-    private RadioButton slideEffectButton;
-
-    private RadioButton noEffectButton;
+    /**
+     * MenuSpace, menujen efektien vaihtamiseen.
+     */
+    private MenuSpace menuSpace;
 
     /**
      * MainMenu-menu
      */
     private MainMenu mainMenu;
-
-    /**
-     * Map jossa pelin eri lokaalit.
-     */
-    private Map<String, Locale> locales;
-
-    /**
-     * Lokalisoidut tekstit.
-     */
-    private ResourceBundle messages;
 
     /**
      * Konstruktori. Lisää Komponentit itseensä. Luo myös click eventit.
@@ -73,7 +64,7 @@ public class SettingsMenu extends Menu {
      */
     SettingsMenu(ResourceBundle messages, Map<String, Locale> locales, MenuSpace menuSpace) {
         super(menuSpace);
-        this.messages = messages;
+        this.menuSpace = menuSpace;
 
         BorderPane borderPane = new BorderPane();
         borderPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT - BANNER_HEIGHT);
@@ -99,12 +90,18 @@ public class SettingsMenu extends Menu {
         localeBox.setAlignment(Pos.TOP_CENTER);
         localeBox.getChildren().addAll(fiFiButton, seSeButton, enNzButton);
 
+        menuEffectText = new Text(messages.getString("menu_effect"));
+        menuEffectText.setStyle("-fx-fill: white");
         final ToggleGroup effectButtons = new ToggleGroup();
-        noEffectButton = new RadioButton(messages.getString("menu_effect_none"));
+        RadioButton noEffectButton = new RadioButton(messages.getString("menu_effect_none"));
+        noEffectButton.setTextFill(Color.WHITE);
         noEffectButton.setToggleGroup(effectButtons);
-        slideEffectButton = new RadioButton(messages.getString("menu_effect_slide"));
+        noEffectButton.setUserData(PlainMenuTransition.getInstance());
+        RadioButton slideEffectButton = new RadioButton(messages.getString("menu_effect_slide"));
+        slideEffectButton.setTextFill(Color.WHITE);
         slideEffectButton.setToggleGroup(effectButtons);
         slideEffectButton.setSelected(true);
+        slideEffectButton.setUserData(SliderMenuTransition.getInstance());
         menuSpace.setMenuFX(SliderMenuTransition.getInstance());
         setRadioButtonCallback(effectButtons);
 
@@ -112,7 +109,7 @@ public class SettingsMenu extends Menu {
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setMaxWidth(150);
-        vBox.getChildren().addAll(localeText, localeBox, slideEffectButton, noEffectButton, backButton);
+        vBox.getChildren().addAll(localeText, localeBox, menuEffectText, slideEffectButton, noEffectButton, backButton);
 
         borderPane.setCenter(vBox);
 
@@ -131,6 +128,7 @@ public class SettingsMenu extends Menu {
 
     @Override
     public void changeLocale(ResourceBundle messages) {
+        menuEffectText.setText(messages.getString("menu_effect"));
         localeText.setText(messages.getString("locale"));
         backButton.setText(messages.getString("back"));
     }
@@ -150,11 +148,10 @@ public class SettingsMenu extends Menu {
      * @param toggleGroup ToggleGroup, johon listener asetetaan.
      */
     private void setRadioButtonCallback(ToggleGroup toggleGroup) {
-        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            public void changed(ObservableValue<? extends Toggle> ov,
-                                Toggle old_toggle, Toggle new_toggle) {
-                if (toggleGroup.getSelectedToggle() != null) {
-                    System.out.println(new_toggle.getUserData());
+        toggleGroup.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
+            if (toggleGroup.getSelectedToggle() != null) {
+                if (new_toggle.getUserData() instanceof MenuFX) {
+                    menuSpace.setMenuFX((MenuFX) new_toggle.getUserData());
                 }
             }
         });
