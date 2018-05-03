@@ -2,6 +2,7 @@ package model.level;
 
 import controller.Controller;
 import controller.GameController;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import model.Tag;
 import model.units.Boss2;
@@ -56,6 +57,16 @@ public class Level2 extends Thread implements Level{
             while (!finalBoss.isDestroyed()) {
                 Thread.sleep(1_000);
             }
+
+            // Hyperdrive
+            controller.changeBackgroundScrollSpeed(2000, 5);
+            Thread.sleep(6_000);
+
+            Platform.runLater(() -> controller.addScore(500));
+
+            // Seuraavan tason aloitus
+            controller.startLevel(3);
+
         }catch (InterruptedException e) {
             e.printStackTrace();
         }

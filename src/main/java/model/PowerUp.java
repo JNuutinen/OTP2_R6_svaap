@@ -31,7 +31,7 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
     /**
      * Powerupin tyyppien vakiot.
      */
-    static final int HP = 0, DAMAGE = 1, SPEED = 2, SCORE = 3;
+    public static final int HP = 0, DAMAGE = 1, SPEED = 2, SCORE = 3;
 
     /**
      * Powerupin koko.
@@ -50,12 +50,13 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
 
 
     /**
-     * Konstruktori.
-     * @param deadUnit Unit, joka pudottaa power up:in
+     * Konstruktori, powerupin sijainti otetaan kuolleesta Unitista.
+     *
+     * @param deadUnit    Unit, joka pudottaa power up:in
      * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
      *                    HP lisää pelaajan elämäpisteitä
      *                    SCORE lisää pelaajan pisteitä
-     * @param value Arvo, joka lisätään power up:in vaikuttamaan muutujaan
+     * @param value       Arvo, joka lisätään power up:in vaikuttamaan muutujaan
      */
     public PowerUp(Unit deadUnit, int powerUpType, int value){
         switch (powerUpType) {
@@ -82,20 +83,65 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
         }
         controller = GameController.getInstance();
         setTag(Tag.POWERUP); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
-        controller.addUpdateableAndSetToScene(this);
-        controller.addHitboxObject(this);
         this.value = value;
         type = powerUpType;
+
         double xOffset = degreesToVector(deadUnit.getDirection()).getX();
         double yOffset = degreesToVector(deadUnit.getDirection()).getY();
         Point2D startingLocation = new Point2D(deadUnit.getPosition().getX() + xOffset, deadUnit.getPosition().getY() + yOffset);
-        this.setPosition(startingLocation.getX(), startingLocation.getY());
+        setPosition(startingLocation.getX(), startingLocation.getY());
 
-        this.setIsMoving(true);
-        this.setVelocity(-50);
+        setIsMoving(true);
+        setVelocity(-50);
+        System.out.println(controller);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
         getChildren().add(shape);
     }
 
+    /**
+     * Konstruktori, sijainti annetaan koordinaatteina.
+     *
+     * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
+     *                    HP lisää pelaajan elämäpisteitä
+     *                    SCORE lisää pelaajan pisteitä
+     * @param value       Arvo, joka lisätään power up:in vaikuttamaan muutujaan
+     * @param position    PowerUpin x- ja y-koordinaatit
+     */
+    public PowerUp(int powerUpType, int value, Point2D position) {
+        switch (powerUpType) {
+            case HP:
+                type = HP;
+                shape = circle(size, Color.GREEN);
+                break;
+                /* //TODO:
+            case DAMAGE:
+                type = DAMAGE;
+                shape = rectangle(size, 3, Color.PURPLE);
+                break;
+            case SPEED:
+                type = SPEED;
+                shape = rectangle(size, 0, Color.BLUE);
+                break;
+                */
+            case SCORE:
+                type = SCORE;
+                shape = circle(size, Color.YELLOW);
+                break;
+            default:
+                return; //Jos vihollinen ei droppaa mitään
+        }
+        controller = GameController.getInstance();
+        setTag(Tag.POWERUP); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
+        this.value = value;
+        type = powerUpType;
+        setPosition(position.getX(), position.getY());
+        setIsMoving(true);
+        setVelocity(-50);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
+        getChildren().add(shape);
+    }
 
     /*
     public Shape triangle(int size, int orientation, Color color) {
@@ -193,8 +239,10 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
      * @param collidingTarget Updateable-rajapinnan toteuttava olio, johon törmätty.
      */
     @Override
-    public void collides(Object collidingTarget){
-        if(collidingTarget instanceof Player){
+    public void collides(Object collidingTarget) {
+        System.out.println("powerup collides");
+        if (collidingTarget instanceof Player) {
+            System.out.println("hp++");
             givePowerUp((Player)collidingTarget);
         }
         destroyThis();

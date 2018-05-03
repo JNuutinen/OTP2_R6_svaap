@@ -3,6 +3,7 @@ package model.units;
 import controller.Controller;
 import controller.GameController;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -12,6 +13,7 @@ import model.weapons.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Lisää spriteen avaruusalukselle ominaisia piirteitä.
@@ -168,7 +170,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
                         initialPrimaryWeapons.add(new LaserGun(2, 1, 1.5));
                         break;
                     case WEAPON_MACHINE_GUN:
-                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.1));
+                        initialPrimaryWeapons.add(new MachineGun(2, 55, 0.05));
                         break;
                 }
             }
@@ -278,76 +280,91 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     }
 
     /**
-     * Lajittelee komponenttilistan komoponenttien koon mukaan suurimmasta pienimpään. Apumetodi equipComponents():lle.
+     * Lajittelee primaryWeapons ja secondaryWeapon -aseet, niin että luo jonoja aina parittoman määrän vähintään yhtä monta kun kyseisissä listoissa
+     * on eniten saman tyyppisiä aseita. Pariton määrä jonoja siksi jotta aluksella on aina olemassa 1 jono keskellä alusta. Saman tyyppiset aseet lajitellaan
+     * eri jonoihin eli aluksen sivusuuntaisesti niin että parillisesta määrästä samoista aseista ei mene asetta aluksen keskijonoon, ja toisinpäin, jotta lajittelu
+     * pysyisi symmetrisenä. Yksi jono voi taas sisältää rajaton määrä eri tyyppisiä aseita jotka lajitellaan aluksen etusuuntaisesti.
+     * Aseet lajitellaan siis siten että aluksen keskeltä alkaen lisätään aseita sivu- tai/ja etusuuntaan riippuen
+     * kuinka monta saman tyyppistä asetta ja kuinka monta eri asetta on aluksella.
      */
     private void sortComponents() {
+        // lista johon lisätään lajiteltavat aseet.
         List<List<Weapon>> weaponLists = new ArrayList<>();
         weaponLists.add(new ArrayList<>());
+        // aseiden indeksit jota on jo lisätty lajiteltaviin aseisiin
         List<Integer> alreadyAddedIndex = new ArrayList<>();
+        // aseiden indeksit jotka lisätään lajiteltaviin aseisiiin. apumuuttuja.
+        List<Integer> toBeAddedIndexes = new ArrayList<>();
 
-
+        // tuplaiterointi
         for(int i = 0; i < primaryWeapons.size(); i++) {
-            int sameWeaponsAmount = 1; //
+            // tyhjää lisättävät aseiden indeksit ja lisää tarkasteltava alkio
+            toBeAddedIndexes.clear();
+            if(!alreadyAddedIndex.contains(i)){
+                toBeAddedIndexes.add(i);
+            }
+
             for (int j = 0; j < primaryWeapons.size(); j++) {
+                // jos tarkasteltavat alkiot eivät ole sama olio, ja jos alkiot ovat samaa alaluokkaa (sama ase), ja jos tarkasteltavaa alkiota
+                // ei ole jo lisätty lajiteltaviin...
                 if (primaryWeapons.get(i) != primaryWeapons.get(j) && primaryWeapons.get(i).getClass() == primaryWeapons.get(j).getClass() &&
                         !alreadyAddedIndex.contains(i)) {
+                    // ...niin lisää alkio lajiteltuihin ja lisättäviin aseisiin joka pitää sisällään vain saman tyyppisiä aseita.
                     alreadyAddedIndex.add(j);
-                    sameWeaponsAmount++;
+                    toBeAddedIndexes.add(j);
                 }
             }
-            // niin kauan kun asejonoja (aluksen sivusuuntaan) ei ole yhtä monta kuin saman tyyppisiä aseita lisätään, luodaan 2 uutta jonoa.
+            // niin kauan kun asejonoja (aluksen sivusuuntaan) ei ole yhtä monta kuin lisättäviä saman tyyppisiä aseita, luodaan 2 uutta jonoa.
             // jotta jonolukumäärä pysyy parittomana.
-            while (weaponLists.size() < sameWeaponsAmount) {
+            while (weaponLists.size() < toBeAddedIndexes.size()) {
                 weaponLists.add(0, new ArrayList<>());
                 weaponLists.add(new ArrayList<>());
             }
 
-            int firstIndex = (weaponLists.size() - sameWeaponsAmount) / 2;
-            int midIndex = (weaponLists.size()) / 2;
+            // eka indeksi johon lisättävistä lisätään ase jotta weaponList lista pysyy symmetrisenä.
+            int firstIndex = (weaponLists.size() - toBeAddedIndexes.size()) / 2;
+            // keskimmäinen indeksi aselistoista. apumuuttuja
+            int iMidIndex = (weaponLists.size()) / 2;
+            // apumuuttuja tilanteeseen jossa ei lisätä keskimmäiseen listaan asetta, eli silloin kun saman tyyppisiä aseita on parillinen määrä.
             int addedIndex = 0;
-            System.out.println("    -   -   ");
-            for (int k = firstIndex; k < sameWeaponsAmount; k++) {
-                if(sameWeaponsAmount % 2 == 0){
-                    if(k == midIndex){
-                        System.out.println("2");
+
+            // lisätään secondaryWeapon keskimmäiseen listaan.
+            if(getSecondaryWeapon() != null){
+                weaponLists.get(iMidIndex).add(getSecondaryWeapon());
+            }
+
+            // listään lisättävät, eli samantyyppiset, aseet lajiteltavien listaan:
+            for (int k = 0; k < toBeAddedIndexes.size(); k++) {
+                // jos lisättävät on parillinen määrä
+                if(toBeAddedIndexes.size() % 2 == 0){
+                    // ja jos lisättävä kohta on keskimmäinen lista, niin lisää sitä seuraavaan listaan, ja apumuuttujan avulla pidä huoli että
+                    // seuraavat aseet lisätään aina yhtä pidemmälle olevaan listaan (koska keskilista skipattiin)
+                    if(k + firstIndex == iMidIndex){
                         addedIndex = 1;
-                        weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
+                        weaponLists.get(k + firstIndex + addedIndex).add(primaryWeapons.get(toBeAddedIndexes.get(k)));
                     }
                     else{
-                        System.out.println("3");
-                        weaponLists.get(k+addedIndex).add(primaryWeapons.get(k));
+                        weaponLists.get(k + firstIndex + addedIndex).add(primaryWeapons.get(toBeAddedIndexes.get(k)));
                     }
                 }
+                // jos lisättävät on pariton määrä
                 else{
-                    System.out.println("1");
-                    weaponLists.get(k).add(primaryWeapons.get(i));
+                    weaponLists.get(k + firstIndex).add(primaryWeapons.get(toBeAddedIndexes.get(k)));
                 }
             }
         }
-        System.out.println("...");
+        // Vaihda lajiteltavien aseiden sijantia ja ammuksen aloitussijaintia riippuen lajiteltavat listan listan indeksistä ja
+        // sen listan aseen indeksistä, verrattuna kummankin llistan keski-indekseihin.
         int iMidIndex = (weaponLists.size()) / 2;
         for(int i = 0; i < weaponLists.size(); i++){
             int jMidIndex = (weaponLists.get(i).size()) / 2;
             for(int j = 0; j < weaponLists.get(i).size(); j++){
-                System.out.println(weaponLists.get(i).get(j) + "i&j " + i + ", " + j + ", iMid & jMid + " + iMidIndex + ", " + jMidIndex);
                 Shape componentShape = weaponLists.get(i).get(j).getShape();
-                //componentShape.setLayoutX(50 * (j - jMidIndex));
-                componentShape.setLayoutY(150 * (i - iMidIndex));
+                componentShape.setLayoutX(26 * (j - jMidIndex));
+                componentShape.setLayoutY(26 * (i - iMidIndex));
+                weaponLists.get(i).get(j).setProjectileOffset(new Point2D(weaponLists.get(i).get(j).getProjectileOffset().getX(), 26 * (i - iMidIndex)));
             }
         }
-
-        /*
-        for (int i = 0; i < components.size(); i++) { //Lajitellaan komponentit suurimmasta pienimpään
-            for (int n = 0; n < components.size(); n++) {
-                if (components.get(i).getShape().getLayoutBounds().getHeight() * components.get(i).getShape().getLayoutBounds().getWidth()
-                        > components.get(n).getShape().getLayoutBounds().getHeight() * components.get(n).getShape().getLayoutBounds().getWidth()) {
-                    Weapon x = components.get(n);
-                    components.set(n, components.get(i));
-                    components.set(i, x);
-
-                }
-            }
-        }*/
     }
 
     @Override
@@ -366,7 +383,17 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
     @Override
     public void destroyThis() {
         isDestroyed = true;
-        new PowerUp(this, (int)(Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        if (this instanceof Boss) {
+            // Bossi droppaa kuollessaan läjän HP poweruppeja
+            for (int i = 0; i < 10; i++) {
+                int x = ThreadLocalRandom.current().nextInt((int) (getXPosition()), (int) (getXPosition() + getHitboxRadius()) + 1);
+                int y = ThreadLocalRandom.current().nextInt((int) (getYPosition()), (int) (getYPosition() + getHitboxRadius()) + 1);
+                new PowerUp(PowerUp.HP, 30, new Point2D(x, y));
+            }
+        } else {
+            // Muut vihut random powerup
+            new PowerUp(this, (int) (Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+        }
         new Explosion(color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);
     }
@@ -390,7 +417,6 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param damage Vahinkomäärä, jonka yksikkö ottaa.
      */
     public void takeDamage(int damage) {
-        sortComponents();
         tookDamage = true; // efektiä varten
         if(shape != null){
             shape.setStroke(Color.WHITE);
