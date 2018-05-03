@@ -9,8 +9,13 @@ import javafx.util.Duration;
 
 /**
  * Liukumasiirtymä, näkymää vieritetään vasemmalle tai oikealle.
+ *
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
  */
-public class Slider implements MenuFX {
+public class SliderMenuTransition implements MenuFX {
 
     /**
      * Siirtymän kesto sekunteina.

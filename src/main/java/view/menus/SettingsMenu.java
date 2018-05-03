@@ -2,6 +2,8 @@ package view.menus;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -15,32 +17,44 @@ import java.util.ResourceBundle;
 
 import static view.GameMain.*;
 
+/**
+ * Asetusmenu.
+ *
+ * @author Ilari Anttila
+ * @author Jerry Hällfors
+ * @author Juha Nuutinen
+ * @author Henrik Virrankoski
+ */
 public class SettingsMenu extends Menu {
 
     /**
      * Takaisinnappi.
      */
-    public Button backButton;
-
-    /**
-     * Näppäin Suomilokaalille.
-     */
-    public Button fiFiButton;
+    private Button backButton;
 
     /**
      * Näppäin Uusi Seelanti -lokaalille.
      */
-    public Button enNzButton;
+    private Button enNzButton;
 
     /**
      * Näppäin Ruotsilokaalille.
      */
-    public Button seSeButton;
+    private Button seSeButton;
 
     /**
      * Lokaaliotsikko.
      */
     private Text localeText;
+
+    /**
+     * Otsikko menujen efektien valinnalle.
+     */
+    private Text menuEffectText;
+
+    private RadioButton slideEffectButton;
+
+    private RadioButton noEffectButton;
 
     /**
      * MainMenu-menu
@@ -62,7 +76,7 @@ public class SettingsMenu extends Menu {
      * @param messages Lokalisoidut tekstit
      * @param menuSpace MenusSpace jossa tieto kaikista menuista.
      */
-    public SettingsMenu(ResourceBundle messages, Map<String, Locale> locales, MenuSpace menuSpace) {
+    SettingsMenu(ResourceBundle messages, Map<String, Locale> locales, MenuSpace menuSpace) {
         super(menuSpace);
         this.messages = messages;
 
@@ -73,7 +87,7 @@ public class SettingsMenu extends Menu {
         localeText = new Text(messages.getString("locale"));
         localeText.setStyle("-fx-fill: white");
 
-        fiFiButton = new Button();
+        Button fiFiButton = new Button();
         fiFiButton.setGraphic(new ImageView(new Image("/images/fi.png")));
 
         seSeButton = new Button();
@@ -90,6 +104,13 @@ public class SettingsMenu extends Menu {
         localeBox.setAlignment(Pos.TOP_CENTER);
         localeBox.getChildren().addAll(fiFiButton, seSeButton, enNzButton);
 
+        final ToggleGroup effectButtons = new ToggleGroup();
+        noEffectButton = new RadioButton(messages.getString("menu_effect_none"));
+        noEffectButton.setToggleGroup(effectButtons);
+        slideEffectButton = new RadioButton(messages.getString("menu_effect_slide"));
+        slideEffectButton.setToggleGroup(effectButtons);
+        slideEffectButton.setSelected(true);
+
         VBox vBox = new VBox();
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.TOP_CENTER);
@@ -100,7 +121,7 @@ public class SettingsMenu extends Menu {
 
         getChildren().add(borderPane);
 
-                    //-- click eventit --//
+        //-- click eventit --//
 
         // Settings menun back button click event
         backButton.setOnAction(event -> getMenuSpace().changeToPreviousMenu(this, mainMenu));
@@ -121,7 +142,7 @@ public class SettingsMenu extends Menu {
      * Setteri MainMenulle
      * @param mainMenu MainMenu
      */
-    public void setMainMenu(MainMenu mainMenu) {
+    void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
     }
 }
