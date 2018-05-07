@@ -161,7 +161,7 @@ public class GameController implements Controller {
 
     @Override
     public void removeHitbox(HitboxCircle hitboxCircle) {
-        
+
     }
 
     @Override

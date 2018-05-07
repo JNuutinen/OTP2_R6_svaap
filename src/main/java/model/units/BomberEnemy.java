@@ -2,6 +2,7 @@ package model.units;
 
 import controller.Controller;
 import controller.GameController;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -100,6 +101,11 @@ public class BomberEnemy extends Unit {
     private boolean tookDamage2 = false;
 
     /**
+     * TODO
+     */
+    private TurretBase turretBase;
+
+    /**
      * BomberEnemyn konstruktori. Luo aluksen ja lisää sen peliin.
      * @param primaries Lista, jossa aluksen aseet tageina ilmoitettuna.
      * @param initialPosition Aloitussijainnin koordinaatit.
@@ -118,11 +124,11 @@ public class BomberEnemy extends Unit {
         initialY = initialPosition.getY();
         setPosition(initialX, initialY);
         setVelocity(initialVelocity);
-        findAndSetTarget();
         rotate(180);
         setIsMoving(true);
         setHitbox(80);
         setHp(40);
+
 
         Polygon shape = new Polygon();
         // aluksen muoto
@@ -145,10 +151,21 @@ public class BomberEnemy extends Unit {
                 60.0, -10.0,
                 30.0, -10.0);
         drawShip(shape);
-        makePrimaryWeapons(primaries);
+
+        //makePrimaryWeapons(primaries);
 
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
+
+        turretBase = new TurretBase(getUnitColor(), 5, 20, this);
+        turretBase.makePrimaryWeapons(primaries);
+        controller.addUpdateableAndSetToScene(turretBase);
+    }
+
+    @Override
+    public void destroyThis(){
+        controller.removeUpdateable(turretBase);
+        super.destroyThis();
     }
 
     @Override
@@ -211,36 +228,7 @@ public class BomberEnemy extends Unit {
             angleToTarget += 360.0;
         }
         rotate(angleToTarget * rotatingSpeed * deltaTime);
-
-        /*
-        if(target != null) {
-            angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
-            // taa vaa pitaa asteet -180 & 180 valissa
-            while (angleToTarget >= 180.0) {
-                angleToTarget -= 360.0;
-            }
-            while (angleToTarget < -180) {
-                angleToTarget += 360.0;
-            }
-
-            rotate(angleToTarget * rotatingSpeed * deltaTime);
-
-        }*/
     }
 
-    /**
-     * Etsii lähimmän pelaajan playerHitboxObjects listasta ja asettaa sen kohteeksi
-     */
-    public void findAndSetTarget(){
-        double shortestDistance = Double.MAX_VALUE;
-        HitboxCircle closestPlayer = null;
-        for (HitboxCircle hitboxCircle : controller.getPlayerHitboxObjects()) {
-            double distance = getDistanceFromTarget(hitboxCircle.getPosition());
-            if (distance < shortestDistance) {
-                shortestDistance = distance;
-                closestPlayer = hitboxCircle;
-            }
-        }
-        target = closestPlayer;
-    }
+
 }

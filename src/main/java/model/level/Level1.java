@@ -48,13 +48,12 @@ public class Level1 extends Thread implements Level {
         try {
             Thread.sleep(1000);
 
-            new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_BLASTER,
-                    Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER_SHOTGUN)),
+            new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER)),
                     0, new Point2D(WINDOW_WIDTH + 50, 200));
 
             //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
             //        0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
-            Thread.sleep(1500);
+            Thread.sleep(100);
             //new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), 0, new Point2D(WINDOW_WIDTH + 50, 500));
 
             Thread.sleep(4_000);
@@ -64,16 +63,15 @@ public class Level1 extends Thread implements Level {
                     new Point2D(WINDOW_WIDTH * 0.9, 700)};
             Point2D[] path2 = {new Point2D(WINDOW_WIDTH * 0.7,WINDOW_HEIGHT - 150),
                     new Point2D(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT - 250),
-                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 400),
-                    new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 700)};
+                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 200)};
 
-            new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN)),
-                    new Point2D(WINDOW_WIDTH + 50, 300), path);
+            //new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN)),
+              //      new Point2D(WINDOW_WIDTH + 50, 300), path);
 
-            /*new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH + 50, 300),
-                    path2, -1);*/
+            new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH + 50, 300),
+                    path2, 1);
 
-            Thread.sleep(10_000);
+            Thread.sleep(40_000);
 
             //Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
             Boss3 finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));

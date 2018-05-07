@@ -144,7 +144,7 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
      * @param primaries primary-aseet tägeinä eli int muodossa.
      */
     public void makePrimaryWeapons(List<Tag> primaries) {
-        List<model.weapons.Weapon> initialPrimaryWeapons = new ArrayList<>();
+        List<Weapon> initialPrimaryWeapons = new ArrayList<>();
 
         if(primaries != null && controller != null) {
             for (Tag primaryWeaponTag : primaries) {
@@ -388,11 +388,11 @@ public class Unit extends SpriteImpl implements Updateable, HitboxCircle {
             for (int i = 0; i < 10; i++) {
                 int x = ThreadLocalRandom.current().nextInt((int) (getXPosition()), (int) (getXPosition() + getHitboxRadius()) + 1);
                 int y = ThreadLocalRandom.current().nextInt((int) (getYPosition()), (int) (getYPosition() + getHitboxRadius()) + 1);
-                new PowerUp(PowerUp.HP, 30, new Point2D(x, y));
+                new PowerUp(PowerUp.HP, new Point2D(x, y));
             }
         } else {
             // Muut vihut random powerup
-            new PowerUp(this, (int) (Math.random() * 5), 10); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
+            new PowerUp(this, (int) (Math.random() * 5)); //Tiputtaa jonkun komponentin jos random < powerup tyyppien määrä
         }
         new Explosion(color, getPosition(), unitSize);
         controller.removeUpdateable(this, this);

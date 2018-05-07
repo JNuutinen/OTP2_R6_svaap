@@ -160,7 +160,9 @@ public class GameMain extends Application implements View {
      */
     private GameBackground gameBg;
 
-    // TODO jdoc
+    /**
+     * Menunaikaisten viewien root.
+     */
     private BorderPane uiRoot;
 
     public static Player player;
@@ -383,11 +385,12 @@ public class GameMain extends Application implements View {
         gameBg.changeBackgroundScrollSpeed(speed, duration);
     }
 
-    /**
-     * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
-     * @param primary Pelaajan pääase.
-     * @param secondary Pelaajan sivuase.
-     */
+    @Override
+    public void setResourceBundle(ResourceBundle messages) {
+        this.messages = messages;
+    }
+
+    @Override
     public void init(Weapon primary, Weapon secondary) {
         pane.getChildren().remove(uiRoot);
 
@@ -472,6 +475,7 @@ public class GameMain extends Application implements View {
         });
     }
 
+    @Override
     public void startGame() {
 
         for(Player p : controller.getPlayers()) {
@@ -485,7 +489,8 @@ public class GameMain extends Application implements View {
         controller.startLevel(PlayMenu.getSelectedLevel());
     }
 
-    public BorderPane getUiRoot(){
+    @Override
+    public Pane getUiRoot() {
         return uiRoot;
     }
 
