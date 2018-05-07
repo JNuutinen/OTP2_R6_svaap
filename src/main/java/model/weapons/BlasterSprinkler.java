@@ -56,7 +56,7 @@ public class BlasterSprinkler extends Weapon implements Updateable {
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param shootingTime Ampumisen kesto.
-     * @param firerate TODO
+     * @param firerate tulinopeus
      */
     public BlasterSprinkler(int orientation, double projectileSpeed, double shootingTime, double firerate) {
         super("rectangle", 4, orientation, COLOR, 10, firerate);
@@ -71,7 +71,7 @@ public class BlasterSprinkler extends Weapon implements Updateable {
      * @param orientation Aseen orientation.
      * @param projectileSpeed Ammuksen nopeus.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
-     * @param firerate TODO
+     * @param firerate tulinopeus
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
      * @param shootingTime Ampumisruiskautuksen kesto.
      */

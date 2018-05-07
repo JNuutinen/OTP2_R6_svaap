@@ -46,7 +46,7 @@ public class RocketLauncher extends Weapon {
      * Konstruktori.
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
-     * @param firerate TODO
+     * @param firerate tulinopeus
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      */
     public RocketLauncher(int orientation, double rotatingSpeed, double firerate, boolean missileCanLoseTarget) {
@@ -57,10 +57,10 @@ public class RocketLauncher extends Weapon {
     }
 
     /**
-     * TODO
+     * Konstruktori ammusten ja komponentin visuaalisella poikkeamalla.
      * @param orientation Aseen orientation.
      * @param rotatingSpeed Ammuksen kääntymisnopeus.
-     *
+     * @param firerate tulinopeus
      * @param missileCanLoseTarget Kertoo voiko ohjus kadottaa kohteen jos etäisyys kasvaa liikaa kohteesta.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param prjoectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)

@@ -15,7 +15,7 @@ import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
 /**
- * BomberEnemy TODO
+ * BomberEnemy Liikkuu määriteltyä reittiä pitkin ja voi laittaa sen tuhoutumaan reitin lopussa tai liikkumaan määriteltyä reittiä ympäri rajattomasti.
  * @author Ilari Anttila
  * @author Jerry Hällfors
  * @author Juha Nuutinen
@@ -54,7 +54,7 @@ public class BomberEnemy extends Unit {
     private int currentDestinationIndex = 0;
 
     /**
-     * TODO JOku
+     * reitin pisteen indeksi jossa alus oli viimeiseksi.
      */
     private int lastDestinationIndex = 0;
 
@@ -101,7 +101,7 @@ public class BomberEnemy extends Unit {
     private boolean tookDamage2 = false;
 
     /**
-     * TODO
+     * TurretBase, jotta alus pystyy ampumaan pelaajaa kohti.
      */
     private TurretBase turretBase;
 
@@ -151,8 +151,6 @@ public class BomberEnemy extends Unit {
                 60.0, -10.0,
                 30.0, -10.0);
         drawShip(shape);
-
-        //makePrimaryWeapons(primaries);
 
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);

@@ -65,8 +65,7 @@ public class BlasterShotgun extends Weapon {
             if (getFireRateCounter() >= getFirerate()) {
                 setFireRateCounter(0);
                 for (int i = -1; i < 2; i++) {
-                    // TODO luo smallProjectile custom nopeuden kanssa @param projectileSpeed
-                    SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), SPEED, (int) (getDamage() * getDamageMultiplier()),
+                    SmallProjectile smallProjectile = new SmallProjectile(getParentUnit(), projectileSpeed, (int) (getDamage() * getDamageMultiplier()),
                             getProjectileOffset(), getParentUnitColor(), i * 9, getWeaponProjectileTag());
                     controller.addUpdateableAndSetToScene(smallProjectile);
                     controller.addHitboxObject(smallProjectile);

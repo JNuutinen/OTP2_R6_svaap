@@ -85,7 +85,7 @@ public class LaserBeam extends BaseProjectile implements Updateable, HitboxTrace
         opacitySubtraction = opacitySubtraction * 0.5;
 
         shape = buildLaser(currentColor);
-        Platform.runLater(()->getChildren().add(shape)); // TODO hidastaaks tää oikeesti
+        Platform.runLater(()->getChildren().add(shape));
     }
 
     @Override

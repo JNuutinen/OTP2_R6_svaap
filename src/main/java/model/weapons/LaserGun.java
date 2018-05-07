@@ -93,7 +93,7 @@ public class LaserGun extends Weapon implements Updateable {
      * @param shootingDelay Ampumisen viive.
      */
     public LaserGun(int orientation, double shootingDelay, double firerate) {
-        super("triangle", 4, orientation, COLOR, 40, firerate); // firerate ei saa olla <= shootingDelay TODO poista kommentti
+        super("triangle", 4, orientation, COLOR, 40, firerate);
         this.shootingDelay = shootingDelay;
         controller = GameController.getInstance();
     }
@@ -102,7 +102,7 @@ public class LaserGun extends Weapon implements Updateable {
      * Konstruktori ampumisviiveen kanssa.
      * @param orientation Aseen orientation.
      * @param shootingDelay Ampumisen viive
-     * @param firerate TODO
+     * @param firerate tulinopeus
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta.
      * .

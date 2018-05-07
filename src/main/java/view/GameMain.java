@@ -116,7 +116,7 @@ public class GameMain extends Application implements View {
     private Stage primaryStage;
 
     /**
-     * TODO
+     * pausemenu
      */
     private PauseMenu pauseMenu;
 

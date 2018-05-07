@@ -118,14 +118,6 @@ public class Enemy extends Unit {
         else setIsMoving(true);
     }
 
-    /**
-     * Palauttaa vihollisen liikkumatyylin
-     * @return Arvo -1, 0 tai 1.
-     */
-    public int getMovementPattern() {
-        return movementPattern;
-    }
-
     @Override
     public void update(double deltaTime){
         if(getTookDamage()){

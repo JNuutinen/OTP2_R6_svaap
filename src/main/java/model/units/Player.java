@@ -236,7 +236,6 @@ public class Player extends Unit {
                 weapon.setDamageMultiplier(1);
             }
             getSecondaryWeapon().setDamageMultiplier(1);
-            System.out.println("damageMultipler: reset"); // TODO poista rivi
         }
         else{
             damageMultipliedCounter += deltaTime;
@@ -245,7 +244,6 @@ public class Player extends Unit {
         if(velocityMultiplied && velocityMulitpliedCounter > 8){
             velocityMultiplied = false;
             velocityMultiplier = 1;
-            System.out.println("velocityMultiplier: reset"); // TODO poista rivi
         }
         else{
             velocityMulitpliedCounter += deltaTime;

@@ -149,12 +149,7 @@ public class SpriteImpl extends Pane implements Sprite {
 
         }
     }
-
-    @Override
-    public void setSize(Point2D newSize) {//TODO ei kaytos atm
-        resize(newSize.getX(), newSize.getY());
-    }
-
+    
     /**
      * Muuttaa astekulman vektoriksi.
      *

@@ -91,7 +91,6 @@ public class TeleporterEnemy extends Unit {
 
     @Override
     public void update(double deltaTime) {
-        // TODO: sprite vaan töksähtää näkyviin, joku sisääntuloanimaatio teleportefektin lisäksi vois olla jeba
         if (!teleported) {
             new TeleportEffect(COLOR, getPosition(), getUnitSize());
             teleported = true;

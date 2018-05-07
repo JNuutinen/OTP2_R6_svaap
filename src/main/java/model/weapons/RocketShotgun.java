@@ -57,7 +57,7 @@ public class RocketShotgun extends Weapon {
      * Konstruktori.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
-     * @param firerate TODO
+     * @param firerate tulinopeus
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      */
     public RocketShotgun(int orientation, double initialMissileRotatingSpeed, double firerate, double latterMissileRotatingSpeed) {
@@ -71,7 +71,7 @@ public class RocketShotgun extends Weapon {
      * Konstruktori aseen ja ammuksien poikkeamalla.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
-     * @param firerate TODO
+     * @param firerate tulinopeus
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      * @param componentOffset Aseen visuaalinen poikkeama aluksesta.
      * @param projectileOffset Ammuksen aloituspaikan poikkeama aluksesta (x = eteenpäin, y = vasempaan päin; aluksesta)
@@ -87,7 +87,7 @@ public class RocketShotgun extends Weapon {
      * Konstruktori tiedolla, voiko ohjus menettää kohteensa.
      * @param orientation Aseen orientation.
      * @param initialMissileRotatingSpeed Ammuksen kääntymisnopeus aluksi.
-     * @param firerate TODO
+     * @param firerate tulinopeus
      * @param latterMissileRotatingSpeed Ammuksen kääntymisnopeus hetken kuluttua.
      * @param missileCanLoseTarget boolean kertoo voiko ohjus kadottaa kohteensa jos menee liian kauas kohteesta
      */

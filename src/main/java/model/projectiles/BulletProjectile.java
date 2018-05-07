@@ -47,7 +47,7 @@ public class BulletProjectile extends BaseProjectile implements Updateable, Hitb
         super(shooter, speed, offset, damage, tag);
 
         controller = GameController.getInstance();
-        setHitbox(5);// TODO: hitboxin koko kovakoodattu | 16
+        setHitbox(5);
         Polygon shape = buildProjectile(speed, COLOR);
         getChildren().add(shape);
     }

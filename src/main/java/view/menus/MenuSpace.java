@@ -48,7 +48,7 @@ public class MenuSpace extends StackPane {
     private View gameMain;
 
     /**
-     * Konstruktori. TODO tämä jdoc vituillaa
+     * Konstruktori MenuSpacelle.
      * @param gameMain gameMain playMenua varten.
      * @param messages lokalisoidut tekstit.
      */

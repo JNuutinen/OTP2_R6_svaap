@@ -49,7 +49,7 @@ public class TrackerEnemy extends Unit {
     private int currentDestinationIndex = 0;
 
     /**
-     * TODO JOku
+     * reitin pisteen indeksi jossa alus oli viimeiseksi.
      */
     private int lastDestinationIndex = 0;
 

@@ -92,7 +92,6 @@ public class Missile extends BaseProjectile implements Updateable, HitboxCircle 
 
         Polygon shape = buildProjectile(speed);
         getChildren().add(shape);
-        // TODO: hitboxin koko kovakoodattu
         setHitbox(10);
 
         trail = new Trail(this, shooter.getUnitColor());

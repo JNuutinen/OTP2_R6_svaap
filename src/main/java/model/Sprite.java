@@ -91,12 +91,6 @@ public interface Sprite {
     void setHitbox(double circleHitboxDiameter);
 
     /**
-     * Asettaa Spriten koon.
-     * @param size Spriten uusi koko.
-     */
-    void setSize(Point2D size);
-
-    /**
      * Laskee kulman itsensa ja kohteen valilla yksikkoympyran mukaisesti (esim. jos kohde suoraan ylapuolella, kulma on 90)
      * @param target Kohteen sijainti Point2D oliona.
      * @return Kulma Spriten ja kohteen välillä.

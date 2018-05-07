@@ -231,7 +231,7 @@ public class GameLoop {
 
                 //---------- Olioiden lisäykset ja poistot
 
-                // TODO Tarkistaa Updateable jonon, ja lisää jonottavat oliot Updateable listaan
+                // Tarkistaa Updateable jonon, ja lisää jonottavat oliot Updateable listaan
                 // ja mahdollisesti joko enemies, enemyProjectiles, tai playerProjectiles listaan.
 
                 if ((double)(now - lastUpdate)/1_000_000_000.0 >= 1.0/100000) {
@@ -356,7 +356,7 @@ public class GameLoop {
                                     }
                                     break;
                             }
-                            ((Sprite) enemyHitboxTrace).setTag(Tag.UNDEFINED); // TODO enemytrace ei luultavasti voi osua kuin yhteen pelaajaan vaikka pitäisi toisin
+                            ((Sprite) enemyHitboxTrace).setTag(Tag.UNDEFINED);
                         }
                     }
 

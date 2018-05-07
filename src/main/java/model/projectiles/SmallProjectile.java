@@ -48,7 +48,7 @@ public class SmallProjectile extends BaseProjectile implements Updateable, Hitbo
         super(shooter, speed, offset, damage, tag);
 
         controller = GameController.getInstance();
-        setHitbox(10);// TODO: hitboxin koko kovakoodattu | 16
+        setHitbox(10);
         Polygon shape = buildProjectile(speed, COLOR);
         try {
             getChildren().add(shape);

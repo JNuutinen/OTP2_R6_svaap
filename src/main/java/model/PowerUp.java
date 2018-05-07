@@ -64,16 +64,14 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
                 type = HP;
                 shape = circle(size, Color.GREEN);
                 break;
-                /* //TODO:
             case DAMAGE:
                 type = DAMAGE;
-                shape = rectangle(size, 3, Color.PURPLE);
+                shape = circle(size, Color.PURPLE);
                 break;
             case SPEED:
                 type = SPEED;
-                shape = rectangle(size, 0, Color.BLUE);
+                shape = circle(size, Color.BLUE);
                 break;
-                */
             case SCORE:
                 type = SCORE;
                 shape = circle(size, Color.YELLOW);
@@ -140,7 +138,7 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
 
         setIsMoving(true);
         setVelocity(-50);
-        setHitbox(10);
+        setHitbox(30);
         System.out.println(controller);
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
@@ -317,12 +315,6 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
         moveStep(deltaTime);
     }
 
-    /**
-     * TODO
-     * Tarkistaa osuuko pelaaja PowerUppiin, antaa sen pelaajalle jos osuu, jonka jälkeen
-     * PowerUp poistetaan.
-     * @param collidingTarget Updateable-rajapinnan toteuttava olio, johon törmätty.
-     */
     @Override
     public void collides(Object collidingTarget) {
         System.out.println("powerup collides");

@@ -156,14 +156,6 @@ public abstract class Weapon extends SpriteImpl implements Updateable {
     }
 
     /**
-     * Setteri komponentin ampumien ammuksien tagille.
-     * @param weaponProjectileTag Komponentin ampumien ammuksien tagi.
-     */
-    public void setWeaponProjectileTag(Tag weaponProjectileTag) {
-        this.weaponProjectileTag = weaponProjectileTag;
-    }
-
-    /**
      * Luo komponentista kolmion muotoisen.
      * @param size Komponentin koko.
      * @param orientation Komponentin orientaatio.
@@ -181,7 +173,6 @@ public abstract class Weapon extends SpriteImpl implements Updateable {
         triangle.setFill(Color.BLACK);
         triangle.setStroke(color);
         triangle.setStrokeWidth(4.0);
-        //triangle.getTransforms().add(new Rotate(90 * orientation, 50, 30)); TODO
         return triangle;
     }
 
