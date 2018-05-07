@@ -4,6 +4,7 @@ import controller.Controller;
 import controller.GameController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.factory.Theme;
 import view.GameMain;
 
 /**
@@ -55,20 +56,21 @@ public class GameBackground extends SpriteImpl implements Updateable {
      */
     private boolean decelerate = false;
 
+    private Theme theme;
     /**
      * Konstruktori, luo kuvat ja lisää ne tämän Spriten Paneen.
      */
-    public GameBackground() {
+    public GameBackground(Theme theme) {
+        this.theme = theme;
         Controller controller = GameController.getInstance();
         controller.addUpdateableAndSetToScene(this);
 
-        String imagePath = "images/darkSpace.jpg";
+        //String imagePath = "images/darkSpace.jpg";
 
-        centerImage = new ImageView(new Image(imagePath,
-                GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
 
-        nextHorizontalImage = new ImageView(new Image(imagePath,
-                GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
+        centerImage = theme.getBackground();
+
+        nextHorizontalImage = theme.getBackground();
 
         centerImage.setY(centerImage.getY());
 
