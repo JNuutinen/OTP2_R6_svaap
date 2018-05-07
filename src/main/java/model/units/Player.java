@@ -173,7 +173,7 @@ public class Player extends Unit {
                 decelerateY();
             }
         } else if (input.contains("S")) {
-            if (getYPosition() < WINDOW_HEIGHT - getHitboxRadius()) {
+            if (getYPosition() < WINDOW_HEIGHT - 150) {
                 addVelocity(0, 1);
             } else {
                 decelerateY();
