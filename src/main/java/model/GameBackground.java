@@ -2,10 +2,8 @@ package model;
 
 import controller.Controller;
 import controller.GameController;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.factory.Theme;
-import view.GameMain;
 
 /**
  * Pelin liikkuva tausta. SpriteImpl ei itsessään liiku, vaan se liikuttelee kuvia itsensä sisällä.
@@ -56,7 +54,11 @@ public class GameBackground extends SpriteImpl implements Updateable {
      */
     private boolean decelerate = false;
 
+    /**
+     * Pelin teema.
+     */
     private Theme theme;
+    
     /**
      * Konstruktori, luo kuvat ja lisää ne tämän Spriten Paneen.
      */
