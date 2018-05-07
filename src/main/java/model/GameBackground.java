@@ -65,11 +65,7 @@ public class GameBackground extends SpriteImpl implements Updateable {
         Controller controller = GameController.getInstance();
         controller.addUpdateableAndSetToScene(this);
 
-        //String imagePath = "images/darkSpace.jpg";
-
-
         centerImage = theme.getBackground();
-
         nextHorizontalImage = theme.getBackground();
 
         centerImage.setY(centerImage.getY());
