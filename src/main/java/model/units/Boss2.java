@@ -146,7 +146,7 @@ public class Boss2 extends Unit implements Boss {
             if(distanceToTargetX < 5){
                 inFightingStage = true;
                 lockDirection(270);
-                setVelocity(70);
+                setVelocity(80);
                 stageTimeCounter = 6;
             }
         }

@@ -42,9 +42,9 @@ public class Level2 extends Thread implements Level{
 
             Thread.sleep(5000);
 
-            for(int i = 0; i < 10; i++){
+            for(int i = 0; i < 8; i++){
                 spawnFighter();
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             }
 
             Thread.sleep(2000);
@@ -89,7 +89,7 @@ public class Level2 extends Thread implements Level{
     }
 
     public void spawnFighter(){
-        new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)),
+        new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_MACHINE_GUN)),
                 0, new Point2D(WINDOW_WIDTH + 100, rnd.nextInt(500) + 100));
     }
 
