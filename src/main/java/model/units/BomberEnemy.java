@@ -159,7 +159,7 @@ public class BomberEnemy extends Unit {
 
         turretBase = new TurretBase(getUnitColor(), 5, 20, this);
         turretBase.makePrimaryWeapons(primaries);
-        Platform.runLater(()->getChildren().add(turretBase));
+        controller.addUpdateableAndSetToScene(turretBase);
     }
 
     @Override
@@ -228,7 +228,6 @@ public class BomberEnemy extends Unit {
             angleToTarget += 360.0;
         }
         rotate(angleToTarget * rotatingSpeed * deltaTime);
-        turretBase.rotate(angleToTarget * rotatingSpeed * deltaTime * -1);
     }
 
 

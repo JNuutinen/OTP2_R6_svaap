@@ -2,6 +2,7 @@ package model.units;
 
 import controller.Controller;
 import controller.GameController;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import model.HitboxCircle;
 
@@ -42,10 +43,12 @@ public class TurretBase extends Unit {
 
     @Override
     public void update(double deltaTime){
-        shootPrimary();
         double angleToTarget;
-        if(target != null) {
-            angleToTarget = getAngleFromTarget(target.getPosition()) - parentUnit.getDirection() - getDirection();
+        if(target != null && !parentUnit.isDestroyed()){
+            this.setPosition(parentUnit.getPosition().getX(), parentUnit.getPosition().getY());
+
+            getAngleFromTarget(target.getPosition());
+            angleToTarget = getAngleFromTarget(target.getPosition()) - getDirection();
             // taa vaa pitaa asteet -180 & 180 valissa
             while (angleToTarget >= 180.0) {
                 angleToTarget -= 360.0;
@@ -53,9 +56,18 @@ public class TurretBase extends Unit {
             while (angleToTarget < -180) {
                 angleToTarget += 360.0;
             }
-            rotate(30 * rotatingSpeed * deltaTime);
+            rotate(angleToTarget * rotatingSpeed * deltaTime);
 
         }
+        else{
+            destroyThis();
+        }
+        shootPrimary();
+    }
+
+    @Override
+    public Point2D getPosition(){
+        return parentUnit.getPosition();
     }
 
     /**

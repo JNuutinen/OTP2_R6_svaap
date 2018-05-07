@@ -63,16 +63,15 @@ public class Level1 extends Thread implements Level {
                     new Point2D(WINDOW_WIDTH * 0.9, 700)};
             Point2D[] path2 = {new Point2D(WINDOW_WIDTH * 0.7,WINDOW_HEIGHT - 150),
                     new Point2D(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT - 250),
-                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 400),
-                    new Point2D(WINDOW_WIDTH * 0.82, WINDOW_HEIGHT - 700)};
+                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 200)};
 
             //new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN)),
               //      new Point2D(WINDOW_WIDTH + 50, 300), path);
 
             new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH + 50, 300),
-                    path2, -1);
+                    path2, 1);
 
-            Thread.sleep(10_000);
+            Thread.sleep(40_000);
 
             //Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
             Boss3 finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
