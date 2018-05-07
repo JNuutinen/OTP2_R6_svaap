@@ -143,7 +143,11 @@ public class SpriteImpl extends Pane implements Sprite {
             shape.setStroke(Color.LIGHTGREY);
         }
         shape.setStrokeWidth(0.4);
-        Platform.runLater(() -> this.getChildren().add(shape));
+        try {
+            Platform.runLater(() -> this.getChildren().add(shape));
+        } catch (Error e) {
+
+        }
     }
 
     @Override
