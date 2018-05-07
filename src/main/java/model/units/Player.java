@@ -53,18 +53,6 @@ public class Player extends Unit {
     private static final int MAX_HP = 1000;
 
     /**
-     * Pelajaan kokemuspisteet.
-     */
-    //TODO: tietokannasta noutaminen.
-    private int exp = 0;
-
-    /**
-     * Pelaajan taso
-     */
-    //TODO: tietokantahommat.
-    private int level = 1;
-
-    /**
      * Alusta kiihdyttävän voiman suuruus.
      */
     private final double accelerationForce = 5000;
@@ -219,7 +207,7 @@ public class Player extends Unit {
         }
 
         // Secondary fire
-        if (input.contains("I")) {
+        if (input.contains("K")) {
             if (getSecondaryWeapon() != null) {
                 if (getSecondaryWeapon() != null) {
                     shootSecondary();
