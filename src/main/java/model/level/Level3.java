@@ -97,29 +97,31 @@ public class Level3 extends Thread implements Level {
 
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH - 600, 200));
 
+            Thread.sleep(4_000);
+
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_ROCKET_LAUNCHER)), new Point2D(WINDOW_WIDTH - 800, 700));
 
-            Thread.sleep(3_000);
+            Thread.sleep(4_000);
 
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH - 500, 100));
 
-            Thread.sleep(1_000);
+            Thread.sleep(2_000);
 
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)), new Point2D(WINDOW_WIDTH - 900, 300));
 
-            Thread.sleep(1_000);
+            Thread.sleep(2_000);
 
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER_SHOTGUN)), new Point2D(WINDOW_WIDTH - 900, 600));
 
-            Thread.sleep(1_000);
+            Thread.sleep(2_000);
 
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_MACHINE_GUN)), new Point2D(WINDOW_WIDTH - 200, 500));
 
-            Thread.sleep(1_000);
+            Thread.sleep(2_000);
 
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH - 580, 350));
 
-            Thread.sleep(1_000);
+            Thread.sleep(2_000);
 
             new TeleporterEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH - 1100, 100));
 
@@ -134,16 +136,16 @@ public class Level3 extends Thread implements Level {
             }
 
             // Hyperdrive
-            controller.changeBackgroundScrollSpeed(2000, 5);
-            Thread.sleep(6_000);
+            //controller.changeBackgroundScrollSpeed(2000, 5);
+            //Thread.sleep(6_000);
 
             Platform.runLater(() -> controller.addScore(500));
 
             // Seuraavan tason aloitus
-            controller.startLevel(4);
+            //controller.startLevel(4);
 
             // Jos ei seuraavaa tasoa, palataan päävalikkoon
-            //Platform.runLater(() -> controller.returnToMain());
+            Platform.runLater(() -> controller.returnToMain());
 
         } catch (InterruptedException e) {
             e.printStackTrace();

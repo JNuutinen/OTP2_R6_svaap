@@ -20,6 +20,8 @@ import javafx.util.Duration;
 import model.GameBackground;
 import model.PlayerFactory;
 import model.Sprite;
+import model.factory.SpaceTheme;
+import model.factory.UnderwaterTheme;
 import model.units.Player;
 import model.units.Unit;
 import model.weapons.Weapon;
@@ -158,7 +160,9 @@ public class GameMain extends Application implements View {
      */
     private GameBackground gameBg;
 
-    // TODO jdoc
+    /**
+     * Menunaikaisten viewien root.
+     */
     private BorderPane uiRoot;
 
     public static Player player;
@@ -381,11 +385,12 @@ public class GameMain extends Application implements View {
         gameBg.changeBackgroundScrollSpeed(speed, duration);
     }
 
-    /**
-     * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
-     * @param primary Pelaajan pääase.
-     * @param secondary Pelaajan sivuase.
-     */
+    @Override
+    public void setResourceBundle(ResourceBundle messages) {
+        this.messages = messages;
+    }
+
+    @Override
     public void init(Weapon primary, Weapon secondary) {
         pane.getChildren().remove(uiRoot);
 
@@ -433,7 +438,7 @@ public class GameMain extends Application implements View {
         score.setLayoutY(51);
         score.setFont(uiFont);
 
-        gameBg = new GameBackground();
+        gameBg = new GameBackground(UnderwaterTheme.getInstance());
 
         uiPane.getChildren().addAll(playerHpText, scoreText, score, playerHealth, bossHpText, bossHealth, fpsText);
 
@@ -470,11 +475,13 @@ public class GameMain extends Application implements View {
         });
     }
 
+    @Override
     public void startGame() {
-        controller.getGameLoop().setPlayers(controller.getPlayers());
+
         for(Player p : controller.getPlayers()) {
             controller.addHitboxObject(p);
         }
+        controller.getGameLoop().setPlayers(controller.getPlayers());
 
         primaryStage.setScene(scene);
 
@@ -482,7 +489,8 @@ public class GameMain extends Application implements View {
         controller.startLevel(PlayMenu.getSelectedLevel());
     }
 
-    public BorderPane getUiRoot(){
+    @Override
+    public Pane getUiRoot() {
         return uiRoot;
     }
 
@@ -497,6 +505,5 @@ public class GameMain extends Application implements View {
         locales.put("se_SE", new Locale("se", "SE"));
         messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
     }
-
 }
 

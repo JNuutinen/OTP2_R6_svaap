@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import view.GameMain;
+import view.View;
 
 import java.util.ResourceBundle;
 
@@ -47,7 +47,7 @@ public class NetplayMenu extends Menu{
     /**
      * TODO kaikki jdocit
      */
-    public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace, GameMain gameMain) {
+    public NetplayMenu(ResourceBundle messages, MenuSpace menuSpace, View gameMain) {
         super(menuSpace);
 
         connectButton = new Button("connect"); //TODO locale
