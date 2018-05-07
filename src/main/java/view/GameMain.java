@@ -471,10 +471,11 @@ public class GameMain extends Application implements View {
     }
 
     public void startGame() {
-        controller.getGameLoop().setPlayers(controller.getPlayers());
+
         for(Player p : controller.getPlayers()) {
             controller.addHitboxObject(p);
         }
+        controller.getGameLoop().setPlayers(controller.getPlayers());
 
         primaryStage.setScene(scene);
 
@@ -497,6 +498,5 @@ public class GameMain extends Application implements View {
         locales.put("se_SE", new Locale("se", "SE"));
         messages = ResourceBundle.getBundle("MessagesBundle", locales.get("en_NZ"));
     }
-
 }
 
