@@ -20,8 +20,8 @@ import javafx.util.Duration;
 import model.GameBackground;
 import model.PlayerFactory;
 import model.Sprite;
-import model.factory.SpaceTheme;
-import model.factory.UnderwaterTheme;
+import model.factory.NormalSpaceTheme;
+import model.factory.Theme;
 import model.units.Player;
 import model.units.Unit;
 import model.weapons.Weapon;
@@ -64,6 +64,11 @@ public class GameMain extends Application implements View {
      * Lista, joka sisältää tietyllä hetkellä painetut näppäimet.
      */
     public static List<String> input;
+
+    /**
+     * Pelin taustan teema.
+     */
+    private Theme theme = NormalSpaceTheme.getInstance();
 
     /**
      * Pitää sisällään lokalisoidut tekstit.
@@ -438,7 +443,7 @@ public class GameMain extends Application implements View {
         score.setLayoutY(51);
         score.setFont(uiFont);
 
-        gameBg = new GameBackground(UnderwaterTheme.getInstance());
+        gameBg = new GameBackground(theme);
 
         uiPane.getChildren().addAll(playerHpText, scoreText, score, playerHealth, bossHpText, bossHealth, fpsText);
 
@@ -492,6 +497,11 @@ public class GameMain extends Application implements View {
     @Override
     public Pane getUiRoot() {
         return uiRoot;
+    }
+
+    @Override
+    public void setTheme(Theme theme) {
+        this.theme = theme;
     }
 
 

@@ -64,7 +64,7 @@ public class MenuSpace extends StackPane {
 
         PlayMenu playMenu = new PlayMenu(messages, this, gameMain);
 
-        SettingsMenu settingsMenu = new SettingsMenu(messages, locales, this);
+        SettingsMenu settingsMenu = new SettingsMenu(gameMain, messages, locales, this);
 
         NetplayMenu netPlayMenu = new NetplayMenu(messages, this, gameMain);
 

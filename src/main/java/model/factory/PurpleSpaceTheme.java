@@ -4,16 +4,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import view.GameMain;
 
-public class SpaceTheme extends Theme {
-    private static SpaceTheme INSTANCE = null;
+public class PurpleSpaceTheme extends Theme {
+    private static PurpleSpaceTheme INSTANCE = null;
 
-    private SpaceTheme () {}
+    private PurpleSpaceTheme() {
+    }
 
-    public static SpaceTheme getInstance() {
+    public static PurpleSpaceTheme getInstance() {
         if (INSTANCE == null) {
-            synchronized (SpaceTheme.class) {
+            synchronized (PurpleSpaceTheme.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new SpaceTheme();
+                    INSTANCE = new PurpleSpaceTheme();
                 }
             }
         }
@@ -22,7 +23,7 @@ public class SpaceTheme extends Theme {
 
     @Override
     public ImageView getBackground() {
-        return new ImageView(new Image("images/darkSpace.jpg",
+        return new ImageView(new Image("images/darkSpace_purple.jpg",
                 GameMain.WINDOW_WIDTH, GameMain.WINDOW_HEIGHT, false, false));
     }
 }

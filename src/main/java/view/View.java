@@ -2,6 +2,7 @@ package view;
 
 import javafx.scene.layout.Pane;
 import model.Sprite;
+import model.factory.Theme;
 import model.units.Unit;
 import model.weapons.Weapon;
 
@@ -101,6 +102,13 @@ public interface View {
      * @return Pane, jossa menun viewit.
      */
     Pane getUiRoot();
+
+    /**
+     * Asettaa pelin teeman.
+     *
+     * @param theme Uusi teema.
+     */
+    void setTheme(Theme theme);
 
     /**
      * Muuttaa taustan vierimisnopeutta tietyksi ajaksi.
