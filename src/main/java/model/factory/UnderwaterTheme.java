@@ -11,7 +11,11 @@ public class UnderwaterTheme extends Theme{
 
     public static UnderwaterTheme getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new UnderwaterTheme();
+            synchronized (UnderwaterTheme.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new UnderwaterTheme();
+                }
+            }
         }
         return INSTANCE;
     }

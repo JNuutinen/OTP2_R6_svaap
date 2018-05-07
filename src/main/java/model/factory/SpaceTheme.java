@@ -11,7 +11,11 @@ public class SpaceTheme extends Theme {
 
     public static SpaceTheme getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new SpaceTheme();
+            synchronized (SpaceTheme.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new SpaceTheme();
+                }
+            }
         }
         return INSTANCE;
     }
