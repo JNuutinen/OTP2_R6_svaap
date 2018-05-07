@@ -68,7 +68,7 @@ public class Level1 extends Thread implements Level {
             //new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN)),
               //      new Point2D(WINDOW_WIDTH + 50, 300), path);
 
-            new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER, Tag.WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH + 50, 300),
+            new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_MACHINE_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
                     path2, 1);
 
             Thread.sleep(40_000);

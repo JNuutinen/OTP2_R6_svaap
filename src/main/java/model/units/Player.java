@@ -90,6 +90,31 @@ public class Player extends Unit {
     private boolean tookDamage2 = false;
 
     /**
+     * Apumuuttuja asevahingon kertoimen ajanlaskua varten.
+     */
+    private double damageMultipliedCounter = 0;
+
+    /**
+     * Apumuuttuja
+     */
+    private boolean damageMultiplied = false;
+
+    /**
+     * Apumuuttuja nopeuden kertoimen ajanlaskua varten.
+     */
+    private double velocityMulitpliedCounter = 0;
+
+    /**
+     * Apumuuttuaj
+     */
+    private boolean velocityMultiplied = false;
+
+    /**
+     * Aluksen nopeuden kerroin.
+     */
+    private double velocityMultiplier = 1;
+
+    /**
      * Konstruktori.
      * @param shipColor Aluksen väri.
      */
@@ -99,6 +124,7 @@ public class Player extends Unit {
         controller = GameController.getInstance();
         setHp(MAX_HP);
         setHitbox(60);
+        setIsMoving(false);
 
         Polygon shape = new Polygon();
         shape.getPoints().addAll(60.0, 1.0,
@@ -152,13 +178,13 @@ public class Player extends Unit {
         if (input.contains("A")) {
             // TODO: 70px kovakoodattu
             if (getXPosition() > 70) {
-                addVelocity(-1, 0);
+                addVelocity(-1 * velocityMultiplier, 0);
             } else {
                 decelerateX();
             }
         } else if (input.contains("D")) {
             if (getXPosition() < PLAYER_X_LIMIT) {
-                addVelocity(1, 0);
+                addVelocity(1 * velocityMultiplier, 0);
             } else {
                 decelerateX();
             }
@@ -168,13 +194,13 @@ public class Player extends Unit {
 
         if (input.contains("W")) {
             if (getYPosition() > 50) {
-                addVelocity(0, -1);
+                addVelocity(0, -1 * velocityMultiplier);
             } else {
                 decelerateY();
             }
         } else if (input.contains("S")) {
             if (getYPosition() < WINDOW_HEIGHT - getHitboxRadius()) {
-                addVelocity(0, 1);
+                addVelocity(0, 1 * velocityMultiplier);
             } else {
                 decelerateY();
             }
@@ -183,7 +209,7 @@ public class Player extends Unit {
         }
 
         // Primary fire
-        if (input.contains("O")) {
+        if (input.contains("J")) {
             if (getPrimaryWeapons().get(0) != null) {
                 for(Weapon primaryWeapon : getPrimaryWeapons()){
                     primaryWeapon.shoot();
@@ -193,7 +219,7 @@ public class Player extends Unit {
         }
 
         // Secondary fire
-        if (input.contains("P")) {
+        if (input.contains("I")) {
             if (getSecondaryWeapon() != null) {
                 if (getSecondaryWeapon() != null) {
                     shootSecondary();
@@ -212,8 +238,29 @@ public class Player extends Unit {
 
         // Päivitä sijainti
         if(deltaTime < 1) { // TODO
-            setPosition(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
-            Multiplayer.move(getXPosition() + xVelocity * deltaTime, getYPosition() + yVelocity * deltaTime);
+            setPosition(getXPosition() + (xVelocity * deltaTime), getYPosition() + (yVelocity * deltaTime));
+            Multiplayer.move(getXPosition() + (xVelocity * deltaTime), getYPosition() + (yVelocity * deltaTime));
+        }
+
+        if(damageMultiplied && damageMultipliedCounter > 8){
+            damageMultiplied = false;
+            for(Weapon weapon : getPrimaryWeapons()){
+                weapon.setDamageMultiplier(1);
+            }
+            getSecondaryWeapon().setDamageMultiplier(1);
+            System.out.println("damageMultipler: reset"); // TODO poista rivi
+        }
+        else{
+            damageMultipliedCounter += deltaTime;
+        }
+
+        if(velocityMultiplied && velocityMulitpliedCounter > 8){
+            velocityMultiplied = false;
+            velocityMultiplier = 1;
+            System.out.println("velocityMultiplier: reset"); // TODO poista rivi
+        }
+        else{
+            velocityMulitpliedCounter += deltaTime;
         }
         //System.out.println("player " + (getAngleFromTarget(new Point2D(0, 0))));
         controller.setHealthbar(hpPercentage(), 1);
@@ -260,10 +307,11 @@ public class Player extends Unit {
     private void addVelocity(double directionX, double directionY) {
         if (directionX == 0) ;
         else if (directionX * xVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
-            if (xVelocity < maxVelocity && xVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
+            //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
+            if (xVelocity < maxVelocity * velocityMultiplier && xVelocity > maxVelocity * -1 * velocityMultiplier) {
                 xVelocity += directionX * deltaTime * accelerationForce;
             } else { // jos ylittaa maksiminopeuden
-                xVelocity = maxVelocity * directionX;
+                xVelocity = maxVelocity * directionX * velocityMultiplier;
             }
         } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             xVelocity += directionX * deltaTime * accelerationForce;
@@ -271,10 +319,11 @@ public class Player extends Unit {
         //samat Y:lle
         if (directionY == 0) ;
         else if (directionY * yVelocity >= 0) { // jos kiihdyttaa nopeuden suuntaan, eli lisaa vauhtia:
-            if (yVelocity < maxVelocity && yVelocity > maxVelocity * -1) { //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
+            //jos alle maksiminopeuden (sama vastakkaiseen suuntaan)
+            if (yVelocity < maxVelocity * velocityMultiplier && yVelocity > maxVelocity * -1 * velocityMultiplier) {
                 yVelocity += directionY * deltaTime * accelerationForce;
             } else { // jos ylittaa maksiminopeuden
-                yVelocity = maxVelocity * directionY;
+                yVelocity = maxVelocity * directionY * velocityMultiplier;
             }
         } else { // jos kiihdyttaa nopeuden vastaiseen suuntaan, eli hidastaa
             yVelocity += directionY * deltaTime * accelerationForce;
@@ -336,5 +385,20 @@ public class Player extends Unit {
         }else {
             return percentage;
         }
+    }
+
+    public void setDamageMultiplier(double damageMultiplier){
+        damageMultiplied = true;
+        damageMultipliedCounter = 0;
+        for(Weapon weapon : getPrimaryWeapons()){
+            weapon.setDamageMultiplier(damageMultiplier);
+        }
+        getSecondaryWeapon().setDamageMultiplier(damageMultiplier);
+    }
+
+    public void setVelocityMulitplier(double velocityMultiplier){
+        velocityMultiplied = true;
+        velocityMulitpliedCounter = 0;
+        this.velocityMultiplier = velocityMultiplier;
     }
 }

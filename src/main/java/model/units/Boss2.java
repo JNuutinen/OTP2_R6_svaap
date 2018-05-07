@@ -123,11 +123,8 @@ public class Boss2 extends Unit implements Boss {
             damagedTimeCounter += deltaTime;
         }
 
-        //TODO ampuminen
-        if(fireRateCounter >= fireRate){
-            fireRateCounter = 0;
-            getPrimaryWeapons().get(2).shoot();
-        }
+
+        getPrimaryWeapons().get(2).shoot();
 
         if(stageTimeCounter * 2 >= fireRate){
             stageTimeCounter = 0;
