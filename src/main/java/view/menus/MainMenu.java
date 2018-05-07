@@ -64,7 +64,7 @@ public class MainMenu extends Menu {
 
         play = new Button(messages.getString("play"));
         settings = new Button(messages.getString("settings"));
-        netplay = new Button("netplay"); // TODO resourceBundle tähän
+        netplay = new Button(messages.getString("netplay"));
         exit = new Button(messages.getString("exit"));
 
         BorderPane bpane = new BorderPane();
@@ -105,6 +105,7 @@ public class MainMenu extends Menu {
     @Override
     public void changeLocale(ResourceBundle messages) {
         play.setText(messages.getString("play"));
+        netplay.setText(messages.getString("netplay"));
         settings.setText(messages.getString("settings"));
         exit.setText(messages.getString("exit"));
     }
