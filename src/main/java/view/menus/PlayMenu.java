@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import view.GameMain;
+import view.View;
 
 import java.util.ResourceBundle;
 
@@ -62,12 +62,13 @@ public class PlayMenu extends Menu{
      */
     private CustomizeMenu customizeMenu;
 
-    /** TODO tää iha vituillaa
-     * Konstruktori, joka luo komponentit ja lisää itseensä. Luo myös click eventit.
-     * @param messages Lokalisoidut resurssit.
-     * @param messages TODO Tasojen määrä kokonaisuudessaan, jonka perusteella tasonvalitsin tehdään.
+    /**
+     * Konstruktori pelaa-valikolle.
+     * @param messages Lokalisoidut merkkijonot.
+     * @param menuSpace MenuSpace, johon valikko kuuluu.
+     * @param gameMain Pelin view.
      */
-    public PlayMenu(ResourceBundle messages, MenuSpace menuSpace, GameMain gameMain) {
+    PlayMenu(ResourceBundle messages, MenuSpace menuSpace, View gameMain) {
         super(menuSpace);
 
         BorderPane borderPane = new BorderPane();

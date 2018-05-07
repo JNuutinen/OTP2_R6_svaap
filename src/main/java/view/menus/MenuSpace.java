@@ -2,7 +2,7 @@ package view.menus;
 
 import javafx.scene.Group;
 import javafx.scene.layout.StackPane;
-import view.GameMain;
+import view.View;
 import view.menuScreenFX.MenuFX;
 import view.menuScreenFX.PlainMenuTransition;
 
@@ -43,11 +43,17 @@ public class MenuSpace extends StackPane {
     private ResourceBundle messages;
 
     /**
+     * Pelin view.
+     */
+    private View gameMain;
+
+    /**
      * Konstruktori. TODO tämä jdoc vituillaa
      * @param gameMain gameMain playMenua varten.
      * @param messages lokalisoidut tekstit.
      */
-    public MenuSpace(GameMain gameMain, ResourceBundle messages, Map<String, Locale> locales) {
+    public MenuSpace(View gameMain, ResourceBundle messages, Map<String, Locale> locales) {
+        this.gameMain = gameMain;
         this.messages = messages;
         menus = new ArrayList<>();
 
@@ -106,6 +112,7 @@ public class MenuSpace extends StackPane {
      */
     void changeLocales(Locale locale) {
         messages = ResourceBundle.getBundle("MessagesBundle", locale);
+        gameMain.setResourceBundle(messages);
         for (Menu menu : menus) {
             menu.changeLocale(messages);
         }

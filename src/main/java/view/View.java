@@ -1,9 +1,12 @@
 package view;
 
+import javafx.scene.layout.Pane;
 import model.Sprite;
 import model.units.Unit;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /**
  * Viewin interface.
@@ -80,9 +83,36 @@ public interface View {
     void pause();
 
     /**
+     * Käynnistää pelin. Käskee kontrolleria aloittamaan GameLoopin ja Levelin.
+     *
+     * @param primary   Pelaajan pääase.
+     * @param secondary Pelaajan sivuase.
+     */
+    void init(Weapon primary, Weapon secondary);
+
+    /**
+     * Käynnistää pelin.
+     */
+    void startGame();
+
+    /**
+     * Palauttaa pelin menunaikaisen rootin.
+     *
+     * @return Pane, jossa menun viewit.
+     */
+    Pane getUiRoot();
+
+    /**
      * Muuttaa taustan vierimisnopeutta tietyksi ajaksi.
      * @param speed Taustan väliaikainen vierimisnopeus.
      * @param duration Väliaikaisen vierimisnopeuden kesto, jonka jälkeen vierimisnopeus palaa vakioarvoonsa.
      */
     void changeBackgroundScrollSpeed(double speed, double duration);
+
+    /**
+     * Asettaa Viewissä käytettävän ResourceBundlen lokalisaatiota varten.
+     *
+     * @param messages
+     */
+    void setResourceBundle(ResourceBundle messages);
 }
