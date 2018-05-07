@@ -47,6 +47,16 @@ public class SettingsMenu extends Menu {
     private Text menuEffectText;
 
     /**
+     * Radionappi menuefektien poistamiselle.
+     */
+    private RadioButton noEffectButton;
+
+    /**
+     * Radionappi menuefektin slide asetukselle.
+     */
+    private RadioButton slideEffectButton;
+
+    /**
      * MenuSpace, menujen efektien vaihtamiseen.
      */
     private MenuSpace menuSpace;
@@ -93,11 +103,11 @@ public class SettingsMenu extends Menu {
         menuEffectText = new Text(messages.getString("menu_effect"));
         menuEffectText.setStyle("-fx-fill: white");
         final ToggleGroup effectButtons = new ToggleGroup();
-        RadioButton noEffectButton = new RadioButton(messages.getString("menu_effect_none"));
+        noEffectButton = new RadioButton(messages.getString("menu_effect_none"));
         noEffectButton.setTextFill(Color.WHITE);
         noEffectButton.setToggleGroup(effectButtons);
         noEffectButton.setUserData(PlainMenuTransition.getInstance());
-        RadioButton slideEffectButton = new RadioButton(messages.getString("menu_effect_slide"));
+        slideEffectButton = new RadioButton(messages.getString("menu_effect_slide"));
         slideEffectButton.setTextFill(Color.WHITE);
         slideEffectButton.setToggleGroup(effectButtons);
         slideEffectButton.setSelected(true);
@@ -131,6 +141,8 @@ public class SettingsMenu extends Menu {
         menuEffectText.setText(messages.getString("menu_effect"));
         localeText.setText(messages.getString("locale"));
         backButton.setText(messages.getString("back"));
+        noEffectButton.setText(messages.getString("menu_effect_none"));
+        slideEffectButton.setText(messages.getString("menu_effect_slide"));
     }
 
     /**
