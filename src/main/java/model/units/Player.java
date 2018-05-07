@@ -50,7 +50,7 @@ public class Player extends Unit {
     /**
      * Maximi hitpointsit.
      */
-    private final int MAX_HP = 200;
+    private static final int MAX_HP = 1000;
 
     /**
      * Pelajaan kokemuspisteet.
@@ -97,7 +97,7 @@ public class Player extends Unit {
         super(shipColor, 0, 0);
         setTag(Tag.SHIP_PLAYER);
         controller = GameController.getInstance();
-        setHp(MAX_HP );
+        setHp(MAX_HP);
         setHitbox(60);
 
         Polygon shape = new Polygon();
@@ -240,7 +240,7 @@ public class Player extends Unit {
      * Palauttaa pelaajan maximihitpointsit.
      * @return Pelaajan maximihitpointsit.
      */
-    public int getMaxHp() {
+    public static int getMaxHp() {
         return MAX_HP;
     }
 
@@ -251,11 +251,6 @@ public class Player extends Unit {
     public int getScore() {
         return score;
     }
-
-
-
-
-    // laske ja lisaa vauhtia alukseen riippuen sen nykyisestä nopeudesta ja sen suunnasta: x/yVelocity
 
     /**
      * Lisää aluksen vauhtia riippuen sen nykyisestä nopeudesta, suunnasta ja kuluneesta ajasta.

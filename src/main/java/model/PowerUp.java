@@ -21,7 +21,7 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
     /**
      * Powerupin arvo.
      */
-    int value;
+    int value = 0;
 
     /**
      * Powerupin tyyppi.
@@ -100,6 +100,55 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
     }
 
     /**
+     * Konstruktori, powerupin sijainti otetaan kuolleesta Unitista. Käytetään vakio value arvoja.
+     *
+     * @param deadUnit    Unit, joka pudottaa power up:in
+     * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
+     *                    HP lisää pelaajan elämäpisteitä
+     *                    SCORE lisää pelaajan pisteitä
+     */
+    public PowerUp(Unit deadUnit, int powerUpType) {
+        switch (powerUpType) {
+            case HP:
+                type = HP;
+                shape = circle(size, Color.GREEN);
+                value = Player.getMaxHp() / 10;
+                break;
+                /* //TODO:
+            case DAMAGE:
+                type = DAMAGE;
+                shape = rectangle(size, 3, Color.PURPLE);
+                break;
+            case SPEED:
+                type = SPEED;
+                shape = rectangle(size, 0, Color.BLUE);
+                break;
+                */
+            case SCORE:
+                type = SCORE;
+                shape = circle(size, Color.YELLOW);
+                break;
+            default:
+                return; //Jos vihollinen ei droppaa mitään
+        }
+        controller = GameController.getInstance();
+        setTag(Tag.POWERUP); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
+        type = powerUpType;
+
+        double xOffset = degreesToVector(deadUnit.getDirection()).getX();
+        double yOffset = degreesToVector(deadUnit.getDirection()).getY();
+        Point2D startingLocation = new Point2D(deadUnit.getPosition().getX() + xOffset, deadUnit.getPosition().getY() + yOffset);
+        setPosition(startingLocation.getX(), startingLocation.getY());
+
+        setIsMoving(true);
+        setVelocity(-50);
+        System.out.println(controller);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
+        getChildren().add(shape);
+    }
+
+    /**
      * Konstruktori, sijainti annetaan koordinaatteina.
      *
      * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
@@ -134,6 +183,49 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
         controller = GameController.getInstance();
         setTag(Tag.POWERUP); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
         this.value = value;
+        type = powerUpType;
+        setPosition(position.getX(), position.getY());
+        setIsMoving(true);
+        setVelocity(-50);
+        controller.addUpdateableAndSetToScene(this);
+        controller.addHitboxObject(this);
+        getChildren().add(shape);
+    }
+
+    /**
+     * Konstruktori, sijainti annetaan koordinaatteina. Käytetään vakio value arvoja.
+     *
+     * @param powerUpType Power up:in tyyppi: HP, DAMAGE, SPEED, SCORE;
+     *                    HP lisää pelaajan elämäpisteitä
+     *                    SCORE lisää pelaajan pisteitä
+     * @param position    PowerUpin x- ja y-koordinaatit
+     */
+    public PowerUp(int powerUpType, Point2D position) {
+        switch (powerUpType) {
+            case HP:
+                type = HP;
+                shape = circle(size, Color.GREEN);
+                value = Player.getMaxHp() / 10;
+                break;
+                /* //TODO:
+            case DAMAGE:
+                type = DAMAGE;
+                shape = rectangle(size, 3, Color.PURPLE);
+                break;
+            case SPEED:
+                type = SPEED;
+                shape = rectangle(size, 0, Color.BLUE);
+                break;
+                */
+            case SCORE:
+                type = SCORE;
+                shape = circle(size, Color.YELLOW);
+                break;
+            default:
+                return; //Jos vihollinen ei droppaa mitään
+        }
+        controller = GameController.getInstance();
+        setTag(Tag.POWERUP); //ENEMY_PROJECTILE_TAG collisionia varten. Toimii toistaseksi ihan hyvin!
         type = powerUpType;
         setPosition(position.getX(), position.getY());
         setIsMoving(true);
@@ -198,11 +290,11 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
     public void givePowerUp(Player player) {
         switch (type) {
             case HP:
-                System.out.println(player.getMaxHp());
-                if (player.getHp() < player.getMaxHp()) {
+                System.out.println(Player.getMaxHp());
+                if (player.getHp() < Player.getMaxHp()) {
                     player.addHP(value);
-                    if (player.getHp() > player.getMaxHp()) {
-                        player.setHp(player.getMaxHp());
+                    if (player.getHp() > Player.getMaxHp()) {
+                        player.setHp(Player.getMaxHp());
                     }
                 }
                 break;
