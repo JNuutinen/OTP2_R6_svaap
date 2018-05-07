@@ -20,6 +20,8 @@ import javafx.util.Duration;
 import model.GameBackground;
 import model.PlayerFactory;
 import model.Sprite;
+import model.factory.SpaceTheme;
+import model.factory.UnderwaterTheme;
 import model.units.Player;
 import model.units.Unit;
 import model.weapons.Weapon;
@@ -433,7 +435,7 @@ public class GameMain extends Application implements View {
         score.setLayoutY(51);
         score.setFont(uiFont);
 
-        gameBg = new GameBackground();
+        gameBg = new GameBackground(UnderwaterTheme.getInstance());
 
         uiPane.getChildren().addAll(playerHpText, scoreText, score, playerHealth, bossHpText, bossHealth, fpsText);
 
