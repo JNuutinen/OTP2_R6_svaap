@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import model.PlayerFactory;
 import model.units.Player;
 import model.units.Unit;
+import model.weapons.Blaster;
 import model.weapons.MachineGun;
 import model.weapons.RocketShotgun;
 import view.GameMain;
@@ -47,8 +48,7 @@ public class Multiplayer {
     }
 
     public static void addPlayer(int playerId) {
-        Player player = PlayerFactory.getPlayer(Color.WHITE, new MachineGun(0, 55, 0.1),new RocketShotgun(0, 0, 3, 20,
-                false, new Point2D(-15, 0), new Point2D(-15, 0))); //Ulkoinen pelaaja liittyy omaan peliin
+        Player player = PlayerFactory.getPlayer(Color.WHITE, new MachineGun(0, 55, 0.1),new Blaster(0, 40, 0.5,  new Point2D(-15, 0), new Point2D(100, 0))); //Ulkoinen pelaaja liittyy omaan peliin
         players.put(playerId, player);
     }
 }
