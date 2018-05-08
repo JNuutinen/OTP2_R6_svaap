@@ -126,30 +126,25 @@ public class BomberEnemy extends Unit {
         setVelocity(initialVelocity);
         rotate(180);
         setIsMoving(true);
-        setHitbox(80);
+        setHitbox(90);
         setHp(40);
 
 
         Polygon shape = new Polygon();
         // aluksen muoto
-        shape.getPoints().addAll(30.0, 10.0,
-                60.0, 10.0,
-                50.0, 20.0,
-                10.0, 30.0,
-                0.0, 20.0,
-                -10.0, 40.0,
-                -40.0, 30.0,
-                -50.0, 20.0,
+        shape.getPoints().addAll(60.0, 0.0,
+                50.0, 10.0,
+                -10.0, 50.0,
+                -20.0, 50.0,
+                -30.0, 50.0,
                 -30.0, 20.0,
+                -50.0, 10.0,
+                -50.0, -10.0,
                 -30.0, -20.0,
-                -50.0, -20.0,
-                -40.0, -30.0,
-                -10.0, -40.0,
-                0.0, -20.0,
-                10.0, -30.0,
-                50.0, -20.0,
-                60.0, -10.0,
-                30.0, -10.0);
+                -30.0, -50.0,
+                -20.0, -50.0,
+                -10.0, -50.0,
+                50.0, -10.0);
         drawShip(shape);
 
         controller.addUpdateableAndSetToScene(this);

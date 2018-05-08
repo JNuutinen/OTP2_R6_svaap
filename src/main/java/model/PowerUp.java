@@ -3,6 +3,8 @@ package model;
 import controller.Controller;
 import controller.GameController;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -94,6 +96,12 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
         System.out.println(controller);
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
+
+        Bloom bloom = new Bloom(0.0);
+        GaussianBlur blur = new GaussianBlur(3.0);
+        blur.setInput(bloom);
+        shape.setEffect(blur);
+
         getChildren().add(shape);
     }
 
@@ -142,6 +150,12 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
         System.out.println(controller);
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
+
+        Bloom bloom = new Bloom(0.0);
+        GaussianBlur blur = new GaussianBlur(3.0);
+        blur.setInput(bloom);
+        shape.setEffect(blur);
+
         getChildren().add(shape);
     }
 
@@ -225,6 +239,11 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
         setVelocity(-50);
         controller.addUpdateableAndSetToScene(this);
         controller.addHitboxObject(this);
+
+        Bloom bloom = new Bloom(0.0);
+        GaussianBlur blur = new GaussianBlur(3.0);
+        blur.setInput(bloom);
+        shape.setEffect(blur);
         getChildren().add(shape);
     }
 
@@ -272,7 +291,7 @@ public class PowerUp extends SpriteImpl implements Updateable, HitboxCircle {
         Circle circle = new Circle(3 * size);
         circle.setFill(Color.BLACK);
         circle.setStroke(color);
-        circle.setStrokeWidth(3.0);
+        circle.setStrokeWidth(5.0);
         return circle;
     }
     
