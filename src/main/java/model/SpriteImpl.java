@@ -1,6 +1,5 @@
 package model;
 
-import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -143,11 +142,13 @@ public class SpriteImpl extends Pane implements Sprite {
             shape.setStroke(Color.LIGHTGREY);
         }
         shape.setStrokeWidth(0.4);
+        /*
         try {
             Platform.runLater(() -> this.getChildren().add(shape));
         } catch (Error e) {
 
         }
+        */
     }
     
     /**

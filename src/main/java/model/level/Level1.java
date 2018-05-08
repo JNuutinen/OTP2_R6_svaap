@@ -7,12 +7,12 @@ import javafx.geometry.Point2D;
 import model.units.BomberEnemy;
 import model.units.Boss3;
 import model.units.Enemy;
+import model.units.TrackerEnemy;
 
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static model.Tag.WEAPON_BLASTER;
-import static model.Tag.WEAPON_BLASTER_SHOTGUN;
+import static model.Tag.*;
 import static model.units.Enemy.MOVE_SINE;
 import static model.units.Enemy.MOVE_STRAIGHT;
 import static view.GameMain.WINDOW_HEIGHT;
@@ -50,6 +50,26 @@ public class Level1 extends Thread implements Level {
         try {
             Thread.sleep(1_000);
 
+            Point2D[] tracker1Path = {
+                    new Point2D(WINDOW_WIDTH * 0.7, 200),
+                    new Point2D(WINDOW_WIDTH * 0.9, 100),
+                    new Point2D(WINDOW_WIDTH * 0.9, 700)
+            };
+
+            Point2D[] bomber1Path = {
+                    new Point2D(1100, 300),
+                    new Point2D(1000, 100),
+
+                    new Point2D(200, 100),
+                    new Point2D(100, 300),
+
+                    new Point2D(100, 400),
+                    new Point2D(200, 600),
+
+                    new Point2D(1000, 600),
+                    new Point2D(1100, 400),
+            };
+
             new Enemy(new ArrayList<>(asList(WEAPON_BLASTER)), MOVE_STRAIGHT,
                     new Point2D(WINDOW_WIDTH + 100, 650));
 
@@ -83,20 +103,18 @@ public class Level1 extends Thread implements Level {
             new Enemy(new ArrayList<>(asList(WEAPON_BLASTER, WEAPON_BLASTER_SHOTGUN)), MOVE_SINE,
                     new Point2D(WINDOW_WIDTH + 100, 220));
 
-            Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,200),
-                    new Point2D(WINDOW_WIDTH * 0.9, 100),
-                    new Point2D(WINDOW_WIDTH * 0.9, 700)};
-            Point2D[] path2 = {new Point2D(WINDOW_WIDTH * 0.7,WINDOW_HEIGHT - 150),
-                    new Point2D(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT - 250),
-                    new Point2D(WINDOW_WIDTH * 0.1, WINDOW_HEIGHT - 200)};
+            Thread.sleep(4_000);
 
-            //new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN)),
-              //      new Point2D(WINDOW_WIDTH + 50, 300), path);
+            new TrackerEnemy(new ArrayList<>(asList(WEAPON_LASER_GUN, WEAPON_LASER_GUN, WEAPON_LASER_GUN,
+                    WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300), tracker1Path);
 
-            new BomberEnemy(new ArrayList<>(asList(WEAPON_BLASTER, WEAPON_BLASTER, WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH + 50, 300),
-                    path2, 1);
+            Thread.sleep(6_000);
 
-            Thread.sleep(40_000);
+            new BomberEnemy(new ArrayList<>(asList(WEAPON_BLASTER, WEAPON_BLASTER, WEAPON_BLASTER, WEAPON_LASER_GUN)),
+                    new Point2D(1300, 600),
+                    bomber1Path, 0);
+
+            Thread.sleep(15_000);
 
             //Viittaa tason viimeiseen pääviholliseen. Käytetään tason loppumisen tarkkailuun.
             Boss3 finalBoss = new Boss3(new Point2D(WINDOW_WIDTH + 100, WINDOW_HEIGHT * 0.5));
@@ -112,7 +130,7 @@ public class Level1 extends Thread implements Level {
 
             Platform.runLater(() -> controller.addScore(500));
 
-            controller.startLevel(2);
+            controller.startLevel(3);
 
             // Ilmoita levelin loppumisesta
             //Platform.runLater(() -> controller.returnToMain());

@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import model.*;
 import model.level.Level;
 import model.level.Level1;
-import model.level.Level2;
 import model.level.Level3;
 import model.units.Player;
 import view.View;
@@ -198,9 +197,6 @@ public class GameController implements Controller {
                 level = new Level1();
                 break;
             case 2:
-                level = new Level2();
-                break;
-            case 3:
                 level = new Level3();
                 break;
             default:

@@ -46,7 +46,8 @@ public class PlayMenu extends Menu{
     /**
      * Levelivalikon numeroiden määrä, täytyy olla sama kuin luotujen levelien määrä GameControllerissa.
      */
-    private static final int NUMBER_OF_LEVELS = 3;
+    private static final int NUMBER_OF_LEVELS = 2;
+    
     /**
      * Spinner tason valintaan.
      */
