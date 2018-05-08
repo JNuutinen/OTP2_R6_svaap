@@ -192,8 +192,8 @@ public class BomberEnemy extends Unit {
         // chekkaa menikö ulos ruudulta
         if (getXPosition() < -100
                 || getXPosition() > WINDOW_WIDTH+200
-                || getYPosition() < -100
-                || getYPosition() > WINDOW_HEIGHT+100) {
+                || getYPosition() < -300
+                || getYPosition() > WINDOW_HEIGHT+300) {
             destroyThis();
         } else {
             moveStep(deltaTime);

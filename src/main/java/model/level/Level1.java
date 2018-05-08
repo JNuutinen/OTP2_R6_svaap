@@ -70,6 +70,13 @@ public class Level1 extends Thread implements Level {
                     new Point2D(1100, 400),
             };
 
+            Point2D[] bomber2Path = {
+                    new Point2D(WINDOW_WIDTH * 0.7, -220),
+                    new Point2D(WINDOW_WIDTH * 0.6, WINDOW_HEIGHT * 0.33),
+                    new Point2D(WINDOW_WIDTH * 0.75, WINDOW_HEIGHT * 0.66),
+                    new Point2D(WINDOW_WIDTH * 0.9, WINDOW_HEIGHT + 300)
+            };
+
             new Enemy(new ArrayList<>(asList(WEAPON_BLASTER)), MOVE_STRAIGHT,
                     new Point2D(WINDOW_WIDTH + 100, 650));
 
@@ -105,8 +112,17 @@ public class Level1 extends Thread implements Level {
 
             Thread.sleep(4_000);
 
-            new TrackerEnemy(new ArrayList<>(asList(WEAPON_LASER_GUN, WEAPON_LASER_GUN, WEAPON_LASER_GUN,
-                    WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300), tracker1Path);
+            for(int i = 0; i < 4; i++){
+                new BomberEnemy(new ArrayList<>(asList(WEAPON_BLASTER)),
+                        new Point2D(WINDOW_WIDTH * 0.7, -220),
+                        bomber2Path, 0);
+                Thread.sleep(500);
+            }
+
+            Thread.sleep(6_000);
+
+
+            new TrackerEnemy(new ArrayList<>(asList(WEAPON_LASER_GUN)), new Point2D(WINDOW_WIDTH + 50, 300), tracker1Path);
 
             Thread.sleep(6_000);
 
