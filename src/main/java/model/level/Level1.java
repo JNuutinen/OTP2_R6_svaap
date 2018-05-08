@@ -4,15 +4,17 @@ import controller.Controller;
 import controller.GameController;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import model.*;
 import model.units.BomberEnemy;
 import model.units.Boss3;
 import model.units.Enemy;
-import model.units.TrackerEnemy;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+import static java.util.Arrays.asList;
+import static model.Tag.WEAPON_BLASTER;
+import static model.Tag.WEAPON_BLASTER_SHOTGUN;
+import static model.units.Enemy.MOVE_SINE;
+import static model.units.Enemy.MOVE_STRAIGHT;
 import static view.GameMain.WINDOW_HEIGHT;
 import static view.GameMain.WINDOW_WIDTH;
 
@@ -46,17 +48,40 @@ public class Level1 extends Thread implements Level {
     @Override
     public void run() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1_000);
 
-            new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_BLASTER)),
-                    0, new Point2D(WINDOW_WIDTH + 50, 200));
+            new Enemy(new ArrayList<>(asList(WEAPON_BLASTER)), MOVE_STRAIGHT,
+                    new Point2D(WINDOW_WIDTH + 100, 650));
 
-            //new Enemy(controller, Color.YELLOW, new ArrayList<>(Arrays.asList(WEAPON_LASER_GUN, WEAPON_ROCKET_LAUNCHER)),
-            //        0, new Point2D(WINDOW_WIDTH + 50, WINDOW_HEIGHT - 400));
-            Thread.sleep(100);
-            //new Enemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN)), 0, new Point2D(WINDOW_WIDTH + 50, 500));
+            Thread.sleep(3_000);
 
-            Thread.sleep(4_000);
+            new Enemy(new ArrayList<>(asList(WEAPON_BLASTER)), MOVE_STRAIGHT,
+                    new Point2D(WINDOW_WIDTH + 100, 250));
+
+            Thread.sleep(3_000);
+
+            new Enemy(new ArrayList<>(asList(WEAPON_BLASTER)), MOVE_STRAIGHT,
+                    new Point2D(WINDOW_WIDTH + 100, 400));
+
+            Thread.sleep(1_000);
+
+            new Enemy(new ArrayList<>(asList(WEAPON_BLASTER)), MOVE_STRAIGHT,
+                    new Point2D(WINDOW_WIDTH + 100, 550));
+
+            Thread.sleep(3_000);
+
+            new Enemy(new ArrayList<>(asList(WEAPON_BLASTER, WEAPON_BLASTER)), MOVE_SINE,
+                    new Point2D(WINDOW_WIDTH + 100, 300));
+
+            Thread.sleep(2_000);
+
+            new Enemy(new ArrayList<>(asList(WEAPON_BLASTER, WEAPON_BLASTER)), MOVE_SINE,
+                    new Point2D(WINDOW_WIDTH + 100, 550));
+
+            Thread.sleep(2_000);
+
+            new Enemy(new ArrayList<>(asList(WEAPON_BLASTER, WEAPON_BLASTER_SHOTGUN)), MOVE_SINE,
+                    new Point2D(WINDOW_WIDTH + 100, 220));
 
             Point2D[] path = {new Point2D(WINDOW_WIDTH * 0.7,200),
                     new Point2D(WINDOW_WIDTH * 0.9, 100),
@@ -68,7 +93,7 @@ public class Level1 extends Thread implements Level {
             //new TrackerEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN, Tag.WEAPON_LASER_GUN)),
               //      new Point2D(WINDOW_WIDTH + 50, 300), path);
 
-            new BomberEnemy(new ArrayList<>(Arrays.asList(Tag.WEAPON_MACHINE_GUN)), new Point2D(WINDOW_WIDTH + 50, 300),
+            new BomberEnemy(new ArrayList<>(asList(WEAPON_BLASTER, WEAPON_BLASTER, WEAPON_BLASTER)), new Point2D(WINDOW_WIDTH + 50, 300),
                     path2, 1);
 
             Thread.sleep(40_000);
